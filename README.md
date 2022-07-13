@@ -14,17 +14,15 @@
 
     git clone 
 
-### Configuration
-
-   cp .env.example .env
-
-To generate the application key (for a new local development env):
-
-   php artisan key:generate
-
 ### Install
 
    composer install
+
+If you don't have the right php version you can add `--ignore-platform-reqs` to the command. You local php isn't relevant, as we'll be using the one in the virtualized env.
+
+### Configuration
+
+   cp .env.example .env
 
 ### Start virtual enviroment
 
@@ -32,10 +30,18 @@ To generate the application key (for a new local development env):
 
 Note: [You can configure a bash alias for this.](https://laravel.com/docs/9.x/sail#configuring-a-bash-alias)
 
+### Generate application key
+
+To generate the application key (for a new local development env):
+
+   sail artisan key:generate
+
 ### Build env
 
    sail npm install
+
    sail npm run dev
+
    sail artisan migrate
 
 ### Access site
@@ -48,14 +54,18 @@ Note: [You can configure a bash alias for this.](https://laravel.com/docs/9.x/sa
 
    npm run dev
 
-### TLDR Sail
-
-   sail up -d
-   sail stop
-   sail artisan [command]
-   sail composer [command]
-   sail yarn/npm/node [command]
-
 ## Refresh configuration
 
    sail artisan optimize
+
+## TLDR Sail
+
+   sail up -d
+
+   sail stop
+
+   sail artisan [command]
+
+   sail composer [command]
+
+   sail yarn/npm/node [command]

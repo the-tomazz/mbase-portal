@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\App;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,12 +15,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::middleware(['web'])->group(
+    function () {
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+        Route::get('/', [Controller::class, 'index'])->name('home');
 
-require __DIR__.'/auth.php';
+        Route::get('locale/{locale}', function ($locale) {
+
+            session(['locale' => $locale]);
+            App::setLocale($locale);
+
+            return redirect()->route('home');
+        })->name('locale.change');
+    }
+);
+
+require __DIR__ . '/auth.php';
