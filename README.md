@@ -40,17 +40,19 @@ To generate the application key (for a new local development env):
 
    sail npm install
 
-   sail npm run dev
-
    sail artisan migrate
+
+   sail npm run dev
 
 ### Access site
 
-    http://localhost:3001
+    http://localhost
 
 ## Development
 
 ## Build frontend
+
+Keep this running in a seperate terminal:
 
    npm run dev
 
