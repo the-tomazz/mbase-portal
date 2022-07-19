@@ -14,14 +14,17 @@ return new class extends Migration
     public function up()
     {
         Schema::create(
-            'personal_access_tokens', function (Blueprint $table) {
+            'groups', function (Blueprint $table) {
                 $table->id();
-                $table->morphs('tokenable');
+                $table->string('slug')->unique();
                 $table->string('name');
-                $table->string('token', 64)->unique();
-                $table->text('abilities')->nullable();
-                $table->timestamp('last_used_at')->nullable();
+                $table->unsignedInteger('group_type_id');
                 $table->timestamps();
+                $table->foreign('group_type_id')
+                    ->references('id')
+                    ->on('group_types')
+                    ->onUpdate('cascade')
+                    ->onDelete('cascade');
             }
         );
     }
@@ -33,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('personal_access_tokens');
+        Schema::dropIfExists('groups');
     }
 };
