@@ -15,7 +15,7 @@ use App\Orchid\Screens\Role\RoleListScreen;
 use App\Orchid\Screens\User\UserEditScreen;
 use App\Orchid\Screens\User\UserListScreen;
 use App\Orchid\Screens\User\UserProfileScreen;
-use App\Orchid\Screens\EmailSenderScreen;
+//use App\Orchid\Screens\EmailSenderScreen;
 use Illuminate\Support\Facades\Route;
 use Tabuna\Breadcrumbs\Trail;
 
@@ -113,6 +113,6 @@ Route::screen('example-editors', ExampleTextEditorsScreen::class)->name('platfor
 Route::screen('example-cards', ExampleCardsScreen::class)->name('platform.example.cards');
 Route::screen('example-advanced', ExampleFieldsAdvancedScreen::class)->name('platform.example.advanced');
 
-Route::screen('email', EmailSenderScreen::class)->name('platform.email');
+//Route::screen('email', EmailSenderScreen::class)->name('platform.email');
 
 //Route::screen('idea', Idea::class, 'platform.screens.idea');

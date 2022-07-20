@@ -48,7 +48,13 @@ To generate the application key (for a new local development env):
 
   sail artisan migrate
 
-  sail npm run dev
+  if migrate fails do the following: 
+* sail down --rmi all -v (removes persistent volumes)
+* sail up
+* sail artisan migrate
+
+  
+sail npm run dev
 
 ### Access site
 
