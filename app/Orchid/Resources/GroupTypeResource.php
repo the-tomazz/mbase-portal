@@ -21,7 +21,14 @@ class GroupTypeResource extends Resource
      */
     public function fields(): array
     {
-        return [];
+        return [
+			Input::make('slug')
+				->title('slug'),
+			Input::make('name')
+				->title('name'),
+			Input::make('is_country')
+				->title('is_country')
+		];
     }
 
     /**
