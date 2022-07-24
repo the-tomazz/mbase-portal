@@ -3,7 +3,10 @@
 namespace App\Orchid\Resources;
 
 use Orchid\Crud\Resource;
+use Orchid\Support\Facades\Layout;
+use Orchid\Screen\Sight;
 use Orchid\Screen\TD;
+use Orchid\Screen\Fields\Input;
 
 class GroupTypeResource extends Resource
 {
@@ -40,7 +43,12 @@ class GroupTypeResource extends Resource
     {
         return [
             TD::make('id'),
-
+			TD::make('slug', "Slug"),
+			TD::make('name', "Name"),
+			TD::make('is_country', "Is Country")
+				->render(function($model) {
+					return $model->is_country == 0 ? 'false' : 'true';
+				}),
             TD::make('created_at', 'Date of creation')
                 ->render(function ($model) {
                     return $model->created_at->toDateTimeString();
@@ -60,7 +68,15 @@ class GroupTypeResource extends Resource
      */
     public function legend(): array
     {
-        return [];
+		return [
+			Sight::make('id', 'Id'),
+			Sight::make('slug', 'Slug'),
+			Sight::make('name', 'Name'),
+			Sight::make('is_country', 'Is Country')
+			->render(function($model) {
+				return $model->is_country == 0 ? 'false' : 'true';
+			}),
+		];
     }
 
     /**

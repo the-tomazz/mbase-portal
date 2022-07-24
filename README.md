@@ -91,3 +91,7 @@ Keep this running in a seperate terminal:
   sail composer [command]
 
   sail yarn/npm/node [command]
+
+## Enter into psql docker
+  docker exec -it mbase2l-pgsql-1 psql -U gozdovi -W laravel
+  enter gozdovi as pass when prompted

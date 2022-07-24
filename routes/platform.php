@@ -15,9 +15,7 @@ use App\Orchid\Screens\Role\RoleListScreen;
 use App\Orchid\Screens\User\UserEditScreen;
 use App\Orchid\Screens\User\UserListScreen;
 use App\Orchid\Screens\User\UserProfileScreen;
-//use App\Orchid\Screens\EmailSenderScreen;
-use Illuminate\Support\Facades\Route;
-use Tabuna\Breadcrumbs\Trail;
+use Illuminate\Support\Facades\Route;use Tabuna\Breadcrumbs\Trail;
 
 /*
 |--------------------------------------------------------------------------
