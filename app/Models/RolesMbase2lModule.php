@@ -6,7 +6,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -18,7 +17,6 @@ use Illuminate\Database\Eloquent\Model;
  * 
  * @property Role $role
  * @property Mbase2lModule $mbase2l_module
- * @property Collection|User[] $users
  *
  * @package App\Models
  */
@@ -45,10 +43,5 @@ class RolesMbase2lModule extends Model
 	public function mbase2l_module()
 	{
 		return $this->belongsTo(Mbase2lModule::class);
-	}
-
-	public function users()
-	{
-		return $this->belongsToMany(User::class, 'users_roles_mbase2l_modules', 'role_mbase2l_module_id');
 	}
 }
