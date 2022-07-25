@@ -46,15 +46,16 @@ To generate the application key (for a new local development env):
 
   sail npm install
 
-  sail artisan migrate
+  sail artisan migrate:refresh --seed
 
   if migrate fails do the following: 
 * sail down --rmi all -v (removes persistent volumes)
 * sail up
 * sail artisan migrate
 
+  sail artisan orchid:admin admin admin@admin.com password
   
-sail npm run dev
+  sail npm run dev
 
 ### Access site
 
