@@ -79,8 +79,16 @@ Keep this running in a seperate terminal:
 
 ## add user
   
-  sail artisan orchid:admin admin admin@mbase2l.zgs.si password
+  sail artisan orchid:admin admin admin@admin.com password
 
+## recreate the database
+  sail psql
+  drop schema public cascade;
+  create schema public
+
+## add postgis extension
+  CREATE EXTENSION postgis;
+  
 ## TLDR Sail
 
   sail up -d

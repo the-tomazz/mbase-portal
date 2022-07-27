@@ -14,7 +14,8 @@ class PermissionServiceProvider extends ServiceProvider
     public function boot(Dashboard $dashboard)
     {
         $permissions = ItemPermission::group('MBase2l')
-            ->addPermission('mbase2l.admin', 'Admin');
+            ->addPermission('mbase2l.admin', 'Admin')
+			->addPermission('mbase2l.registered_user', 'Registered user');
 
         $dashboard->registerPermissions($permissions);
     }
