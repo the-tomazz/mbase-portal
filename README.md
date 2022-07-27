@@ -85,9 +85,6 @@ Keep this running in a seperate terminal:
   sail psql
   drop schema public cascade;
   create schema public
-
-## add postgis extension
-  CREATE EXTENSION postgis;
   
 ## TLDR Sail
 
