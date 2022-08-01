@@ -83,8 +83,16 @@ Keep this running in a seperate terminal:
 
 ## recreate the database
   sail psql
+
   drop schema public cascade;
-  create schema public
+  drop schema mb2data cascade;
+  drop schema mbase2 cascade;
+  drop schema mbase2_ge cascade;
+
+  create schema public;
+  create schema mb2data;
+  create schema mbase2;
+  create schema mbase2_ge;
   
 ## TLDR Sail
 

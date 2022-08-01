@@ -1,0 +1,59 @@
+[33mMigration table not found.[39m
+[32mMigration table created successfully.[39m
+[33mMigrating:[39m 2014_10_12_000000_create_users_table
+[32mMigrated:[39m  2014_10_12_000000_create_users_table (16.18ms)
+[33mMigrating:[39m 2014_10_12_100000_create_password_resets_table
+[32mMigrated:[39m  2014_10_12_100000_create_password_resets_table (12.20ms)
+[33mMigrating:[39m 2015_04_12_000000_create_orchid_users_table
+[32mMigrated:[39m  2015_04_12_000000_create_orchid_users_table (6.08ms)
+[33mMigrating:[39m 2015_10_19_214424_create_orchid_roles_table
+[32mMigrated:[39m  2015_10_19_214424_create_orchid_roles_table (17.98ms)
+[33mMigrating:[39m 2015_10_19_214425_create_orchid_role_users_table
+[32mMigrated:[39m  2015_10_19_214425_create_orchid_role_users_table (14.05ms)
+[33mMigrating:[39m 2016_08_07_125128_create_orchid_attachmentstable_table
+[32mMigrated:[39m  2016_08_07_125128_create_orchid_attachmentstable_table (23.29ms)
+[33mMigrating:[39m 2017_09_17_125801_create_notifications_table
+[32mMigrated:[39m  2017_09_17_125801_create_notifications_table (17.95ms)
+[33mMigrating:[39m 2019_08_19_000000_create_failed_jobs_table
+[32mMigrated:[39m  2019_08_19_000000_create_failed_jobs_table (16.84ms)
+[33mMigrating:[39m 2019_12_14_000001_create_personal_access_tokens_table
+[32mMigrated:[39m  2019_12_14_000001_create_personal_access_tokens_table (29.09ms)
+[33mMigrating:[39m 2022_06_03_190321_create_public_schema
+[32mMigrated:[39m  2022_06_03_190321_create_public_schema (1,039.21ms)
+[33mMigrating:[39m 2022_06_04_122707_create_mbase2__ge_schema
+[32mMigrated:[39m  2022_06_04_122707_create_mbase2__ge_schema (920.74ms)
+[33mMigrating:[39m 2022_07_18_132217_create_group_types
+[32mMigrated:[39m  2022_07_18_132217_create_group_types (18.31ms)
+[33mMigrating:[39m 2022_07_18_132453_create_groups
+[32mMigrated:[39m  2022_07_18_132453_create_groups (19.82ms)
+[33mMigrating:[39m 2022_07_19_111016_create_mbase2l_modules_table
+[32mMigrated:[39m  2022_07_19_111016_create_mbase2l_modules_table (17.21ms)
+[33mMigrating:[39m 2022_07_19_111637_create_groups_mbase2l_modules_table
+[32mMigrated:[39m  2022_07_19_111637_create_groups_mbase2l_modules_table (15.30ms)
+[33mMigrating:[39m 2022_07_19_131619_create_shared_queries
+[32mMigrated:[39m  2022_07_19_131619_create_shared_queries (15.32ms)
+[33mMigrating:[39m 2022_07_25_151650_create_languages
+[32mMigrated:[39m  2022_07_25_151650_create_languages (16.91ms)
+[33mMigrating:[39m 2022_07_25_174308_create_users_groups
+[32mMigrated:[39m  2022_07_25_174308_create_users_groups (15.45ms)
+[33mMigrating:[39m 2022_07_25_174316_add_default_roles
+[32mMigrated:[39m  2022_07_25_174316_add_default_roles (3.40ms)
+[33mMigrating:[39m 2022_07_25_193114_create_group_types_countries
+[32mMigrated:[39m  2022_07_25_193114_create_group_types_countries (11.81ms)
+[33mMigrating:[39m 2022_07_26_162040_create_groups_group_types_countries
+[32mMigrated:[39m  2022_07_26_162040_create_groups_group_types_countries (23.26ms)
+[33mMigrating:[39m 2022_07_27_114432_create_spatial_unit_filter_types
+[32mMigrated:[39m  2022_07_27_114432_create_spatial_unit_filter_types (13.81ms)
+[33mMigrating:[39m 2022_07_27_114805_create_spatial_unit_filter_type_countries
+[32mMigrated:[39m  2022_07_27_114805_create_spatial_unit_filter_type_countries (9.84ms)
+[33mMigrating:[39m 2022_07_27_115039_create_spatial_unit_filter_elements
+[32mMigrated:[39m  2022_07_27_115039_create_spatial_unit_filter_elements (50.84ms)
+[33mMigrating:[39m 2022_07_27_131223_create_spatial_unit_groups
+[32mMigrated:[39m  2022_07_27_131223_create_spatial_unit_groups (91.07ms)
+[33mMigrating:[39m 2022_07_27_160353_create_spatial_units_spatial_unit_filter_elements
+[32mMigrated:[39m  2022_07_27_160353_create_spatial_units_spatial_unit_filter_elements (233.88ms)
+[33mMigrating:[39m 2022_07_30_060101_create_mbase2_shema
+[32mMigrated:[39m  2022_07_30_060101_create_mbase2_shema (1,820.95ms)
+[33mMigrating:[39m 2022_07_30_064717_create_mb2data_schema
+[32mMigrated:[39m  2022_07_30_064717_create_mb2data_schema (1,046.35ms)
+[32mDatabase seeding completed successfully.[39m

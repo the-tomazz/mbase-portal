@@ -18,7 +18,7 @@ return new class extends Migration
 			$table->unsignedInteger('group_id');
 			$table->foreign('spatial_unit_gid')
 				->references('gid')
-				->on('spatial_units')
+				->on('mbase2_ge.spatial_units')
 				->onUpdate('cascade')
 				->onDelete('cascade');
 			$table->foreign('group_id')

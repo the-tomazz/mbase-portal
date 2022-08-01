@@ -13,12 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('spatial_units_spatial_unit_filter_elements', function (Blueprint $table) {
+		Schema::create('spatial_units_spatial_unit_filter_elements', function (Blueprint $table) {
 			$table->unsignedInteger('spatial_unit_gid');
 			$table->unsignedInteger('spatial_unit_filter_element_id');
 			$table->foreign('spatial_unit_gid')
 				->references('gid')
-				->on('spatial_units')
+				->on('mbase2_ge.spatial_units')
 				->onUpdate('cascade')
 				->onDelete('cascade');
 			$table->foreign('spatial_unit_filter_element_id')
