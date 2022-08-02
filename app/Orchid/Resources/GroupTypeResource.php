@@ -49,15 +49,15 @@ class GroupTypeResource extends Resource
 				->render(function($model) {
 					return $model->is_country == 0 ? 'false' : 'true';
 				}),
-            TD::make('created_at', 'Date of creation')
-                ->render(function ($model) {
-                    return $model->created_at->toDateTimeString();
-                }),
-
-            TD::make('updated_at', 'Update date')
-                ->render(function ($model) {
-                    return $model->updated_at->toDateTimeString();
-                }),
+//            TD::make('created_at', 'Date of creation')
+//                ->render(function ($model) {
+//                    return $model->created_at->toDateTimeString();
+//                }),
+//
+//            TD::make('updated_at', 'Update date')
+//                ->render(function ($model) {
+//                    return $model->updated_at->toDateTimeString();
+//                }),
         ];
     }
 

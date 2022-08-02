@@ -11,17 +11,21 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Group
- * 
+ *
  * @property int $id
  * @property string $slug
  * @property string $name
  * @property int $group_type_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * 
+ *
  * @property GroupType $group_type
  *
  * @package App\Models
+ */
+/**
+ * Group
+ * @mixin Builder
  */
 class Group extends Model
 {

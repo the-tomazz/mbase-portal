@@ -10,12 +10,14 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     @auth
-                    You're logged in!
+                    You're logged in!!!
                     @else
-                    Not logged in!
+                    Not logged in!!!!
                     @endauth
                     <br />
                     Locale is: {{ app()->getLocale() }}
+					<br>
+				<a href="{{ route('platform.main') }}" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">Admin</a>
                 </div>
             </div>
         </div>

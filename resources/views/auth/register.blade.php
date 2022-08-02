@@ -45,6 +45,14 @@
                                 name="password_confirmation" required />
             </div>
 
+			<!-- Countries -->
+			<select id="group_id" name="group_id">
+				@foreach ($countries as $key => $value)
+					<option value="{{ $key }}"
+					>{{ $value }}</option>
+				@endforeach
+			</select>
+
             <div class="flex items-center justify-end mt-4">
                 <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
                     {{ __('Already registered?') }}

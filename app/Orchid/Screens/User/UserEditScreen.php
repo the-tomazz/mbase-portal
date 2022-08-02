@@ -8,6 +8,7 @@ use App\Orchid\Layouts\Role\RolePermissionLayout;
 use App\Orchid\Layouts\User\UserEditLayout;
 use App\Orchid\Layouts\User\UserPasswordLayout;
 use App\Orchid\Layouts\User\UserRoleLayout;
+use App\Orchid\Layouts\User\UserCountryLayout;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -152,6 +153,17 @@ class UserEditScreen extends Screen
                         ->method('save')
                 ),
 
+			Layout::block(UserCountryLayout::class)
+				->title(__('Country'))
+				->description(__('Select user country'))
+				->commands(
+					Button::make(__('Save'))
+						->type(Color::DEFAULT())
+						->icon('check')
+						->canSee($this->user->exists)
+						->method('save')
+				),
+
         ];
     }
 
@@ -180,6 +192,11 @@ class UserEditScreen extends Screen
         $user->when($request->filled('user.password'), function (Builder $builder) use ($request) {
             $builder->getModel()->password = Hash::make($request->input('user.password'));
         });
+
+		$user->when($request->filled('user.group_id'), function (Builder $builder) use ($request) {
+			//TODO: more languages
+			$builder->getModel()->group_id = intval($request->input('user.group_id')[0]);
+		});
 
         $user
             ->fill($request->collect('user')->except(['password', 'permissions', 'roles'])->toArray())
