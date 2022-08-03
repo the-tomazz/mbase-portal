@@ -29,8 +29,8 @@ class GroupTypeResource extends Resource
 				->title('slug'),
 			Input::make('name')
 				->title('name'),
-			Input::make('is_country')
-				->title('is_country')
+			Input::make('is_spatial_unit_group_type')
+				->title('Is spatial unit group type')
 		];
     }
 
@@ -45,19 +45,10 @@ class GroupTypeResource extends Resource
             TD::make('id'),
 			TD::make('slug', "Slug"),
 			TD::make('name', "Name"),
-			TD::make('is_country', "Is Country")
+			TD::make('is_spatial_unit_group_type', "Is spatial unit group type")
 				->render(function($model) {
-					return $model->is_country == 0 ? 'false' : 'true';
+					return $model->is_spatial_unit_group_type == 0 ? 'false' : 'true';
 				}),
-//            TD::make('created_at', 'Date of creation')
-//                ->render(function ($model) {
-//                    return $model->created_at->toDateTimeString();
-//                }),
-//
-//            TD::make('updated_at', 'Update date')
-//                ->render(function ($model) {
-//                    return $model->updated_at->toDateTimeString();
-//                }),
         ];
     }
 
@@ -72,7 +63,7 @@ class GroupTypeResource extends Resource
 			Sight::make('id', 'Id'),
 			Sight::make('slug', 'Slug'),
 			Sight::make('name', 'Name'),
-			Sight::make('is_country', 'Is Country')
+			Sight::make('is_spatial_unit_group_type', 'Is spatial unit group type')
 			->render(function($model) {
 				return $model->is_country == 0 ? 'false' : 'true';
 			}),

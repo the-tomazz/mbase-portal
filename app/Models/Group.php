@@ -8,6 +8,9 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Orchid\Attachment\Attachable;
+use Orchid\Filters\Filterable;
+use Orchid\Screen\AsSource;
 
 /**
  * Class Group
@@ -30,6 +33,8 @@ use Illuminate\Database\Eloquent\Model;
 class Group extends Model
 {
 	protected $table = 'groups';
+
+	use AsSource, Filterable, Attachable;
 
 	protected $casts = [
 		'group_type_id' => 'int'

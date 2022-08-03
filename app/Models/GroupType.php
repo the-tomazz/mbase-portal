@@ -34,13 +34,13 @@ class GroupType extends Model
 	protected $table = 'group_types';
 
 	protected $casts = [
-		'is_country' => 'bool'
+		'is_spatial_unit_group_type' => 'bool'
 	];
 
 	protected $fillable = [
 		'slug',
 		'name',
-		'is_country'
+		'is_spatial_unit_group_type'
 	];
 
 	public function groups()

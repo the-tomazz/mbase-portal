@@ -8,13 +8,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Orchid\Attachment\Attachable;
+use Orchid\Filters\Filterable;
+use Orchid\Screen\AsSource;
 
 /**
  * Class SpatialUnitFilterType
- * 
+ *
  * @property int $id
  * @property string $slug
- * 
+ *
  * @property SpatialUnitFilterTypeCountry $spatial_unit_filter_type_country
  * @property Collection|SpatialUnitFilterElement[] $spatial_unit_filter_elements
  *
@@ -24,6 +27,8 @@ class SpatialUnitFilterType extends Model
 {
 	protected $table = 'spatial_unit_filter_types';
 	public $timestamps = false;
+
+	use AsSource, Filterable, Attachable;
 
 	protected $fillable = [
 		'slug'
