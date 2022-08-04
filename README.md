@@ -81,18 +81,41 @@ Keep this running in a seperate terminal:
   
   sail artisan orchid:admin admin admin@admin.com password
 
-## recreate the database
+## to recreate the database
   sail psql
 
   drop schema public cascade;
   drop schema mb2data cascade;
   drop schema mbase2 cascade;
   drop schema mbase2_ge cascade;
+  drop schema laravel cascade;
 
   create schema public;
   create schema mb2data;
   create schema mbase2;
   create schema mbase2_ge;
+  create schema laravel;
+  
+## to create a model
+##
+## Since laravel tables have been moved to laravel scheme, 
+## sail artisan code:models --table=tablename will not work!!!
+
+## you will need to 
+
+  sail psql
+
+  SET search_path TO public;
+  create table tablename as select * from laravel.tablename;
+  \q
+  
+  sail artisan code:models --table=tablename
+
+  sail psql
+  
+  SET search_path TO public;
+  drop table tablename;
+  \q
   
 ## TLDR Sail
 
