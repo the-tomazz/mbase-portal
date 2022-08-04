@@ -64,4 +64,9 @@ class User extends Authenticatable
         'updated_at',
         'created_at',
     ];
+
+	public function group()
+	{
+		return $this->belongsTo(Group::class);
+	}
 }

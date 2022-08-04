@@ -20,6 +20,11 @@ Route::middleware(['web'])->group(
 
         Route::get('/', [Controller::class, 'index'])->name('home');
 
+		Route::get('/test', function () {
+			$user = \App\Models\User::where('id', 1)->first();
+			return $user->group;
+		});
+
         Route::get('locale/{locale}', function ($locale) {
 
             session(['locale' => $locale]);

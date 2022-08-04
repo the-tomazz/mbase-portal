@@ -3,18 +3,16 @@
 namespace App\Orchid\Resources;
 
 use Orchid\Crud\Resource;
-use Orchid\Screen\Fields\Input;
-use Orchid\Screen\Sight;
 use Orchid\Screen\TD;
 
-class GroupResource extends Resource
+class SharedQueryResource extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\Group::class;
+    public static $model = \App\Models\SharedQuery::class;
 
     /**
      * Get the fields displayed by the resource.
@@ -23,14 +21,7 @@ class GroupResource extends Resource
      */
     public function fields(): array
     {
-		return [
-			Input::make('slug')
-				->title('Slug'),
-			Input::make('name')
-				->title('Name'),
-			Input::make('GroupType id')
-				->title('group_type_id')
-		];
+        return [];
     }
 
     /**
@@ -41,10 +32,17 @@ class GroupResource extends Resource
     public function columns(): array
     {
         return [
-			TD::make('id'),
-			TD::make('slug', "Slug"),
-			TD::make('name', "Name"),
-			TD::make('group_type_id', "GroupType id")
+            TD::make('id'),
+
+            TD::make('created_at', 'Date of creation')
+                ->render(function ($model) {
+                    return $model->created_at->toDateTimeString();
+                }),
+
+            TD::make('updated_at', 'Update date')
+                ->render(function ($model) {
+                    return $model->updated_at->toDateTimeString();
+                }),
         ];
     }
 
@@ -55,15 +53,7 @@ class GroupResource extends Resource
      */
     public function legend(): array
     {
-			return [
-				Sight::make('id', 'Id'),
-				Sight::make('slug', 'Slug'),
-				Sight::make('name', 'Name')
-					->render(function($model) {
-						return $model->name;
-					}),
-				Sight::make('group_type_id', 'GroupType id'),
-			];
+        return [];
     }
 
     /**

@@ -6,6 +6,7 @@
 
 namespace App\Models;
 
+use App\Casts\LocalizedJsonData;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Orchid\Attachment\Attachable;
@@ -37,7 +38,8 @@ class Group extends Model
 	use AsSource, Filterable, Attachable;
 
 	protected $casts = [
-		'group_type_id' => 'int'
+		'group_type_id' => 'int',
+		'name' => LocalizedJsonData::class
 	];
 
 	protected $fillable = [
@@ -49,5 +51,10 @@ class Group extends Model
 	public function group_type()
 	{
 		return $this->belongsTo(GroupType::class);
+	}
+
+	public function user()
+	{
+		return $this->hasOne(User::class);
 	}
 }

@@ -21,9 +21,9 @@ class UserCountryLayout extends Rows
 
 		return [
 			Select::make('user.group_id.')
-				->fromQuery($query, 'slug')
+				->fromQuery($query, 'name')
 //				->multiple()
-				->title(__('Group id'))
+				->title(__('Country'))
 				->help('Specify which groups this account should belong to'),
 		];
 	}

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Orchid\Layouts\User;
 
+use App\Models\Group;
 use Orchid\Platform\Models\User;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Actions\DropDown;
@@ -54,6 +55,12 @@ class UserListLayout extends Table
                 ->render(function (User $user) {
                     return $user->updated_at->toDateTimeString();
                 }),
+
+			TD::make('country', __('Country'))
+				->sort()
+				->render(function (User $user) {
+					return Group::where('id', $user->group_id)->first()->name;
+				}),
 
             TD::make(__('Actions'))
                 ->align(TD::ALIGN_CENTER)

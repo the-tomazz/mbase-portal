@@ -10,6 +10,9 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Casts\LocalizedJsonData;
+use Orchid\Attachment\Attachable;
+use Orchid\Filters\Filterable;
+use Orchid\Screen\AsSource;
 
 /**
  * Class SharedQuery
@@ -27,6 +30,9 @@ use App\Casts\LocalizedJsonData;
 class SharedQuery extends Model
 {
 	protected $table = 'shared_queries';
+
+	use AsSource, Filterable, Attachable;
+
 
 	protected $casts = [
 		'name' => LocalizedJsonData::class,
