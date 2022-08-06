@@ -15,7 +15,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-		'group_id',
+		'country_id',
         'permissions',
     ];
 
@@ -65,7 +65,7 @@ class User extends Authenticatable
         'created_at',
     ];
 
-	public function group()
+	public function country()
 	{
 		return $this->belongsTo(Group::class);
 	}

@@ -53,8 +53,8 @@ class Group extends Model
 		return $this->belongsTo(GroupType::class);
 	}
 
-	public function user()
+	public function users()
 	{
-		return $this->hasOne(User::class);
+		return $this->hasMany(User::class);
 	}
 }

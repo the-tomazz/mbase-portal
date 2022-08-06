@@ -39,7 +39,7 @@ class RegisteredUserController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-			'group_id' => ['required'],
+			'country_id' => ['required'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
@@ -47,7 +47,7 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-			'group_id' => $request->group_id,
+			'country_id' => $request->country_id,
 			'permissions' => json_decode('{"mbase2l.admin": false, "platform.index": false, "platform.systems.roles": false,
 							   "platform.systems.users": false, "mbase2l.registered_user": true,
 							   "platform.systems.attachment": false}')

@@ -193,9 +193,9 @@ class UserEditScreen extends Screen
             $builder->getModel()->password = Hash::make($request->input('user.password'));
         });
 
-		$user->when($request->filled('user.group_id'), function (Builder $builder) use ($request) {
+		$user->when($request->filled('user.country_id'), function (Builder $builder) use ($request) {
 			//TODO: more languages
-			$builder->getModel()->group_id = intval($request->input('user.group_id')[0]);
+			$builder->getModel()->country_id = intval($request->input('user.country_id')[0]);
 		});
 
         $user

@@ -14,10 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-			$table->integer('group_id')->unsigned()->after('password')->nullable();
+			$table->integer('country_id')->unsigned()->after('password')->nullable();
 
 			// 2. Create foreign key constraints
-			$table->foreign('group_id')->references('id')->on('groups');
+			$table->foreign('country_id')->references('id')->on('groups');
 
 		});
     }
@@ -30,7 +30,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-			$table->dropColumn('group_id');
+			$table->dropColumn('country_id');
         });
     }
 };

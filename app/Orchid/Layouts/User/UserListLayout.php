@@ -59,7 +59,7 @@ class UserListLayout extends Table
 			TD::make('country', __('Country'))
 				->sort()
 				->render(function (User $user) {
-					return Group::where('id', $user->group_id)->first()->name;
+					return Group::where('id', $user->country_id)->first()->name;
 				}),
 
             TD::make(__('Actions'))

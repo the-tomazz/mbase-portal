@@ -20,7 +20,7 @@ class UserCountryLayout extends Rows
 		$query = Group::where('groups.group_type_id', 1);
 
 		return [
-			Select::make('user.group_id.')
+			Select::make('user.country_id.')
 				->fromQuery($query, 'name')
 //				->multiple()
 				->title(__('Country'))

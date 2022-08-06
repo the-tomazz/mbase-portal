@@ -3,6 +3,7 @@
 namespace App\Orchid\Resources;
 
 use Orchid\Crud\Resource;
+use Orchid\Screen\Fields\Input;
 use Orchid\Screen\TD;
 
 class SharedQueryResource extends Resource
@@ -21,7 +22,16 @@ class SharedQueryResource extends Resource
      */
     public function fields(): array
     {
-        return [];
+		return [
+			Input::make('slug')
+				->title('Slug'),
+			Input::make('name')
+				->title('Name'),
+			Input::make('parameters')
+				->title('Parameters'),
+			Input::make('published')
+				->title('Published')
+		];
     }
 
     /**

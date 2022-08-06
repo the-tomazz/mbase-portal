@@ -47,8 +47,8 @@
 
 			<!-- Countries -->
 			<div class="mt-4">
-			<x-label for="group_id" :value="__('Country')" />
-			<select id="group_id" name="group_id">
+			<x-label for="country_id" :value="__('Country')" />
+			<select id="country_id" name="country_id">
 				@foreach ($countries as $key => $value)
 					<option value="{{ $key }}"
 					>{{ $value }}</option>

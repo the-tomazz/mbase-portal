@@ -36,7 +36,7 @@ class SharedQuery extends Model
 
 	protected $casts = [
 		'name' => LocalizedJsonData::class,
-		'parameters' => 'binary',
+		'parameters' => LocalizedJsonData::class,
 		'published' => 'bool'
 	];
 
