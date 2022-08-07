@@ -2,8 +2,11 @@
 
 namespace App\Orchid\Resources;
 
+use App\Models\GroupType;
+use App\Orchid\Filters\GroupFilterByCountry;
 use Orchid\Crud\Resource;
 use Orchid\Screen\Fields\Input;
+use Orchid\Screen\Fields\Select;
 use Orchid\Screen\Sight;
 use Orchid\Screen\TD;
 
@@ -28,8 +31,9 @@ class GroupResource extends Resource
 				->title('Slug'),
 			Input::make('name')
 				->title('Name'),
-			Input::make('GroupType id')
-				->title('group_type_id')
+			Select::make('group_type_id')
+				->title('Group type')
+				->fromModel(GroupType::class ,'name')
 		];
     }
 
@@ -44,7 +48,7 @@ class GroupResource extends Resource
 			TD::make('id'),
 			TD::make('slug', "Slug"),
 			TD::make('name', "Name"),
-			TD::make('group_type_id', "GroupType id")
+			TD::make('group_type_id', "Group type id")
         ];
     }
 
@@ -62,7 +66,7 @@ class GroupResource extends Resource
 					->render(function($model) {
 						return $model->name;
 					}),
-				Sight::make('group_type_id', 'GroupType id'),
+				Sight::make('group_type_id', 'Group type id'),
 			];
     }
 
@@ -73,6 +77,9 @@ class GroupResource extends Resource
      */
     public function filters(): array
     {
-        return [];
+        return [
+			GroupFilterByCountry::class
+		];
     }
+
 }

@@ -17,9 +17,7 @@ class Controller extends BaseController
 		$isAdmin = false;
 		$user = auth()->user();
 		if($user != null){
-			$id = $user->id;
-			$loggedInUser = User::where('id', $id)->first();
-			$isAdmin = $loggedInUser->permissions != null ? $loggedInUser->permissions["mbase2l.admin"] : false;
+			$isAdmin = $user->permissions != null ? $user->permissions["mbase2l.admin"] : false;
 		}
         return view('dashboard', compact('isAdmin'));
     }
