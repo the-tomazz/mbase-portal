@@ -219,8 +219,10 @@ class UserEditScreen extends Screen
 		$user = \App\Models\User::find($user->id);
 
 		// TODO: probably better way to update
-		$user->groups()->detach();
-		$user->groups()->attach($request->collect('user')['groups']);
+		if($request->collect('user')->has('groups')) {
+			$user->groups()->detach();
+			$user->groups()->attach($request->collect('user')['groups']);
+		}
 
         Toast::info(__('User was saved.'));
 

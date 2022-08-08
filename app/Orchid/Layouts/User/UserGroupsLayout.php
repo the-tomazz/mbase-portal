@@ -17,7 +17,38 @@ class UserGroupsLayout extends Rows
 	 */
 	public function fields(): array
 	{
-		$query = Group::query();
+
+		/*
+		 * select
+		   groups.id,
+		   groups.slug,
+		   countries.id,
+		   countries.slug
+		 from
+		   groups
+		 join
+		   groups_group_types_countries
+		 on
+		   groups_group_types_countries.group_id = groups.id
+		 join
+		   group_types_countries
+		 on
+		   group_types_countries.id = groups_group_types_countries.group_type_country_id
+		 join
+		   groups countries
+		 on
+		   group_types_countries.country_id = countries.id
+		 order by
+		   countries.id,
+		   groups.id;
+		 */
+
+
+		$query = Group::query()
+//			->join('groups_group_types_countries', 'groups.id', '=', 'group_types_countries.country_id')
+//			->join('group_types_countries', 'group_types_countries.id', '=', 'groups_group_types_countries.group_type_country_id')
+//			->join()
+		;
 
 		return [
 			Select::make('user.groups.')
