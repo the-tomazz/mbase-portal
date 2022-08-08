@@ -16,7 +16,7 @@ class User extends Authenticatable
         'email',
         'password',
 		'country_id',
-        'permissions',
+        'permissions'
     ];
 
     /**
@@ -68,5 +68,9 @@ class User extends Authenticatable
 	public function country()
 	{
 		return $this->belongsTo(Group::class);
+	}
+
+	public function groups() {
+		return $this->belongsToMany(Group::class, 'users_groups', 'user_id', 'group_id');
 	}
 }

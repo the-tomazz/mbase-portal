@@ -6,6 +6,7 @@ namespace App\Orchid\Screens\User;
 
 use App\Orchid\Layouts\Role\RolePermissionLayout;
 use App\Orchid\Layouts\User\UserEditLayout;
+use App\Orchid\Layouts\User\UserGroupsLayout;
 use App\Orchid\Layouts\User\UserPasswordLayout;
 use App\Orchid\Layouts\User\UserRoleLayout;
 use App\Orchid\Layouts\User\UserCountryLayout;
@@ -38,7 +39,7 @@ class UserEditScreen extends Screen
      */
     public function query(User $user): iterable
     {
-        $user->load(['roles']);
+        $user->load(['roles', 'groups']);
 
         return [
             'user'       => $user,
@@ -164,6 +165,16 @@ class UserEditScreen extends Screen
 						->method('save')
 				),
 
+			Layout::block(UserGroupsLayout::class)
+				->title(__('Groups'))
+				->description(__('Select group to add'))
+				->commands(
+					Button::make(__('Save'))
+						->type(Color::DEFAULT())
+						->icon('check')
+						->canSee($this->user->exists)
+						->method('save')
+				),
         ];
     }
 
@@ -203,7 +214,13 @@ class UserEditScreen extends Screen
             ->fill(['permissions' => $permissions])
             ->save();
 
-        $user->replaceRoles($request->input('user.roles'));
+		$user->replaceRoles($request->input('user.roles'));
+
+		$user = \App\Models\User::find($user->id);
+
+		// TODO: probably better way to update
+		$user->groups()->detach();
+		$user->groups()->attach($request->collect('user')['groups']);
 
         Toast::info(__('User was saved.'));
 
