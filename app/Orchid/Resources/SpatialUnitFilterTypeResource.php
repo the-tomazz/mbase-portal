@@ -2,6 +2,9 @@
 
 namespace App\Orchid\Resources;
 
+use App\Models\SpatialUnitFilterType;
+use App\Orchid\Filters\SpatialUnitFilterTypeAttributesFilter;
+use App\Orchid\Filters\SpatialUnitFilterTypeFilter;
 use Orchid\Crud\Resource;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Sight;
@@ -62,6 +65,9 @@ class SpatialUnitFilterTypeResource extends Resource
      */
     public function filters(): array
     {
-        return [];
+        return [
+			SpatialUnitFilterTypeFilter::class,
+			SpatialUnitFilterTypeAttributesFilter::class
+		];
     }
 }

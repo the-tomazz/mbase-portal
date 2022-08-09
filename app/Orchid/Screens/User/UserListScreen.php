@@ -25,14 +25,24 @@ class UserListScreen extends Screen
     public function query(): iterable
     {
 
+		if(auth()->user()->country == null) {
+			return [
+				'users' => User::with('roles')
+					->filters()
+					->filtersApplySelection(UserFiltersLayout::class)
+					->defaultSort('id', 'desc')
+					->paginate(),
+			];
+		}
 		return [
-            'users' => User::with('roles')
-                ->where('country_id', auth()->user()->country->id)
+			'users' => User::with('roles')
+				->where('country_id', auth()->user()->country->id)
 				->filters()
-                ->filtersApplySelection(UserFiltersLayout::class)
-                ->defaultSort('id', 'desc')
-                ->paginate(),
-        ];
+				->filtersApplySelection(UserFiltersLayout::class)
+				->defaultSort('id', 'desc')
+				->paginate(),
+		];
+
     }
 
     /**

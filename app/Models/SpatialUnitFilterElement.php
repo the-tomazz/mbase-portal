@@ -6,6 +6,7 @@
 
 namespace App\Models;
 
+use App\Casts\LocalizedJsonData;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Orchid\Attachment\Attachable;
@@ -33,13 +34,19 @@ class SpatialUnitFilterElement extends Model
 	use AsSource, Filterable, Attachable;
 
 	protected $casts = [
-		'spatial_unit_filter_type_id' => 'int'
+		'spatial_unit_filter_type_id' => 'int',
+		'name' => LocalizedJsonData::class
 	];
 
 	protected $fillable = [
 		'slug',
 		'name',
 		'spatial_unit_filter_type_id'
+	];
+
+	protected $allowedFilters = [
+		'slug',
+		'name'
 	];
 
 	public function spatial_unit_filter_type()

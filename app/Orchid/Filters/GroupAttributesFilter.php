@@ -8,7 +8,7 @@ use Orchid\Filters\Filter;
 use Orchid\Screen\Field;
 use Orchid\Screen\Fields\Input;
 
-class GroupFilterByCountry extends Filter
+class GroupAttributesFilter extends Filter
 {
     /**
      * The displayable name of the filter.
@@ -17,7 +17,7 @@ class GroupFilterByCountry extends Filter
      */
     public function name(): string
     {
-		return '';
+		return __('Group Filters');
     }
 
     /**
@@ -27,7 +27,10 @@ class GroupFilterByCountry extends Filter
      */
     public function parameters(): ?array
     {
-        return [];
+        return [
+			'slug',
+			'name'
+		];
     }
 
     /**
@@ -40,7 +43,12 @@ class GroupFilterByCountry extends Filter
     public function run(Builder $builder): Builder
     {
 		if(auth()->user()->country == null){
-			return Group::query()->select(['groups.id', 'groups.slug', 'groups.name', 'groups.group_type_id']);
+			$query = Group::query()->select(['groups.id', 'groups.slug', 'groups.name', 'groups.group_type_id']);
+			if($this->request->get('slug') != null)
+				$query = $query->where('groups.slug', 'LIKE', '%'.$this->request->get('slug').'%');
+			if($this->request->get('name') != null)
+				$query->orWhere('groups.name', 'LIKE', '%'.$this->request->get('name').'%');
+			return $query;
 		}
 
 		$query = Group::query()
@@ -53,15 +61,14 @@ class GroupFilterByCountry extends Filter
 					->where('group_types_countries.country_id', '=', auth()->user()->country->id);
 			})->select(['groups.id', 'groups.slug', 'groups.name', 'groups.group_type_id']);
 
-//		if($this->request->get('slug') != null)
-//			$query = $query->where('groups.slug', 'LIKE', '%'.$this->request->get('slug').'%');
-//		if($this->request->get('name') != null)
-//			$query->orWhere('groups.name', 'LIKE', '%'.$this->request->get('name').'%');
+		if($this->request->get('slug') != null)
+			$query = $query->where('groups.slug', 'LIKE', '%'.$this->request->get('slug').'%');
+		if($this->request->get('name') != null)
+			$query->orWhere('groups.name', 'LIKE', '%'.$this->request->get('name').'%');
 
 		return $query
 			->orderBy('groups.id')
 			->orderBy('groups.group_type_id');
-
     }
 
     /**
@@ -72,7 +79,16 @@ class GroupFilterByCountry extends Filter
     public function display(): iterable
     {
 		return [
-			Input::make('???')
+			Input::make('slug')
+				->type('text')
+				->value($this->request->get('slug'))
+				->placeholder('Search...')
+				->title('Slug'),
+			Input::make('name')
+				->type('text')
+				->value($this->request->get('name'))
+				->placeholder('Search...')
+				->title('Name')
 		];
-	}
+    }
 }

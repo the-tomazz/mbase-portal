@@ -2,6 +2,8 @@
 
 namespace App\Orchid\Resources;
 
+use App\Orchid\Filters\SpatialUnitFilterElementAttributesFilter;
+use App\Orchid\Filters\SpatialUnitFilterElementFilter;
 use Orchid\Crud\Resource;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Sight;
@@ -45,6 +47,9 @@ class SpatialUnitFilterElementResource extends Resource
 			TD::make('slug', "Slug"),
 			TD::make('name', "Name"),
 			TD::make('spatial_unit_filter_type_id', "Spatial unit filter type id")
+				->render(function ($model) {
+					return $model->spatial_unit_filter_type->slug;
+				})
 		];
     }
 
@@ -70,6 +75,9 @@ class SpatialUnitFilterElementResource extends Resource
      */
     public function filters(): array
     {
-        return [];
+        return [
+			SpatialUnitFilterElementFilter::class,
+			SpatialUnitFilterElementAttributesFilter::class
+		];
     }
 }

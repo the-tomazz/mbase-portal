@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\LocalizedJsonData;
 use Illuminate\Database\Eloquent\Model;
 use Orchid\Attachment\Attachable;
 use Orchid\Filters\Filterable;
@@ -14,7 +15,9 @@ class UsersGroups extends Model
 	use AsSource, Filterable, Attachable;
 
 
-	protected $casts = [];
+	protected $casts = [
+		'name' => LocalizedJsonData::class
+	];
 
 	protected $fillable = [
 		'user_id',

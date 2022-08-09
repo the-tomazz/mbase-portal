@@ -2,7 +2,10 @@
 
 namespace App\Orchid\Resources;
 
+use App\Casts\LocalizedJsonData;
+use App\Models\Group;
 use App\Models\GroupType;
+use App\Orchid\Filters\GroupAttributesFilter;
 use App\Orchid\Filters\GroupFilterByCountry;
 use Orchid\Crud\Resource;
 use Orchid\Screen\Fields\Input;
@@ -48,7 +51,11 @@ class GroupResource extends Resource
 			TD::make('id'),
 			TD::make('slug', "Slug"),
 			TD::make('name', "Name"),
-			TD::make('group_type_id', "Group type id")
+			TD::make('group_type_id', "Group type")->render(
+				function ($model) {
+					return GroupType::where('id', $model->group_type_id)->first()->name;
+				}
+			)
         ];
     }
 
@@ -62,11 +69,12 @@ class GroupResource extends Resource
 			return [
 				Sight::make('id', 'Id'),
 				Sight::make('slug', 'Slug'),
-				Sight::make('name', 'Name')
-					->render(function($model) {
-						return $model->name;
-					}),
-				Sight::make('group_type_id', 'Group type id'),
+				Sight::make('name', 'Name'),
+				Sight::make('group_type_id', 'Group type')->render(
+					function ($model) {
+						return GroupType::where('id', $model->group_type_id)->first()->name;
+					}
+				),
 			];
     }
 
@@ -78,7 +86,8 @@ class GroupResource extends Resource
     public function filters(): array
     {
         return [
-			GroupFilterByCountry::class
+			GroupFilterByCountry::class,
+			GroupAttributesFilter::class,
 		];
     }
 

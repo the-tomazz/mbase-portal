@@ -22,7 +22,6 @@ class RegisteredUserController extends Controller
     public function create()
     {
 		$countries = Group::where('groups.group_type_id', 1)->pluck('name', 'id')->toArray();
-//		dd($countries);
         return view('auth.register', compact("countries"));
     }
 
