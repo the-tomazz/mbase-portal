@@ -16,6 +16,12 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                 </div>
+
+				<div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('platform.systems.users')" :active="request()->routeIs('platform.systems.users')">
+                        {{ __('Admin') }}
+                    </x-nav-link>
+                </div>
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ml-6">
@@ -37,18 +43,11 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link :href="route('locale.change', ['locale' => 'sl'])">
-                            {{ __('common.language.sl') }}
-                        </x-dropdown-link>
-                        <x-dropdown-link :href="route('locale.change', ['locale' => 'en'])">
-                            {{ __('common.language.en') }}
-                        </x-dropdown-link>
-                        <x-dropdown-link :href="route('locale.change', ['locale' => 'hr'])">
-                            {{ __('common.language.hr') }}
-                        </x-dropdown-link>
-                        <x-dropdown-link :href="route('locale.change', ['locale' => 'it'])">
-                            {{ __('common.language.it') }}
-                        </x-dropdown-link>
+						@foreach ($languages as $language)
+							<x-dropdown-link :href="route('locale.change', ['locale' => $language->code])">
+								{{ $language->name }}
+							</x-dropdown-link>
+						@endforeach
                     </x-slot>
                 </x-dropdown>
             </div>

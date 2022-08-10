@@ -1,11 +1,14 @@
 <?php
 
 return [
-    'language' => [
-        'sl' => 'Slovenščina',
-        'en' => 'English',
-        'hr' => 'Hrvatski',
-        'it' => 'Lingua Italiana',
-    ],
-    'changeLanguage' => 'Change language'
+	'language' => [
+		'de' => 'Deutsch',
+		'en' => 'English',
+		'hr' => 'Hrvatski',
+		'it' => 'Lingua Italiana',
+		'ro' => 'Limba română',
+		'sl' => 'Slovenščina',
+		'sk' => 'Slovenský jazyk'
+	],
+	'changeLanguage' => 'Change language'
 ];

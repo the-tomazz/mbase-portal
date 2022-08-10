@@ -5,6 +5,7 @@
 - Laravel
 - Laravel Sail
 - Laravel Breeze (blade only)
+- Orchid
 - Tailwind
 - Postgresql
 

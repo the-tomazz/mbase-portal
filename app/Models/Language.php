@@ -6,6 +6,7 @@
 
 namespace App\Models;
 
+use App\Casts\LocalizedJsonData;
 use Illuminate\Database\Eloquent\Model;
 
 /**

@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Orchid\Access\UserSwitch;
-use Orchid\Platform\Models\User;
+use App\Models\User;
 use Orchid\Screen\Action;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Screen;
@@ -39,7 +39,7 @@ class UserEditScreen extends Screen
      */
     public function query(User $user): iterable
     {
-        $user->load(['roles', 'groups']);
+		$user->load(['roles', 'groups']);
 
         return [
             'user'       => $user,
@@ -204,13 +204,11 @@ class UserEditScreen extends Screen
             $builder->getModel()->password = Hash::make($request->input('user.password'));
         });
 
-		$user->when($request->filled('user.country_id'), function (Builder $builder) use ($request) {
-			//TODO: more languages
-			$builder->getModel()->country_id = intval($request->input('user.country_id')[0]);
-		});
+		$data = $request->collect('user')->except(['password', 'permissions', 'roles'])->toArray();
+		if (array_key_exists('country_id', $data)) $data['country_id'] = $data['country_id'][0];
 
         $user
-            ->fill($request->collect('user')->except(['password', 'permissions', 'roles'])->toArray())
+            ->fill($data)
             ->fill(['permissions' => $permissions])
             ->save();
 
