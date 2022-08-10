@@ -44,9 +44,9 @@ class Mbase2lModulesAttributesFilter extends Filter
     public function run(Builder $builder): Builder
     {
         return $builder->where('slug', '=', $this->request->get('slug'))
-					   ->orWhere('name', 'LIKE', '%'.$this->request->get('name').'%')
-					   ->orWhere('properties', 'LIKE', '%'.$this->request->get('properties').'%')
-					   ->orWhere('enabled', '=', $this->request->get('enabled'))
+					   ->where('name', 'LIKE', '%'.$this->request->get('name').'%')
+					   ->where('properties', 'LIKE', '%'.$this->request->get('properties').'%')
+					   ->where('enabled', '=', $this->request->get('enabled'))
 			;
     }
 

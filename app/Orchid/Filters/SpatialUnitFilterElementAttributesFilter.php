@@ -44,7 +44,7 @@ class SpatialUnitFilterElementAttributesFilter extends Filter
 			if($this->request->get('slug') != null)
 				$query = $query->where('slug', 'LIKE', '%'.$this->request->get('slug').'%');
 			if($this->request->get('name') != null)
-				$query->orWhere('name', 'LIKE', '%'.$this->request->get('name').'%');
+				$query->where('name', 'LIKE', '%'.$this->request->get('name').'%');
 			return $query;
 		}
 		$query = SpatialUnitFilterElement::query()
@@ -56,7 +56,7 @@ class SpatialUnitFilterElementAttributesFilter extends Filter
 		if($this->request->get('slug') != null)
 			$query = $query->where('slug', 'LIKE', '%'.$this->request->get('slug').'%');
 		if($this->request->get('name') != null)
-			$query->orWhere('name', 'LIKE', '%'.$this->request->get('name').'%');
+			$query->where('name', 'LIKE', '%'.$this->request->get('name').'%');
 
 		return $query;
 	}

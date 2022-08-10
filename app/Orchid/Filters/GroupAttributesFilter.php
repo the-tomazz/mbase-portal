@@ -47,7 +47,7 @@ class GroupAttributesFilter extends Filter
 			if($this->request->get('slug') != null)
 				$query = $query->where('groups.slug', 'LIKE', '%'.$this->request->get('slug').'%');
 			if($this->request->get('name') != null)
-				$query->orWhere('groups.name', 'LIKE', '%'.$this->request->get('name').'%');
+				$query->where('groups.name', 'LIKE', '%'.$this->request->get('name').'%');
 			return $query;
 		}
 
@@ -64,7 +64,7 @@ class GroupAttributesFilter extends Filter
 		if($this->request->get('slug') != null)
 			$query = $query->where('groups.slug', 'LIKE', '%'.$this->request->get('slug').'%');
 		if($this->request->get('name') != null)
-			$query->orWhere('groups.name', 'LIKE', '%'.$this->request->get('name').'%');
+			$query->where('groups.name', 'LIKE', '%'.$this->request->get('name').'%');
 
 		return $query
 			->orderBy('groups.id')
