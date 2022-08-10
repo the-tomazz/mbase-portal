@@ -16,12 +16,13 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                 </div>
-
-				<div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('platform.systems.users')" :active="request()->routeIs('platform.systems.users')">
-                        {{ __('Admin') }}
-                    </x-nav-link>
-                </div>
+				@hasAccess('platform.systems.users')
+					<div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+						<x-nav-link :href="route('platform.systems.users')" :active="request()->routeIs('platform.systems.users')">
+							{{ __('Admin') }}
+						</x-nav-link>
+					</div>
+				@endhasAccess
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ml-6">

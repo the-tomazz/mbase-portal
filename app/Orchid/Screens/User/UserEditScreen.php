@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Orchid\Access\UserSwitch;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Orchid\Screen\Action;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Screen;
@@ -39,7 +40,7 @@ class UserEditScreen extends Screen
      */
     public function query(User $user): iterable
     {
-		$user->load(['roles', 'groups']);
+        $user->load(['roles', 'groups']);
 
         return [
             'user'       => $user,
@@ -108,8 +109,7 @@ class UserEditScreen extends Screen
      */
     public function layout(): iterable
     {
-        return [
-
+        $layout = [
             Layout::block(UserEditLayout::class)
                 ->title(__('Profile Information'))
                 ->description(__('Update your account\'s profile information and email address.'))
@@ -131,8 +131,10 @@ class UserEditScreen extends Screen
                         ->canSee($this->user->exists)
                         ->method('save')
                 ),
+        ];
 
-            Layout::block(UserRoleLayout::class)
+        if (Auth::user()->hasAccess('platform.systems.roles')) {
+            $layout[] = Layout::block(UserRoleLayout::class)
                 ->title(__('Roles'))
                 ->description(__('A Role defines a set of tasks a user assigned the role is allowed to perform.'))
                 ->commands(
@@ -141,9 +143,11 @@ class UserEditScreen extends Screen
                         ->icon('check')
                         ->canSee($this->user->exists)
                         ->method('save')
-                ),
+                );
+        }
 
-            Layout::block(RolePermissionLayout::class)
+        if (Auth::user()->hasAccess('platform.systems.permissions')) {
+            $layout[] = Layout::block(RolePermissionLayout::class)
                 ->title(__('Permissions'))
                 ->description(__('Allow the user to perform some actions that are not provided for by his roles'))
                 ->commands(
@@ -152,30 +156,32 @@ class UserEditScreen extends Screen
                         ->icon('check')
                         ->canSee($this->user->exists)
                         ->method('save')
-                ),
+                );
+        }
 
-			Layout::block(UserCountryLayout::class)
-				->title(__('Country'))
-				->description(__('Select user country'))
-				->commands(
-					Button::make(__('Save'))
-						->type(Color::DEFAULT())
-						->icon('check')
-						->canSee($this->user->exists)
-						->method('save')
-				),
+        $layout[] = Layout::block(UserCountryLayout::class)
+            ->title(__('Country'))
+            ->description(__('Select user country'))
+            ->commands(
+                Button::make(__('Save'))
+                    ->type(Color::DEFAULT())
+                    ->icon('check')
+                    ->canSee($this->user->exists)
+                    ->method('save')
+            );
 
-			Layout::block(UserGroupsLayout::class)
-				->title(__('Groups'))
-				->description(__('Select group to add'))
-				->commands(
-					Button::make(__('Save'))
-						->type(Color::DEFAULT())
-						->icon('check')
-						->canSee($this->user->exists)
-						->method('save')
-				),
-        ];
+        $layout[] = Layout::block(UserGroupsLayout::class)
+            ->title(__('Groups'))
+            ->description(__('Select group to add'))
+            ->commands(
+                Button::make(__('Save'))
+                    ->type(Color::DEFAULT())
+                    ->icon('check')
+                    ->canSee($this->user->exists)
+                    ->method('save')
+            );
+
+        return $layout;
     }
 
     /**
@@ -186,41 +192,47 @@ class UserEditScreen extends Screen
      */
     public function save(User $user, Request $request)
     {
-        $request->validate([
+        $request->validate(
+            [
             'user.email' => [
                 'required',
                 Rule::unique(User::class, 'email')->ignore($user),
             ],
-        ]);
+            ]
+        );
 
-        $permissions = collect($request->get('permissions'))
-            ->map(function ($value, $key) {
-                return [base64_decode($key) => $value];
-            })
+		$permissions = collect($request->get('permissions'))
+            ->map(
+                function ($value, $key) {
+                    return [base64_decode($key) => $value];
+                }
+            )
             ->collapse()
             ->toArray();
 
-        $user->when($request->filled('user.password'), function (Builder $builder) use ($request) {
-            $builder->getModel()->password = Hash::make($request->input('user.password'));
-        });
+		$user->when(
+            $request->filled('user.password'), function (Builder $builder) use ($request) {
+                $builder->getModel()->password = Hash::make($request->input('user.password'));
+            }
+        );
 
-		$data = $request->collect('user')->except(['password', 'permissions', 'roles'])->toArray();
-		if (array_key_exists('country_id', $data)) $data['country_id'] = $data['country_id'][0];
+        $data = $request->collect('user')->except(['password', 'permissions', 'roles'])->toArray();
+        if (array_key_exists('country_id', $data)) $data['country_id'] = $data['country_id'][0];
 
-        $user
+		$user
             ->fill($data)
             ->fill(['permissions' => $permissions])
             ->save();
 
-		$user->replaceRoles($request->input('user.roles'));
+        $user->replaceRoles($request->input('user.roles'));
 
-		$user = \App\Models\User::find($user->id);
+        $user = \App\Models\User::find($user->id);
 
-		// TODO: probably better way to update
-		if($request->collect('user')->has('groups')) {
-			$user->groups()->detach();
-			$user->groups()->attach($request->collect('user')['groups']);
-		}
+        // TODO: probably better way to update
+        if($request->collect('user')->has('groups')) {
+            $user->groups()->detach();
+            $user->groups()->attach($request->collect('user')['groups']);
+        }
 
         Toast::info(__('User was saved.'));
 
@@ -233,7 +245,7 @@ class UserEditScreen extends Screen
      * @throws \Exception
      *
      * @return \Illuminate\Http\RedirectResponse
-     *
+	 *
      */
     public function remove(User $user)
     {
