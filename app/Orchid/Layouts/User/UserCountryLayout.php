@@ -10,21 +10,21 @@ use Orchid\Screen\Layouts\Rows;
 
 class UserCountryLayout extends Rows
 {
-	/**
-	 * Views.
-	 *
-	 * @return Field[]
-	 */
-	public function fields(): array
-	{
-		$query = Group::where('groups.group_type_id', 1);
+    /**
+     * Views.
+     *
+     * @return Field[]
+     */
+    public function fields(): array
+    {
+        $query = Group::where('groups.group_type_id', 1);
 
-		return [
-			Select::make('user.country_id.')
-				->fromQuery($query, 'name')
-//				->multiple()
-				->title(__('Country'))
-				->help('Specify which groups this account should belong to'),
-		];
-	}
+        return [
+        Select::make('user.country_id.')
+            ->fromQuery($query, 'name')
+        //                ->multiple()
+            ->title(__('Country'))
+            ->help('Specify which country this account should belong to'),
+        ];
+    }
 }
