@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Orchid\Platform\Models\Role;
 
 class RegisteredUserController extends Controller
 {
@@ -35,7 +36,7 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+		$request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
 			'country_id' => ['required'],
@@ -51,6 +52,9 @@ class RegisteredUserController extends Controller
 							   "platform.systems.users": false, "mbase2l.registered_user": true,
 							   "platform.systems.attachment": false}')
         ]);
+
+		$role = Role::where('slug', 'MBASE2LRegisteredUser')->first();
+		$user->addRole($role);
 
         event(new Registered($user));
 

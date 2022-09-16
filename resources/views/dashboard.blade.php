@@ -23,19 +23,21 @@
 
 	<script src="/sites/all/modules/mbase2/frontend-dist/main.min.js"></script>
 	<script>
-		const moduleContentDiv = document.getElementById('mbaselaravel');
-		// document.body.appendChild(moduleContentDiv);
+		$(function() {
+			const moduleContentDiv = document.getElementById('mbaselaravel');
+			document.body.appendChild(moduleContentDiv);
 
-		mbase2modules.mbase2_modules().then(module => module.default(
-		$(moduleContentDiv),
-			'mbase2/map',
-			'en',
-			`{
-				"uid":"1411",
-				"name":"user_name",
-				"roles":["mbase2_dmg_admin", "mbase2_sop_editor"]
-			}`
-		));
+			mbase2modules.mbase2_modules().then(module => module.default(
+			$(moduleContentDiv),
+				'mbase2/map',
+				'en',
+				`{
+					"uid":"1411",
+					"name":"user_name",
+					"roles":["mbase2_dmg_admin", "mbase2_sop_editor"]
+				}`
+			));
+		});
 	</script>
 @endsection
 <x-app-layout>
