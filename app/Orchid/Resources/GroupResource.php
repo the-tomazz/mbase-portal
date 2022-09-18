@@ -2,8 +2,6 @@
 
 namespace App\Orchid\Resources;
 
-use App\Casts\LocalizedJsonData;
-use App\Models\Group;
 use App\Models\GroupType;
 use App\Orchid\Filters\GroupAttributesFilter;
 use App\Orchid\Filters\GroupFilterByCountry;
