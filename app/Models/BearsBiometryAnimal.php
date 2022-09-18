@@ -8,10 +8,7 @@ use Orchid\Filters\Filterable;
 use Orchid\Screen\AsSource;
 
 /**
- * Class GroupType
- *
- * @property int $id
- * @property string $naziv
+ * Class BearsBiometryAnimal
  *
  * @package App\Models
  */

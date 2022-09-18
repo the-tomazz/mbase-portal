@@ -13,7 +13,7 @@ use Orchid\Filters\Filterable;
 use Orchid\Screen\AsSource;
 
 /**
- * Class GroupType
+ * Class BearsListType
  *
  * @property int $id
  * @property string $naziv
