@@ -86,7 +86,27 @@ class BearsBiometryAnimalResource extends Resource
 				->title('Ear-tag number or radio-collar identification.')
 				->help('Please describe animal-borne markings (ear-tags, collar, microchips, etc.).'),
 
-			DateTimer::make('date')->title('Date')
+			DateTimer::make('date')->title('Date'),
+
+			Input::make('mesto_odvzema')
+				->title('Geographical location/Local name')
+				->help('Please insert geographical location/local place name.'),
+
+			Select::make('tip_mesta')
+				->fromQuery($this->getListByType('place_type'), "value")
+				->title(__('Place of removal'))
+//				->required()
+				->help('Please select the place of removal.'),
+
+			Input::make('drugi_tip_mesta')
+				->title('Place type')
+				->help('Please describe the place of removal.'),
+
+			Select::make('obmocje_medveda')
+				->fromQuery($this->getListByType('bear_territory_type'), "value")
+				->title(__('Bear presence zone')),
+//				->required()
+
 
 		];
     }
