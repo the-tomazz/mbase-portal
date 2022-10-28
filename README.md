@@ -30,8 +30,8 @@ If you don't have the right php version you can add `--ignore-platform-reqs` to 
   sail build --no-cache
 
 Note: [If you really want to properly rebuild SQL] docker rm -v mbase2l_pgsql_1 --force
-### Start virtual environment
 
+### Start virtual environment
   
   sail up -d
 
@@ -49,10 +49,11 @@ To generate the application key (for a new local development env):
 
   sail artisan migrate:refresh --seed
 
-  if migrate fails do the following: 
-* sail down --rmi all -v (removes persistent volumes)
-* sail up
-* sail artisan migrate
+if migrate fails do the following: 
+
+- sail down --rmi all -v (removes persistent volumes)
+- sail up
+- sail artisan migrate
 
   sail artisan orchid:admin admin admin@admin.com password
   
