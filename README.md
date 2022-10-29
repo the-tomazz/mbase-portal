@@ -13,10 +13,27 @@ A seperate project mbase2dtl is included via composer VCS.
 
 ## Deployment
 
+## Setup server
+
+Composer:
+<https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-22-04>
+
+NPM
+```bash
+apt install nodejs npm
+```
+
+
 ### Get the code
 
 ```bash
 git clone 
+```
+
+### Install
+
+```bash
+composer install --ignore-platform-reqs
 ```
 
 ### Start virtual environment
@@ -39,12 +56,6 @@ To generate the application key (for a new local development env):
 
 ```bash
 sail artisan key:generate
-```
-
-### Install
-
-```bash
-sail composer install
 ```
 
 ## Setup mbase2dtl
@@ -179,3 +190,5 @@ you will need to
   SET search_path TO public;
   drop table tablename;
   \q
+
+

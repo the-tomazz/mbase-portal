@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Models\Language;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
@@ -11,44 +13,50 @@ use Orchid\Support\Facades\Dashboard;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        //
-    }
+	/**
+	 * Register any application services.
+	 *
+	 * @return void
+	 */
+	public function register()
+	{
+		//
+	}
 
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        View::composer(
-            '*', function ($view) {
-                $view->with('languages', Language::all());
-            }
-        );
+	/**
+	 * Bootstrap any application services.
+	 *
+	 * @return void
+	 */
+	public function boot()
+	{
+		if (App::environment('production')) {
+			URL::forceScheme('https');
+		}
 
-        Dashboard::useModel(
-            \Orchid\Platform\Models\User::class,
-            \App\Models\User::class
-        );
+		View::composer(
+			'*',
+			function ($view) {
+				$view->with('languages', Language::all());
+			}
+		);
 
-        Blade::if(
-            'hasAccess', function (string $value) {
-                $user = Auth::user();
+		Dashboard::useModel(
+			\Orchid\Platform\Models\User::class,
+			\App\Models\User::class
+		);
 
-                if ($user === null) {
-                    return false;
-                }
+		Blade::if(
+			'hasAccess',
+			function (string $value) {
+				$user = Auth::user();
 
-                return $user->hasAccess($value);
-            }
-        );
-    }
+				if ($user === null) {
+					return false;
+				}
+
+				return $user->hasAccess($value);
+			}
+		);
+	}
 }
