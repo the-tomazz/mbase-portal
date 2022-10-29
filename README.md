@@ -86,6 +86,18 @@ sail npm run dev
 
   <http://localhost>
 
+## Mbase2DTL documentation
+
+Access map here:
+<http://localhost/mbase2/map/>
+
+Readme file:
+<https://gitlab.com/mbase2/source-code/-/blob/master/README.md>
+
+genetic sample enter form: <http://localhost/mbase2/modules/genetics/samples/sample>
+
+genetic samples index: <http://localhost/mbase2/modules/genetics/samples>
+
 ## Development
 
 ## Build frontend
