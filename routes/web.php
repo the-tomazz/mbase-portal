@@ -16,29 +16,29 @@ use Illuminate\Support\Facades\Http;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/sites/all/modules/mbase2/frontend-dist/{subpath}', function ($subpath) {
-	$newPath = 'http://host.docker.internal:8082/sites/all/modules/mbase2/frontend-dist/' . $subpath;
+// Route::get('/sites/all/modules/mbase2/frontend-dist/{subpath}', function ($subpath) {
+// 	$newPath = 'http://host.docker.internal:8082/sites/all/modules/mbase2/frontend-dist/' . $subpath;
 
-	return Cache::get('proxy_' . str_replace('/', '', $subpath), function () use ($newPath) {
-		$response = Http::get($newPath);
-		return response($response->body())
-			->header(
-				'Content-Type',
-				$response->header('Content-Type')
-			);
-	}, 60);
-})->where('subpath', '.*');
+// 	return Cache::get('proxy_' . str_replace('/', '', $subpath), function () use ($newPath) {
+// 		$response = Http::get($newPath);
+// 		return response($response->body())
+// 			->header(
+// 				'Content-Type',
+// 				$response->header('Content-Type')
+// 			);
+// 	}, 60);
+// })->where('subpath', '.*');
 
-Route::get('/api/mbase2/{subpath}', function ($subpath) {
-	$newPath = 'http://host.docker.internal:8082/api/mbase2/' . $subpath;
+// Route::get('/api/mbase2/{subpath}', function ($subpath) {
+// 	$newPath = 'http://host.docker.internal:8082/api/mbase2/' . $subpath;
 
-	$response = Http::get($newPath);
-	return response($response->body())
-		->header(
-			'Content-Type',
-			$response->header('Content-Type')
-		);
-})->where('subpath', '.*');
+// 	$response = Http::get($newPath);
+// 	return response($response->body())
+// 		->header(
+// 			'Content-Type',
+// 			$response->header('Content-Type')
+// 		);
+// })->where('subpath', '.*');
 
 Route::middleware(['web'])->group(
 	function () {

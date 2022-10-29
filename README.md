@@ -9,59 +9,82 @@
 - Tailwind
 - Postgresql
 
+A seperate project mbase2dtl is included via composer VCS.
+
 ## Deployment
 
 ### Get the code
 
-  git clone 
+```bash
+git clone 
+```
 
-### Install
+### Start virtual environment
 
-  composer install
+```bash
+sail up -d
+```
 
-If you don't have the right php version you can add `--ignore-platform-reqs` to the command. You local php isn't relevant, as we'll be using the one in the virtualized env.
+Note: [You can configure a bash alias for this.](https://laravel.com/docs/9.x/sail#configuring-a-bash-alias)
 
 ### Configuration
 
-  cp .env.example .env
-
-## Build virtual environment from scratch
-
-  sail build --no-cache
-
-Note: [If you really want to properly rebuild SQL] docker rm -v mbase2l_pgsql_1 --force
-
-### Start virtual environment
-  
-  sail up -d
-
-Note: [You can configure a bash alias for this.](https://laravel.com/docs/9.x/sail#configuring-a-bash-alias)
+```bash
+cp .env.example .env
+```
 
 ### Generate application key
 
 To generate the application key (for a new local development env):
 
-  sail artisan key:generate
+```bash
+sail artisan key:generate
+```
+
+### Install
+
+```bash
+sail composer install
+```
+
+## Setup mbase2dtl
+
+You may have to `chmod a+x setup_mbase2dtl.sh` before this:
+
+```bash
+./setup_mbase2dtl.sh
+```
 
 ### Build env
 
-  sail npm install
+```bash
+sail npm install
+sail artisan migrate:refresh --seed
+```
 
-  sail artisan migrate:refresh --seed
+if migrate fails do the following:
 
-if migrate fails do the following: 
+```bash
+sail down --rmi all -v (removes persistent volumes)
+sail up
+sail artisan migrate
+```
 
-- sail down --rmi all -v (removes persistent volumes)
-- sail up
-- sail artisan migrate
+Setup login
 
-  sail artisan orchid:admin admin admin@admin.com password
-  
-  sail npm run dev
+```bash
+sail artisan orchid:admin admin admin@admin.com password
+```
+
+Build assets, run in it's on terminal
+
+```bash
+sail npm run dev
+```
 
 ### Access site
 
-  http://localhost
+  <http://localhost>
 
 ## Development
 
@@ -84,6 +107,7 @@ Keep this running in a seperate terminal:
   sail artisan orchid:admin admin admin@admin.com password
 
 ## to recreate the database
+
   sail psql
 
   drop schema public cascade;
@@ -98,12 +122,37 @@ Keep this running in a seperate terminal:
   create schema mbase2_ge;
   create schema laravel;
   
-## to create a model
-##
-## Since laravel tables have been moved to laravel scheme, 
-## sail artisan code:models --table=tablename will not work!!!
+# TLDR Sail
 
-## you will need to 
+  sail up -d
+
+  sail stop
+
+  sail artisan [command]
+
+  sail composer [command]
+
+  sail yarn/npm/node [command]
+
+## Enter into psql docker
+  
+  docker exec -it mbase2l-pgsql-1 psql -U gozdovi -W laravel
+  
+enter gozdovi as pass when prompted
+
+## Debugging/Development help
+
+### Build virtual environment from scratch
+
+  sail build --no-cache
+
+Note: [If you really want to properly rebuild SQL] docker rm -v mbase2l_pgsql_1 --force
+
+### How to create a new model
+
+Since laravel tables have been moved to laravel scheme,
+sail artisan code:models --table=tablename will not work!!!
+you will need to
 
   sail psql
 
@@ -118,19 +167,3 @@ Keep this running in a seperate terminal:
   SET search_path TO public;
   drop table tablename;
   \q
-  
-## TLDR Sail
-
-  sail up -d
-
-  sail stop
-
-  sail artisan [command]
-
-  sail composer [command]
-
-  sail yarn/npm/node [command]
-
-## Enter into psql docker
-  docker exec -it mbase2l-pgsql-1 psql -U gozdovi -W laravel
-  enter gozdovi as pass when prompted
