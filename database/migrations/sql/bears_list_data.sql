@@ -26,7 +26,7 @@ values  (1, 1, 'Austria', '{"hr":"Austrija","en":"Austria","de":"\u00d6sterreich
 		(346, 60, 'COL', '{"default":"COL","en":"COL"}', null, null, null, null, null, 1, null),
 		(14, 8, 'Eurasian lynx', '{"hr":"Ris","en":"Eurasian lynx","de":"Luchs","it":"Lince","sl":"Ris","default":"Eurasian lynx"}', '{"hr":"Lynx lynx","en":"Lynx lynx","de":"Lynx lynx","it":"Lynx lynx","sl":"Lynx lynx","default":"Lynx lynx"}', null, null, null, null, 1, null),
 		(12, 8, 'Wolf', '{"hr":"Vuk","en":"Wolf","it":"Lupo","sl":"Volk","default":"Wolf"}', '{"hr":"Canis lupus","en":"Canis lupus","de":"Canis lupus","it":"Canis lupus","sl":"Canis lupus","default":"Canis lupus"}', null, null, null, null, 1, null),
-		(49, 11, 'Blood', '{"en":"Blood","sl":"Kri","default":"Blood"}', '{"hr":"","en":"","de":"","it":"","sl":"","default":""}', null, null, null, '', 1, null),
+		(49, 11, 'Blood', '{"en":"Blood","sl":"Kri","default":"Blood"}', '{"hr":"","en":"","de":"","it":"","sl":"","default":""}', null, null, null, '{}', 1, null),
 		(1681, 60, 'TRŽIŠČE', '{"default":"TR\u017dI\u0160\u010cE","en":"TR\u017dI\u0160\u010cE"}', null, null, null, null, null, 1, null),
 		(105, 16, '9', '{"en":"9","default":"9"}', '{"default":""}', null, null, null, null, 1, null),
 		(28, 5, 'Balkan', '{"en":"Balkan","sl":"Balkanska","default":"Balkan"}', '{"hr":"","en":"Balkan population (see Chapron et al. 2015 DOI: 10.1126\/science.1257553)","de":"","sl":"Balkanska populacija (glej Chapron et al. 2015 DOI: 10.1126\/science.1257553)","default":"Balkan population (see Chapron et al. 2015 DOI: 10.1126\/science.1257553)"}', null, null, null, null, 1, null),
@@ -87,10 +87,10 @@ values  (1, 1, 'Austria', '{"hr":"Austrija","en":"Austria","de":"\u00d6sterreich
 		(91, 12, 'ZAHODNO VISOKO KRAŠKO', '{"en":"ZAHODNO VISOKO KRA\u0160KO","default":"ZAHODNO VISOKO KRA\u0160KO"}', '{"default":""}', null, null, null, '36', 1, null),
 		(92, 12, 'ZASAVSKO', '{"en":"ZASAVSKO","default":"ZASAVSKO"}', '{"default":""}', null, null, null, '37', 1, null),
 		(404, 60, 'TURJAK', '{"default":"TURJAK","en":"TURJAK"}', null, null, null, null, null, 1, null),
-		(53, 11, 'Bone', '{"en":"Bone","sl":"Kost","default":"Bone"}', '{"hr":"","en":"","de":"","it":"","sl":"","default":""}', null, null, null, '', 1, null),
-		(51, 11, 'Hair', '{"en":"Hair","sl":"Dlaka","default":"Hair"}', '{"hr":"","en":"","de":"","it":"","sl":"","default":""}', null, null, null, '', 1, null),
-		(52, 11, 'Tooth', '{"en":"Tooth","sl":"Zob","default":"Tooth"}', '{"hr":"","en":"","de":"","it":"","sl":"","default":""}', null, null, null, '', 1, null),
-		(48, 11, 'Tissue', '{"en":"Tissue","sl":"Tkivo","default":"Tissue"}', '{"hr":"","en":"","de":"","it":"","sl":"","default":""}', null, null, null, '', 1, null),
+		(53, 11, 'Bone', '{"en":"Bone","sl":"Kost","default":"Bone"}', '{"hr":"","en":"","de":"","it":"","sl":"","default":""}', null, null, null, '{}', 1, null),
+		(51, 11, 'Hair', '{"en":"Hair","sl":"Dlaka","default":"Hair"}', '{"hr":"","en":"","de":"","it":"","sl":"","default":""}', null, null, null, '{}', 1, null),
+		(52, 11, 'Tooth', '{"en":"Tooth","sl":"Zob","default":"Tooth"}', '{"hr":"","en":"","de":"","it":"","sl":"","default":""}', null, null, null, '{}', 1, null),
+		(48, 11, 'Tissue', '{"en":"Tissue","sl":"Tkivo","default":"Tissue"}', '{"hr":"","en":"","de":"","it":"","sl":"","default":""}', null, null, null, '{}', 1, null),
 		(50, 11, 'Urine', '{"en":"Urine","sl":"Urin","default":"Urine"}', '{"hr":"","en":"","de":"","it":"","sl":"","default":""}', null, null, null, '{
 	"fields": [
 		{
@@ -2022,8 +2022,8 @@ values  (1, 1, 'Austria', '{"hr":"Austrija","en":"Austria","de":"\u00d6sterreich
 		}
 	]
 }', 1, null),
-		(3538, 11, 'Decomposing tissue', '{"en":"Decomposing tissue","sl":"Tkivo - razpadajo\u010de","default":"Decomposing tissue"}', '{"hr":"","en":"","de":"","it":"","sl":"","default":""}', null, null, null, '', 1, null),
-		(3539, 11, 'Saliva from the object', '{"en":"Saliva from the object","sl":"Slina s predmeta","default":"Saliva from the object"}', '{"hr":"","en":"from prey remains, bite wounds on prey, bite marks on feeding items","de":"","it":"","sl":"z ugriznih ran na plenu, z ugriznih povr\u0161in na hrani","default":"from prey remains, bite wounds on prey, bite marks on feeding items"}', null, null, null, '', 1, null),
+		(3538, 11, 'Decomposing tissue', '{"en":"Decomposing tissue","sl":"Tkivo - razpadajo\u010de","default":"Decomposing tissue"}', '{"hr":"","en":"","de":"","it":"","sl":"","default":""}', null, null, null, '{}', 1, null),
+		(3539, 11, 'Saliva from the object', '{"en":"Saliva from the object","sl":"Slina s predmeta","default":"Saliva from the object"}', '{"hr":"","en":"from prey remains, bite wounds on prey, bite marks on feeding items","de":"","it":"","sl":"z ugriznih ran na plenu, z ugriznih povr\u0161in na hrani","default":"from prey remains, bite wounds on prey, bite marks on feeding items"}', null, null, null, '{}', 1, null),
 		(54, 11, 'Feces', '{"en":"Feces","sl":"Iztrebek","default":"Feces"}', '{"hr":"","en":"samples collected from scats","de":"","it":"","sl":"","default":"samples collected from scats"}', null, null, null, '{
 	"fields": [
 		{
@@ -2129,12 +2129,12 @@ values  (1, 1, 'Austria', '{"hr":"Austrija","en":"Austria","de":"\u00d6sterreich
 		(3662, 46, 'Death at capture', '{"en":"Death at capture","sl":"Smrt pri odlovu","default":"Death at capture"}', '{"hr":"","en":"Animal died after capturing or when handling","de":"","it":"","sl":"Smrt \u017eivali pri rokovanju, po odlovu, pri ujetju","default":"Animal died after capturing or when handling"}', null, null, null, null, 1, null),
 		(3661, 25, 'Translocation out of population', '{"en":"Translocation out of population","sl":"Izselitev iz populacije","default":"Translocation out of population"}', '{"hr":"","en":"Translocation to another population, translocation into an enclosure (alive) - individual plays no role in the source population anymore","de":"","it":"","sl":"Preselitev v drugo populacijo, preselitev v oboro ali ujetni\u0161tvo - osebek nima ve\u010d funkcije v izvorni populaciji","default":"Translocation to another population, translocation into an enclosure (alive) - individual plays no role in the source population anymore"}', null, null, null, null, 1, null),
 		(3659, 106, 'Ensuring human health and safety', '{"en":"Ensuring human health and safety","sl":"Zagotavljanje zdravja in varnosti ljudi","default":"Ensuring human health and safety"}', '{"hr":"","en":"Exception \u0022c\u0022 of the Habitat\u0027s Directive: cull due to ensuring human health and safety; i.e. permits issued in a fast procedure as human safety is compromised (oral permissions)","de":"","it":"","sl":"Izjema \u0022c\u0022 Habitatne direktive: odstrel zaradi zagotavljanja zdravja in varnosti ljudi; t.j. dovoljenja, izdana po hitrem postopku zaradi ogro\u017eanja varnosti ljudi (ustne odlo\u010dbe)","default":"Exception \u0022c\u0022 of the Habitat\u0027s Directive: cull due to ensuring human health and safety; i.e. permits issued in a fast procedure as human safety is compromised (oral permissions)"}', null, null, null, null, 1, null),
-		(3671, 11, 'Blood noninvasive', '{"en":"Blood noninvasive","default":"Blood noninvasive"}', '{"default":""}', null, null, null, '', 1, null),
+		(3671, 11, 'Blood noninvasive', '{"en":"Blood noninvasive","default":"Blood noninvasive"}', '{"default":""}', null, null, null, '{}', 1, null),
 		(3663, 57, 'Nives', '{"en":"Nives","default":"Nives"}', '{"en":"Nives - bear","default":"Nives - bear"}', null, null, null, null, 1, null),
 		(3664, 57, 'Jelko', '{"en":"Jelko","default":"Jelko"}', '{"en":"Jelko - wolf","default":"Jelko - wolf"}', null, null, null, null, 1, null),
 		(3665, 57, 'Martina', '{"en":"Martina","default":"Martina"}', '{"en":"Martina - lynx","default":"Martina - lynx"}', null, null, null, null, 1, null),
-		(3672, 11, 'Tanned skin', '{"en":"Tanned skin","default":"Tanned skin"}', '{"default":""}', null, null, null, '', 1, null),
-		(3673, 11, 'Paw', '{"en":"Paw","default":"Paw"}', '{"default":""}', null, null, null, '', 1, null),
+		(3672, 11, 'Tanned skin', '{"en":"Tanned skin","default":"Tanned skin"}', '{"default":""}', null, null, null, '{}', 1, null),
+		(3673, 11, 'Paw', '{"en":"Paw","default":"Paw"}', '{"default":""}', null, null, null, '{}', 1, null),
 		(3674, 69, 'Conflict animal removal', '{"en":"Conflict animal removal","sl":"Vzrok za odvzem konfliktnega osebka","default":"Conflict animal removal"}', '{"hr":"","en":"","de":"","it":"","sl":"","default":""}', null, null, null, '{"type":"code list","clid":"106","query":1,"aggregate":"array_agg","weight":null}', 1, null),
 		(3675, 57, 'Valentina - lynx', '{"en":"Valentina - lynx","default":"Valentina - lynx"}', '{"en":"Valentina - lynx","default":"Valentina - lynx"}', null, null, null, null, 1, null),
 		(3676, 57, 'Neža - lynx', '{"en":"Ne\u017ea - lynx","default":"Ne\u017ea - lynx"}', '{"en":"Ne\u017ea - lynx","default":"Ne\u017ea - lynx"}', null, null, null, null, 1, null),
