@@ -106,8 +106,6 @@ class BearsBiometryAnimalResource extends Resource
 				->fromQuery($this->getListByType('bear_territory_type'), "value")
 				->title(__('Bear presence zone')),
 //				->required()
-
-
 		];
     }
 
@@ -156,5 +154,4 @@ class BearsBiometryAnimalResource extends Resource
 				)->select(['bears_list.id', 'bears_list.value'])
 				->orderBy('bears_list.value');
 	}
-
 }

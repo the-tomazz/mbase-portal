@@ -87,7 +87,7 @@ Setup login
 sail artisan orchid:admin admin admin@admin.com password
 ```
 
-Build assets, run in it's on terminal
+Build assets, run in it's own terminal
 
 ```bash
 sail npm run dev

@@ -23,12 +23,12 @@ return new class extends Migration
 				->onUpdate('cascade')
 				->onDelete('cascade');
 			$table->text('value');
-			$table->jsonb('name'); // jsonb
-			$table->jsonb('description')->nullable(); // jsonb
+			$table->jsonb('name');
+			$table->jsonb('description')->nullable();
 			$table->bigInteger('icon')->nullable();
 			$table->bigInteger('valid_from')->nullable();
 			$table->bigInteger('valid_to')->nullable();
-			$table->jsonb('additional')->nullable(); // jsonb
+			$table->jsonb('additional')->nullable();
 			$table->integer('selectable')->default(1);
 			$table->integer('altid')->nullable();
 		});

@@ -132,7 +132,7 @@ Tomaž:
   - export v xls je širši kot prikaz v vstopni tabeli
     - kaj se nahaja v eni in drugi tabeli je definirano v vstopni tabeli
       - za začetek bomo prevzeli to kar je v mbase1, nato bomo pa verjetno dopolnjevali (za namene prehoda v produkcijo Nives dopolni nabor stolpcev do 23.9.)
-  - tabela prikazuje živali in rokovanja (predlog, da naredimo dva 
+  - tabela prikazuje živali in rokovanja (predlog, da naredimo dva)
   - rokovanje je osnovni podatek
   - dva tipa uporabnikov (to naj bo element filtra)
     - smrtnost
