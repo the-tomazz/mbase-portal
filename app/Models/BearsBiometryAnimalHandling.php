@@ -12,14 +12,11 @@ use Orchid\Screen\AsSource;
  *
  * @package App\Models
  */
-class BearsBiometryAnimal extends Model
-
-
+class BearsBiometryAnimalHandling extends Model
 {
 	use AsSource, Filterable, Attachable;
 
-
-	protected $table = 'bears_biometry_animal';
+	protected $table = 'bears_biometry_animal_handling';
 
 	protected $casts = [
 	];

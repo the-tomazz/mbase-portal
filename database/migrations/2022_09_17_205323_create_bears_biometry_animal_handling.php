@@ -8,13 +8,13 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
-    {
+	/**
+	 * Run the migrations.
+	 *
+	 * @return void
+	 */
+	public function up()
+	{
 //		DB::connection()->setSchemaGrammar(new ExtendedPostgresGrammar());
 //		$schema = DB::connection()->getSchemaBuilder();
 //			$schema->create('bears_biometry_animal', function (Blueprint $table) {
@@ -88,16 +88,16 @@ return new class extends Migration
 //			$table->integer('licence_id')->nullable(true);//geometry(Geometry,4326)
 //		});
 
-		DB::unprepared(file_get_contents(dirname(__FILE__) . '/sql/bears_biometry_animal_data.sql'));
+		DB::unprepared(file_get_contents(dirname(__FILE__) . '/sql/bears_biometry_animal_handling.sql'));
 	}
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('bears_biometry_animal');
-    }
+	/**
+	 * Reverse the migrations.
+	 *
+	 * @return void
+	 */
+	public function down()
+	{
+		Schema::dropIfExists('bears_biometry_animal_handling');
+	}
 };

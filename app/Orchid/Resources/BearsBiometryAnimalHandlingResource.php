@@ -11,22 +11,22 @@ use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\Select;
 use Orchid\Screen\TD;
 
-class BearsBiometryAnimalResource extends Resource
+class BearsBiometryAnimalHandlingResource extends Resource
 {
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var string
-     */
-    public static $model = \App\Models\BearsBiometryAnimal::class;
+	/**
+	 * The model the resource corresponds to.
+	 *
+	 * @var string
+	 */
+	public static $model = \App\Models\BearsBiometryAnimal::class;
 
-    /**
-     * Get the fields displayed by the resource.
-     *
-     * @return array
-     */
-    public function fields(): array
-    {
+	/**
+	 * Get the fields displayed by the resource.
+	 *
+	 * @return array
+	 */
+	public function fields(): array
+	{
 
 		return [
 			Select::make('identifikacija_osebka')
@@ -41,12 +41,12 @@ class BearsBiometryAnimalResource extends Resource
 				->help('Please select species.'),
 
 			Input::make('stevilka_letnega_odvzema_1')
-			->title('Number of removal in LUO')
-			->help('Please insert number of removal in LUO.'),
+				->title('Number of removal in LUO')
+				->help('Please insert number of removal in LUO.'),
 
 			Input::make('stevilka_letnega_odvzema_2')
-			->title('Year of removal in LUO')
-			->help('Please insert the year of removal in LUO.'),
+				->title('Year of removal in LUO')
+				->help('Please insert the year of removal in LUO.'),
 
 			Select::make('nacin_odvzema')
 				->fromQuery($this->getListByType('way_of_withdrawal'), "value")
@@ -59,8 +59,8 @@ class BearsBiometryAnimalResource extends Resource
 				->help('Please enter permit number.'),
 
 			Input::make('ime_projekta')
-							->title('Project title and description; Contact name')
-							->help('Please insert the project name and description and provide a contact person.'),
+				->title('Project title and description; Contact name')
+				->help('Please insert the project name and description and provide a contact person.'),
 
 			Select::make('vzrok_izgube')
 				->fromQuery($this->getListByType('biometry_loss_reason'), "value")
@@ -107,50 +107,51 @@ class BearsBiometryAnimalResource extends Resource
 				->title(__('Bear presence zone')),
 //				->required()
 		];
-    }
+	}
 
-    /**
-     * Get the columns displayed by the resource.
-     *
-     * @return TD[]
-     */
-    public function columns(): array
-    {
-        return [
-            TD::make('id'),
+	/**
+	 * Get the columns displayed by the resource.
+	 *
+	 * @return TD[]
+	 */
+	public function columns(): array
+	{
+		return [
+			TD::make('id'),
 //			TD::make('')
-        ];
-    }
+		];
+	}
 
-    /**
-     * Get the sights displayed by the resource.
-     *
-     * @return Sight[]
-     */
-    public function legend(): array
-    {
-        return [];
-    }
+	/**
+	 * Get the sights displayed by the resource.
+	 *
+	 * @return Sight[]
+	 */
+	public function legend(): array
+	{
+		return [];
+	}
 
-    /**
-     * Get the filters available for the resource.
-     *
-     * @return array
-     */
-    public function filters(): array
-    {
-        return [];
-    }
+	/**
+	 * Get the filters available for the resource.
+	 *
+	 * @return array
+	 */
+	public function filters(): array
+	{
+		return [];
+	}
 
 	private function getListByType($value): \Illuminate\Database\Eloquent\Builder
 	{
 		return
 			BearsList::query()
 				->join(
-					'bears_list_type', function ($join) use ($value) {
-					$join->on('bears_list_type.id', '=', 'bears_list.type_id')
+					'bears_list_type',
+					function ($join) use ($value) {
+						$join->on('bears_list_type.id', '=', 'bears_list.type_id')
 						->where('bears_list_type.naziv', '=', $value);
-				}
+					}
 				)->select(['bears_list.id', 'bears_list.value'])
 				->orderBy('bears_list.value');
 	}
