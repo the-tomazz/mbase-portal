@@ -15,18 +15,20 @@ use Orchid\Filters\Filterable;
 use Orchid\Screen\AsSource;
 
 /**
- * Class CollarList
+ * Class Animal
  *
  * @property int|null $id
  * @property string|null $title
  * @property string|null $name
  * @property string|null $description
  *
+ * @property BearsBiometryAnimalHandling $bears_biometry_animal_handling
+ *
  * @package App\Models
  */
-class CollarList extends Model
+class Animal extends Model
 {
-	protected $table = 'collar_list';
+	protected $table = 'animal';
 
 	use AsSource, Filterable, Attachable;
 	use SoftDeletes;
@@ -42,4 +44,9 @@ class CollarList extends Model
 		'name',
 		'description'
 	];
+
+	public function bears_biometry_animal_handling()
+	{
+		return $this->hasOne(BearsBiometryAnimalHandling::class);
+	}
 }

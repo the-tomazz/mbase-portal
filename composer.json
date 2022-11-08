@@ -13,9 +13,10 @@
 		"laravel/framework": "^9.19",
 		"laravel/sanctum": "^2.14.1",
 		"laravel/tinker": "^2.7",
+		"mbase2/dtl": "dev-master",
+		"mstaack/laravel-postgis": "^5.4",
 		"orchid/crud": "^3.7",
-		"orchid/platform": "^12.6",
-		"mbase2/dtl": "dev-master"
+		"orchid/platform": "^12.6"
 	},
 	"require-dev": {
 		"fakerphp/faker": "^1.9.1",

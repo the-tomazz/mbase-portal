@@ -231,7 +231,7 @@ class ExampleFieldsScreen extends Screen
                 Input::make('date_and_time')
                     ->type('datetime-local')
                     ->title('Date and time')
-                    ->value('2011-08-19T13:45:00')
+                    ->value('2011-08-19T13: 45:00')
                     ->horizontal(),
 
                 Input::make('date')

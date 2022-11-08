@@ -7,13 +7,18 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Casts\LocalizedJsonData;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Orchid\Attachment\Attachable;
+use Orchid\Filters\Filterable;
+use Orchid\Screen\AsSource;
 
 /**
  * Class ColorList
- * 
+ *
  * @property int|null $id
  * @property string|null $title
- * @property string|null $value
  * @property string|null $name
  * @property string|null $description
  *
@@ -22,18 +27,18 @@ use Illuminate\Database\Eloquent\Model;
 class ColorList extends Model
 {
 	protected $table = 'color_list';
-	public $incrementing = false;
-	public $timestamps = false;
+
+	use AsSource, Filterable, Attachable;
+	use SoftDeletes;
 
 	protected $casts = [
 		'id' => 'int',
-		'name' => 'binary',
-		'description' => 'binary'
+		'name' => LocalizedJsonData::class,
+		'description' => LocalizedJsonData::class
 	];
 
 	protected $fillable = [
 		'title',
-		'value',
 		'name',
 		'description'
 	];
