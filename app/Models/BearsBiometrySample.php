@@ -1,0 +1,49 @@
+<?php
+
+/**
+ * Created by Reliese Model.
+ */
+
+namespace App\Models;
+
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+/**
+ * Class BearsBiometrySample
+ * 
+ * @property int|null $id
+ * @property int|null $bears_biometry_animal_handling_id
+ * @property string|null $sample_code
+ * @property string|null $description
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property string|null $deleted_at
+ * 
+ * @property BearsBiometryAnimalHandling|null $bears_biometry_animal_handling
+ *
+ * @package App\Models
+ */
+class BearsBiometrySample extends Model
+{
+	use SoftDeletes;
+	protected $table = 'bears_biometry_samples';
+	public $incrementing = false;
+
+	protected $casts = [
+		'id' => 'int',
+		'bears_biometry_animal_handling_id' => 'int'
+	];
+
+	protected $fillable = [
+		'bears_biometry_animal_handling_id',
+		'sample_code',
+		'description'
+	];
+
+	public function bears_biometry_animal_handling()
+	{
+		return $this->belongsTo(BearsBiometryAnimalHandling::class);
+	}
+}

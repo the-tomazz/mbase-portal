@@ -21,8 +21,8 @@ CREATE TABLE laravel.bears_biometry_animal_handling (
 	hunting_management_area_id INTEGER REFERENCES spatial_unit_filter_elements (id),
 	hunter_finder_name character varying(255),
 	hunter_finder_surname character varying(255),
-	hunter_finder_address character varying(255), # suggested removing
-	hunter_finder_country_id INTEGER REFERENCES groups (id), # suggested removing
+	hunter_finder_address character varying(255),
+	hunter_finder_country_id INTEGER REFERENCES groups (id),
 	witness_accompanying_person_name character varying(255),
 	witness_accompanying_person_surname character varying(255),
 	sample_taken integer,
