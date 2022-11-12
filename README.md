@@ -32,6 +32,8 @@ git clone
 
 ### Install
 
+If something goes wrong maybe you have php-xml component missing
+
 ```bash
 composer install --ignore-platform-reqs
 ```
@@ -83,7 +85,7 @@ sail psql
   create schema mbase2;
   create schema mbase2_ge;
   create schema laravel;
-  
+
 sail artisan migrate:refresh --seed
 ```
 
@@ -93,12 +95,6 @@ if migrate fails do the following:
 sail down --rmi all -v (removes persistent volumes)
 sail up
 sail artisan migrate
-```
-
-Setup login
-
-```bash
-sail artisan orchid:admin admin admin@admin.com password
 ```
 
 Build assets, run in it's own terminal
@@ -184,6 +180,13 @@ enter gozdovi as pass when prompted
   sail build --no-cache
 
 Note: [If you really want to properly rebuild SQL] docker rm -v mbase2l_pgsql_1 --force
+
+### How to Setup another login
+
+```bash
+sail artisan orchid:admin admin xyz@pqr.com password
+```
+
 
 ### How to create a new model
 
