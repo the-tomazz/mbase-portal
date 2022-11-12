@@ -2,7 +2,10 @@
 
 namespace App\Orchid\Resources;
 
+use App\Models\BearsBiometryAnimalHandling;
 use Orchid\Crud\Resource;
+use Orchid\Screen\Fields\Input;
+use Orchid\Screen\Fields\Select;
 use Orchid\Screen\TD;
 
 class BearsBiometrySample extends Resource
@@ -21,7 +24,21 @@ class BearsBiometrySample extends Resource
      */
     public function fields(): array
     {
-        return [];
+        return [
+			Select::make('bears_biometry_animal_handling_id')
+				->fromModel(BearsBiometryAnimalHandling::class, 'id')
+				->title(__('Animal handling ID'))
+				->required()
+				->help(__('Please Animal Handling.')),
+
+			Input::make('sample_code')
+				->title(__('Sample code'))
+				->help(__('Please input the sample code.')),
+
+			Input::make('sample_tissue')
+				->title(__('Sample type (sampled tissue)'))
+				->help(__('Please input the Sample type (sampled tissue).')),
+		];
     }
 
     /**

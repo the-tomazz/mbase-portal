@@ -6,14 +6,14 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
-    {
-        Schema::create(
+	/**
+	 * Run the migrations.
+	 *
+	 * @return void
+	 */
+	public function up()
+	{
+		Schema::create(
 			'bears_biometry_data',
 			function (Blueprint $table) {
 				$table->id();
@@ -54,7 +54,7 @@ return new class extends Migration
 				$table->unsignedInteger('incisors_wear_list_id');
 				$table->unsignedInteger('color_list_id');
 				$table->unsignedInteger('collar_list_id');
-				$table->string('stanje_lesine');
+				$table->text('stanje_lesine');
 				$table->string('zdt');
 				$table->string('masa_mesa');
 				$table->string('udt');
@@ -129,15 +129,15 @@ return new class extends Migration
 					->onDelete('cascade');
 			}
 		);
-    }
+	}
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        //
-    }
+	/**
+	 * Reverse the migrations.
+	 *
+	 * @return void
+	 */
+	public function down()
+	{
+		//
+	}
 };

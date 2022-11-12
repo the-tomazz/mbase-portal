@@ -19,7 +19,7 @@ return new class extends Migration
 				$table->id();
 				$table->unsignedInteger('bears_biometry_animal_handling_id');
 				$table->string('sample_code');
-				$table->text('description');
+				$table->text('sample_type');
 				$table->timestamps();
 				$table->softDeletes();
 

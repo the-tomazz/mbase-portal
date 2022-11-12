@@ -18,7 +18,7 @@ use Orchid\Screen\AsSource;
  * @property int|null $id
  * @property int|null $bears_biometry_animal_handling_id
  * @property string|null $sample_code
- * @property string|null $description
+ * @property string|null $sample_tissue
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string|null $deleted_at
@@ -43,7 +43,7 @@ class BearsBiometrySample extends Model
 	protected $fillable = [
 		'bears_biometry_animal_handling_id',
 		'sample_code',
-		'description'
+		'sample_tissue'
 	];
 
 	public function bears_biometry_animal_handling()

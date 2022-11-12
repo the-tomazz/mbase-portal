@@ -70,6 +70,20 @@ You may have to `chmod a+x setup_mbase2dtl.sh` before this:
 
 ```bash
 sail npm install
+sail psql
+
+  drop schema public cascade;
+  drop schema mb2data cascade;
+  drop schema mbase2 cascade;
+  drop schema mbase2_ge cascade;
+  drop schema laravel cascade;
+
+  create schema public;
+  create schema mb2data;
+  create schema mbase2;
+  create schema mbase2_ge;
+  create schema laravel;
+  
 sail artisan migrate:refresh --seed
 ```
 

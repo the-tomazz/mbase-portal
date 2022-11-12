@@ -150,6 +150,8 @@ class BearsBiometryAnimalHandling extends Resource
 
 			// SAMPLES END
 
+			// SAMPLES TYPE SECTION START
+
 			Group::make([
 				Switcher::make('hair_sample_taken')
 					->sendTrueOrFalse()
@@ -166,7 +168,23 @@ class BearsBiometryAnimalHandling extends Resource
 					->title(__('Tooth Type'))
 					->help(__('Please select the Tooth Type.'))
 					->empty(__('<Empty>')),
-			])->autoWidth()
+			])->autoWidth(),
+
+			// SAMPLES TYPE SECTION END
+
+			// TAXIDERMIST SECTION START
+			Group::make([
+				Input::make('taxidermist_name')
+					->title(__('Taxidermist name'))
+					->help(__('Please insert the name of the Taxidermist')),
+
+				Input::make('taxidermist_surname')
+					->title(__('Taxidermist surname'))
+					->help(__('Please insert the surname of the Taxidermist')),
+			])->autoWidth(),
+
+			// TAXIDERMIST SECTION END
+
 		];
     }
 
