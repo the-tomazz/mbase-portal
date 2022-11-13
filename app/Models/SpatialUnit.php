@@ -7,6 +7,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use MStaack\LaravelPostgis\Eloquent\PostgisTrait;
 
 /**
  * Class SpatialUnit

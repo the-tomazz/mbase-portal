@@ -7,6 +7,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Orchid\Attachment\Attachable;
@@ -30,7 +31,7 @@ use Orchid\Screen\AsSource;
 class BearsBiometrySample extends Model
 {
 	use AsSource, Filterable, Attachable;
-	use SoftDeletes;
+	use SoftDeletes, HasFactory;
 
 	protected $table = 'bears_biometry_samples';
 	public $incrementing = false;

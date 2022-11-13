@@ -9,6 +9,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Casts\LocalizedJsonData;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Orchid\Attachment\Attachable;
 use Orchid\Filters\Filterable;
@@ -31,7 +32,7 @@ class Animal extends Model
 	protected $table = 'animal';
 
 	use AsSource, Filterable, Attachable;
-	use SoftDeletes;
+	use SoftDeletes, HasFactory;
 
 	protected $casts = [
 		'id' => 'int',

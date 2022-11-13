@@ -7,6 +7,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Orchid\Attachment\Attachable;
@@ -48,7 +49,7 @@ use Orchid\Screen\AsSource;
  * @property int|null $tooth_type_list_id
  * @property string|null $taxidermist_name
  * @property string|null $taxidermist_surname
- * @property int|null $data_endered_by_user_id
+ * @property int|null $data_entered_by_user_id
  * @property int|null $data_input_timestamp
  * @property int|null $animal_id
  * @property string|null $hunting_area
@@ -78,12 +79,11 @@ class BearsBiometryAnimalHandling extends Model
 	protected $table = 'bears_biometry_animal_handling';
 
 	use AsSource, Filterable, Attachable;
-	use SoftDeletes;
+	use SoftDeletes, HasFactory;
 
 	protected $casts = [
 		'id' => 'int',
 		'species_list_id' => 'int',
-		'way_of_withdrawal_list_id' => 'int',
 		'biometry_loss_reason_list_id' => 'int',
 		'animal_handling_date' => 'int',
 		'place_type_list_id' => 'int',
@@ -99,18 +99,16 @@ class BearsBiometryAnimalHandling extends Model
 		'hair_sample_taken' => 'int',
 		'blood_sample_taken' => 'int',
 		'tooth_type_list_id' => 'int',
-		'data_endered_by_user_id' => 'int',
+		'data_entered_by_user_id' => 'int',
 		'data_input_timestamp' => 'int',
 		'animal_id' => 'int',
-		'gcell' => 'USER-DEFINED',
-		'animal_removal_list_id' => 'int',
-		'geom' => 'USER-DEFINED'
+		'spatial_unit_gid' => 'int',
+		'animal_removal_list_id' => 'int'
 	];
 
 	protected $fillable = [
 		'id',
 		'species_list_id',
-		'way_of_withdrawal_list_id',
 		'licence_number',
 		'project_name',
 		'telementry_uid',
@@ -140,14 +138,13 @@ class BearsBiometryAnimalHandling extends Model
 		'tooth_type_list_id',
 		'taxidermist_name',
 		'taxidermist_surname',
-		'data_endered_by_user_id',
+		'data_entered_by_user_id',
 		'data_input_timestamp',
 		'animal_id',
 		'hunting_area',
-		'gcell',
+		'spatial_unit_gid',
 		'animal_removal_list_id',
-		'removal_annual_uid',
-		'geom'
+		'removal_annual_uid'
 	];
 
 	public function species_list()
@@ -192,7 +189,7 @@ class BearsBiometryAnimalHandling extends Model
 
 	public function user()
 	{
-		return $this->belongsTo(User::class, 'data_endered_by_user_id');
+		return $this->belongsTo(User::class, 'data_entered_by_user_id');
 	}
 
 	public function animal()
@@ -203,5 +200,10 @@ class BearsBiometryAnimalHandling extends Model
 	public function animal_removal_list()
 	{
 		return $this->belongsTo(AnimalRemovalList::class);
+	}
+
+	public function SpatialUnit()
+	{
+		return $this->belongsTo(SpatialUnit::class);
 	}
 }
