@@ -19,10 +19,10 @@ Composer:
 <https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-22-04>
 
 NPM
+
 ```bash
 apt install nodejs npm
 ```
-
 
 ### Get the code
 
@@ -38,6 +38,12 @@ If something goes wrong maybe you have php-xml component missing
 composer install --ignore-platform-reqs
 ```
 
+### Configuration
+
+```bash
+cp .env.example .env
+```
+
 ### Start virtual environment
 
 ```bash
@@ -46,11 +52,7 @@ sail up -d
 
 Note: [You can configure a bash alias for this.](https://laravel.com/docs/9.x/sail#configuring-a-bash-alias)
 
-### Configuration
 
-```bash
-cp .env.example .env
-```
 
 ### Generate application key
 
@@ -187,7 +189,6 @@ Note: [If you really want to properly rebuild SQL] docker rm -v mbase2l_pgsql_1 
 sail artisan orchid:admin admin xyz@pqr.com password
 ```
 
-
 ### How to create a new model
 
 Since laravel tables have been moved to laravel scheme,
@@ -207,5 +208,3 @@ you will need to
   SET search_path TO public;
   drop table tablename;
   \q
-
-

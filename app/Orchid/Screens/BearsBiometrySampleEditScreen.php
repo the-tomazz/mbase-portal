@@ -5,7 +5,6 @@ namespace App\Orchid\Screens;
 use App\Models\BearsBiometryAnimalHandling;
 use App\Models\BearsBiometrySample;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\Relation;
@@ -84,23 +83,27 @@ class BearsBiometrySampleEditScreen extends Screen
     public function layout(): iterable
     {
         return [
-			Layout::rows([
-				Relation::make('bearsBiometrySample.bears_biometry_animal_handling_id')
-					->title('Animal handling')
-					->fromModel(BearsBiometryAnimalHandling::class, 'id'),
+			Layout::columns([
+                Layout::rows([
+					Relation::make('bearsBiometrySample.bears_biometry_animal_handling_id')
+						->title('Animal handling')
+						->fromModel(BearsBiometryAnimalHandling::class, 'id'),
 
-				Input::make('bearsBiometrySample.sample_code')
-					->title(__('Sample code'))
-					->maxlength(10)
-					->help(__('Please input the sample code.')),
+					Input::make('bearsBiometrySample.sample_code')
+						->title(__('Sample code'))
+						->maxlength(10)
+						->help(__('Please input the sample code.')),
 
-				Input::make('bearsBiometrySample.sample_tissue')
-					->title(__('Sample type (sampled tissue)'))
-					->maxlength(20)
-					->help(__('Please input the Sample type (sampled tissue).')),
+					Input::make('bearsBiometrySample.sample_tissue')
+						->title(__('Sample type (sampled tissue)'))
+						->maxlength(20)
+						->help(__('Please input the Sample type (sampled tissue).')),
 
-				Upload::make('bearsBiometrySample.attachment')
-					->title('All files')
+				]),
+				Layout::rows([					
+					Upload::make('bearsBiometrySample.attachment')
+						->title('All files')
+				])
 			])
 		];
     }

@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Orchid\Screens\BearsBiometryAnimalHandlingEditScreen;
+use App\Orchid\Screens\BearsBiometryAnimalHandlingListScreen;
 use App\Orchid\Screens\Examples\ExampleCardsScreen;
 use App\Orchid\Screens\Examples\ExampleChartsScreen;
 use App\Orchid\Screens\Examples\ExampleFieldsAdvancedScreen;
@@ -117,3 +119,6 @@ Route::screen('example-advanced', ExampleFieldsAdvancedScreen::class)->name('pla
 
 Route::screen('bearsBiometrySample/{bearsBiometrySample?}', BearsBiometrySampleEditScreen::class)->name('platform.bearsBiometrySample.edit');
 Route::screen('bearsBiometrySamples', BearsBiometrySampleListScreen::class)->name('platform.bearsBiometrySample.list');
+
+Route::screen('bearsBiometryAnimalHandling/{bearsBiometryAnimalHandling?}', BearsBiometryAnimalHandlingEditScreen::class)->name('platform.bearsBiometryAnimalHandling.edit');
+Route::screen('bearsBiometryAnimalHandlings', BearsBiometryAnimalHandlingListScreen::class)->name('platform.bearsBiometryAnimalHandling.list');
