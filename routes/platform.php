@@ -22,6 +22,8 @@ use Tabuna\Breadcrumbs\Trail;
 
 use App\Orchid\Screens\BearsBiometrySampleEditScreen;
 use App\Orchid\Screens\BearsBiometrySampleListScreen;
+use App\Orchid\Screens\TestScreen;
+use App\Orchid\Screens\TestScreen2;
 
 /*
 |--------------------------------------------------------------------------
@@ -122,3 +124,6 @@ Route::screen('bearsBiometrySamples', BearsBiometrySampleListScreen::class)->nam
 
 Route::screen('bearsBiometryAnimalHandling/{bearsBiometryAnimalHandling?}', BearsBiometryAnimalHandlingEditScreen::class)->name('platform.bearsBiometryAnimalHandling.edit');
 Route::screen('bearsBiometryAnimalHandlings', BearsBiometryAnimalHandlingListScreen::class)->name('platform.bearsBiometryAnimalHandling.list');
+
+Route::screen('testScreen', TestScreen::class)->name('platform.testScreen');
+Route::screen('testScreen2', TestScreen2::class)->name('platform.testScreen2');

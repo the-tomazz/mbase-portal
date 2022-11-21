@@ -5,6 +5,7 @@ namespace App\Orchid\Screens;
 use App\Models\BearsBiometryAnimalHandling;
 use App\Models\BearsBiometrySample;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\Relation;
@@ -99,11 +100,12 @@ class BearsBiometrySampleEditScreen extends Screen
 						->maxlength(20)
 						->help(__('Please input the Sample type (sampled tissue).')),
 
-				]),
-				Layout::rows([					
 					Upload::make('bearsBiometrySample.attachment')
 						->title('All files')
-				])
+
+				]),
+
+				
 			])
 		];
     }
@@ -118,11 +120,13 @@ class BearsBiometrySampleEditScreen extends Screen
     {
         $bearsBiometrySample->fill($request->get('bearsBiometrySample'))->save();
 
+		Log::debug(['bearsBiometrySample createOrUpdate', $request->get('bearsBiometrySample')]);
+
 		$bearsBiometrySample->attachment()->syncWithoutDetaching(
 			$request->input('bearsBiometrySample.attachment', [])
 		);
 
-        Alert::info('You have successfully created a Bears Biometry Sample.');
+        Alert::info('You have successfully created or updated a Bears Biometry Sample.');
 
         return redirect()->route('platform.bearsBiometrySample.list');
     }

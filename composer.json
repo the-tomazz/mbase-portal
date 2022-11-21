@@ -16,7 +16,7 @@
 		"mbase2/dtl": "dev-master",
 		"mstaack/laravel-postgis": "^5.4",
 		"orchid/crud": "^3.7",
-		"orchid/platform": "^12.6"
+		"orchid/platform": "^13.0"
 	},
 	"require-dev": {
 		"fakerphp/faker": "^1.9.1",

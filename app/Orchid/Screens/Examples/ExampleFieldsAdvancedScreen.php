@@ -292,7 +292,7 @@ class ExampleFieldsAdvancedScreen extends Screen
 
                 Map::make('place')
                     ->title('Object on the map')
-                    ->help('Enter the coordinates, or use the search'),
+                    ->help('Enter the coordinates, or use the search')
 
             ])->title('Advanced'),
         ];
