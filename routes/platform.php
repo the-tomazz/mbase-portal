@@ -7,7 +7,7 @@ use App\Orchid\Screens\BearsBiometryAnimalHandlingEditScreen;
 use App\Orchid\Screens\AnimalHandlingListViewListScreen;
 
 use App\Orchid\Screens\BearsBiometryDataEditScreen;
-use App\Orchid\Screens\BearsBiometryDataListScreen;
+// use App\Orchid\Screens\BearsBiometryDataListScreen;
 
 use App\Orchid\Screens\Examples\ExampleCardsScreen;
 use App\Orchid\Screens\Examples\ExampleChartsScreen;
@@ -136,7 +136,7 @@ Route::screen('bearsBiometryAnimalHandling/{animal?}/{bearsBiometryAnimalHandlin
 Route::screen('animalHandlings', AnimalHandlingListViewListScreen::class)->name('platform.animalHandling.list');
 
 Route::screen('bearsBiometryData/{bearsBiometryAnimalHandling?}/{bearsBiometryData?}', BearsBiometryDataEditScreen::class)->name('platform.bearsBiometryData.edit');
-Route::screen('bearsBiometryDatas', BearsBiometryDataListScreen::class)->name('platform.bearsBiometryData.list');
+// Route::screen('bearsBiometryDatas', BearsBiometryDataListScreen::class)->name('platform.bearsBiometryData.list');
 
 Route::screen('animal/{animal?}', AnimalEditScreen::class)->name('platform.animal.edit');
 Route::screen('animals', AnimalListScreen::class)->name('platform.animal.list');
