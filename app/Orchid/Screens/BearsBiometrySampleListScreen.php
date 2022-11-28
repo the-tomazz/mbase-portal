@@ -18,7 +18,7 @@ class BearsBiometrySampleListScreen extends Screen
 	public function query(): iterable
 	{
 		return [
-			'bearsBiometrySamples' => BearsBiometrySample::paginate()
+			'bearsBiometrySamples' => BearsBiometrySample::filters()->defaultSort('sample_code')->paginate()
 		];
 	}
 
@@ -37,7 +37,7 @@ class BearsBiometrySampleListScreen extends Screen
 	 */
 	public function description(): ?string
 	{
-		return "All Bears Biometry Samples";
+		return __("All Biometry Samples");
 	}
 
 
@@ -63,7 +63,6 @@ class BearsBiometrySampleListScreen extends Screen
 	public function layout(): iterable
 	{
 		return [
-			Layout::view('mapdisplay'),
 			BearsBiometrySampleListLayout::class
 		];
 	}

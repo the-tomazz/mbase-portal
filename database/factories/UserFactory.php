@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Animal;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -23,6 +24,8 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
+			'country_id' => random_int(1,3),
+			'default_animal_status' => random_int(0,1) > 0 ? Animal::STR_ALIVE : Animal::STR_DEAD
         ];
     }
 

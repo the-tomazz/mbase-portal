@@ -18,5 +18,6 @@ class DatabaseSeeder extends Seeder
 		\App\Models\Animal::factory(10)->create();
 		\App\Models\BearsBiometryAnimalHandling::factory(10)->create();
 		\App\Models\BearsBiometrySample::factory(20)->create();
+		\App\Models\BearsBiometryData::factory(20)->create();
     }
 }

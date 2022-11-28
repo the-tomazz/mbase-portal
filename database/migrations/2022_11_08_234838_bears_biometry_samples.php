@@ -20,8 +20,8 @@ return new class extends Migration
 				$table->unsignedInteger('bears_biometry_animal_handling_id');
 				$table->string('sample_code');
 				$table->text('sample_tissue');
+				$table->text('sample_comment');
 				$table->timestamps();
-				$table->softDeletes();
 
 				$table->foreign('bears_biometry_animal_handling_id')
 					->references('id')

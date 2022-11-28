@@ -18,11 +18,24 @@ class BearsBiometryAnimalHandlingSamplesListener extends Listener
      *
      * @var string[]
      */
-    protected $targets = [
-		'bearsBiometryAnimalHandling.sample_code1',
-        'bearsBiometryAnimalHandling.sample_tissue1',
-		'bearsBiometryAnimalHandling.attachment1',
-	];
+    protected $targets;
+	private $maxNumberOfSamples;
+
+	public function __construct($maxNumberOfSamples)
+	{
+		$this->targets = [];
+		for ($sampleNumber=1; $sampleNumber<=$maxNumberOfSamples; $sampleNumber++) {
+			$sampleTarget = [
+				'bearsBiometryAnimalHandling.sample_code_' . $sampleNumber,
+				'bearsBiometryAnimalHandling.sample_tissue_' . $sampleNumber,
+				'bearsBiometryAnimalHandling.sample_comment_' . $sampleNumber,
+			];
+
+			$this->targets = array_merge($this->targets, $sampleTarget);
+		}
+
+		$this->maxNumberOfSamples = $maxNumberOfSamples;
+	}
 
     /**
      * What screen method should be called
@@ -33,38 +46,52 @@ class BearsBiometryAnimalHandlingSamplesListener extends Listener
      *
      * @var string
      */
-    protected $asyncMethod = 'asyncUpdateAnimalHandlingSample1ListenerData';
+    protected $asyncMethod = 'asyncUpdateAnimalHandlingSamplesListenerData';
 
     /**
      * @return Layout[]
      */
     protected function layouts(): iterable
     {
-		if (isset($this->query)) Log::debug(['sample_code1', $this->query->get('bearsBiometryAnimalHandling.sample_code1')]);
-		$canSee = isset($this->query) ?
-			!is_null($this->query->get('bearsBiometryAnimalHandling.sample_code1')) &&
-			$this->query->get('bearsBiometryAnimalHandling.sample_code1') != '' :
-			false;
-		
-		$sampleNumber = 1;
+		if (isset($this->query)) {
+			Log::debug(['bearsBiometryAnimalHandlingSamplesListener', $this->query->get('bearsBiometryAnimalHandlingSamplesListener')]);
+		}
 
-		return [
-			Layout::rows([
-				Input::make('bearsBiometryAnimalHandling.sample_code' . $sampleNumber)
-						->title(__('Sample ' . $sampleNumber . ' code'))
+		$previousCanSee = true;
+		$biometryAnimalHandlingSampleListenerLayout = [];
+
+		for ($sampleNumber=1; $sampleNumber<$this->maxNumberOfSamples; $sampleNumber++) {
+			$canSee = $previousCanSee && isset($this->query) ?
+				!is_null($this->query->get('bearsBiometryAnimalHandling.sample_code_'. $sampleNumber)) &&
+				$this->query->get('bearsBiometryAnimalHandling.sample_code_' . $sampleNumber) != '' :
+				false;
+
+			$biometryAnimalHandlingSampleListenerLayout =
+				Layout::rows([
+					Input::make('bearsBiometryAnimalHandling.sample_code_' . $sampleNumber)
+						->title(__('Sample ') . $sampleNumber . __(' code'))
 						->maxlength(10)
-						->help(__('Please input the sample ' . $sampleNumber . ' code.')),
-		
-				Input::make('bearsBiometryAnimalHandling.sample_tissue' . $sampleNumber)
-					->title(__('Sample ' . $sampleNumber . ' type (sampled tissue)'))
-					->maxlength(20)
-					->help(__('Please input the Sample ' . $sampleNumber . ' type (sampled tissue).'))
-					->canSee($canSee),
-	
-				Upload::make('bearsBiometryAnimalHandling.attachment' . $sampleNumber)
-					->title('Sample ' . $sampleNumber . ' files')
-					->canSee($canSee)
-			])
-		];
+						->help(__('Please input the sample ') . $sampleNumber . __(' code'))
+						->canSee($previousCanSee),
+
+					Input::make('bearsBiometryAnimalHandling.sample_tissue_' . $sampleNumber)
+						->title(__('Sample ') . $sampleNumber . __(' type (sampled tissue)'))
+						->maxlength(20)
+						->help(__('Please input the Sample ') . $sampleNumber . __(' type (sampled tissue)'))
+						->canSee($canSee),
+
+					Input::make('bearsBiometryAnimalHandling.sample_comment_' . $sampleNumber)
+						->title(__('Sample ') . $sampleNumber . __(' comment'))
+						->maxlength(20)
+						->help(__('Please input the Sample ') . $sampleNumber . __(' comment'))
+						->canSee($canSee),
+				])->canSee($previousCanSee);
+
+			$previousCanSee = $canSee;
+
+			$biometryAnimalHandlingSamplesListenerLayout[] = $biometryAnimalHandlingSampleListenerLayout;
+		}
+
+		return $biometryAnimalHandlingSamplesListenerLayout;
     }
 }

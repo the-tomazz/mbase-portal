@@ -1,0 +1,16 @@
+.dataTables_scrollBody table.dataTable thead .sorting_asc:after,
+.dataTables_scrollBody table.dataTable thead .sorting_desc:after {
+  content: "";
+}
+
+.dataTables_scrollBody table.dataTable thead .sorting_asc:before,
+.dataTables_scrollBody table.dataTable thead .sorting_desc:before {
+  background: none;
+}
+.dataTables_scrollBody table.dataTable thead .sorting_asc:after {
+  content: "";
+}
+
+.dataTables_scrollHead {
+  margin-right:-5px; /*otherwise there appeared a horizontal slide sometimes*/
+}

@@ -8,6 +8,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Casts\LocalizedJsonData;
+use App\Models\Base\BaseList;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Orchid\Attachment\Attachable;
@@ -24,22 +25,12 @@ use Orchid\Screen\AsSource;
  *
  * @package App\Models
  */
-class SexList extends Model
+class SexList extends BaseList
 {
-	protected $table = 'sex_list';
+	public const FEMALE_SEX_ID=223;
 
-	use AsSource, Filterable, Attachable;
+	use AsSource, Filterable;
 	use SoftDeletes;
 
-	protected $casts = [
-		'id' => 'int',
-		'name' => LocalizedJsonData::class,
-		'description' => LocalizedJsonData::class
-	];
-
-	protected $fillable = [
-		'title',
-		'name',
-		'description'
-	];
+	protected $table = 'sex_list';
 }

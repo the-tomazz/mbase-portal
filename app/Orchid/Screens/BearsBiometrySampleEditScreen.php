@@ -25,9 +25,7 @@ class BearsBiometrySampleEditScreen extends Screen
      */
     public function query(BearsBiometrySample $bearsBiometrySample): iterable
     {
-		$bearsBiometrySample->load('attachment');
-
-        return [
+		return [
 			'bearsBiometrySample' => $bearsBiometrySample
 		];
     }
@@ -39,7 +37,7 @@ class BearsBiometrySampleEditScreen extends Screen
      */
     public function name(): ?string
     {
-        return $this->bearsBiometrySample->exists ? 'Edit Bears Biometry Sample' : 'Creating a new Bears Biometry Sample';
+        return $this->bearsBiometrySample->exists ? __('Edit Biometry Sample') : __('Creating a new Biometry Sample');
     }
 
 	/**
@@ -47,7 +45,7 @@ class BearsBiometrySampleEditScreen extends Screen
      */
     public function description(): ?string
     {
-        return "Bears Biometry Sample Screen description";
+        return __("Sample Screen description");
     }
 
 
@@ -59,7 +57,7 @@ class BearsBiometrySampleEditScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-			Button::make('Create Bears Biometry Sample')
+			Button::make('Create Biometry Sample')
                 ->icon('pencil')
                 ->method('createOrUpdate')
                 ->canSee(!$this->bearsBiometrySample->exists),
@@ -84,29 +82,26 @@ class BearsBiometrySampleEditScreen extends Screen
     public function layout(): iterable
     {
         return [
-			Layout::columns([
-                Layout::rows([
-					Relation::make('bearsBiometrySample.bears_biometry_animal_handling_id')
-						->title('Animal handling')
-						->fromModel(BearsBiometryAnimalHandling::class, 'id'),
+			Layout::rows([
+				Relation::make('bearsBiometrySample.bears_biometry_animal_handling_id')
+					->title('Animal handling')
+					->fromModel(BearsBiometryAnimalHandling::class, 'id'),
 
-					Input::make('bearsBiometrySample.sample_code')
-						->title(__('Sample code'))
-						->maxlength(10)
-						->help(__('Please input the sample code.')),
+				Input::make('bearsBiometrySample.sample_code')
+					->title(__('Sample code'))
+					->maxlength(10)
+					->help(__('Please input the sample code.')),
 
-					Input::make('bearsBiometrySample.sample_tissue')
-						->title(__('Sample type (sampled tissue)'))
-						->maxlength(20)
-						->help(__('Please input the Sample type (sampled tissue).')),
+				Input::make('bearsBiometrySample.sample_tissue')
+					->title(__('Sample type (sampled tissue)'))
+					->maxlength(20)
+					->help(__('Please input the Sample type (sampled tissue).')),
 
-					Upload::make('bearsBiometrySample.attachment')
-						->title('All files')
-
-				]),
-
-				
-			])
+				Input::make('bearsBiometrySample.sample_comment')
+					->title(__('Note'))
+					->maxlength(20)
+					->help(__('Please input the note')),
+			]),
 		];
     }
 
@@ -120,13 +115,7 @@ class BearsBiometrySampleEditScreen extends Screen
     {
         $bearsBiometrySample->fill($request->get('bearsBiometrySample'))->save();
 
-		Log::debug(['bearsBiometrySample createOrUpdate', $request->get('bearsBiometrySample')]);
-
-		$bearsBiometrySample->attachment()->syncWithoutDetaching(
-			$request->input('bearsBiometrySample.attachment', [])
-		);
-
-        Alert::info('You have successfully created or updated a Bears Biometry Sample.');
+        Alert::info(__('You have successfully created or updated a Biometry Sample.'));
 
         return redirect()->route('platform.bearsBiometrySample.list');
     }
@@ -141,7 +130,7 @@ class BearsBiometrySampleEditScreen extends Screen
     {
         $bearsBiometrySample->delete();
 
-        Alert::info('You have successfully deleted the Bears Biometry Sample.');
+        Alert::info(__('You have successfully deleted the Biometry Sample.'));
 
         return redirect()->route('platform.bearsBiometrySample.list');
     }

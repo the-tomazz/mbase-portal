@@ -17,6 +17,7 @@ use Illuminate\Validation\Rule;
 use Orchid\Access\UserSwitch;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Orchid\Screen\Action;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Screen;
@@ -218,6 +219,8 @@ class UserEditScreen extends Screen
 
         $data = $request->collect('user')->except(['password', 'permissions', 'roles'])->toArray();
         if (array_key_exists('country_id', $data)) $data['country_id'] = $data['country_id'][0];
+
+		Log::debug(['user save', $data]);
 
 		$user
             ->fill($data)

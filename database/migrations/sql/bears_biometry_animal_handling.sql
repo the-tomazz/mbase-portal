@@ -34,7 +34,7 @@ CREATE TABLE laravel.bears_biometry_animal_handling (
 	data_entered_by_user_id INTEGER REFERENCES users (id),
 	data_input_timestamp TIMESTAMPTZ NOT NULL,
 	animal_id INTEGER REFERENCES animal (id),
-	hunting_area character varying(255),
+	hunting_ground character varying(255),
 	spatial_unit_gid INTEGER REFERENCES mbase2_ge.spatial_units (gid),
 	number_of_removal_in_the_hunting_administration_area text,
 	created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),

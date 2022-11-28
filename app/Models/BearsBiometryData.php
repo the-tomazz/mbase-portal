@@ -7,6 +7,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Orchid\Attachment\Attachable;
@@ -98,7 +99,9 @@ use Orchid\Screen\AsSource;
 class BearsBiometryData extends Model
 {
 	use AsSource, Filterable, Attachable;
-	use SoftDeletes;
+	use SoftDeletes, HasFactory;
+
+	public const PREMOLARS_VALUES = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ];
 
 	protected $table = 'bears_biometry_data';
 

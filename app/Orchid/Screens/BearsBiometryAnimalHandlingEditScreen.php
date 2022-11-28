@@ -28,21 +28,44 @@ use Orchid\Support\Facades\Layout;
 
 class BearsBiometryAnimalHandlingEditScreen extends Screen
 {
-	private const MAX_SAMPLE_NUMBER=3;
+	private const MAX_SAMPLE_NUMBER=10;
 
 	public $bearsBiometryAnimalHandling;
+	public $animal;
     /**
      * Query data.
      *
      * @return array
      */
-    public function query(BearsBiometryAnimalHandling $bearsBiometryAnimalHandling): iterable
+    public function query(Animal $animal, BearsBiometryAnimalHandling $bearsBiometryAnimalHandling): iterable
     {
-		// HACK, Stanko, this is for you :)
-		$bearsBiometryAnimalHandling['geo_location'] = [
-			'lat' => $bearsBiometryAnimalHandling ? $bearsBiometryAnimalHandling->lat : 46.044705,
-			'lng' => $bearsBiometryAnimalHandling ? $bearsBiometryAnimalHandling->lng : 15.2424903,
-		];
+		if ($bearsBiometryAnimalHandling->exists) {
+			// HACK, Stanko, this is for you :)
+			$bearsBiometryAnimalHandling['geo_location'] = [
+				'lat' => $bearsBiometryAnimalHandling->lat,
+				'lng' => $bearsBiometryAnimalHandling->lng,
+			];
+		} else {
+			$bearsBiometryAnimalHandling['geo_location'] = [
+				'lat' => 46.044705,
+				'lng' => 15.2424903,
+			];
+
+			if ($animal->exists) {
+				$bearsBiometryAnimalHandling['animal_id'] = $animal->id;
+			}
+		}
+
+		$sampleNumber = 1;
+		foreach ($bearsBiometryAnimalHandling->samples as $sample) {
+			$bearsBiometryAnimalHandling['sample_code_' . $sampleNumber] = $sample->sample_code;
+			$bearsBiometryAnimalHandling['sample_tissue_' . $sampleNumber] = $sample->sample_tissue;
+			$bearsBiometryAnimalHandling['sample_comment_' . $sampleNumber] = $sample->sample_comment;
+
+			$sampleNumber++;
+		}
+
+		Log::debug(['BearsBiometryAnimalHandling query', $bearsBiometryAnimalHandling]);
 
 		return [
 			'bearsBiometryAnimalHandling' => $bearsBiometryAnimalHandling
@@ -56,7 +79,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
      */
     public function name(): ?string
     {
-        return $this->bearsBiometryAnimalHandling->exists ? 'Edit Bears Biometry Animal Handling' : 'Creating a new Bears Biometry Animal Handling';
+        return $this->bearsBiometryAnimalHandling->exists ? __('Edit Biometry Animal Handling') : __('Creating a new Biometry Animal Handling');
     }
 
 	/**
@@ -64,7 +87,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
      */
     public function description(): ?string
     {
-        return "Bears Biometry Animal Handling Screen description";
+        return __("Biometry Animal Handling Create / Update Screen");
     }
 
 	/**
@@ -75,14 +98,24 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-			Button::make('Create Bears Biometry Animal Handling')
+			Button::make(__('Create Animal Handling'))
                 ->icon('pencil')
-                ->method('createOrUpdate')
+                ->method('createOrUpdateAndDoNotAddBiometryData')
                 ->canSee(!$this->bearsBiometryAnimalHandling->exists),
 
-            Button::make('Update')
+			Button::make(__('Create Animal Handling and add Biometry Data'))
+                ->icon('pencil')
+                ->method('createOrUpdateAndAddBiometryData')
+                ->canSee(!$this->bearsBiometryAnimalHandling->exists),
+
+            Button::make(__('Update'))
                 ->icon('note')
-                ->method('createOrUpdate')
+                ->method('createOrUpdateAndDoNotAddBiometryData')
+                ->canSee($this->bearsBiometryAnimalHandling->exists),
+
+			Button::make(__('Update and add Biometry Data'))
+                ->icon('note')
+                ->method('createOrUpdateAndAddBiometryData')
                 ->canSee($this->bearsBiometryAnimalHandling->exists),
 
             Button::make('Remove')
@@ -105,7 +138,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 	public function asyncUpdateAnimalHandlingGeoLocationListenerData($triggers)
     {
 		Log::debug(['asyncUpdateAnimalHandlingGeoLocationListenerData', $triggers]);
-		
+
 		$lng = $triggers['geo_location']['lng'];
 		$lat = $triggers['geo_location']['lat'];
 
@@ -131,40 +164,40 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 			$gid = $results[0]->gid;
 
 			$LUOResults = DB::select('
-				select 
+				select
 					spatial_unit_filter_element_id,
 					spatial_unit_filter_elements.name
-				from 
-					spatial_units_spatial_unit_filter_elements 
-				join 
-					spatial_unit_filter_elements 
-				on 
-					spatial_unit_filter_elements.id = spatial_unit_filter_element_id 
+				from
+					spatial_units_spatial_unit_filter_elements
+				join
+					spatial_unit_filter_elements
+				on
+					spatial_unit_filter_elements.id = spatial_unit_filter_element_id
 				join
 					spatial_unit_filter_types
 				on
 					spatial_unit_filter_types.id = spatial_unit_filter_elements.spatial_unit_filter_type_id
-				where 
+				where
 					spatial_unit_gid = ?
 				and
 					spatial_unit_filter_types.slug like ?
 			', [ $gid, '__-LUO' ]);
 
 			$LOVResults = DB::select('
-				select 
+				select
 					spatial_unit_filter_element_id,
 					spatial_unit_filter_elements.name
-				from 
-					spatial_units_spatial_unit_filter_elements 
-				join 
-					spatial_unit_filter_elements 
-				on 
-					spatial_unit_filter_elements.id = spatial_unit_filter_element_id 
+				from
+					spatial_units_spatial_unit_filter_elements
+				join
+					spatial_unit_filter_elements
+				on
+					spatial_unit_filter_elements.id = spatial_unit_filter_element_id
 				join
 					spatial_unit_filter_types
 				on
 					spatial_unit_filter_types.id = spatial_unit_filter_elements.spatial_unit_filter_type_id
-				where 
+				where
 					spatial_unit_gid = ?
 				and
 					spatial_unit_filter_types.slug like ?
@@ -174,12 +207,12 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 				Log::debug($LUOResults[0]->name);
 				$LUO = json_decode($LUOResults[0]->name)->name;
 			}
-	
+
 			if (count($LOVResults)>0) {
 				Log::debug($LOVResults[0]->name);
 				$LOV = json_decode($LOVResults[0]->name)->name;
 			}
-	
+
 			return [
 				'bearsBiometryAnimalHandling' => [
 					'geo_location' => new Repository([
@@ -210,7 +243,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 	public function asyncUpdateAnimalHandlingHunterFinderSwitchListenerData($triggers)
     {
 		Log::debug(['asyncUpdateAnimalHandlingHunterFinderSwitchListenerData', $triggers]);
-		
+
         return [
             'bearsBiometryAnimalHandling' => new Repository([
                 'unknown_hunter_finder'      => $triggers['unknown_hunter_finder'],
@@ -220,17 +253,26 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
         ];
 	}
 
-	public function asyncUpdateAnimalHandlingSample1ListenerData($triggers)
+	public function asyncUpdateAnimalHandlingSamplesListenerData($triggers)
     {
-		Log::debug(['asyncUpdateAnimalHandlingSample1ListenerData', $triggers]);
-		
-        return [
-            'bearsBiometryAnimalHandling' => new Repository([
-                'sample_code1'      => $triggers['sample_code1'],
-                'sample_tissue1' => $triggers['sample_tissue1'] ?? null,
-				'attachment1' => $triggers['attachment1'] ?? null,
-            ]),
-        ];
+		Log::debug(['asyncUpdateAnimalHandlingSamplesListenerData', $triggers]);
+
+		$repositoryElements = [];
+		for ($sampleNumber=1; $sampleNumber<=self::MAX_SAMPLE_NUMBER; $sampleNumber++) {
+			$repositoryElement = [
+				'sample_code_' . $sampleNumber	=> $triggers['sample_code_' . $sampleNumber] ?? null,
+                'sample_tissue_' . $sampleNumber => $triggers['sample_tissue_' . $sampleNumber] ?? null,
+				'sample_comment_' . $sampleNumber => $triggers['sample_comment_' . $sampleNumber] ?? null,
+			];
+
+			$repositoryElements = array_merge($repositoryElements, $repositoryElement);
+		}
+
+		Log::debug(['repositoryElements', $repositoryElements]);
+
+		return [
+			'bearsBiometryAnimalHandling' => new Repository($repositoryElements)
+		];
 	}
 
     /**
@@ -240,27 +282,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
      */
     public function layout(): iterable
     {
-		$sampleRows = [];
-		for ($sampleNumber=1; $sampleNumber<=self::MAX_SAMPLE_NUMBER; $sampleNumber++) {
-			$sampleRow = Layout::rows([
-				Input::make('bearsBiometrySample.sample_code' . $sampleNumber)
-						->title(__('Sample ' . $sampleNumber . ' code'))
-						->maxlength(10)
-						->help(__('Please input the sample ' . $sampleNumber . ' code.')),
-		
-				Input::make('bearsBiometrySample.sample_tissue' . $sampleNumber)
-					->title(__('Sample ' . $sampleNumber . ' type (sampled tissue)'))
-					->maxlength(20)
-					->help(__('Please input the Sample ' . $sampleNumber . ' type (sampled tissue).')),
-	
-				Upload::make('bearsBiometrySample.attachment' . $sampleNumber)
-					->title('Sample ' . $sampleNumber . ' files')
-			]);
-
-			$sampleRows[] = $sampleRow;
-		}
-		
-        return [
+		$preBiometryAnimalHandlingSampleListeners = [
 			Layout::columns([
 				Layout::rows([
 					// LEFT COLUMN START
@@ -320,11 +342,20 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 					->title(__('Witness/Accompanying person surname'))
 					->help(__('Please insert the surname of the Witness/Accompanying person')),
 			]),
+		];
 
-			BearsBiometryAnimalHandlingSamplesListener::class,
+		$biometryAnimalHandlingSamplesListeners = [
+			new BearsBiometryAnimalHandlingSamplesListener(self::MAX_SAMPLE_NUMBER)
+		];
 
+		/*
+		for ($sampleNumber=1; $sampleNumber<=self::MAX_SAMPLE_NUMBER; $sampleNumber++) {
+			$biometryAnimalHandlingSamplesListeners[] = new BearsBiometryAnimalHandlingSamplesListener($sampleNumber);
+		}
+		*/
+
+		$postBiometryAnimalHandlingSampleListeners = [
 			// SAMPLES TYPE SECTION START
-
 			Layout::rows([
 				Group::make([
 					Switcher::make('bearsBiometryAnimalHandling.hair_sample_taken')
@@ -344,9 +375,10 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 						->empty(__('<Empty>')),
 				])->autoWidth(),
 			]),
+			// SAMPLES TYPE SECTION END
 
 			// TAXIDERMIST SECTION START
-			Layout::rows([ 
+			Layout::rows([
 				Group::make([
 					Input::make('bearsBiometryAnimalHandling.taxidermist_name')
 						->title(__('Taxidermist name'))
@@ -358,40 +390,81 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 				])->autoWidth(),
 			])
 			// TAXIDERMIST SECTION END
-
-			// SAMPLES TYPE SECTION END
 		];
+
+		return array_merge(
+			$preBiometryAnimalHandlingSampleListeners,
+			$biometryAnimalHandlingSamplesListeners,
+			$postBiometryAnimalHandlingSampleListeners
+		);
     }
 
 	/**
-     * @param Post    $bearsBiometryAnimalHandling
+     * @param Animal    $animal
+	 * @param BearsBiometryAnimalHandling    $bearsBiometryAnimalHandling
+     * @param Request $request
+     */
+    private function createOrUpdate(Animal $animal, BearsBiometryAnimalHandling $bearsBiometryAnimalHandling, Request $request)
+    {
+		Log::debug(['createOrUpdate BearsBiometryAnimalHandling', $request->get('bearsBiometryAnimalHandling')]);
+
+        $bearsBiometryAnimalHandling->fill($request->get('bearsBiometryAnimalHandling'));
+		$bearsBiometryAnimalHandling->lat = $request->get('bearsBiometryAnimalHandling')['geo_location']['lat'];
+		$bearsBiometryAnimalHandling->lng = $request->get('bearsBiometryAnimalHandling')['geo_location']['lng'];
+		$bearsBiometryAnimalHandling->save();
+
+		if ($bearsBiometryAnimalHandling->samples()) {
+			$bearsBiometryAnimalHandling->samples()->delete();
+		}
+
+		for ($sampleNumber=1; $sampleNumber<=self::MAX_SAMPLE_NUMBER; $sampleNumber++) {
+			$bearsBiometrySample = new BearsBiometrySample();
+
+			$sampleCode = $request->get('bearsBiometryAnimalHandling')['sample_code_' . $sampleNumber] ?? '';
+
+			if ($sampleCode!='') {
+				$bearsBiometrySampleData = [
+					'bears_biometry_animal_handling_id' => $bearsBiometryAnimalHandling->id,
+					'sample_code' => $sampleCode,
+					'sample_tissue' => $request->get('bearsBiometryAnimalHandling')['sample_tissue_' . $sampleNumber],
+					'sample_comment' => $request->get('bearsBiometryAnimalHandling')['sample_comment_' . $sampleNumber],
+				];
+
+				$bearsBiometrySample->fill($bearsBiometrySampleData)->save();
+			}
+		}
+
+		Log::debug(['bearsBiometryAnimalHandling createOrUpdate', $request->get('bearsBiometryAnimalHandling')]);
+
+        Alert::info(__('You have successfully created or updated a Biometry Animal Handling.'));
+    }
+
+	/**
+     * @param Animal    $animal
+	 * @param BearsBiometryAnimalHandling    $bearsBiometryAnimalHandling
      * @param Request $request
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function createOrUpdate(BearsBiometryAnimalHandling $bearsBiometryAnimalHandling, Request $request)
+    public function createOrUpdateAndDoNotAddBiometryData(Animal $animal, BearsBiometryAnimalHandling $bearsBiometryAnimalHandling, Request $request)
     {
-        $bearsBiometryAnimalHandling->fill($request->get('bearsBiometryAnimalHandling'))->save();
-
-		$bearsBiometrySample = new BearsBiometrySample();
-
-		$bearsBiometrySampleData = [
-			'bears_biometry_animal_handling_id' => $bearsBiometryAnimalHandling->id,
-			'sample_code' => $request->get('bearsBiometryAnimalHandling')['sample_code1'],
-			'sample_tissue' => $request->get('bearsBiometryAnimalHandling')['sample_tissue1'],
-		];
-		
-		$bearsBiometrySample->fill($bearsBiometrySampleData)->save();
-
-		$bearsBiometrySample->attachment()->syncWithoutDetaching(
-			$request->input('bearsBiometryAnimalHandling.attachment1', [])
-		);
-
-		Log::debug(['bearsBiometryAnimalHandling createOrUpdate', $request->get('bearsBiometryAnimalHandling')]);
-
-        Alert::info('You have successfully created or updated a Bears Biometry Animal Handling.');
+		$this->createOrUpdate($animal, $bearsBiometryAnimalHandling, $request);
 
         return redirect()->route('platform.bearsBiometryAnimalHandling.list');
+    }
+
+	/**
+     * @param Animal    					$animal
+	 * @param BearsBiometryAnimalHandling	$bearsBiometryAnimalHandling
+     * @param Request 						$request
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function createOrUpdateAndAddBiometryData(Animal $animal, BearsBiometryAnimalHandling $bearsBiometryAnimalHandling, Request $request)
+    {
+		$this->createOrUpdate($animal, $bearsBiometryAnimalHandling, $request);
+
+        return redirect()->route('platform.bearsBiometryData.edit', $bearsBiometryAnimalHandling );
     }
 
 	/**
@@ -404,7 +477,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
     {
         $bearsBiometryAnimalHandling->delete();
 
-        Alert::info('You have successfully deleted the Bears Biometry Animal Handling.');
+        Alert::info(__('You have successfully deleted the Biometry Animal Handling.'));
 
         return redirect()->route('platform.bearsBiometryAnimalHandling.list');
     }

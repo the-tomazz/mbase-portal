@@ -31,7 +31,8 @@ class BearsBiometrySampleListLayout extends Table
 				->render(function (BearsBiometrySample $bearsBiometrySample) {
 					return Link::make($bearsBiometrySample->sample_code)
 					->route('platform.bearsBiometrySample.edit', $bearsBiometrySample);
-			}),
+				})
+				->sort(),
 
 			TD::make('sample_tissue', 'Tissue'),
 

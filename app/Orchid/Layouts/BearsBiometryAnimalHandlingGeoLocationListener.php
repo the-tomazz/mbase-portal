@@ -42,8 +42,7 @@ class BearsBiometryAnimalHandlingGeoLocationListener extends Listener
      */
     protected function layouts(): iterable
     {
-		if (isset($this->query)) Log::debug(['unknown_hunter_finder', $this->query->get('bearsBiometryAnimalHandling.unknown_hunter_finder')]);
-		$canSee = isset($this->query) ? $this->query->get('bearsBiometryAnimalHandling.unknown_hunter_finder') == 0 : false;
+		if (isset($this->query)) Log::debug(['BearsBiometryAnimalHandlingGeoLocationListener', $this->query->get('bearsBiometryAnimalHandling')]);
 
 		return [
 			Layout::rows([

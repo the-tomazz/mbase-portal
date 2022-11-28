@@ -52,7 +52,7 @@ use Orchid\Screen\AsSource;
  * @property int|null $data_entered_by_user_id
  * @property int|null $data_input_timestamp
  * @property int|null $animal_id
- * @property string|null $hunting_area
+ * @property string|null $hunting_ground
  * @property USER-DEFINED|null $gcell
  * @property int|null $animal_removal_list_id
  * @property string|null $removal_annual_uid
@@ -78,14 +78,14 @@ class BearsBiometryAnimalHandling extends Model
 {
 	protected $table = 'bears_biometry_animal_handling';
 
-	use AsSource, Filterable, Attachable;
+	use AsSource, Filterable;
 	use SoftDeletes, HasFactory;
 
 	protected $casts = [
 		'id' => 'int',
 		'species_list_id' => 'int',
 		'biometry_loss_reason_list_id' => 'int',
-		'animal_handling_date' => 'int',
+		'animal_handling_date' => 'datetime',
 		'place_type_list_id' => 'int',
 		'bear_territory_type_list_id' => 'int',
 		'lat' => 'float',
@@ -141,10 +141,23 @@ class BearsBiometryAnimalHandling extends Model
 		'data_entered_by_user_id',
 		'data_input_timestamp',
 		'animal_id',
-		'hunting_area',
+		'hunting_ground',
 		'spatial_unit_gid',
 		'animal_removal_list_id',
 		'removal_annual_uid'
+	];
+
+	protected $allowedSorts = [
+        'animal_id',
+        'created_at',
+        'updated_at',
+    ];
+
+	protected $allowedFilters = [
+		'animal_id',
+		'value',
+		'name',
+		'description'
 	];
 
 	public function species_list()
@@ -206,4 +219,9 @@ class BearsBiometryAnimalHandling extends Model
 	{
 		return $this->belongsTo(SpatialUnit::class);
 	}
+
+	public function samples()
+    {
+        return $this->hasMany('App\Models\BearsBiometrySample');
+    }
 }

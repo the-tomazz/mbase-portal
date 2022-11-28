@@ -53,7 +53,17 @@ class GroupResource extends Resource
 				function ($model) {
 					return GroupType::where('id', $model->group_type_id)->first()->name;
 				}
-			)
+			),
+
+			/* TD::make('created_at', 'Date of creation')
+                ->render(function ($model) {
+                    return $model->created_at->toDateTimeString();
+                }),
+
+            TD::make('updated_at', 'Update date')
+                ->render(function ($model) {
+                    return $model->updated_at->toDateTimeString();
+                }), */
         ];
     }
 
@@ -68,6 +78,8 @@ class GroupResource extends Resource
 				Sight::make('id', 'Id'),
 				Sight::make('slug', 'Slug'),
 				Sight::make('name', 'Name'),
+				Sight::make('created_at', 'Date of creation'),
+				Sight::make('updated_at', 'Update date'),
 				Sight::make('group_type_id', 'Group type')->render(
 					function ($model) {
 						return GroupType::where('id', $model->group_type_id)->first()->name;

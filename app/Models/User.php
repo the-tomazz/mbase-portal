@@ -16,7 +16,8 @@ class User extends Authenticatable
         'email',
         'password',
 		'country_id',
-        'permissions'
+        'permissions',
+		'default_animal_status'
     ];
 
     /**

@@ -1,12 +1,15 @@
 create table laravel.animal
 (
     id          serial primary key,
+	status		varchar(16),
+	previous_status	varchar(16),
     title       varchar(128),
     value       text,
     name        jsonb,
     description jsonb,
 	created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 	updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+	died_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     deleted_at TIMESTAMPTZ DEFAULT NULL
 );
 
@@ -235,19 +238,19 @@ INSERT INTO laravel.way_of_withdrawal_list (id, title, value, name, description)
 INSERT INTO laravel.way_of_withdrawal_list (id, title, value, name, description) VALUES (136, 'way_of_withdrawal', 'Live-capture', '{"en":"Radio-telemetry","sl":"Radio-telemetrija","default":"Radio-telemetry"}', '{"hr":"","en":"Animal released back to the same population alive after radio-collaring","de":"","it":"","sl":"Žival po opremljanju s telemetrično ovratnico vrnjena živa v populacijo","default":"Animal released back to the same population alive after radio-collaring"}');
 INSERT INTO laravel.way_of_withdrawal_list (id, title, value, name, description) VALUES (3661, 'way_of_withdrawal', 'Translocation out of population', '{"en":"Translocation out of population","sl":"Izselitev iz populacije","default":"Translocation out of population"}', '{"hr":"","en":"Translocation to another population, translocation into an enclosure (alive) - individual plays no role in the source population anymore","de":"","it":"","sl":"Preselitev v drugo populacijo, preselitev v oboro ali ujetništvo - osebek nima več funkcije v izvorni populaciji","default":"Translocation to another population, translocation into an enclosure (alive) - individual plays no role in the source population anymore"}');
 
-ALTER TABLE laravel.animal DROP COLUMN title;
-ALTER TABLE laravel.bear_territory_type_list DROP COLUMN title;
-ALTER TABLE laravel.biometry_loss_reason_list DROP COLUMN title;
-ALTER TABLE laravel.collar_list DROP COLUMN title;
-ALTER TABLE laravel.color_list DROP COLUMN title;
-ALTER TABLE laravel.animal_removal_list DROP COLUMN title;
-ALTER TABLE laravel.incisors_wear_list DROP COLUMN title;
-ALTER TABLE laravel.place_type_list DROP COLUMN title;
-ALTER TABLE laravel.sex_list DROP COLUMN title;
-ALTER TABLE laravel.species_list DROP COLUMN title;
-ALTER TABLE laravel.teats_wear_list DROP COLUMN title;
-ALTER TABLE laravel.tooth_type_list DROP COLUMN title;
-ALTER TABLE laravel.way_of_withdrawal_list DROP COLUMN title;
+ALTER TABLE laravel.animal DROP COLUMN value;
+ALTER TABLE laravel.bear_territory_type_list DROP COLUMN value;
+ALTER TABLE laravel.biometry_loss_reason_list DROP COLUMN value;
+ALTER TABLE laravel.collar_list DROP COLUMN value;
+ALTER TABLE laravel.color_list DROP COLUMN value;
+ALTER TABLE laravel.animal_removal_list DROP COLUMN value;
+ALTER TABLE laravel.incisors_wear_list DROP COLUMN value;
+ALTER TABLE laravel.place_type_list DROP COLUMN value;
+ALTER TABLE laravel.sex_list DROP COLUMN value;
+ALTER TABLE laravel.species_list DROP COLUMN value;
+ALTER TABLE laravel.teats_wear_list DROP COLUMN value;
+ALTER TABLE laravel.tooth_type_list DROP COLUMN value;
+ALTER TABLE laravel.way_of_withdrawal_list DROP COLUMN value;
 
 ALTER TABLE laravel.animal OWNER TO gozdovi;
 ALTER TABLE laravel.bear_territory_type_list OWNER TO gozdovi;

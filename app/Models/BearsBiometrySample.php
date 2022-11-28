@@ -30,8 +30,8 @@ use Orchid\Screen\AsSource;
  */
 class BearsBiometrySample extends Model
 {
-	use AsSource, Filterable, Attachable;
-	use SoftDeletes, HasFactory;
+	use AsSource, Filterable;
+	use HasFactory;
 
 	protected $table = 'bears_biometry_samples';
 
@@ -43,8 +43,16 @@ class BearsBiometrySample extends Model
 	protected $fillable = [
 		'bears_biometry_animal_handling_id',
 		'sample_code',
-		'sample_tissue'
+		'sample_tissue',
+		'sample_comment'
 	];
+
+	/**
+     * @var array
+     */
+    protected $allowedSorts = [
+        'sample_code'
+    ];
 
 	public function bears_biometry_animal_handling()
 	{

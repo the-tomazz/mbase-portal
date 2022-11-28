@@ -24,6 +24,14 @@ That should be it.
 
 
 --}}
+<script>
+	var markers = [
+@foreach ($bearsBiometrySamples as $bearsBiometrySample)
+		{{'{'}} lat: {{$bearsBiometrySample->id}}, lng: {{$bearsBiometrySample->id}} {{'}'}},
+@endforeach
+	];
+</script>
+
 <div>
 	<style>
 		#map {

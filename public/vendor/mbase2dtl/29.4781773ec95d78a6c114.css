@@ -1,0 +1,284 @@
+.float-left {
+    float: left;
+}
+
+.float-right {
+    float: right;
+}
+
+.width15 {
+    width:15%;
+}
+
+.padding15 {
+    padding:15px;
+}
+
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.select2-selection--multiple:before {
+  content: "";
+  position: absolute;
+  right: 7px;
+  top: 42%;
+  border-top: 5px solid #888;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  cursor: pointer;
+}
+
+.toaster .alert{
+  padding-left: 11px!important;
+}
+
+.bookmark {
+  padding-left: 10px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.bookmark.bookmark-required {
+  border: solid 1px #cc0000;
+  /*background-color: #ffcccb;*/
+}
+
+.bookmark.bookmark-optional {
+  border: solid 1px #767676;
+  /*background-color: #ffcccb;*/
+}
+
+.bookmark:hover {
+  border-left-width: 5px!important;
+  margin-left:6px!important;
+  border-style: solid!important;
+}
+
+.bookmark-completed {
+  background-color: #def3ff!important;
+  /*border: solid 1px #d1d1d1;*/
+  border: solid 1px #00b9e4!important;
+}
+
+.optional-bookmark-completed {
+  background-color: #F8F8F8!important;
+  border-style: solid!important;
+}
+
+ /*******data_table*********/
+ .resize_wrapper {
+  position: relative;
+  box-sizing: border-box;
+  margin: 1vh 0;
+  height: 97vh;
+  padding: 0.5em 0.5em 1.5em 0.5em;
+  border-radius: 0.5em;
+  background-color: #f9f9f9;
+}
+
+.image-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.image-container div.container{
+  border-radius: 10px;
+  border: solid 1px #dadada;
+  margin:5px;
+  padding:5px;
+  cursor: pointer;
+  display: flex;
+}
+
+.image-container div.container .unidentified{
+  background-color: #cc0000;
+  opacity: 0.25;
+}
+
+.image-container div.container .identified{
+  background-color: green;
+  opacity: 0.25;
+}
+
+.image-container img{
+  cursor: pointer;
+  margin:5px;
+}
+
+.image-container div.selected{
+  border: solid blue;
+}
+
+
+/******************************/
+ .left-side {
+     width:370px;
+     min-width:370px;
+     border:1px dotted grey;
+     height:100%;
+ }
+
+ .right-side {
+    padding-left: 10px;
+    width: calc(100% - 380px);
+    flex-grow: 100;
+ }
+
+ /**********buttons side by side***/
+.flex-container {
+  display: flex;
+  width: 200px;
+}
+
+.flex-child {
+  flex: 1;
+}
+
+ /***********************************************/
+ /*https://stackoverflow.com/questions/90178/make-a-div-fill-the-height-of-the-remaining-screen-space*/
+ html,
+ body {
+   height: 100%;
+   margin: 0;
+ }
+ 
+ .flex-box {
+   display: flex;
+   flex-flow: column;
+   height: 100%;
+ }
+ 
+ .flex-box .flex-box-row {
+   /*border: 1px dotted grey;*/
+ }
+ 
+ .flex-box .flex-box-row.header {
+   flex: 0 1 auto;
+   /* The above is shorthand for:
+   flex-grow: 0,
+   flex-shrink: 1,
+   flex-basis: auto
+   */
+   padding-bottom: 10px;
+ }
+ 
+ .flex-box .flex-box-row.content {
+   flex: 1 1 auto;
+ }
+ 
+ .flex-box .flex-box-row.footer {
+   /*flex: 0 1 40px;*/
+   flex: 0 1 5px;
+ }
+
+ /***************************/
+ .badge.required:after {
+  content:" *";
+  color: #282828;
+}
+
+.form-group.required .badge:after{
+  content:" *";
+  color: #282828;
+}
+
+.dropdown-item-checked::before {
+  position: absolute;
+  left: .4rem;
+  content: '✓';
+  font-weight: 600;
+}
+
+.mbase2-label {
+  display: inline-block;
+  padding: 5px;
+  padding-left: 7px;
+  padding-right: 7px;
+  margin-top: 5px;
+  font-size: 98%;
+}
+
+.mbase2-help-block:before {
+  content: " ";
+}
+
+.mbase2-help-block {
+  font-size: 95%;
+  color: #767676;
+}
+
+.alert-dismissible .close {
+  right: 0!important;
+}
+
+.mbase2-label.required:after, div.required .mbase2-label:after {
+  content: "*";
+}
+
+.table-action span {
+  font-size: larger;
+}
+
+.leaflet-container {
+  cursor: default;
+}
+
+.help-block.has-error {
+  color:red;
+  margin-top:0;
+}
+
+.label.has-error {
+  background-color:red;
+}
+
+.mbase2-inline-controls{
+  display: flex;
+  align-items: flex-end;
+}
+
+.mbase2-inline-controls div {
+  padding-right:5px;
+}
+
+.disable-mouse-events {
+  pointer-events: none;
+}
+
+.select2-search--inline {
+  display: contents; /*this will make the container disappear, making the child the one who sets the width of the element*/
+}
+
+.select2-search__field:placeholder-shown {
+  width: 100% !important; /*makes the placeholder to be 100% of the width while there are no options selected*/
+}
+
+.toggle-group label {
+  padding-top:5px;
+}
+
+.toggle.btn {
+  width:100%!important;
+}
+
+.bookmark-focus {
+  border-left-width: 5px!important;
+  margin-left:6px!important;
+}
+
+@media (min-width: 768px) {
+  .modal-xxl {
+    width: 95vw;
+  }
+}
+
+.DTFC_LeftBodyLiner thead {
+  display: none;
+}
+
+#sample-code-selector-placeholder div.ts-control div.item {
+  text-transform:uppercase;
+}

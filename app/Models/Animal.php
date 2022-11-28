@@ -8,6 +8,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Casts\LocalizedJsonData;
+use App\Models\Base\BaseList;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -29,22 +30,51 @@ use Orchid\Screen\AsSource;
  */
 class Animal extends Model
 {
-	protected $table = 'animal';
+	use HasFactory;
 
-	use AsSource, Filterable, Attachable;
-	use SoftDeletes, HasFactory;
+	use AsSource, Filterable;
+	use SoftDeletes;
+
+	public const STR_ALIVE = 'alive';
+	public const STR_DEAD = 'dead';
+
+	protected $table = 'animal';
 
 	protected $casts = [
 		'id' => 'int',
 		'name' => LocalizedJsonData::class,
-		'description' => LocalizedJsonData::class
+		'description' => LocalizedJsonData::class,
+		'died_at' => 'datetime',
 	];
 
 	protected $fillable = [
-		'title',
+		'status',
+		'previous_status',
 		'name',
 		'description'
 	];
+
+	protected $allowedFilters = [
+		'status',
+		'previous_status',
+		'status',
+		'name',
+		'description',
+		'died_at'
+	];
+
+	/**
+     * @var array
+     */
+    protected $allowedSorts = [
+        'status',
+		'previous_status',
+        'name',
+        'description',
+		'died_at',
+        'created_at',
+        'updated_at',
+    ];
 
 	public function bears_biometry_animal_handling()
 	{

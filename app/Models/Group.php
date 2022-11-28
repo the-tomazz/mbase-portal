@@ -35,7 +35,7 @@ class Group extends Model
 {
 	protected $table = 'groups';
 
-	use AsSource, Filterable, Attachable;
+	use AsSource, Filterable;
 
 	protected $casts = [
 		'group_type_id' => 'int',
