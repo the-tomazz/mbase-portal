@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Orchid;
 
+use Illuminate\Support\Facades\Auth;
 use Orchid\Platform\Dashboard;
 use Orchid\Platform\ItemPermission;
 use Orchid\Platform\OrchidServiceProvider;
@@ -64,11 +65,11 @@ class PlatformProvider extends OrchidServiceProvider
 				->list([
 					Menu::make('Animals')
 						->icon('heart')
-						->route('platform.animal.list', ['filter[status]' => 'alive'])
+						->route('platform.animal.list', ['filter[status]' => Auth::user()->default_animal_status])
 						->title('Navigation'),
 					Menu::make('Animal Handlings')
 						->icon('heart')
-						->route('platform.animalHandling.list', ['filter[animal_status]' => 'alive'])
+						->route('platform.animalHandling.list', ['filter[animal_status]' => Auth::user()->default_animal_status])
 						->title('Navigation'),
 					Menu::make('Biometry Samples')
 						->icon('bag')

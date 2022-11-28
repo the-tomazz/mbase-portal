@@ -86,10 +86,11 @@ class AnimalEditScreen extends Screen
 
         return [
             'animal' => new Repository([
-                'is_alive'		=> $triggers['is_alive'],
-				'value'			=> $triggers['value'] ?? null,
-                'name'			=> $triggers['name'] ?? null,
-				'description'	=> $triggers['description']
+                'status'			=> $triggers['status'],
+				'previous_status' 	=> $triggers['previous_status'] ?? null,
+				'died_at'			=> $triggers['died_at'] ?? null,
+                'name'				=> $triggers['name'] ?? null,
+				'description'		=> $triggers['description']
             ]),
         ];
 	}
@@ -116,23 +117,24 @@ class AnimalEditScreen extends Screen
     {
         $animal->fill($request->get('animal'));
 
-		if (!$request->get('animal')['is_alive']) {
+		if (
+			$request->get('animal')['status'] == Animal::STR_DEAD &&
+			$request->get('animal')['name'] == ''
+		) {
 			$defaultData = [
-				'value' => 'N/A',
 				'name' => 'N/A'
 			];
 
 			$animal->fill($defaultData)->save();
 
 			$correctData = [
-				'value' => $animal->id,
 				'name' => $animal->id
 			];
 
 			$animal->fill($correctData)->save();
 		}
 
-        Alert::info(__('You have successfully created or updated an Animal.'));
+        Alert::info(__('You have successfully updated an Animal.'));
 
         return redirect()->route('platform.animal.list');
     }

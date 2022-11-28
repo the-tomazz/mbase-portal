@@ -123,10 +123,7 @@ class AnimalHandlingListView extends Model
 		'animal_status',
 		'animal_previous_status',
 		'animal_name',
-		'animal_handling_date',
 		'place_of_removal',
-        'created_at',
-        'updated_at',
 	];
 
 	public function species_list()

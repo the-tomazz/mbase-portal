@@ -39,7 +39,7 @@ class UserEditLayout extends Rows
 					Animal::STR_ALIVE => __('Alive'),
 					Animal::STR_DEAD => __('Dead'),
 				])
-                ->placeholder(__('Default animal status')),
+				->title(__('Default animal status'))
         ];
     }
 }

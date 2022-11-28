@@ -27,7 +27,12 @@ That should be it.
 <script>
 	var markers = [
 @foreach ($animalHandlings as $animalHandling)
-		{{'{'}} lat: {{$animalHandling->lat}}, lng: {{$animalHandling->lng}} {{'}'}},
+	{{'{'}}
+		position: {{'{'}}
+			lat: {{$animalHandling->lat}}, lng: {{$animalHandling->lng}}
+		{{'}'}},
+		title: '{{$animalHandling->animal_name}}'
+	{{'}'}},
 @endforeach
 	];
 </script>
@@ -66,8 +71,9 @@ That should be it.
 
 			markers.forEach(element => {
 				const marker = new google.maps.Marker({
-				position: element,
-				map: map,
+					position: element.position,
+					title: element.title,
+					map: map,
 				});
 			});
 		}

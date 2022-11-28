@@ -49,7 +49,6 @@ class AnimalHandlingListViewListLayout extends Table
 				->sort(),
 
 			TD::make('animal_handling_date', 'Handling date')
-				->filter(Input::make()->mask('99-99-9999'))
 				->sort(),
 
 			TD::make('created_at', 'Created')

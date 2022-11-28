@@ -25,8 +25,9 @@ class AnimalEditListener extends Listener
      * @var string[]
      */
     protected $targets = [
-		'animal.is_alive',
-        'animal.value',
+		'animal.status',
+        'animal.previous_status',
+		'animal.died_at',
 		'animal.name',
 		'animal.description'
 	];
@@ -47,8 +48,7 @@ class AnimalEditListener extends Listener
      */
     protected function layouts(): iterable
     {
-		if (isset($this->query)) Log::debug(['animal', $this->query]);
-		$canSee = null !== $this->query->get('animal.is_alive') ? $this->query->get('animal.is_alive') : false;
+		$isAlive = null !== $this->query->get('animal.status') ? $this->query->get('animal.status') == Animal::STR_ALIVE : false;
 
         return [
 			Layout::rows([
@@ -60,23 +60,20 @@ class AnimalEditListener extends Listener
 					]),
 
 				Select::make('animal.previous_status')
-					->title('Status')
+					->title('Previous status')
 					->options([
 						Animal::STR_ALIVE => __('Alive'),
 						Animal::STR_DEAD => __('Dead'),
-					]),
+					])
+					->canSee(!$isAlive),
 
-
-				Select::make('animal.died_at')
+				Input::make('animal.died_at')
 					->title('Date and time of death')
-					->options([
-						Animal::STR_ALIVE => __('Alive'),
-						Animal::STR_DEAD => __('Dead'),
-					]),
+					->type('datetime-local')
+					->canSee(!$isAlive),
 
 				Input::make('animal.name')
-					->title('Name')
-					->canSee($canSee),
+					->title('Name'),
 
 				Input::make('animal.description')
 					->title('Note'),
