@@ -3,11 +3,8 @@
 declare(strict_types=1);
 
 use App\Orchid\Screens\BearsBiometryAnimalHandlingEditScreen;
-// use App\Orchid\Screens\BearsBiometryAnimalHandlingListScreen;
 use App\Orchid\Screens\AnimalHandlingListViewListScreen;
-
 use App\Orchid\Screens\BearsBiometryDataEditScreen;
-// use App\Orchid\Screens\BearsBiometryDataListScreen;
 
 use App\Orchid\Screens\Examples\ExampleCardsScreen;
 use App\Orchid\Screens\Examples\ExampleChartsScreen;
@@ -132,11 +129,9 @@ Route::screen('bearsBiometrySample/{bearsBiometrySample?}', BearsBiometrySampleE
 Route::screen('bearsBiometrySamples', BearsBiometrySampleListScreen::class)->name('platform.bearsBiometrySample.list');
 
 Route::screen('bearsBiometryAnimalHandling/{animal?}/{bearsBiometryAnimalHandling?}', BearsBiometryAnimalHandlingEditScreen::class)->name('platform.bearsBiometryAnimalHandling.edit');
-// Route::screen('bearsBiometryAnimalHandlings', BearsBiometryAnimalHandlingListScreen::class)->name('platform.bearsBiometryAnimalHandling.list');
 Route::screen('animalHandlings', AnimalHandlingListViewListScreen::class)->name('platform.animalHandling.list');
 
 Route::screen('bearsBiometryData/{bearsBiometryAnimalHandling?}/{bearsBiometryData?}', BearsBiometryDataEditScreen::class)->name('platform.bearsBiometryData.edit');
-// Route::screen('bearsBiometryDatas', BearsBiometryDataListScreen::class)->name('platform.bearsBiometryData.list');
 
 Route::screen('animal/{animal?}', AnimalEditScreen::class)->name('platform.animal.edit');
 Route::screen('animals', AnimalListScreen::class)->name('platform.animal.list');

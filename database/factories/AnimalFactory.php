@@ -3,6 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\Animal;
+use App\Models\SexList;
+use App\Models\SpeciesList;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -26,7 +28,9 @@ class AnimalFactory extends Factory
 			'previous_status' => $is_alive && ( random_int(0, 1) > 0 ) ? Animal::STR_ALIVE : Animal::STR_DEAD,
 			'died_at' => date("Y-m-d H:i:s", mt_rand(1262055681,1262055681)),
 			'name' => $val,
-			'description' => $val
+			'description' => $val,
+			'species_list_id' => SpeciesList::all()->random()->id,
+			'sex_list_id' => SexList::all()->random()->id
         ];
     }
 }

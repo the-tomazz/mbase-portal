@@ -7,9 +7,12 @@ use App\Orchid\Layouts\AnimalEditListener;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Orchid\Screen\Actions\Button;
+use Orchid\Screen\Fields\Input;
+use Orchid\Screen\Fields\Select;
 use Orchid\Screen\Repository;
 use Orchid\Support\Facades\Alert;
 use Orchid\Screen\Screen;
+use Orchid\Support\Facades\Layout;
 
 class AnimalEditScreen extends Screen
 {
@@ -86,11 +89,14 @@ class AnimalEditScreen extends Screen
 
         return [
             'animal' => new Repository([
-                'status'			=> $triggers['status'],
-				'previous_status' 	=> $triggers['previous_status'] ?? null,
+				'id'				=> $triggers['id'] ?? null,
+                'status'			=> $triggers['status'] ?? null,
 				'died_at'			=> $triggers['died_at'] ?? null,
                 'name'				=> $triggers['name'] ?? null,
-				'description'		=> $triggers['description']
+				'previous_status' 	=> $triggers['previous_status'] ?? null,
+				'species_list_id'	=> $triggers['species_list_id'] ?? null,
+				'sex_list_id'		=> $triggers['sex_list_id'] ?? null,
+				'description'		=> $triggers['description'] ?? null
             ]),
         ];
 	}
@@ -117,22 +123,23 @@ class AnimalEditScreen extends Screen
     {
         $animal->fill($request->get('animal'));
 
-		if (
-			$request->get('animal')['status'] == Animal::STR_DEAD &&
-			$request->get('animal')['name'] == ''
-		) {
-			$defaultData = [
-				'name' => 'N/A'
-			];
+		if ($request->get('animal')['status'] == Animal::STR_DEAD) {
+			Log::debug($request->get('animal'));
 
-			$animal->fill($defaultData)->save();
+			$animal->fill([
+				'previous_status' => Animal::STR_DEAD
+			]);
 
-			$correctData = [
-				'name' => $animal->id
-			];
+			if ($request->get('animal')['name'] == '') {
+				$animal->save();
 
-			$animal->fill($correctData)->save();
+				$animal->fill([
+					'name' => $animal->id
+				]);
+			}
 		}
+
+		$animal->save();
 
         Alert::info(__('You have successfully updated an Animal.'));
 
@@ -149,21 +156,23 @@ class AnimalEditScreen extends Screen
     {
         $animal->fill($request->get('animal'));
 
-		if (!$request->get('animal')['is_alive']) {
+		if ($request->get('animal')['status'] == Animal::STR_DEAD) {
 			$defaultData = [
 				'value' => 'N/A',
 				'name' => 'N/A'
 			];
-
 			$animal->fill($defaultData)->save();
 
-			$correctData = [
-				'value' => $animal->id,
-				'name' => $animal->id
-			];
+			if (is_null($request->get('animal')['name']) || $request->get('animal')['name']=='') {
+				$correctData = [
+					'name' => $animal->id
+				];
 
-			$animal->fill($correctData)->save();
+				$animal->fill($correctData);
+			}
 		}
+
+		$animal->save();
 
         Alert::info(__('You have successfully created an Animal.'));
 
@@ -178,10 +187,16 @@ class AnimalEditScreen extends Screen
      */
     public function remove(Animal $animal)
     {
-        $animal->delete();
+		Log::debug(['animal remove', $animal->bears_biometry_animal_handlings]);
 
-        Alert::info(__('You have successfully deleted the Animal.'));
+		if ($animal->bears_biometry_animal_handlings->count() > 0) {
+			Alert::error(__('Cannot delete the animal because it contains one or more handlings. You have to delete the Animal Handling first!'));
+		} else {
+			$animal->delete();
 
-        return redirect()->route('platform.animal.list');
+			Alert::info(__('You have successfully deleted the Animal.'));
+		}
+
+		return redirect()->route('platform.animal.list');
     }
 }

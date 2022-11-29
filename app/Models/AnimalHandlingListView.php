@@ -74,6 +74,9 @@ use Orchid\Screen\AsSource;
 
 class AnimalHandlingListView extends Model
 {
+	public const STR_EXISTS = 'exists';
+	public const STR_MISSING = 'missing';
+
     protected $table = 'animal_handling_list_view';
 
 	use AsSource, Filterable;
@@ -82,6 +85,7 @@ class AnimalHandlingListView extends Model
 	protected $casts = [
 		'id' => 'int',
 		'species_list_id' => 'int',
+		'sex_list_id' => 'int',
 		'biometry_loss_reason_list_id' => 'int',
 		'animal_handling_date' => 'datetime',
 		'place_type_list_id' => 'int',
@@ -98,11 +102,13 @@ class AnimalHandlingListView extends Model
 		'blood_sample_taken' => 'int',
 		'tooth_type_list_id' => 'int',
 		'data_entered_by_user_id' => 'int',
-		'data_input_timestamp' => 'int',
 		'animal_id' => 'int',
 		'spatial_unit_gid' => 'int',
 		'animal_removal_list_id' => 'int',
-		'animal_name' => LocalizedJsonData::class
+		'animal_name' => LocalizedJsonData::class,
+		'animal_died_at' => 'datetime',
+		'species_list_id' => 'int',
+		'sex_list_id' => 'int',
 	];
 
 	protected $fillable = [
@@ -110,25 +116,40 @@ class AnimalHandlingListView extends Model
 	];
 
 	protected $allowedSorts = [
+		'animal_id',
         'animal_status',
 		'animal_previous_status',
 		'animal_name',
+		'species_list_id',
+		'sex_list_id',
+		'animal_description',
 		'animal_handling_date',
+		'animal_died_at',
 		'place_of_removal',
         'created_at',
         'updated_at',
+		'bears_biometry_data_status'
     ];
 
 	protected $allowedFilters = [
 		'animal_status',
 		'animal_previous_status',
 		'animal_name',
+		'species_list_id',
+		'sex_list_id',
+		'animal_description',
 		'place_of_removal',
+		'bears_biometry_data_status'
 	];
 
 	public function species_list()
 	{
 		return $this->belongsTo(SpeciesList::class);
+	}
+
+	public function sex_list()
+	{
+		return $this->belongsTo(SexList::class);
 	}
 
 	public function way_of_withdrawal_list()

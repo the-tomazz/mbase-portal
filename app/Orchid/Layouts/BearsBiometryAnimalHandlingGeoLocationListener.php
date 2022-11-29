@@ -48,13 +48,18 @@ class BearsBiometryAnimalHandlingGeoLocationListener extends Listener
 			Layout::rows([
                 Map::make('bearsBiometryAnimalHandling.geo_location')
 					->title(__('Location'))
+					->required()
 					->help(__(''))
 					->zoom(7),
 
-				Label::make('bearsBiometryAnimalHandling.hunting_management_area')
+				Input::make('bearsBiometryAnimalHandling.hunting_management_area')
+					// ->disabled()
+					->required()
 					->title(__('Hunting-management area (LUO):')),
 
-				Label::make('bearsBiometryAnimalHandling.hunting_ground')
+				Input::make('bearsBiometryAnimalHandling.hunting_ground')
+					// ->disabled()
+					->required()
 					->title(__('Hunting ground'))
             ]),
 		];

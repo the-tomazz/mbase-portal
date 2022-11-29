@@ -62,6 +62,7 @@ class User extends Authenticatable
         'id',
         'name',
         'email',
+		'default_animal_status',
         'updated_at',
         'created_at',
     ];

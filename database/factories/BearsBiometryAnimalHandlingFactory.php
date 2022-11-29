@@ -27,7 +27,6 @@ class BearsBiometryAnimalHandlingFactory extends Factory
 	public function definition()
 	{
 		return [
-			'species_list_id' => SpeciesList::all()->random()->id,
 			'animal_removal_list_id' => AnimalRemovalList::all()->random()->id,
 			'licence_number' => Str::random(10),
 			'project_name' => Str::random(10),
@@ -59,7 +58,6 @@ class BearsBiometryAnimalHandlingFactory extends Factory
 			'taxidermist_name' => Str::random(10),
 			'taxidermist_surname' => Str::random(10),
 			'data_entered_by_user_id' => User::all()->random()->id,
-			'data_input_timestamp' => now(),
 			'animal_id' => Animal::all()->random()->id,
 			'hunting_ground' => Str::random(10),
 			'spatial_unit_gid' => SpatialUnit::all()->random()->id,

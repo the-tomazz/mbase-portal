@@ -6,13 +6,16 @@ use App\Models\Animal;
 use App\Models\AnimalRemovalList;
 use App\Models\BearsBiometryAnimalHandling;
 use App\Models\BearsBiometrySample;
+use App\Models\SexList;
 use App\Models\SpeciesList;
 use App\Models\ToothTypeList;
+use App\Orchid\Layouts\BearsBiometryAnimalHandlingAnimalListener;
 use App\Orchid\Layouts\BearsBiometryAnimalHandlingGeoLocationListener;
 use App\Orchid\Layouts\BearsBiometryAnimalHandlingHunterFinderSwitchListener;
 use App\Orchid\Layouts\BearsBiometryAnimalHandlingPlaceTypeListListener;
 use App\Orchid\Layouts\BearsBiometryAnimalHandlingSamplesListener;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Orchid\Support\Facades\Alert;
@@ -52,12 +55,27 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 			];
 
 			if ($animal->exists) {
-				$bearsBiometryAnimalHandling['animal_id'] = $animal->id;
+				$bearsBiometryAnimalHandling->animal_id = $animal->id;
 			}
 		}
 
+		// LOAD ANIMAL
+		if ($bearsBiometryAnimalHandling->animal_id) {
+			$bearsBiometryAnimalHandling['animal_status'] = $animal->status;
+			$bearsBiometryAnimalHandling['animal_previous_status'] = $animal->previous_status;
+			$bearsBiometryAnimalHandling['animal_died_at'] = $animal->died_at;
+			$bearsBiometryAnimalHandling['animal_name'] = $animal->name;
+			$bearsBiometryAnimalHandling['animal_species_list_id'] = $animal->species_list_id;
+			$bearsBiometryAnimalHandling['animal_sex_list_id'] = $animal->sex_list_id;
+			$bearsBiometryAnimalHandling['description'] = $animal->description;
+		} else {
+			$bearsBiometryAnimalHandling['animal_status'] = Auth::user()->default_animal_status;
+			$bearsBiometryAnimalHandling['animal_sex_list_id'] == SexList::FEMALE_SEX_ID;
+		}
+
+		// LOAD SAMPLES
 		$sampleNumber = 1;
-		foreach ($bearsBiometryAnimalHandling->samples as $sample) {
+		foreach ($bearsBiometryAnimalHandling->bearsBiometrySamples as $sample) {
 			$bearsBiometryAnimalHandling['sample_code_' . $sampleNumber] = $sample->sample_code;
 			$bearsBiometryAnimalHandling['sample_tissue_' . $sampleNumber] = $sample->sample_tissue;
 			$bearsBiometryAnimalHandling['sample_comment_' . $sampleNumber] = $sample->sample_comment;
@@ -79,7 +97,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
      */
     public function name(): ?string
     {
-        return $this->bearsBiometryAnimalHandling->exists ? __('Edit Biometry Animal Handling') : __('Creating a new Biometry Animal Handling');
+        return $this->bearsBiometryAnimalHandling->exists ? __('Edit Biometry Animal Handling') : __('Creating a new Animal Handling');
     }
 
 	/**
@@ -98,12 +116,12 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-			Button::make(__('Create Animal Handling'))
+			Button::make(__('Save Animal Handling'))
                 ->icon('pencil')
                 ->method('createOrUpdateAndDoNotAddBiometryData')
                 ->canSee(!$this->bearsBiometryAnimalHandling->exists),
 
-			Button::make(__('Create Animal Handling and add Biometry Data'))
+			Button::make(__('Save Animal Handling and add Biometry Data'))
                 ->icon('pencil')
                 ->method('createOrUpdateAndAddBiometryData')
                 ->canSee(!$this->bearsBiometryAnimalHandling->exists),
@@ -125,6 +143,28 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 		];
     }
 
+	public function asyncUpdateAnimalHandlingAnimalListenerData($triggers)
+	{
+		$animalId = $triggers['animal_id'] ?? null;
+
+		if ($animalId) {
+			$triggers['animal_status'] = $triggers['animal_status'] ?? Auth::user()->default_animal_status;
+			$triggers['animal_previous_status'] = $triggers['animal_previous_status'] ?? ( Auth::user()->default_animal_status == Animal::STR_ALIVE ? Animal::STR_ALIVE : Animal::STR_DEAD );
+		}
+
+		return [
+            'bearsBiometryAnimalHandling' 	=> new Repository([
+				'animal_id'      			=> $triggers['animal_id'] ?? null,
+                'animal_status'      		=> $triggers['animal_status'] ?? null,
+                'animal_previous_status' 	=> $triggers['animal_previous_status'] ?? null,
+				'animal_died_at' 			=> $triggers['animal_died_at'] ?? null,
+				'animal_name'      			=> $triggers['animal_name'] ?? null,
+				'animal_species_list_id'	=> $triggers['animal_species_list_id'] ?? null,
+				'animal_sex_list_id'		=> $triggers['animal_sex_list_id'] ?? null,
+				'animal_description'		=> $triggers['animal_description'] ?? null
+            ]),
+		];
+    }
     public function asyncUpdateAnimalHandlingPlaceTypeListListenerData($triggers)
     {
         return [
@@ -284,49 +324,37 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
     {
 		$preBiometryAnimalHandlingSampleListeners = [
 			Layout::columns([
-				Layout::rows([
-					// LEFT COLUMN START
-					Select::make('bearsBiometryAnimalHandling.animal_id')
-						->fromModel(Animal::class, 'name')
-						->title(__('Animal'))
-						->help(__('Please select the ID of the individual, if the animal is known.'))
-						->empty(__('<Empty>')),
-
-					Select::make('bearsBiometryAnimalHandling.species_list_id')
-						->fromModel(SpeciesList::class, 'name')
-						->title(__('Species'))
-						->required()
-						->help(__('Please select species.')),
-
-					Input::make('bearsBiometryAnimalHandling.number_of_removal_in_the_hunting_administrative_area')
-						->mask('999999999999-9999')
-						->title(__('Number and the year of removal in hunting administrative area'))
-						->help(__('Please insert number and the year of removal in hunting administrative area.')),
-
-					Select::make('bearsBiometryAnimalHandling.animal_removal_list_id')
-						->fromModel(AnimalRemovalList::class, 'name')
-						->title(__('Type of removal'))
-						->required()
-						->help(__('Please select the type of removal.')),
-
-					Input::make('bearsBiometryAnimalHandling.telemetry_uid')
-						->title(__('Ear-tag number or radio-collar (telemetry) identification'))
-						->help(__('Please describe animal-borne markings (ear-tags, collar, microchips, etc.).')),
-
-					Input::make('bearsBiometryAnimalHandling.animal_handling_date')
-						->required()
-						->type('datetime-local')
-						->title(__('Date and time')),
-						// ->value('2011-08-19T13:45:00')
-						// ->horizontal(),
-
-					Input::make('bearsBiometryAnimalHandling.place_of_removal')
-						->title(__('Geographical location/Local name'))
-						->help(__('Please insert geographical location/Local name.')),
-					// LEFT COLUMN END
-				]),
+				BearsBiometryAnimalHandlingAnimalListener::class,
 
 				BearsBiometryAnimalHandlingGeoLocationListener::class,
+			]),
+
+			Layout::rows([
+				Input::make('bearsBiometryAnimalHandling.number_of_removal_in_the_hunting_administrative_area')
+					->mask('999999999999-9999')
+					->title(__('Number and the year of removal in hunting administrative area'))
+					->help(__('Please insert number and the year of removal in hunting administrative area.')),
+
+				Select::make('bearsBiometryAnimalHandling.animal_removal_list_id')
+					->fromModel(AnimalRemovalList::class, 'name')
+					->title(__('Type of removal'))
+					->required()
+					->help(__('Please select the type of removal.')),
+
+				Input::make('bearsBiometryAnimalHandling.telemetry_uid')
+					->title(__('Ear-tag number or radio-collar (telemetry) identification'))
+					->help(__('Please describe animal-borne markings (ear-tags, collar, microchips, etc.).')),
+
+				Input::make('bearsBiometryAnimalHandling.animal_handling_date')
+					->required()
+					->type('datetime-local')
+					->title(__('Date and time of removal / handling ')),
+					// ->value('2011-08-19T13:45:00')
+					// ->horizontal(),
+
+				Input::make('bearsBiometryAnimalHandling.place_of_removal')
+					->title(__('Geographical location/Local name'))
+					->help(__('Please insert geographical location/Local name.')),
 			]),
 
 			BearsBiometryAnimalHandlingPlaceTypeListListener::class,
@@ -406,15 +434,50 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
      */
     private function createOrUpdate(Animal $animal, BearsBiometryAnimalHandling $bearsBiometryAnimalHandling, Request $request)
     {
-		Log::debug(['createOrUpdate BearsBiometryAnimalHandling', $request->get('bearsBiometryAnimalHandling')]);
+		Log::debug(['createOrUpdate 1 BearsBiometryAnimalHandling', $request->get('bearsBiometryAnimalHandling')]);
 
-        $bearsBiometryAnimalHandling->fill($request->get('bearsBiometryAnimalHandling'));
+		$bearsBiometryAnimalHandling->fill($request->get('bearsBiometryAnimalHandling'));
+
+		$animalId = $request->get('bearsBiometryAnimalHandling')['animal_id'] ?? null;
+
+		if (!$animalId) {
+			// create new animal
+			$animal = new Animal();
+
+			$isAlive = $request->get('bearsBiometryAnimalHandling')['animal_status'] == Animal::STR_ALIVE;
+
+			$animal->fill([
+				'status' => $request->get('bearsBiometryAnimalHandling')['animal_status'],
+				'name' => $isAlive ? $request->get('bearsBiometryAnimalHandling')['animal_name'] : '',
+				'species_list_id' => $request->get('bearsBiometryAnimalHandling')['animal_species_list_id'],
+				'sex_list_id' => $request->get('bearsBiometryAnimalHandling')['animal_sex_list_id'],
+				'description' => $request->get('bearsBiometryAnimalHandling')['animal_description'],
+				'died_at' => now(),
+				'previous_status' => $isAlive ? Animal::STR_DEAD : Animal::STR_DEAD
+			]);
+
+			$animal->save();
+
+			Log::debug(['***Animal', $animal]);
+
+			if (!$isAlive) {
+				$animal->fill(['name' => $animal->id]);
+				$animal->save();
+			}
+
+			Log::debug(['***** Animal', $animal]);
+
+			$bearsBiometryAnimalHandling['animal_id'] = $animal->id;
+
+			Log::debug(['***** bearsBiometryAnimalHandling', $bearsBiometryAnimalHandling]);
+		}
+
 		$bearsBiometryAnimalHandling->lat = $request->get('bearsBiometryAnimalHandling')['geo_location']['lat'];
 		$bearsBiometryAnimalHandling->lng = $request->get('bearsBiometryAnimalHandling')['geo_location']['lng'];
 		$bearsBiometryAnimalHandling->save();
 
-		if ($bearsBiometryAnimalHandling->samples()) {
-			$bearsBiometryAnimalHandling->samples()->delete();
+		if ($bearsBiometryAnimalHandling->bearsBiometrySamples()) {
+			$bearsBiometryAnimalHandling->bearsBiometrySamples()->delete();
 		}
 
 		for ($sampleNumber=1; $sampleNumber<=self::MAX_SAMPLE_NUMBER; $sampleNumber++) {
@@ -434,7 +497,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 			}
 		}
 
-		Log::debug(['bearsBiometryAnimalHandling createOrUpdate', $request->get('bearsBiometryAnimalHandling')]);
+		Log::debug(['bearsBiometryAnimalHandling createOrUpdate', $bearsBiometryAnimalHandling]);
 
         Alert::info(__('You have successfully created or updated a Biometry Animal Handling.'));
     }
@@ -450,7 +513,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
     {
 		$this->createOrUpdate($animal, $bearsBiometryAnimalHandling, $request);
 
-        return redirect()->route('platform.bearsBiometryAnimalHandling.list');
+        return redirect()->route('platform.animalHandling.list', ['filter[animal_status]' => Auth::user()->default_animal_status]);
     }
 
 	/**
@@ -475,10 +538,10 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
      */
     public function remove(BearsBiometryAnimalHandling $bearsBiometryAnimalHandling)
     {
-        $bearsBiometryAnimalHandling->delete();
+		$bearsBiometryAnimalHandling->delete();
 
         Alert::info(__('You have successfully deleted the Biometry Animal Handling.'));
 
-        return redirect()->route('platform.bearsBiometryAnimalHandling.list');
+        return redirect()->route('platform.animalHandling.list');
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Orchid\Layouts\User;
 
+use App\Models\Animal;
 use App\Models\Group;
 use App\Models\User;
 use Orchid\Screen\Actions\Button;
@@ -54,6 +55,14 @@ class UserListLayout extends Table
                 ->sort()
                 ->render(function (User $user) {
                     return $user->updated_at->toDateTimeString();
+                }),
+
+			TD::make('default_animal_status', __('Default animal status'))
+                ->sort()
+                ->render(function (User $user) {
+					return $user->default_animal_status == Animal::STR_ALIVE
+						? '<i class="text-success">●</i> ' . __('Alive')
+						: '<i class="text-danger">●</i> ' . __('Dead');
                 }),
 
 			TD::make('country', __('Country'))

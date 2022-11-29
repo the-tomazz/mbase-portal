@@ -15,9 +15,14 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         \App\Models\User::factory(10)->create();
-		\App\Models\Animal::factory(10)->create();
-		\App\Models\BearsBiometryAnimalHandling::factory(10)->create();
-		\App\Models\BearsBiometrySample::factory(20)->create();
-		\App\Models\BearsBiometryData::factory(20)->create();
+
+		\App\Models\Animal::factory(10)
+			->hasBearsBiometryAnimalHandlings(random_int(1, 3))
+			->create();
+
+		\App\Models\BearsBiometryAnimalHandling::factory(10)
+			->hasBearsBiometryData(random_int(0, 1))
+			->hasBearsBiometrySamples(random_int(0, 3))
+			->create();
     }
 }

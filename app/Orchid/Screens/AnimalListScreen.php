@@ -4,6 +4,7 @@ namespace App\Orchid\Screens;
 
 use App\Models\Animal;
 use App\Orchid\Layouts\AnimalListLayout;
+use Illuminate\Support\Facades\Auth;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Screen;
 
@@ -18,7 +19,7 @@ class AnimalListScreen extends Screen
     {
         return [
 			'animals' => Animal::filters()
-				->defaultSort('id')
+				->defaultSort('name')
 				->paginate()
 		];
     }
@@ -30,7 +31,7 @@ class AnimalListScreen extends Screen
      */
     public function name(): ?string
     {
-        return __('Animal List Screen');
+        return __('Animals');
     }
 
 	/**
@@ -49,6 +50,10 @@ class AnimalListScreen extends Screen
     public function commandBar(): iterable
     {
         return [
+			Link::make('Animal Handlings')
+				->icon('list')
+				->route('platform.animalHandling.list', ['filter[animal_status]' => Auth::user()->default_animal_status]),
+
 			Link::make('New animal handling')
                 ->icon('pencil')
                 ->route('platform.bearsBiometryAnimalHandling.edit'),

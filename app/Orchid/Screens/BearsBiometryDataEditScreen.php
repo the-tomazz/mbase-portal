@@ -36,7 +36,6 @@ class BearsBiometryDataEditScreen extends Screen
     {
 		if (!$bearsBiometryData->exists) {
 			$bearsBiometryData['bears_biometry_animal_handling_id'] = $bearsBiometryAnimalHandling->id;
-			$bearsBiometryData['sex_list_id'] = SexList::FEMALE_SEX_ID;
 		}
 
 		$bearsBiometryData->load('attachment');

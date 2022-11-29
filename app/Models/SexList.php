@@ -28,6 +28,7 @@ use Orchid\Screen\AsSource;
 class SexList extends BaseList
 {
 	public const FEMALE_SEX_ID=223;
+	public const NEUTRAL_SEX_ID=3237;
 
 	use AsSource, Filterable;
 	use SoftDeletes;

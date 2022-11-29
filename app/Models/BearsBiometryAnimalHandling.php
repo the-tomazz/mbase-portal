@@ -83,7 +83,6 @@ class BearsBiometryAnimalHandling extends Model
 
 	protected $casts = [
 		'id' => 'int',
-		'species_list_id' => 'int',
 		'biometry_loss_reason_list_id' => 'int',
 		'animal_handling_date' => 'datetime',
 		'place_type_list_id' => 'int',
@@ -100,7 +99,6 @@ class BearsBiometryAnimalHandling extends Model
 		'blood_sample_taken' => 'int',
 		'tooth_type_list_id' => 'int',
 		'data_entered_by_user_id' => 'int',
-		'data_input_timestamp' => 'int',
 		'animal_id' => 'int',
 		'spatial_unit_gid' => 'int',
 		'animal_removal_list_id' => 'int'
@@ -108,7 +106,6 @@ class BearsBiometryAnimalHandling extends Model
 
 	protected $fillable = [
 		'id',
-		'species_list_id',
 		'licence_number',
 		'project_name',
 		'telementry_uid',
@@ -159,11 +156,6 @@ class BearsBiometryAnimalHandling extends Model
 		'name',
 		'description'
 	];
-
-	public function species_list()
-	{
-		return $this->belongsTo(SpeciesList::class);
-	}
 
 	public function way_of_withdrawal_list()
 	{
@@ -220,8 +212,13 @@ class BearsBiometryAnimalHandling extends Model
 		return $this->belongsTo(SpatialUnit::class);
 	}
 
-	public function samples()
+	public function bearsBiometrySamples()
     {
         return $this->hasMany('App\Models\BearsBiometrySample');
+    }
+
+	public function bearsBiometryData()
+    {
+        return $this->hasOne('App\Models\BearsBiometryData');
     }
 }

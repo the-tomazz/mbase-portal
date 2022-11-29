@@ -1,6 +1,5 @@
 CREATE TABLE laravel.bears_biometry_animal_handling (
 	id serial primary key,
-	species_list_id INTEGER REFERENCES species_list (id),
 	animal_removal_list_id INTEGER REFERENCES animal_removal_list (id),
 	licence_number character varying(255),
 	project_name character varying(255),
@@ -32,7 +31,6 @@ CREATE TABLE laravel.bears_biometry_animal_handling (
 	taxidermist_name character varying(255),
 	taxidermist_surname character varying(255),
 	data_entered_by_user_id INTEGER REFERENCES users (id),
-	data_input_timestamp TIMESTAMPTZ NOT NULL,
 	animal_id INTEGER REFERENCES animal (id),
 	hunting_ground character varying(255),
 	spatial_unit_gid INTEGER REFERENCES mbase2_ge.spatial_units (gid),

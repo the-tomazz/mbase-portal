@@ -19,7 +19,7 @@ class BearsBiometrySampleFactory extends Factory
     public function definition()
     {
         return [
-            'bears_biometry_animal_handling_id' => BearsBiometryAnimalHandling::all()->random()->id,
+            // 'bears_biometry_animal_handling_id' => BearsBiometryAnimalHandling::all()->random()->id,
 			'sample_code' => Str::random(10),
 			'sample_tissue' => Str::random(10),
 			'sample_comment' => Str::random(20)

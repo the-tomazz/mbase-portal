@@ -45,13 +45,17 @@ class Animal extends Model
 		'name' => LocalizedJsonData::class,
 		'description' => LocalizedJsonData::class,
 		'died_at' => 'datetime',
+		'species_list_id' => 'int',
+		'sex_list_id' => 'int'
 	];
 
 	protected $fillable = [
 		'status',
 		'previous_status',
 		'name',
-		'description'
+		'description',
+		'species_list_id',
+		'sex_list_id'
 	];
 
 	protected $allowedFilters = [
@@ -60,13 +64,16 @@ class Animal extends Model
 		'status',
 		'name',
 		'description',
-		'died_at'
+		'died_at',
+		'species_list_id',
+		'sex_list_id'
 	];
 
 	/**
      * @var array
      */
     protected $allowedSorts = [
+		'id',
         'status',
 		'previous_status',
         'name',
@@ -74,10 +81,27 @@ class Animal extends Model
 		'died_at',
         'created_at',
         'updated_at',
+		'species_list_id',
+		'sex_list_id'
     ];
 
-	public function bears_biometry_animal_handling()
+	public function species_list()
 	{
-		return $this->hasOne(BearsBiometryAnimalHandling::class);
+		return $this->belongsTo(SpeciesList::class);
+	}
+
+	public function sex_list()
+	{
+		return $this->belongsTo(SexList::class);
+	}
+
+	public function bears_biometry_animal_handlings()
+	{
+		return $this->hasMany(BearsBiometryAnimalHandling::class);
+	}
+
+	public function bearsBiometryAnimalHandlings()
+	{
+		return $this->hasMany(BearsBiometryAnimalHandling::class);
 	}
 }

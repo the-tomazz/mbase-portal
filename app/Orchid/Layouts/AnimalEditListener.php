@@ -3,6 +3,8 @@
 namespace App\Orchid\Layouts;
 
 use App\Models\Animal;
+use App\Models\SexList;
+use App\Models\SpeciesList;
 use Illuminate\Support\Facades\Log;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\Select;
@@ -25,10 +27,13 @@ class AnimalEditListener extends Listener
      * @var string[]
      */
     protected $targets = [
+		'animal.id',
 		'animal.status',
         'animal.previous_status',
 		'animal.died_at',
 		'animal.name',
+		'animal.species_list_id',
+		'animal.sex_list_id',
 		'animal.description'
 	];
 
@@ -52,6 +57,10 @@ class AnimalEditListener extends Listener
 
         return [
 			Layout::rows([
+				Input::make('animal.id')
+					->title(__('Animal ID'))
+					->disabled(),
+
 				Select::make('animal.status')
 					->title('Status')
 					->options([
@@ -75,9 +84,19 @@ class AnimalEditListener extends Listener
 				Input::make('animal.name')
 					->title('Name'),
 
+				Select::make('animal.species_list_id')
+					->fromModel(SpeciesList::class, 'name')
+					->title(__('Species'))
+					->help(__('Please select species.')),
+
+				Select::make('animal.sex_list_id')
+					->fromModel(SexList::class, 'name')
+					->title(__('Sex'))
+					->help(__('Please select sex.')),
+
 				Input::make('animal.description')
 					->title('Note'),
-            ]),
+            ])// ->title($this->query->get('animal.id') ? __('Animal ID: ') . $this->query->get('animal.id') : ''),
 		];
     }
 }

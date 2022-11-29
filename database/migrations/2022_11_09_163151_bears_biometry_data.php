@@ -19,7 +19,6 @@ return new class extends Migration
 				$table->id();
 
 				$table->unsignedInteger('bears_biometry_animal_handling_id');
-				$table->unsignedInteger('sex_list_id');
 				$table->unsignedInteger('age');
 				$table->float('masa_bruto');
 				$table->float('masa_neto');
@@ -89,12 +88,6 @@ return new class extends Migration
 				$table->foreign('bears_biometry_animal_handling_id')
 					->references('id')
 					->on('bears_biometry_animal_handling')
-					->onUpdate('cascade')
-					->onDelete('cascade');
-
-				$table->foreign('sex_list_id')
-					->references('id')
-					->on('sex_list')
 					->onUpdate('cascade')
 					->onDelete('cascade');
 

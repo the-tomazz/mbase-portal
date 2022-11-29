@@ -1,19 +1,3 @@
-create table laravel.animal
-(
-    id          serial primary key,
-	status		varchar(16),
-	previous_status	varchar(16),
-    title       varchar(128),
-    value       text,
-    name        jsonb,
-    description jsonb,
-	created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-	updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-	died_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    deleted_at TIMESTAMPTZ DEFAULT NULL
-);
-
-
 create table laravel.bear_territory_type_list
 (
     id          serial primary key,
@@ -237,6 +221,23 @@ INSERT INTO laravel.way_of_withdrawal_list (id, title, value, name, description)
 INSERT INTO laravel.way_of_withdrawal_list (id, title, value, name, description) VALUES (135, 'way_of_withdrawal', 'Loss', '{"en":"Loss","sl":"Izguba","default":"Loss"}', '{"hr":"","en":"","de":"","it":"","sl":"","default":""}');
 INSERT INTO laravel.way_of_withdrawal_list (id, title, value, name, description) VALUES (136, 'way_of_withdrawal', 'Live-capture', '{"en":"Radio-telemetry","sl":"Radio-telemetrija","default":"Radio-telemetry"}', '{"hr":"","en":"Animal released back to the same population alive after radio-collaring","de":"","it":"","sl":"Žival po opremljanju s telemetrično ovratnico vrnjena živa v populacijo","default":"Animal released back to the same population alive after radio-collaring"}');
 INSERT INTO laravel.way_of_withdrawal_list (id, title, value, name, description) VALUES (3661, 'way_of_withdrawal', 'Translocation out of population', '{"en":"Translocation out of population","sl":"Izselitev iz populacije","default":"Translocation out of population"}', '{"hr":"","en":"Translocation to another population, translocation into an enclosure (alive) - individual plays no role in the source population anymore","de":"","it":"","sl":"Preselitev v drugo populacijo, preselitev v oboro ali ujetništvo - osebek nima več funkcije v izvorni populaciji","default":"Translocation to another population, translocation into an enclosure (alive) - individual plays no role in the source population anymore"}');
+
+create table laravel.animal
+(
+    id          serial primary key,
+	species_list_id INTEGER REFERENCES species_list (id),
+	sex_list_id INTEGER REFERENCES sex_list (id),
+	status		varchar(16),
+	previous_status	varchar(16),
+    title       varchar(128),
+    value       text,
+    name        jsonb,
+    description jsonb,
+	created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+	updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+	died_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    deleted_at TIMESTAMPTZ DEFAULT NULL
+);
 
 ALTER TABLE laravel.animal DROP COLUMN value;
 ALTER TABLE laravel.bear_territory_type_list DROP COLUMN value;

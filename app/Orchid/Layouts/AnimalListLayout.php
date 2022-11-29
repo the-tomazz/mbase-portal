@@ -3,6 +3,8 @@
 namespace App\Orchid\Layouts;
 
 use App\Models\Animal;
+use App\Models\SexList;
+use App\Models\SpeciesList;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\Select;
@@ -31,11 +33,37 @@ class AnimalListLayout extends Table
     protected function columns(): iterable
     {
         return [
-			TD::make('id')
+			TD::make('id', "Animal ID")
+				->render(function (Animal $animal) {
+					return Link::make($animal->id)
+					->route('platform.animal.edit', $animal);
+				})
+				->sort(),
+
+			TD::make('name', "Name")
+				->render(function (Animal $animal) {
+					return Link::make($animal->name)
+					->route('platform.animal.edit', $animal);
+				})
 				->sort()
-				->filter(
-					Input::make()->value(1)
-				),
+				->filter(Input::make()),
+
+			TD::make('species_list_id', "Species")
+				->render(function (Animal $animal) {
+					return Link::make($animal->species_list->name)
+					->route('platform.animal.edit', $animal);
+				})
+				->sort()
+				->filter(Select::make()->fromModel(SpeciesList::class, 'name')->empty(__('<Empty>'))),
+
+			TD::make('sex_list_id', "Sex")
+				->render(function (Animal $animal) {
+					return Link::make($animal->sex_list->name)
+					->route('platform.animal.edit', $animal);
+				})
+				->sort()
+				->filter(Select::make()->fromModel(SexList::class, 'name')->empty(__('<Empty>'))),
+
 			TD::make('status', __("Status"))
 				->render(function (Animal $animal) {
 					return $animal->status == Animal::STR_ALIVE
@@ -46,33 +74,27 @@ class AnimalListLayout extends Table
 				->filter(Select::make()->options([
 					Animal::STR_ALIVE => __('Alive'),
 					Animal::STR_DEAD => __('Dead'),
-				])),
-			TD::make('name', "Name")
-				->render(function (Animal $animal) {
-					return Link::make($animal->name)
-					->route('platform.animal.edit', $animal);
-				})
-				->sort()
-				->filter(Input::make()->value('lk0bexsTDy')),
+				])->empty(__('<Empty>'))),
+
 			TD::make('description', __("Description"))
 				->sort()
 				->filter(Input::make()),
 
 			TD::make('died_at', __('Date of death'))
 				->render(function ($model) {
-					return $model->died_at->toDateTimeString();
+					return $model->died_at->toDateString();
 				})
 				->sort(),
 
 			TD::make('created_at', __('Date of creation'))
 				->render(function ($model) {
-					return $model->created_at->toDateTimeString();
+					return $model->created_at->toDateString();
 				})
 				->sort(),
 
 			TD::make('updated_at', __('Update date'))
 				->render(function ($model) {
-					return $model->updated_at->toDateTimeString();
+					return $model->updated_at->toDateString();
 				})
 				->sort(),
 		];
