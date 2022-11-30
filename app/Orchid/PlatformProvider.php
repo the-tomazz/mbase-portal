@@ -67,13 +67,33 @@ class PlatformProvider extends OrchidServiceProvider
 						->icon('bag')
 						->href('/mbase2/map'),
 
-					Menu::make('Animal Handlings')
+					Menu::make('Animal Handlings (Biometry)')
 						->icon('list')
 						->route('platform.animalHandling.list', ['filter[animal_status]' => Auth::user()->default_animal_status]),
 
 					Menu::make('Genetic samples')
 						->icon('list')
-						->href('/mbase2/modules/genetics/samples/sample'),
+						->href('/mbase2/modules/gensam'),
+
+					Menu::make('Camera Trapping')
+						->icon('list')
+						->href('/mbase2/modules/ct'),
+
+					Menu::make('Signs Of Presence')
+						->icon('list')
+						->href('/mbase2/modules/sop'),
+
+					Menu::make('Counting')
+						->icon('list')
+						->href('/mbase2/modules/cnt'),
+
+					Menu::make('Damages')
+						->icon('list')
+						->href('/mbase2/modules/dmg'),
+
+					Menu::make('Interventions')
+						->icon('list')
+						->href('/mbase2/modules/interventions'),
 
 					Menu::make('Some other link for the future use')->icon('heart'),
 				]),

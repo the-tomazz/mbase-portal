@@ -21,13 +21,13 @@ class AnimalFactory extends Factory
     public function definition()
     {
 		$val = Str::random(10);
+		$isAlive = random_int(0, 1) > 0;
 
-		$is_alive = random_int(0, 1) > 0;
         return [
-			'status' => $is_alive ? Animal::STR_ALIVE : Animal::STR_DEAD,
-			'previous_status' => $is_alive && ( random_int(0, 1) > 0 ) ? Animal::STR_ALIVE : Animal::STR_DEAD,
+			'status' => $isAlive ? Animal::STR_ALIVE : Animal::STR_DEAD,
+			'previous_status' => $isAlive && ( random_int(0, 1) > 0 ) ? Animal::STR_ALIVE : Animal::STR_DEAD,
 			'died_at' => date("Y-m-d H:i:s", mt_rand(1262055681,1262055681)),
-			'name' => $val,
+			'name' => 'numberSameAsID',
 			'description' => $val,
 			'species_list_id' => SpeciesList::all()->random()->id,
 			'sex_list_id' => SexList::all()->random()->id

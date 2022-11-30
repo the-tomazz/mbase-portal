@@ -53,16 +53,38 @@ return new class extends Migration
 			[ 'slug' => 'SI-OEGZS-08',  'name' => '{"sl":"BREŽICE"}', 'group_type_id' => 3, 'created_at' => now(), 'updated_at' => now() ],
 			[ 'slug' => 'SI-OEGZS-04',  'name' => '{"sl":"LJUBLJANA"}', 'group_type_id' => 3, 'created_at' => now(), 'updated_at' => now() ],
 			[ 'slug' => 'SI-OEGZS-06',  'name' => '{"sl":"KOČEVJE"}', 'group_type_id' => 3, 'created_at' => now(), 'updated_at' => now() ],
-
-			// PER MODULE ROLES
-			[ 'slug' => 'MBASE2-MODULE-ADMINS',  'name' => '{"sl":"Module admins"}', 'group_type_id' => 2, 'created_at' => now(), 'updated_at' => now() ],
-			[ 'slug' => 'MBASE2-MODULE-EDITORS',  'name' => '{"sl":"Module data editors"}', 'group_type_id' => 2, 'created_at' => now(), 'updated_at' => now() ],
-			[ 'slug' => 'MBASE2-MODULE-CONSUMERS',  'name' => '{"sl":"Module data consumers"}', 'group_type_id' => 2, 'created_at' => now(), 'updated_at' => now() ],
-			[ 'slug' => 'MBASE2-MODULE-READERS',  'name' => '{"sl":"Module data readers"}', 'group_type_id' => 2, 'created_at' => now(), 'updated_at' => now() ],
-			[ 'slug' => 'MBASE2-MODULE-DEPUTIES',  'name' => '{"sl":"Module deputies"}', 'group_type_id' => 2, 'created_at' => now(), 'updated_at' => now() ],
-			[ 'slug' => 'MBASE2-MODULE-INTERVENTORS',  'name' => '{"sl":"Module interventors"}', 'group_type_id' => 2, 'created_at' => now(), 'updated_at' => now() ],
-
 		]);
+
+		$modules = [
+			'gensam' => 'Genetic samples',
+			'ct' => 'Camera Trapping',
+			'sop' => 'Signs Of Presence',
+			'cnt' => 'Counting',
+			'dmg' => 'Damages',
+			'interventions' => 'Interventions',
+		];
+
+		$perModuleRoles = [
+			'admins' => 'admins',
+			'editors' => 'data editors',
+			'consumers' => 'data consumers',
+			'readers' => 'data readers',
+			'deputies' => 'deputies',
+			'interventors' => 'interventors'
+		];
+
+		$data = [];
+		foreach ($modules as $moduleSlug => $moduleTitle) {
+			foreach ($perModuleRoles as $perModuleRoleSlug => $perModuleRoleTitle) {
+				$data[] = [
+					'slug' => 'mbase2-' . $moduleSlug . '-' . $perModuleRoleSlug,
+					'name' => '{"en":"' . $moduleTitle . ' ' . $perModuleRoleTitle . '", "sl":"' . $moduleTitle . ' ' . $perModuleRoleTitle . '"}',
+					'group_type_id' => 2, 'created_at' => now(), 'updated_at' => now()
+				];
+			}
+		}
+
+		DB::table('groups')->insert($data);
 	}
 
 	/**
