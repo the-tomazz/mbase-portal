@@ -38,16 +38,18 @@ class BearsBiometryDataEditScreen extends Screen
     {
 		if (!$bearsBiometryData->exists) {
 			$bearsBiometryData['bears_biometry_animal_handling_id'] = $bearsBiometryAnimalHandling->id;
-			$bearsBiometryData['bears_biometry_animal_handling_animal_handling_date'] = $bearsBiometryAnimalHandling->animal_handling_date;
-			$bearsBiometryData['bears_biometry_animal_handling_place_of_removal'] = $bearsBiometryAnimalHandling->place_of_removal;
-			$bearsBiometryData['bears_biometry_animal_handling_animal_id'] = $bearsBiometryAnimalHandling->animal->id;
-			$bearsBiometryData['bears_biometry_animal_handling_animal_name'] = $bearsBiometryAnimalHandling->animal->name;
-			$bearsBiometryData['bears_biometry_animal_handling_animal_species_list_name'] = $bearsBiometryAnimalHandling->animal->species_list->name;
-			$bearsBiometryData['sex_list_id'] = $bearsBiometryAnimalHandling->animal->sex_list_id;
-			$bearsBiometryData['bears_biometry_animal_handling_animal_status'] = $bearsBiometryAnimalHandling->animal->status == Animal::STR_ALIVE
-						? __('Alive')
-						: __('Dead');
 		}
+
+		$bearsBiometryData['bears_biometry_animal_handling_animal_handling_date'] = $bearsBiometryAnimalHandling->animal_handling_date;
+		$bearsBiometryData['bears_biometry_animal_handling_place_of_removal'] = $bearsBiometryAnimalHandling->place_of_removal;
+		$bearsBiometryData['bears_biometry_animal_handling_animal_id'] = $bearsBiometryAnimalHandling->animal->id;
+		$bearsBiometryData['bears_biometry_animal_handling_animal_name'] = $bearsBiometryAnimalHandling->animal->name;
+		$bearsBiometryData['bears_biometry_animal_handling_animal_species_list_name'] = $bearsBiometryAnimalHandling->animal->species_list->name;
+		$bearsBiometryData['sex_list_id'] = $bearsBiometryAnimalHandling->animal->sex_list_id;
+		$bearsBiometryData['bears_biometry_animal_handling_animal_status'] = $bearsBiometryAnimalHandling->animal->status == Animal::STR_ALIVE
+					? __('Alive')
+					: __('Dead');
+
 
 		$bearsBiometryData->load('attachment');
 
@@ -127,37 +129,38 @@ class BearsBiometryDataEditScreen extends Screen
 		}
 
         return [
-			Layout::rows([
-				Label::make('bearsBiometryData.bears_biometry_animal_handling_animal_id')
-					->title(__('Animal ID'))
-					->disabled(),
+			Layout::columns([
+				Layout::rows([
+					Label::make('bearsBiometryData.bears_biometry_animal_handling_animal_id')
+						->title(__('Animal ID'))
+						->disabled(),
 
-				Label::make('bearsBiometryData.bears_biometry_animal_handling_animal_name')
-					->title(__('Animal name'))
-					->disabled(),
+					Label::make('bearsBiometryData.bears_biometry_animal_handling_animal_name')
+						->title(__('Animal name'))
+						->disabled(),
 
-				Label::make('bearsBiometryData.bears_biometry_animal_handling_animal_species_list_name')
-					->title(__('Animal species'))
-					->disabled(),
+					Label::make('bearsBiometryData.bears_biometry_animal_handling_animal_species_list_name')
+						->title(__('Animal species'))
+						->disabled(),
 
-				Label::make('bearsBiometryData.bears_biometry_animal_handling_animal_status')
-					->title(__('Animal status'))
-					->disabled(),
+					Label::make('bearsBiometryData.bears_biometry_animal_handling_animal_status')
+						->title(__('Animal status'))
+						->disabled(),
+				])->title(__('Animal')),
+				Layout::rows([
+					Label::make('bearsBiometryData.bears_biometry_animal_handling_id')
+						->title(__('Animal handling ID'))
+						->disabled(),
+
+					Label::make('bearsBiometryData.bears_biometry_animal_handling_animal_handling_date')
+						->title(__('Animal handling date'))
+						->disabled(),
+
+					Label::make('bearsBiometryData.bears_biometry_animal_handling_place_of_removal')
+						->title(__('Place of removal / handling'))
+						->disabled(),
+				])->title(__('Animal handling')),
 			]),
-			Layout::rows([
-				Label::make('bearsBiometryData.bears_biometry_animal_handling_id')
-					->title(__('Animal handling ID'))
-					->disabled(),
-
-				Label::make('bearsBiometryData.bears_biometry_animal_handling_animal_handling_date')
-					->title(__('Animal handling date'))
-					->disabled(),
-
-				Label::make('bearsBiometryData.bears_biometry_animal_handling_place_of_removal')
-					->title(__('Place of removal / handling'))
-					->disabled(),
-			]),
-
 
 			BearsBiometryDataSexListListener::class,
 

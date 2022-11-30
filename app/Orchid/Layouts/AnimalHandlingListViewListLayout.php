@@ -92,9 +92,11 @@ class AnimalHandlingListViewListLayout extends Table
 			TD::make('bears_biometry_data_status', "Biometry data")
 				->render(function (AnimalHandlingListView $animalHandlingListView) {
 					return $animalHandlingListView->bears_biometry_data_status == AnimalHandlingListView::STR_EXISTS
-						? Link::make(__('Biometry data') . ' ' . $animalHandlingListView->bears_biometry_data_id)
-							->route('platform.bearsBiometryData.edit', $animalHandlingListView->bears_biometry_data_id)
-						: $animalHandlingListView->bears_biometry_data_id;
+						? Link::make(__('Exists'))
+							->route('platform.bearsBiometryData.edit', [ $animalHandlingListView, $animalHandlingListView->bears_biometry_data_id ])
+						: Link::make(__('Missing'))
+							->route('platform.bearsBiometryData.edit', $animalHandlingListView );
+
 				})
 				->sort()
 				->filter(Select::make()->options([
