@@ -47,6 +47,7 @@ class BearsBiometryDataSexListListener extends Listener
 		Log::debug(['BearsBiometryDataSexListListener', $this->query->get('bearsBiometryData')]);
 
 		$isFemale = isset($this->query) ? $this->query->get('bearsBiometryData.sex_list_id') == SexList::FEMALE_SEX_ID : true;
+		$isNeutral = isset($this->query) ? $this->query->get('bearsBiometryData.sex_list_id') == SexList::NEUTRAL_SEX_ID : true;
 
 		return [
 			Layout::rows([
@@ -70,20 +71,20 @@ class BearsBiometryDataSexListListener extends Listener
 						->mask('99')
 						->title(__('Length of os penis (penis bone - baculum)'))
 						->help(__('Insert Length of os penis (penis bone - baculum) of the animal (0-20 cm)'))
-						->canSee(!$isFemale),
+						->canSee(!$isFemale && !$isNeutral),
 
 					Input::make('bearsBiometryData.dolzina_seskov')
 						->mask('99')
 						->title(__('Nipple length'))
 						->help(__('Insert Nipple length (0-15 cm)'))
-						->canSee($isFemale),
+						->canSee($isFemale && !$isNeutral),
 
 					Select::make('bearsBiometryData.teats_wear_list_id')
 						->fromModel(TeatsWearList::class, 'name')
 						->title(__('Nipple use '))
 						->required()
 						->help(__('Select nipple use'))
-						->canSee($isFemale)
+						->canSee($isFemale && !$isNeutral)
 				])->autoWidth(),
 				// Sexual characteristics end
 

@@ -2,6 +2,7 @@
 
 namespace App\Orchid\Screens;
 
+use App\Models\Animal;
 use App\Models\BearsBiometryAnimalHandling;
 use App\Models\BearsBiometryData;
 use App\Models\CollarList;
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\Log;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Fields\Group;
 use Orchid\Screen\Fields\Input;
+use Orchid\Screen\Fields\Label;
 use Orchid\Screen\Fields\Select;
 use Orchid\Screen\Fields\TextArea;
 use Orchid\Screen\Fields\Upload;
@@ -36,6 +38,15 @@ class BearsBiometryDataEditScreen extends Screen
     {
 		if (!$bearsBiometryData->exists) {
 			$bearsBiometryData['bears_biometry_animal_handling_id'] = $bearsBiometryAnimalHandling->id;
+			$bearsBiometryData['bears_biometry_animal_handling_animal_handling_date'] = $bearsBiometryAnimalHandling->animal_handling_date;
+			$bearsBiometryData['bears_biometry_animal_handling_place_of_removal'] = $bearsBiometryAnimalHandling->place_of_removal;
+			$bearsBiometryData['bears_biometry_animal_handling_animal_id'] = $bearsBiometryAnimalHandling->animal->id;
+			$bearsBiometryData['bears_biometry_animal_handling_animal_name'] = $bearsBiometryAnimalHandling->animal->name;
+			$bearsBiometryData['bears_biometry_animal_handling_animal_species_list_name'] = $bearsBiometryAnimalHandling->animal->species_list->name;
+			$bearsBiometryData['sex_list_id'] = $bearsBiometryAnimalHandling->animal->sex_list_id;
+			$bearsBiometryData['bears_biometry_animal_handling_animal_status'] = $bearsBiometryAnimalHandling->animal->status == Animal::STR_ALIVE
+						? __('Alive')
+						: __('Dead');
 		}
 
 		$bearsBiometryData->load('attachment');
@@ -117,12 +128,36 @@ class BearsBiometryDataEditScreen extends Screen
 
         return [
 			Layout::rows([
-				Select::make('bearsBiometryData.bears_biometry_animal_handling_id')
-					->fromModel(BearsBiometryAnimalHandling::class, 'id')
-					->title(__('Animal handling ID'))
-					->required()
-					->help(__('Please Insert animal handling.')),
+				Label::make('bearsBiometryData.bears_biometry_animal_handling_animal_id')
+					->title(__('Animal ID'))
+					->disabled(),
+
+				Label::make('bearsBiometryData.bears_biometry_animal_handling_animal_name')
+					->title(__('Animal name'))
+					->disabled(),
+
+				Label::make('bearsBiometryData.bears_biometry_animal_handling_animal_species_list_name')
+					->title(__('Animal species'))
+					->disabled(),
+
+				Label::make('bearsBiometryData.bears_biometry_animal_handling_animal_status')
+					->title(__('Animal status'))
+					->disabled(),
 			]),
+			Layout::rows([
+				Label::make('bearsBiometryData.bears_biometry_animal_handling_id')
+					->title(__('Animal handling ID'))
+					->disabled(),
+
+				Label::make('bearsBiometryData.bears_biometry_animal_handling_animal_handling_date')
+					->title(__('Animal handling date'))
+					->disabled(),
+
+				Label::make('bearsBiometryData.bears_biometry_animal_handling_place_of_removal')
+					->title(__('Place of removal / handling'))
+					->disabled(),
+			]),
+
 
 			BearsBiometryDataSexListListener::class,
 

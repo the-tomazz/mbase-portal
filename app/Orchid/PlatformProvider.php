@@ -63,23 +63,18 @@ class PlatformProvider extends OrchidServiceProvider
 			Menu::make('MBase2L menu')
 				->icon('code')
 				->list([
+					Menu::make('Map')
+						->icon('bag')
+						->href('/mbase2/map'),
+
 					Menu::make('Animal Handlings')
 						->icon('list')
 						->route('platform.animalHandling.list', ['filter[animal_status]' => Auth::user()->default_animal_status]),
 
-					Menu::make('Biometry Samples')
-						->icon('list')
-						->route('platform.bearsBiometrySample.list'),
-
-					Menu::make('Map')
-						->icon('bag')
-						->href('/mbase2/map')
-						->title('Map'),
-
 					Menu::make('Genetic samples')
-						->icon('bag')
-						->href('/mbase2/modules/genetics/samples/sample')
-						->title('Genetic samples'),
+						->icon('list')
+						->href('/mbase2/modules/genetics/samples/sample'),
+
 					Menu::make('Some other link for the future use')->icon('heart'),
 				]),
 
