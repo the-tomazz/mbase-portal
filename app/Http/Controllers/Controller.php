@@ -10,15 +10,16 @@ use Illuminate\Routing\Controller as BaseController;
 
 class Controller extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+	use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function index()
-    {
+	public function index()
+	{
 		$isAdmin = false;
 		$user = auth()->user();
-		if($user != null){
+		if ($user != null) {
 			$isAdmin = $user->permissions != null ? $user->permissions["mbase2l.admin"] : false;
 		}
-        return view('dashboard', compact('isAdmin'));
-    }
+
+		return view('dashboard', compact('isAdmin'));
+	}
 }

@@ -3,27 +3,84 @@
 	<div class="mx-auto px-4 sm:px-8 lg:px-12">
 		<div class="flex justify-between h-16">
 			<div class="flex">
+				<div class="hidden sm:flex sm:items-center sm:ml-6 sm:mr-6">
+					<x-dropdown align="left" width="48">
+						<x-slot name="trigger">
+							<button
+								class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
+								<img src="/img/menu.png" alt="Menu" class="max-h-5" />
+							</button>
+						</x-slot>
+
+						<x-slot name="content">
+							<x-dropdown-link :href="route('home')" :hidden="request()->routeIs('home')">
+								{{ __('Dashboard') }}
+							</x-dropdown-link>
+
+							@hasAccess('platform.systems.users')
+							<x-dropdown-link :href="route('platform.systems.users')"
+								:hidden="request()->routeIs('platform.systems.users')">
+								{{ __('Admin dashboard') }}
+							</x-dropdown-link>
+							@endhasAccess
+
+							<hr />
+
+							<x-dropdown-link href="/mbase2/map">
+								{{ __('Map') }}
+							</x-dropdown-link>
+
+							<x-dropdown-link
+								:href="route('platform.animalHandling.list', ['filter[animal_status]' => Auth::user()?->default_animal_status])">
+								{{ __('Animal Handlings (Biometry)') }}
+							</x-dropdown-link>
+
+							@if(Auth::user() && Auth::user()->isInGroup('mbase2', 'gensam2'))
+							<x-dropdown-link href="/mbase2/modules/gensam">
+								{{ __('Genetic samples') }}
+							</x-dropdown-link>
+							@endif
+
+
+							@if(Auth::user() && Auth::user()->isInGroup('mbase2', 'ct'))
+							<x-dropdown-link href="/mbase2/modules/ct">
+								{{ __('Camera Trapping') }}
+							</x-dropdown-link>
+							@endif
+
+							@if(Auth::user() && Auth::user()->isInGroup('mbase2', 'sop'))
+							<x-dropdown-link href="/mbase2/modules/sop">
+								{{ __('Signs Of Presence') }}
+							</x-dropdown-link>
+							@endif
+
+							@if(Auth::user() && Auth::user()->isInGroup('mbase2', 'cnt'))
+							<x-dropdown-link href="/mbase2/modules/cnt">
+								{{ __('Counting') }}
+							</x-dropdown-link>
+							@endif
+
+							@if(Auth::user() && Auth::user()->isInGroup('mbase2', 'dmg'))
+							<x-dropdown-link href="/mbase2/modules/dmg">
+								{{ __('Damages') }}
+							</x-dropdown-link>
+							@endif
+
+							@if(Auth::user() && Auth::user()->isInGroup('mbase2', 'interventions'))
+							<x-dropdown-link href="/mbase2/modules/interventions">
+								{{ __('Interventions') }}
+							</x-dropdown-link>
+							@endif
+						</x-slot>
+					</x-dropdown>
+				</div>
+
 				<!-- Logo -->
 				<div class="shrink-0 flex items-center">
 					<a href="{{ route('home') }}">
 						<img src="/img/headline_logos.jpg" alt="Logos" class="">
 					</a>
 				</div>
-
-				<!-- Navigation Links -->
-				<div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-					<x-nav-link :href="route('home')" :active="request()->routeIs('home')">
-						{{ __('Dashboard') }}
-					</x-nav-link>
-				</div>
-				@hasAccess('platform.systems.users')
-				<div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-					<x-nav-link :href="route('platform.systems.users')"
-						:active="request()->routeIs('platform.systems.users')">
-						{{ __('Admin') }}
-					</x-nav-link>
-				</div>
-				@endhasAccess
 			</div>
 
 
@@ -61,7 +118,7 @@
 					<x-slot name="trigger">
 						<button
 							class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
-							<div>{{ Auth::user()->name }}</div>
+							<div>{{ Auth::user() ? Auth::user()->name : null }}</div>
 
 							<div class="ml-1">
 								<svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
@@ -124,8 +181,8 @@
 		<div class="pt-4 pb-1 border-t border-gray-200">
 			@auth
 			<div class="px-4">
-				<div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-				<div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+				<div class="font-medium text-base text-gray-800">{{ Auth::user() ? Auth::user()->name : null }}</div>
+				<div class="font-medium text-sm text-gray-500">{{ Auth::user() ? Auth::user()->email : null}}</div>
 			</div>
 
 

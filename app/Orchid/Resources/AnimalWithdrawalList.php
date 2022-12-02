@@ -8,13 +8,12 @@ use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Sight;
 use Orchid\Screen\TD;
 
-class WayOfWithdrawalList extends BaseList
+class AnimalWithdrawalList extends BaseList
 {
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var string
-     */
-    public static $model = \App\Models\WayOfWithdrawalList::class;
-
+	/**
+	 * The model the resource corresponds to.
+	 *
+	 * @var string
+	 */
+	public static $model = \App\Models\WayOfWithdrawalList::class;
 }
