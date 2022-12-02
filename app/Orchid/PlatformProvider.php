@@ -29,70 +29,6 @@ class PlatformProvider extends OrchidServiceProvider
 	public function registerMainMenu(): array
 	{
 		$menu = [
-			Menu::make('Map')
-				->icon('bag')
-				->href('/mbase2/map'),
-
-			Menu::make('Animal Handlings (Biometry)')
-				->icon('list')
-				->route('platform.animalHandling.list', ['filter[animal_status]' => Auth::user()->default_animal_status])
-		];
-
-		if (Auth::user()->isInGroup('mbase2', 'gensam2')) {
-			array_push(
-				$menu,
-				Menu::make('Genetic samples')
-					->icon('list')
-					->href('/mbase2/modules/gensam')
-			);
-		}
-
-		if (Auth::user()->isInGroup('mbase2', 'gensam2')) {
-			array_push(
-				$menu,
-				Menu::make('Camera Trapping')
-					->icon('list')
-					->href('/mbase2/modules/ct')
-			);
-		}
-
-		if (Auth::user()->isInGroup('mbase2', 'gensam2')) {
-			array_push(
-				$menu,
-				Menu::make('Signs Of Presence')
-					->icon('list')
-					->href('/mbase2/modules/sop')
-			);
-		}
-
-		if (Auth::user()->isInGroup('mbase2', 'gensam2')) {
-			array_push(
-				$menu,
-				Menu::make('Counting')
-					->icon('list')
-					->href('/mbase2/modules/cnt')
-			);
-		}
-
-		if (Auth::user()->isInGroup('mbase2', 'gensam2')) {
-			array_push(
-				$menu,
-				Menu::make('Damages')
-					->icon('list')
-					->href('/mbase2/modules/dmg')
-			);
-		}
-
-		if (Auth::user()->isInGroup('mbase2', 'gensam2')) {
-			array_push(
-				$menu,
-				Menu::make('Interventions')
-					->icon('list')
-					->href('/mbase2/modules/interventions')
-			);
-		}
-
-		return [
 			Menu::make(__('Dashboard'))
 				->icon('monitor')
 				->route('home')
@@ -109,10 +45,57 @@ class PlatformProvider extends OrchidServiceProvider
 				->route('platform.systems.roles')
 				->permission('platform.systems.roles'),
 
-			Menu::make('MBase2L menu')
-				->icon('code')
-				->list($menu),
+			//
+
+			Menu::make('Map')
+				->icon('bag')
+				->title(__('Mbase2L'))
+				->href('/mbase2/map'),
+
+			Menu::make('Animal Handlings (Biometry)')
+				->icon('list')
+				->route('platform.animalHandling.list', ['filter[animal_status]' => Auth::user()->default_animal_status])
+
 		];
+
+
+		if (Auth::user()->isInGroup('mbase2', 'gensam2')) {
+			$menu[] = Menu::make('Genetic samples')
+				->icon('list')
+				->href('/mbase2/modules/gensam');
+		}
+
+		if (Auth::user()->isInGroup('mbase2', 'gensam2')) {
+			$menu[] = Menu::make('Camera Trapping')
+				->icon('list')
+				->href('/mbase2/modules/ct');
+		}
+
+		if (Auth::user()->isInGroup('mbase2', 'gensam2')) {
+			$menu[] = Menu::make('Signs Of Presence')
+				->icon('list')
+				->href('/mbase2/modules/sop');
+		}
+
+		if (Auth::user()->isInGroup('mbase2', 'gensam2')) {
+			$menu[] = Menu::make('Counting')
+				->icon('list')
+				->href('/mbase2/modules/cnt');
+		}
+
+		if (Auth::user()->isInGroup('mbase2', 'gensam2')) {
+			$menu[] = Menu::make('Damages')
+				->icon('list')
+				->href('/mbase2/modules/dmg');
+		}
+
+		if (Auth::user()->isInGroup('mbase2', 'gensam2')) {
+			$menu[] = Menu::make('Interventions')
+				->icon('list')
+				->href('/mbase2/modules/interventions');
+		}
+
+		return $menu;
 	}
 
 	/**

@@ -13,16 +13,14 @@
 						</x-slot>
 
 						<x-slot name="content">
-							<x-dropdown-link :href="route('home')" :hidden="request()->routeIs('home')">
+							{{-- <x-dropdown-link :href="route('home')" :hidden="request()->routeIs('home')">
 								{{ __('Dashboard') }}
-							</x-dropdown-link>
+							</x-dropdown-link> --}}
 
-							@hasAccess('platform.systems.users')
 							<x-dropdown-link :href="route('platform.systems.users')"
 								:hidden="request()->routeIs('platform.systems.users')">
-								{{ __('Admin dashboard') }}
+								{{ __('Dashboard') }}
 							</x-dropdown-link>
-							@endhasAccess
 
 							<hr />
 

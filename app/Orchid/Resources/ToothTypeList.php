@@ -10,11 +10,10 @@ use Orchid\Screen\TD;
 
 class ToothTypeList extends BaseList
 {
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var string
-     */
-    public static $model = \App\Models\ToothTypeList::class;
-
+	/**
+	 * The model the resource corresponds to.
+	 *
+	 * @var string
+	 */
+	public static $model = \App\Models\ToothTypeList::class;
 }
