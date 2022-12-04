@@ -190,11 +190,11 @@ class AnimalEditScreen extends Screen
 		Log::debug(['animal remove', $animal->bears_biometry_animal_handlings]);
 
 		if ($animal->bears_biometry_animal_handlings->count() > 0) {
-			Alert::error(__('Cannot delete the animal because it contains one or more handlings. You have to delete the Animal Handling first!'));
+			Alert::error(__('Cannot delete the animal because it contains one or more handlings. You have to delete the animal handling first!'));
 		} else {
 			$animal->delete();
 
-			Alert::info(__('You have successfully deleted the Animal.'));
+			Alert::info(__('You have successfully deleted the animal'));
 		}
 
 		return redirect()->route('platform.animal.list');

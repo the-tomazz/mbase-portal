@@ -1,0 +1,228 @@
+{
+	"Cannot delete the animal because it contains one or more handlings. You have to delete the animal handling first!": "Ne morete obrisati podatkov o živali, ker ima eno ali več povezanih rokovanj. Najprej obrišite podatke o rokovanjih!",
+	"You have successfully deleted the animal": "Uspešno ste obrisali podatke o živali",
+	"Animal Handlings": "Rokovanja z živalmi",
+	"Animals": "Živali",
+	"New animal handling": "Novo rokovanje z živaljo",
+	"Export to XLS": "Izvoz v XLS",
+	"Animals": "Živali",
+	"Animal handling": "Upravljanja z živalmi",
+	"Edit animal handling": "Uredi rokovanje z živaljo",
+	"New animal handling": "Novo rokovanje z živaljo",
+	"Animal Handling Create / Update": "Ustvarjanje novih / urejanje podatkov o upravljanju z živaljo",
+	"Save animal handling": "Shrani podatke o upravljanju z živaljo",
+	"Save animal handling and add biometry data": "Shrani podatke o upravljanju z živaljo in dodaj biometrične podatke",
+	"Remove": "Umakni",
+
+	"Number and the year of removal in hunting administrative area": "Številka in leto odvzema v lovskem upravljalskem območju",
+	"Type of removal / handling": "Način odvzema / rokovanja",
+	"Please select the type of removal / handling": "Izberite način odvzema / rokovanja",
+	"Ear-tag number or radio-collar (telemetry) identification": "Številka ušesne značke ali identifikacija ovratnice",
+	"Please describe animal-borne markings (ear-tags, collar, microchips, etc.)": "Opišite označbe na živali (ušesne značke, ovratnico, mikročip ipd.)",
+	"Date and time of removal / handling": "Datum in ura umika / rokovanja",
+	"Geo location / Local name": "Geo lokacija / naziv lokacije",
+	"Please insert geographical location / local name": "Prosim vnesite geo lokacijo / naziv lokacije",
+	"Witness/Accompanying person name": "Ime priče",
+	"Please insert the name of the Witness/Accompanying person": "Prosimo vnesite ime priče",
+	"Witness/Accompanying person surname": "Priimek priče",
+	"Please insert the surname of the witness / Accompanying person": "Prosimo vnesite priimek priče",
+	"Hair sample collected": "Vzorec dlake odvzet",
+	"Please note if hair sample has been collected": "Prosimo označite, če je bil vzorec dlake odvzet",
+	"Blood sample collected": "Vzorec krvi odvzet",
+	"Please note if Blood sample has been collected": "Prosimo označite, če je bil vzorec krvi odvzet",
+	"Tooth Type": "Vrsta zoba",
+	"Please select the Tooth Type": "Prosimo označite, kateri zob za analizo starosti odvzet?",
+	"Taxidermist name": "Ime preparatorja",
+	"Please insert the name of the taxidermist": "Prosimo vnesite ime preparatorja",
+	"Taxidermist surname": "Priimek preparatorja",
+	"Please insert the surname of the Taxidermist": "Prosimo vnesite priimek preparatorja",
+	"You have successfully deleted the animal handling": "You have successfully deleted the animal handling",
+
+	"Alive": "Živa",
+	"Dead": "Ni živa",
+
+	"Edit biometry data": "Uredi biometrične podatke",
+	"Creating new biometry data": "Pripravi nove biometrične podatke",
+	"Biometry data Create / Update": "Vnos novih / popravi biometrične podatke",
+	"Save Biometry Data": "Shrani biometrične podatke",
+	"Animal ID": "ID živali",
+	"Animal name": "Ime živali",
+	"Animal species": "Vrsta živali",
+	"Animal status": "Status živali",
+	"Animal": "Žival",
+	"Animal handling ID": "ID rokovanja z živaljo",
+	"Animal handling date": "Datum rokovanja z živaljo",
+	"Place of removal / handling": "Lokacija rokovanja z živaljo",
+
+	"Gross": "Bruto",
+	"Net": "Neto",
+	"Body length": "Telesna dolžina",
+	"Body length - inferior": "Telesna dolžina - trebušna",
+	"Shoulder height": "Plečna višina",
+	"Head circumference": "Obseg glave",
+	"Insert Head circumference of the animal (0-150 cm)": "Prosimo vnesite Obseg glave (0-150 cm)",
+	"Neck circumference": "Obseg vratu",
+	"Insert Neck circumference of the animal (0-150 cm)": "Prosimo vnesite Obseg vratu (0-150 cm)",
+	"Thorax circumference": "Obseg prsnega koša",
+	"Insert Thorax circumference of the animal (0-150 cm)": "Prosimo vnesite Obseg prsnega koša (0-150 cm)",
+	"Abdomen circumference": "Obseg trebuha",
+	"Insert Abdomen circumference of the animal (0-150 cm)": "Prosimo vnesite Obseg trebuha (0-150 cm)",
+	"Tail length without hair": "Dolžina repa brez dlak",
+	"Insert Tail length without hair (0-60 cm)": "Prosimo vnesite Dolžino repa brez dlak (0-60 cm)",
+	"Length of hair at the end of tail": "Dolžina dlak na koncu repa",
+	"Insert Length of hair at the end of tail (0-60 cm)": "Prosimo vnesite Dolžino dlak na koncu repa (0-60 cm)",
+	"Ear length without hair": "Dolžina ušesa brez dlak",
+	"Insert Ear length without hair (0-20 cm)": "Prosimo vnesite Dolžino ušesa brez dlak (0-20 cm)",
+	"Length of hair tuft (for lynx only)": "Dolžina čopkov (samo v primeru risa)",
+	"Insert Length of hair tuft (for lynx only) (0-20 cm)": "Prosimo vnesite Dolžina čopkov (samo v primeru risa)",
+
+	"Front left paw width": "Sprednja leva šapa - širina",
+	"Insert Front left paw width (0-20 cm)": "Prosimo vnesite širino sprednje leve šape (0-20 cm)",
+	"Front left paw length": "Sprednja leva šapa - dolžina",
+	"Insert Front left paw length (0-25 cm)": "Prosimo vnesite dolžino sprednje leve šape (0-25 cm)",
+
+	"Front right paw width": "Sprednja desna šapa - širina",
+	"Insert Front right paw width (0-20 cm)": "Prosimo vnesite širino sprednje desne šape (0-20 cm)",
+	"Front right paw length": "Sprednja desna šapa - dolžina",
+	"Insert Front right paw length (0-25 cm)": "Prosimo vnesite dolžino sprednje desne šape (0-25 cm)",
+
+	"Hind left paw width": "Zadnja leva šapa - širina",
+	"Insert Hind left paw width (0-20 cm)": "Prosimo vnesite širino zadnje leve šape (0-20 cm)",
+	"Hind left paw length": "Zadnja leva šapa - dolžina",
+	"Insert Hind left paw length (0-25 cm)": "Prosimo vnesite dolžino zadnje leve šape (0-25 cm)",
+
+	"Hind left paw width": "Zadnja desna šapa - širina",
+	"Insert Hind left paw width (0-20 cm)": "Prosimo vnesite širino zadnje desne šape (0-20 cm)",
+	"Hind left paw length": "Zadnja desna šapa - dolžina",
+	"Insert Hind left paw length (0-25 cm)": "Prosimo vnesite dolžino zadnje desne šape (0-25 cm)",
+
+	"Length of Upper left canines": "Dolžina zgornjih levih podočnikov",
+	"Insert Length of Upper left canines (0-6 cm)": "Prosim vnesite Dolžino zgornjih levih podočnikov (0-6 cm)",
+	"Length of Lower left canines": "Dolžina spodnjih levih podočnikov",
+	"Insert Length of Lower left canines (0-5 cm)": "Prosim vnesite Dolžino spodnjih levih podočnikov (0-5 cm)",
+
+	"Length of Upper right canines": "Dolžina zgornjih desnih podočnikov",
+	"Insert Length of Upper right canines (0-6 cm)": "Prosim vnesite Dolžino zgornjih desnih podočnikov (0-6 cm)",
+	"Length of Lower right canines": "Dolžina spodnjih desnih podočnikov",
+	"Insert Length of Lower right canines (0-5 cm)": "Prosim vnesite Dolžino spodnjih desnih podočnikov (0-5 cm)",
+
+	"Number of premolars in the Upper jaw (left + right)": "Število predmeljakov - Zgornja čeljust levo in desno",
+	"Please insert Number of premolars in the Upper jaw (left + right)": "Prosimo vnesite Število predmeljakov - Zgornja čeljust levo in desno",
+	"Number of premolars in the Lower jaw (left + right)": "Število predmeljakov - Spodnja čeljust levo in desno",
+	"Please insert Number of premolars in the Lower jaw (left + right)": "Prosimo vnesite Število predmeljakov - Spodnja čeljust levo in desno",
+
+	"Incisors (front teeth) wear": "Obraba sekalcev",
+	"Please insert Incisors (front teeth) wear": "Prosimo izberite Obrabo sekalcev",
+
+	"Please insert Color": "Prosimo izberite barvo kožuha",
+
+	"Light neck stripe 'collar'": "Prisotnost ovratnika",
+	"Please insert Light neck stripe 'collar'": "Prosimo izmerite prisotnost ovratnika",
+
+	"Physical condition, illness, injuries, other observations, notes": "Telesna kondicija, bolezni, poškodbe, komentarji, opombe",
+	"Please insert Physical condition, illness, injuries, other observations, notes": "Prosimo vnesite Telesno kondicijo, bolezni, poškodbe, komentarje, opombe",
+
+	"Date and time of biometry measurements": "Datum in ura biometričnih meritev",
+	"All files": "Vsi fajli",
+
+	"You have successfully created or updated Biometry Data": "Uspešno ste ustvarili ali popravili biometrične podatke",
+	"You have successfully deleted Biometry Data": "Uspešno ste obrisali biometrične podatke",
+
+	"Date and time of death": "Datum in čas smrti",
+	"Name": "Ime",
+	"Species": "Živalska vrsta",
+	"Note": "Opomba",
+
+	"Status": "Status",
+	"Handling date": "Datum rokovanja",
+	"Died at": "Datum smrti",
+	"Biometry data": "Biometrični podatki",
+	"Exists": "Obstajajo",
+	"Missing": "Ne obstajajo",
+	"Created": "Ustvarjeno",
+	"Last edit": "Urejeno",
+	"Sex": "Spol",
+	"Description": "Opis",
+	"Date of death": "Datum smrti",
+	"Date of creation": "Datum ustvarjanja",
+	"Update date": "Datum urejanja",
+
+	"Please select the ID of the individual, if the animal is known.": "Prosimo vnesite ID živali v primeru, da je živa neznana",
+	"<New animal>": "<Neznana žival>",
+	"Please select the species": "Prosimo izberite vrsto živali",
+	"Please select the sex": "Prosimo izberite spol",
+
+	"Location": "Lokacija",
+	"Hunting-management area (LUO)": "Lovsko Upravljalsko Območje",
+	"Hunting ground": "Lovso Območje",
+
+	"Unknown Hunder/Finder": "Neznan uplenitelj / najditelj",
+	"Hunter/Finder name": "Ime uplenitelja / najditelja",
+	"Please insert the name of the hunter/finder": "Prosimo vnesite ime uplenitelja / najditelja",
+	"Hunter/Finder surname": "Priimek uplenitelja / najditelja",
+	"Please insert the surname of the hunter/finder": "Prosimo vnesite priimek uplenitelja / najditelja",
+
+	"Handling date": "Datum rokovanja z živaljo",
+	"Updated": "Urejeno",
+
+	"Place of removal type": "Tip mesta odvzema",
+	"Other place of removal type": "Tip mesta najdbe",
+	"Please insert the other place of removal type": "Opišite mesto odvzema",
+
+	"Sample ": "Vzorec ",
+	" code": " koda",
+	"Please input the sample ": "Prosimo vnesite vzorec",
+
+	"Select the sex of the animal": "Prosimo izberite spol živali",
+	"Visual age estimate": "Ocenjena starost",
+	"Insert age estimate of the animal (0-25)": "Vpišite oceno starosti osebka (0-25)",
+
+	"Length of os penis (penis bone - baculum)": "Dolžina spolne kosti ",
+	"Insert Length of os penis (penis bone - baculum) of the animal (0-20 cm)": "Prosimo vnesite dolžino spolne kosti (0-20 cm)",
+	"Nipple length": "Dolžina seskov",
+	"Insert Nipple length (0-15 cm)": "Prosimo vnesite Dolžino seskov (0-15 cm)",
+	"Nipple use": "Raba seskov",
+	"Select nipple use": "Prosimo izberite rabo seskov",
+
+	"Place of removal type": "Kraj odvzema",
+	"Other place of removal type": "Tip mesta najdbe",
+	"Please insert the other place of removal type": "Opišite mesto odvzema",
+
+	"Object search": "Izkanje",
+
+	"Mortality and biometry": "Smrtnost in biometrija",
+
+	"User groups and group types": "Uporabniške skupine in tipi skupin",
+	"User group types": "Tipi skupin uporabnikov",
+	"User groups": "Skupine uporabnikov",
+
+	"Users and roles": "Uporabniki in skupine",
+	"Users": "Uporabniki",
+	"Roles": "Uporabniške vloge",
+	"Groups": "Skupine",
+	"Group type": "Tip skupine",
+
+	"Home": "Osnovna stran",
+
+	"Teats Wear": "Obrabljenost seskov",
+
+	"Spatial Unit Filter Elements": "Elementi prostorskih filtrov",
+	"Spatial Unit Filter Types": "Tipi prostorskih filtrov",
+	"Spatial unit filter types and elements": "Elementi in tipi prostorskih filtrov",
+
+	"Color": "Barva kožuha",
+	"Collar": "Prisotnost ovratnice",
+
+	"Animal Removal": "Način odvzema",
+	"Loss Reason": "Vzrok izgube",
+	"Incisors Wear": "Obraba sekalcev",
+
+	"Place Of Removal": "Kraj odvzema / rokovanja",
+
+	"General lists": "Skupni šifranti",
+	"Mortality and biometry lists": "Šifranti modula Smrtnost in biometrija",
+
+	"Scroll to top": "Na vrh",
+
+	"Add": "Dodaj"
+}

@@ -56,6 +56,7 @@ return new class extends Migration
 		]);
 
 		$modules = [
+			'mortbiom' => 'Mortality and biometry',
 			'gensam' => 'Genetic samples',
 			'ct' => 'Camera Trapping',
 			'sop' => 'Signs Of Presence',
@@ -79,12 +80,27 @@ return new class extends Migration
 				$data[] = [
 					'slug' => 'mbase2-' . $moduleSlug . '-' . $perModuleRoleSlug,
 					'name' => '{"en":"' . $moduleTitle . ' ' . $perModuleRoleTitle . '", "sl":"' . $moduleTitle . ' ' . $perModuleRoleTitle . '"}',
-					'group_type_id' => 2, 'created_at' => now(), 'updated_at' => now()
+					'group_type_id' => 2,
+					'created_at' => now(), 'updated_at' => now()
 				];
 			}
 		}
 
 		DB::table('groups')->insert($data);
+
+		DB::table('groups')->insert([
+			'slug' => 'mortbiom-default-visualisation-animal-status-dead',
+			'name' => '{"en":"Mortality and Biometry default visualisation animal status: Dead", "sl":"Smrtnost in biometrija: Prednastavljeni status živali: Mrtva"}',
+			'group_type_id' => 4,
+			'created_at' => now(), 'updated_at' => now(),
+		]);
+
+		DB::table('groups')->insert([
+			'slug' => 'mortbiom-default-visualisation-animal-status-alive',
+			'name' => '{"en":"Mortality and Biometry default visualisation animal status: Alive", "sl":"Smrtnost in biometrija: Prednastavljeni status živali: Živa"}',
+			'group_type_id' => 4,
+			'created_at' => now(), 'updated_at' => now(),
+		]);
 	}
 
 	/**

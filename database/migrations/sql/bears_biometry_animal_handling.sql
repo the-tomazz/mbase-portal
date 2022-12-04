@@ -10,7 +10,6 @@ CREATE TABLE laravel.bears_biometry_animal_handling (
 	place_of_removal text,
 	place_type_list_id INTEGER REFERENCES place_type_list (id),
 	place_type_list_details text,
-	bear_territory_type_list_id INTEGER REFERENCES bear_territory_type_list (id),
 	lat double precision,
 	lng double precision,
 	zoom integer,

@@ -33,14 +33,14 @@ class AnimalListLayout extends Table
     protected function columns(): iterable
     {
         return [
-			TD::make('id', "Animal ID")
+			TD::make('id', __('Animal ID'))
 				->render(function (Animal $animal) {
 					return Link::make($animal->id)
 					->route('platform.animal.edit', $animal);
 				})
 				->sort(),
 
-			TD::make('name', "Name")
+			TD::make('name', __('Name'))
 				->render(function (Animal $animal) {
 					return Link::make($animal->name)
 					->route('platform.animal.edit', $animal);
@@ -48,7 +48,7 @@ class AnimalListLayout extends Table
 				->sort()
 				->filter(Input::make()),
 
-			TD::make('species_list_id', "Species")
+			TD::make('species_list_id', __('Species'))
 				->render(function (Animal $animal) {
 					return Link::make($animal->species_list->name)
 					->route('platform.animal.edit', $animal);
@@ -56,7 +56,7 @@ class AnimalListLayout extends Table
 				->sort()
 				->filter(Select::make()->fromModel(SpeciesList::class, 'name')->empty(__('<Empty>'))),
 
-			TD::make('sex_list_id', "Sex")
+			TD::make('sex_list_id', __('Sex'))
 				->render(function (Animal $animal) {
 					return Link::make($animal->sex_list->name)
 					->route('platform.animal.edit', $animal);
@@ -64,7 +64,7 @@ class AnimalListLayout extends Table
 				->sort()
 				->filter(Select::make()->fromModel(SexList::class, 'name')->empty(__('<Empty>'))),
 
-			TD::make('status', __("Status"))
+			TD::make('status', __('Status'))
 				->render(function (Animal $animal) {
 					return $animal->status == Animal::STR_ALIVE
 						? '<i class="text-success">●</i> ' . __('Alive')
@@ -76,7 +76,7 @@ class AnimalListLayout extends Table
 					Animal::STR_DEAD => __('Dead'),
 				])->empty(__('<Empty>'))),
 
-			TD::make('description', __("Description"))
+			TD::make('description', __('Description'))
 				->sort()
 				->filter(Input::make()),
 

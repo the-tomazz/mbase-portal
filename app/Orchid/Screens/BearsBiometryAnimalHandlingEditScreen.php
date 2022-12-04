@@ -69,7 +69,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 			$bearsBiometryAnimalHandling['animal_sex_list_id'] = $animal->sex_list_id;
 			$bearsBiometryAnimalHandling['description'] = $animal->description;
 		} else {
-			$bearsBiometryAnimalHandling['animal_status'] = Auth::user()->default_animal_status;
+			$bearsBiometryAnimalHandling['animal_status'] = Auth::user()->defaultVisualisationAnimalStatus();
 			$bearsBiometryAnimalHandling['animal_sex_list_id'] == SexList::FEMALE_SEX_ID;
 		}
 
@@ -97,7 +97,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
      */
     public function name(): ?string
     {
-        return $this->bearsBiometryAnimalHandling->exists ? __('Edit Biometry Animal Handling') : __('Creating a new Animal Handling');
+        return $this->bearsBiometryAnimalHandling->exists ? __('Edit animal handling') : __('New animal handling');
     }
 
 	/**
@@ -105,7 +105,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
      */
     public function description(): ?string
     {
-        return __("Biometry Animal Handling Create / Update Screen");
+        return __('Animal Handling Create / Update');
     }
 
 	/**
@@ -116,25 +116,15 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-			Button::make(__('Save Animal Handling'))
+			Button::make(__('Save animal handling'))
                 ->icon('pencil')
                 ->method('createOrUpdateAndDoNotAddBiometryData')
                 ->canSee(!$this->bearsBiometryAnimalHandling->exists),
 
-			Button::make(__('Save Animal Handling and add Biometry Data'))
+			Button::make(__('Save animal handling and add biometry data'))
                 ->icon('pencil')
                 ->method('createOrUpdateAndAddBiometryData')
                 ->canSee(!$this->bearsBiometryAnimalHandling->exists),
-
-            Button::make(__('Update'))
-                ->icon('note')
-                ->method('createOrUpdateAndDoNotAddBiometryData')
-                ->canSee($this->bearsBiometryAnimalHandling->exists),
-
-			Button::make(__('Update and add Biometry Data'))
-                ->icon('note')
-                ->method('createOrUpdateAndAddBiometryData')
-                ->canSee($this->bearsBiometryAnimalHandling->exists),
 
             Button::make('Remove')
                 ->icon('trash')
@@ -148,8 +138,8 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 		$animalId = $triggers['animal_id'] ?? null;
 
 		if ($animalId) {
-			$triggers['animal_status'] = $triggers['animal_status'] ?? Auth::user()->default_animal_status;
-			$triggers['animal_previous_status'] = $triggers['animal_previous_status'] ?? ( Auth::user()->default_animal_status == Animal::STR_ALIVE ? Animal::STR_ALIVE : Animal::STR_DEAD );
+			$triggers['animal_status'] = $triggers['animal_status'] ?? Auth::user()->defaultVisualisationAnimalStatus();
+			$triggers['animal_previous_status'] = $triggers['animal_previous_status'] ?? ( Auth::user()->defaultVisualisationAnimalStatus() == Animal::STR_ALIVE ? Animal::STR_ALIVE : Animal::STR_DEAD );
 		}
 
 		return [
@@ -337,24 +327,24 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 
 				Select::make('bearsBiometryAnimalHandling.animal_removal_list_id')
 					->fromModel(AnimalRemovalList::class, 'name')
-					->title(__('Type of removal'))
+					->title(__('Type of removal / handling'))
 					->required()
-					->help(__('Please select the type of removal.')),
+					->help(__('Please select the type of removal / handling')),
 
 				Input::make('bearsBiometryAnimalHandling.telemetry_uid')
 					->title(__('Ear-tag number or radio-collar (telemetry) identification'))
-					->help(__('Please describe animal-borne markings (ear-tags, collar, microchips, etc.).')),
+					->help(__('Please describe animal-borne markings (ear-tags, collar, microchips, etc.)')),
 
 				Input::make('bearsBiometryAnimalHandling.animal_handling_date')
 					->required()
 					->type('datetime-local')
-					->title(__('Date and time of removal / handling ')),
+					->title(__('Date and time of removal / handling')),
 					// ->value('2011-08-19T13:45:00')
 					// ->horizontal(),
 
 				Input::make('bearsBiometryAnimalHandling.place_of_removal')
-					->title(__('Geographical location/Local name'))
-					->help(__('Please insert geographical location/Local name.')),
+					->title(__('Geo location / Local name'))
+					->help(__('Please insert geographical location / local name')),
 			]),
 
 			BearsBiometryAnimalHandlingPlaceTypeListListener::class,
@@ -368,7 +358,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 
 				Input::make('bearsBiometryAnimalHandling.witness_accompanying_person_surname')
 					->title(__('Witness/Accompanying person surname'))
-					->help(__('Please insert the surname of the Witness/Accompanying person')),
+					->help(__('Please insert the surname of the witness / Accompanying person')),
 			]),
 		];
 
@@ -393,13 +383,13 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 
 					Switcher::make('bearsBiometryAnimalHandling.blood_sample_taken')
 						->sendTrueOrFalse()
-						->title(__('Blood sample collected?'))
-						->help(__('Please note if Blood sample has been collected?')),
+						->title(__('Blood sample collected'))
+						->help(__('Please note if Blood sample has been collected')),
 
 					Select::make('bearsBiometryAnimalHandling.tooth_type_list_id')
 						->fromModel(ToothTypeList::class, 'name')
 						->title(__('Tooth Type'))
-						->help(__('Please select the Tooth Type.'))
+						->help(__('Please select the Tooth Type'))
 						->empty(__('<Empty>')),
 				])->autoWidth(),
 			]),
@@ -410,7 +400,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 				Group::make([
 					Input::make('bearsBiometryAnimalHandling.taxidermist_name')
 						->title(__('Taxidermist name'))
-						->help(__('Please insert the name of the Taxidermist')),
+						->help(__('Please insert the name of the taxidermist')),
 
 					Input::make('bearsBiometryAnimalHandling.taxidermist_surname')
 						->title(__('Taxidermist surname'))
@@ -458,18 +448,12 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 
 			$animal->save();
 
-			Log::debug(['***Animal', $animal]);
-
 			if (!$isAlive) {
 				$animal->fill(['name' => $animal->id]);
 				$animal->save();
 			}
 
-			Log::debug(['***** Animal', $animal]);
-
 			$bearsBiometryAnimalHandling['animal_id'] = $animal->id;
-
-			Log::debug(['***** bearsBiometryAnimalHandling', $bearsBiometryAnimalHandling]);
 		}
 
 		$bearsBiometryAnimalHandling->lat = $request->get('bearsBiometryAnimalHandling')['geo_location']['lat'];
@@ -513,7 +497,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
     {
 		$this->createOrUpdate($animal, $bearsBiometryAnimalHandling, $request);
 
-        return redirect()->route('platform.animalHandling.list', ['filter[animal_status]' => Auth::user()->default_animal_status]);
+        return redirect()->route('platform.animalHandling.list', ['filter[animal_status]' => Auth::user()->defaultVisualisationAnimalStatus()]);
     }
 
 	/**
@@ -540,7 +524,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
     {
 		$bearsBiometryAnimalHandling->delete();
 
-        Alert::info(__('You have successfully deleted the Biometry Animal Handling.'));
+        Alert::info(__('You have successfully deleted the animal handling'));
 
         return redirect()->route('platform.animalHandling.list');
     }

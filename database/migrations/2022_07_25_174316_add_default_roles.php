@@ -29,6 +29,11 @@ return new class extends Migration
 				'updated_at' => '2022-07-25 17:40:29'
 			]
 		]);
+
+		DB::table('role_users')->insert([
+			[ 'role_id' => 1, 'user_id' => 1 ],
+			[ 'role_id' => 2, 'user_id' => 1 ],
+		]);
     }
 
     /**

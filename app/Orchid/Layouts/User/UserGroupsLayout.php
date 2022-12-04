@@ -19,61 +19,77 @@ class UserGroupsLayout extends Rows
 	 */
 	public function fields(): array
 	{
-		//        $query = UsersGroups::query()
-		//            ->join('groups as user_countries', function($join) {
-		//                    $join->on('user_countries.id', '=', 'users_groups.group_id')
-		//                         ->where('user_countries.group_type_id', '=', 1);
-		//                })
-		//            ->join('group_types_countries', 'group_types_countries.country_id', '=', 'user_countries.id')
-		//            ->join('groups_group_types_countries', 'groups_group_types_countries.group_type_country_id', '=', 'group_types_countries.id')
-		//            ->join('groups', 'groups.id', '=', 'groups_group_types_countries.group_id')
-		//            ->where('users_groups.user_id', '=', auth()->user()->id)
-		//            ->where('groups.group_type_id', '<>', 1)
-		//            ->select(['user_countries.id', 'user_countries.slug', 'groups.id', 'groups.slug'])
-		//            ->orderBy('user_countries.id')
-		//            ->orderBy('groups.group_type_id')
-		//            ->orderBy('groups.id')
-		//            ->orderBy('groups.slug');
-		if (auth()->user()->country == null) {
-			$query = Group::query()->join(
-				'groups_group_types_countries',
-				function ($join) {
-					$join->on('groups_group_types_countries.group_id', '=', 'groups.id')
-						->where('groups.group_type_id', '<>', 1);
-				}
-			);
-			return [
-				Select::make('user.groups.')
-					->fromQuery($query, "name")
-					->multiple()
-					->title(__('Groups'))
-					->help('Specify which groups this account should belong to'),
-			];
+		if (auth()->user()->country != null) {
+			$query = Group::query()
+				->join(
+					'groups_group_types_countries',
+					function ($join) {
+						$join->on('groups_group_types_countries.group_id', '=', 'groups.id');
+					}
+				)
+				->join(
+					'group_types_countries',
+					function ($join) {
+						$join->on('group_types_countries.id', '=', 'groups_group_types_countries.group_type_country_id')
+							->where('group_types_countries.country_id', '=', auth()->user()->country->id);
+					}
+				)
+				->select(['groups.id', 'groups.slug', 'groups.name', 'groups.group_type_id'])
+				->orderBy('groups.id')
+				->distinct();
+		} else { // admin
+			$query = Group::query()
+				->join(
+					'groups_group_types_countries',
+					function ($join) {
+						$join->on('groups_group_types_countries.group_id', '=', 'groups.id');
+					}
+				)
+				->join(
+					'group_types_countries',
+					function ($join) {
+						$join->on('group_types_countries.id', '=', 'groups_group_types_countries.group_type_country_id');
+					}
+				)
+				->select(['groups.id', 'groups.slug', 'groups.name', 'groups.group_type_id'])
+				->where('groups.group_type_id', '<>', 1) // no countries
+				->orderBy('groups.id')
+				->distinct();
 		}
 
-		$query = Group::query()
-			->join(
-				'groups_group_types_countries',
-				function ($join) {
-					$join->on('groups_group_types_countries.group_id', '=', 'groups.id')
-						->where('groups.group_type_id', '<>', 1);
-				}
-			)
-			->join(
-				'group_types_countries',
-				function ($join) {
-					$join->on('group_types_countries.id', '=', 'groups_group_types_countries.group_type_country_id')
-						->where('group_types_countries.country_id', '=', auth()->user()->country->id);
-				}
-			)->select(['groups.id', 'groups.slug', 'groups.name', 'groups.group_type_id']);
-
+		$countrySpecificGroupsQuery = $query->clone();
+		$moduleRolesQuery = $query->clone();
+		$moduleParametersQuery = $query->clone();
 
 		return [
-			Select::make('user.groups.')
-				->fromQuery($query, "name")
+			Select::make('country_specific_groups.')
+				->fromQuery(
+					$countrySpecificGroupsQuery
+						->where('groups.group_type_id', '<>', 2) // not MBASE2 module roles
+						->where('groups.group_type_id', '<>', 4), // not MBASE2 module parameters
+					'name'
+				)
 				->multiple()
-				->title(__('Groups'))
+				->title(__('Country specific groups'))
 				->help('Select groups'),
+
+			Select::make('mbase2_module_roles.')
+				->fromQuery(
+					$moduleRolesQuery->where('groups.group_type_id', '=', 2), // MBASE2 module roles
+					'name'
+				)
+				->multiple()
+				->title(__('MBASE2 module roles'))
+				->help('Select MBASE2 module roles'),
+
+			Select::make('mbase2_module_parameters.')
+				->fromQuery(
+					$moduleParametersQuery->where('groups.group_type_id', '=', 4), // MBASE2 module parameters
+					'name'
+				)
+				->multiple()
+				->title(__('MBASE2 module parameters'))
+				->help('Select MBASE2 module parameters'),
 		];
 	}
 }

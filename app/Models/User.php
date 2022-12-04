@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\Log;
 use Orchid\Platform\Models\User as Authenticatable;
 
 class User extends Authenticatable
@@ -16,8 +17,7 @@ class User extends Authenticatable
 		'email',
 		'password',
 		'country_id',
-		'permissions',
-		'default_animal_status'
+		'permissions'
 	];
 
 	/**
@@ -62,7 +62,6 @@ class User extends Authenticatable
 		'id',
 		'name',
 		'email',
-		'default_animal_status',
 		'updated_at',
 		'created_at',
 	];
@@ -79,7 +78,7 @@ class User extends Authenticatable
 
 	public function isInGroup(string $lvl0 = 'mbase2', string|null $lvl1 = null, string|null $lvl2 = null)
 	{
-		$groups = auth()->user()->groups->pluck('slug');
+		$groups = $this->groups->pluck('slug');
 
 		foreach ($groups as $group) {
 			$group = explode('-', $group);
@@ -97,5 +96,21 @@ class User extends Authenticatable
 		}
 
 		return false;
+	}
+
+	public function hasRole($role)
+	{
+		if ($this->roles()->where('slug', $role)->first()) {
+			return true;
+		}
+		return false;
+	}
+
+	public function defaultVisualisationAnimalStatus() {
+		if ($this->groups()->where('slug', 'mortbiom-default-visualisation-animal-status-alive')->count()) {
+			return Animal::STR_ALIVE;
+		}
+
+		return Animal::STR_DEAD;
 	}
 }

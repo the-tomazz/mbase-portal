@@ -60,7 +60,7 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 			$animalIDAvailable = !is_null($this->query->get('bearsBiometryAnimalHandling.animal_id'));
 		} else {
 			$existingAnimalSelected = false;
-			$isAlive = Auth::user()->default_animal_status == Animal::STR_ALIVE;
+			$isAlive = Auth::user()->defaultVisualisationAnimalStatus() == Animal::STR_ALIVE;
 			$animalIDAvailable = false;
 		}
 
@@ -96,7 +96,7 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 					->fromModel(SpeciesList::class, 'name')
 					->required()
 					->title(__('Species'))
-					->help(__('Please select species.'))
+					->help(__('Please select the species'))
 					->canSee(!$existingAnimalSelected),
 
 				Select::make('bearsBiometryAnimalHandling.animal_sex_list_id')
@@ -104,7 +104,7 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 					->required()
 					->value(SexList::NEUTRAL_SEX_ID)
 					->title(__('Sex'))
-					->help(__('Please select sex.'))
+					->help(__('Please select the sex'))
 					->canSee(!$existingAnimalSelected),
 
 				Input::make('bearsBiometryAnimalHandling.animal_description')

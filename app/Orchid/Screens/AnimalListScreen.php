@@ -39,7 +39,7 @@ class AnimalListScreen extends Screen
      */
     public function description(): ?string
     {
-        return __("All Animals");
+        return __('Animals');
     }
 
     /**
@@ -50,11 +50,11 @@ class AnimalListScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-			Link::make('Animal Handlings')
+			Link::make(__('Animal Handlings'))
 				->icon('list')
-				->route('platform.animalHandling.list', ['filter[animal_status]' => Auth::user()->default_animal_status]),
+				->route('platform.animalHandling.list', ['filter[animal_status]' => Auth::user()->defaultVisualisationAnimalStatus()]),
 
-			Link::make('New animal handling')
+			Link::make(__('New animal handling'))
                 ->icon('pencil')
                 ->route('platform.bearsBiometryAnimalHandling.edit'),
 		];

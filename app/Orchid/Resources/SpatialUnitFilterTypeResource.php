@@ -13,6 +13,16 @@ use Orchid\Screen\TD;
 class SpatialUnitFilterTypeResource extends Resource
 {
 	/**
+	 * Get the resource should be displayed in the navigation
+	 *
+	 * @return bool
+	 */
+	public static function displayInNavigation(): bool
+	{
+		return false;
+	}
+
+	/**
 	 * The model the resource corresponds to.
 	 *
 	 * @var string

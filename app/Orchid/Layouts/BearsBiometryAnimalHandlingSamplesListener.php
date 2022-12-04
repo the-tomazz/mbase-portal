@@ -2,23 +2,19 @@
 
 namespace App\Orchid\Layouts;
 
-use App\Models\PlaceTypeList;
-use App\Models\User;
 use Illuminate\Support\Facades\Log;
 use Orchid\Screen\Fields\Input;
-use Orchid\Screen\Fields\Select;
-use Orchid\Screen\Fields\Upload;
 use Orchid\Screen\Layouts\Listener;
 use Orchid\Support\Facades\Layout;
 
 class BearsBiometryAnimalHandlingSamplesListener extends Listener
 {
 	/**
-     * List of field names for which values will be listened.
-     *
-     * @var string[]
-     */
-    protected $targets;
+	 * List of field names for which values will be listened.
+	 *
+	 * @var string[]
+	 */
+	protected $targets;
 	private $maxNumberOfSamples;
 
 	public function __construct($maxNumberOfSamples)
@@ -37,22 +33,22 @@ class BearsBiometryAnimalHandlingSamplesListener extends Listener
 		$this->maxNumberOfSamples = $maxNumberOfSamples;
 	}
 
-    /**
-     * What screen method should be called
-     * as a source for an asynchronous request.
-     *
-     * The name of the method must
-     * begin with the prefix "async"
-     *
-     * @var string
-     */
-    protected $asyncMethod = 'asyncUpdateAnimalHandlingSamplesListenerData';
+	/**
+	 * What screen method should be called
+	 * as a source for an asynchronous request.
+	 *
+	 * The name of the method must
+	 * begin with the prefix "async"
+	 *
+	 * @var string
+	 */
+	protected $asyncMethod = 'asyncUpdateAnimalHandlingSamplesListenerData';
 
-    /**
-     * @return Layout[]
-     */
-    protected function layouts(): iterable
-    {
+	/**
+	 * @return Layout[]
+	 */
+	protected function layouts(): iterable
+	{
 		if (isset($this->query)) {
 			Log::debug(['bearsBiometryAnimalHandlingSamplesListener', $this->query->get('bearsBiometryAnimalHandlingSamplesListener')]);
 		}
@@ -93,5 +89,5 @@ class BearsBiometryAnimalHandlingSamplesListener extends Listener
 		}
 
 		return $biometryAnimalHandlingSamplesListenerLayout;
-    }
+	}
 }

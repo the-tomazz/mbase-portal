@@ -16,5 +16,4 @@ class BiometryLossReasonList extends BaseList
      * @var string
      */
     public static $model = \App\Models\BiometryLossReasonList::class;
-
 }

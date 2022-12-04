@@ -26,7 +26,7 @@ switch ($width) {
         {{ $trigger }}
     </div>
 
-    <div x-show="open"
+    <div x-show="open" style="z-index: 9999"
             x-transition:enter="transition ease-out duration-200"
             x-transition:enter-start="transform opacity-0 scale-95"
             x-transition:enter-end="transform opacity-100 scale-100"

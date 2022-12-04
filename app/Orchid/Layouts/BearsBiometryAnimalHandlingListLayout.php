@@ -55,7 +55,7 @@ class BearsBiometryAnimalHandlingListLayout extends Table
 
 			TD::make('created_at', 'Created')
 				->sort(),
-			TD::make('updated_at', 'Last edit')
+			TD::make('updated_at', 'Updated')
 				->sort(),
 		];
     }

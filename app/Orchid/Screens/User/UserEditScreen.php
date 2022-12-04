@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Orchid\Screens\User;
 
+use App\Models\GroupType;
 use App\Orchid\Layouts\Role\RolePermissionLayout;
 use App\Orchid\Layouts\User\UserEditLayout;
 use App\Orchid\Layouts\User\UserGroupsLayout;
@@ -41,11 +42,21 @@ class UserEditScreen extends Screen
 	 */
 	public function query(User $user): iterable
 	{
-		$user->load(['roles', 'groups']);
+		$user->load(['roles']);
 
 		return [
 			'user'       => $user,
 			'permission' => $user->getStatusPermission(),
+			'country_specific_groups' => $user->groups
+				->where('group_type_id', '<>', GroupType::COUNTRIES)
+				->where('group_type_id', '<>', GroupType::MBASE2_MODULE_ROLES)
+				->where('group_type_id', '<>', GroupType::MBASE2_MODULE_PARAMETERS),
+			'mbase2_module_roles' => $user->groups
+				->where('group_type_id', '<>', GroupType::COUNTRIES)
+				->where('group_type_id', GroupType::MBASE2_MODULE_ROLES),
+			'mbase2_module_parameters' => $user->groups
+				->where('group_type_id', '<>', GroupType::COUNTRIES)
+				->where('group_type_id', GroupType::MBASE2_MODULE_PARAMETERS),
 		];
 	}
 
@@ -233,9 +244,17 @@ class UserEditScreen extends Screen
 		$user = \App\Models\User::find($user->id);
 
 		// TODO: probably better way to update
-		if ($request->collect('user')->has('groups')) {
-			$user->groups()->detach();
-			$user->groups()->attach($request->collect('user')['groups']);
+		$user->groups()->detach();
+		if ($request->collect('country_specific_groups')) {
+			$user->groups()->attach($request->collect('country_specific_groups'));
+		}
+
+		if ($request->collect('mbase2_module_roles')) {
+			$user->groups()->attach($request->collect('mbase2_module_roles'));
+		}
+
+		if ($request->collect('mbase2_module_parameters')) {
+			$user->groups()->attach($request->collect('mbase2_module_parameters'));
 		}
 
 		Toast::info(__('User was saved.'));

@@ -34,12 +34,6 @@ class UserEditLayout extends Rows
                 ->title(__('Email'))
                 ->placeholder(__('Email')),
 
-			Select::make('user.default_animal_status')
-				->options([
-					Animal::STR_ALIVE => __('Alive'),
-					Animal::STR_DEAD => __('Dead'),
-				])
-				->title(__('Default animal status'))
         ];
     }
 }

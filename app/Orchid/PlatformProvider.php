@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Orchid;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Orchid\Platform\Dashboard;
 use Orchid\Platform\ItemPermission;
 use Orchid\Platform\OrchidServiceProvider;
@@ -29,35 +30,17 @@ class PlatformProvider extends OrchidServiceProvider
 	public function registerMainMenu(): array
 	{
 		$menu = [
-			Menu::make(__('Dashboard'))
-				->icon('monitor')
-				->route('home')
-				->title(__('Dashboard')),
-
-			Menu::make(__('Users'))
-				->icon('user')
-				->route('platform.systems.users')
-				->permission('platform.systems.users')
-				->title(__('Access rights')),
-
-			Menu::make(__('Roles'))
-				->icon('lock')
-				->route('platform.systems.roles')
-				->permission('platform.systems.roles'),
-
-			//
-
-			Menu::make('Map')
-				->icon('bag')
+			Menu::make('Home')
+				->icon('home')
 				->title(__('Mbase2L'))
-				->href('/mbase2/map'),
-
-			Menu::make('Animal Handlings (Biometry)')
-				->icon('list')
-				->route('platform.animalHandling.list', ['filter[animal_status]' => Auth::user()->default_animal_status])
-
+				->href('/mbase2/map')
 		];
 
+		if (Auth::user()->isInGroup('mbase2', 'mortbiom')) {
+			$menu[] = Menu::make(__('Mortality and biometry'))
+				->icon('organization')
+				->route('platform.animalHandling.list', ['filter[animal_status]' => Auth::user()->defaultVisualisationAnimalStatus()]);
+		}
 
 		if (Auth::user()->isInGroup('mbase2', 'gensam2')) {
 			$menu[] = Menu::make('Genetic samples')
@@ -93,6 +76,84 @@ class PlatformProvider extends OrchidServiceProvider
 			$menu[] = Menu::make('Interventions')
 				->icon('list')
 				->href('/mbase2/modules/interventions');
+		}
+
+		if (Auth::user()->hasRole('MBASE2LAdmin')) {
+			// USERS AND ROLES
+			$menu[] = Menu::make('Roles')
+				->title('Users and roles')
+				->icon('friends')
+				->href('/admin/roles');
+
+			$menu[] = Menu::make('Users')
+				->icon('user')
+				->href('/admin/users');
+
+			// USER GROUPS AND GROUP TYPES
+			$menu[] = Menu::make('User group types')
+				->icon('layers')
+				->title('User groups and group types')
+				->href('/admin/crud/list/group-type-resources');
+
+			$menu[] = Menu::make('User groups')
+				->icon('friends')
+				->href('/admin/crud/list/group-resources');
+
+			// SPATIAL UNIT FILTER TYPES AND ELEMENTS
+			$menu[] = Menu::make('Spatial Unit Filter Types')
+				->icon('layers')
+				->title('Spatial unit filter types and elements')
+				->href('/admin/crud/list/spatial-unit-filter-type-resources');
+
+			$menu[] = Menu::make('Spatial Unit Filter Elements')
+				->icon('safari')
+				->href('/admin/crud/list/spatial-unit-filter-element-resources');
+
+			// GENERAL LISTS
+			$menu[] = Menu::make('Species')
+				->icon('list')
+				->title('General lists')
+				->href('/admin/crud/list/species-lists');
+
+			$menu[] = Menu::make('Sex')
+				->icon('list')
+				->href('/admin/crud/list/sex-lists');
+
+			if (Auth::user()->isInGroup('mbase2', 'mortbiom', 'admin')) {
+				// MORTBIOM MODULE RELATED LISTS
+				$menu[] = Menu::make('Animal Removal')
+					->title('Mortality and biometry lists')
+					->icon('list')
+					->href('/admin/crud/list/animal-removal-lists');
+
+				$menu[] = Menu::make('Loss Reason')
+					->icon('list')
+					->href('/admin/crud/list/biometry-loss-reason-lists');
+
+				$menu[] = Menu::make('Collar')
+					->icon('list')
+					->href('/admin/crud/list/collar-lists');
+
+				$menu[] = Menu::make('Color')
+					->icon('list')
+					->href('/admin/crud/list/color-lists');
+
+				$menu[] = Menu::make('Incisors Wear')
+					->icon('list')
+					->href('/admin/crud/list/incisors-wear-lists');
+
+				$menu[] = Menu::make('Place Of Removal')
+					->icon('list')
+					->href('/admin/crud/list/place-type-lists');
+
+				$menu[] = Menu::make('Teats Wear')
+					->icon('list')
+					->href('/admin/crud/list/teats-wear-lists');
+
+				$menu[] = Menu::make('Tooth Type')
+					->icon('list')
+					->href('/admin/crud/list/tooth-type-lists');
+			}
 		}
 
 		return $menu;

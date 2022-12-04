@@ -57,12 +57,12 @@ class BearsBiometryDataSexListListener extends Listener
 						->fromModel(SexList::class, 'name')
 						->title(__('Sex'))
 						->required()
-						->help(__('Select sex of the animal')),
+						->help(__('Select the sex of the animal')),
 
 					Input::make('bearsBiometryData.age')
 						->mask('99')
 						->title(__('Visual age estimate'))
-						->help(__('Insert age estimate of the animal (0-25).')),
+						->help(__('Insert age estimate of the animal (0-25)')),
 				]),
 				// Sex and age end
 				// Sexual characteristics start
@@ -81,7 +81,7 @@ class BearsBiometryDataSexListListener extends Listener
 
 					Select::make('bearsBiometryData.teats_wear_list_id')
 						->fromModel(TeatsWearList::class, 'name')
-						->title(__('Nipple use '))
+						->title(__('Nipple use'))
 						->required()
 						->help(__('Select nipple use'))
 						->canSee($isFemale && !$isNeutral)

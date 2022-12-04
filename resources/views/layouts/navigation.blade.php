@@ -30,7 +30,7 @@
 
 							<x-dropdown-link
 								:href="route('platform.animalHandling.list', ['filter[animal_status]' => Auth::user()?->default_animal_status])">
-								{{ __('Animal Handlings (Biometry)') }}
+								{{ __('Mortality and biometry') }}
 							</x-dropdown-link>
 
 							@if(Auth::user() && Auth::user()->isInGroup('mbase2', 'gensam2'))

@@ -2,6 +2,9 @@
 
 namespace App\Orchid\BaseResources;
 
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Orchid\Crud\Resource;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Sight;
@@ -9,6 +12,31 @@ use Orchid\Screen\TD;
 
 class BaseList extends Resource
 {
+	public static $moduleList = [];
+	/**
+	 * Get the resource should be displayed in the navigation
+	 *
+	 * @return bool
+	 */
+	public static function displayInNavigation(): bool
+	{
+		return false;
+	}
+
+	protected function groupPermissions(User $user)
+	{
+		Log::debug([self::$moduleList]);
+
+		foreach (self::$moduleList as $module)
+		{
+			if ($user->isInGroup('mbase2', $module, 'admin')) {
+				return true;
+			}
+		}
+
+		return count(self::$moduleList) == 0 && $user->hasRole('MBASE2LAdmin');
+	}
+
 	/**
 	 * Get the fields displayed by the resource.
 	 *
@@ -16,6 +44,8 @@ class BaseList extends Resource
 	 */
 	public function fields(): array
 	{
+		$this->groupPermissions(auth()->user()) ? null : abort(403);
+
 		return [
 			Input::make('name')
 				->title('Name'),
@@ -31,6 +61,8 @@ class BaseList extends Resource
 	 */
 	public function columns(): array
 	{
+		$this->groupPermissions(auth()->user()) ? null : abort(403);
+
 		return [
 			TD::make('id')
 				->sort()
@@ -63,6 +95,8 @@ class BaseList extends Resource
 	 */
 	public function legend(): array
 	{
+		$this->groupPermissions(auth()->user()) ? null : abort(403);
+
 		return [
 			Sight::make('id'),
 			Sight::make('name', "Name"),

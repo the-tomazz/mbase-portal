@@ -26,7 +26,6 @@ use Orchid\Screen\AsSource;
  * @property string|null $place_of_removal
  * @property int|null $place_type_list_id
  * @property string|null $place_type_list_details
- * @property int|null $bear_territory_type_list_id
  * @property float|null $lat
  * @property float|null $lng
  * @property int|null $zoom
@@ -61,7 +60,6 @@ use Orchid\Screen\AsSource;
  * @property WayOfWithdrawalList|null $way_of_withdrawal_list
  * @property BiometryLossReasonList|null $biometry_loss_reason_list
  * @property PlaceTypeList|null $place_type_list
- * @property BearTerritoryTypeList|null $bear_territory_type_list
  * @property SpatialUnitFilterElement|null $spatial_unit_filter_element
  * @property Group|null $group
  * @property ToothTypeList|null $tooth_type_list
@@ -89,7 +87,6 @@ class AnimalHandlingListView extends Model
 		'biometry_loss_reason_list_id' => 'int',
 		'animal_handling_date' => 'datetime',
 		'place_type_list_id' => 'int',
-		'bear_territory_type_list_id' => 'int',
 		'lat' => 'float',
 		'lng' => 'float',
 		'zoom' => 'int',
@@ -165,11 +162,6 @@ class AnimalHandlingListView extends Model
 	public function place_type_list()
 	{
 		return $this->belongsTo(PlaceTypeList::class);
-	}
-
-	public function bear_territory_type_list()
-	{
-		return $this->belongsTo(BearTerritoryTypeList::class);
 	}
 
 	public function spatial_unit_filter_element()

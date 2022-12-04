@@ -1,21 +1,3 @@
-create table laravel.bear_territory_type_list
-(
-    id          serial primary key,
-    title       varchar(128),
-    value       text,
-    name        jsonb,
-    description jsonb,
-	created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-	updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    deleted_at TIMESTAMPTZ DEFAULT NULL
-);
-
-INSERT INTO laravel.bear_territory_type_list (id, title, value, name, description) VALUES (149, 'bear_territory_type', 'Core area', '{"en":"Core area","sl":"Osrednje","default":"Core area"}', '{"hr":"","en":"","de":"","it":"","sl":"","default":""}');
-INSERT INTO laravel.bear_territory_type_list (id, title, value, name, description) VALUES (150, 'bear_territory_type', 'Border area', '{"en":"Border area","sl":"Robno","default":"Border area"}', '{"hr":"","en":"","de":"","it":"","sl":"","default":""}');
-INSERT INTO laravel.bear_territory_type_list (id, title, value, name, description) VALUES (151, 'bear_territory_type', 'Corridor area', '{"en":"Corridor area","sl":"Koridorsko","default":"Corridor area"}', '{"hr":"","en":"","de":"","it":"","sl":"","default":""}');
-INSERT INTO laravel.bear_territory_type_list (id, title, value, name, description) VALUES (175, 'bear_territory_type', 'Exceptional presence', '{"en":"Exceptional presence","sl":"Območje izjemne prisotnosti ","default":"Exceptional presence"}', '{"hr":"","en":"","de":"","it":"","sl":"","default":""}');
-
-
 create table laravel.biometry_loss_reason_list
 (
     id          serial primary key,
@@ -240,7 +222,6 @@ create table laravel.animal
 );
 
 ALTER TABLE laravel.animal DROP COLUMN value;
-ALTER TABLE laravel.bear_territory_type_list DROP COLUMN value;
 ALTER TABLE laravel.biometry_loss_reason_list DROP COLUMN value;
 ALTER TABLE laravel.collar_list DROP COLUMN value;
 ALTER TABLE laravel.color_list DROP COLUMN value;
@@ -254,7 +235,6 @@ ALTER TABLE laravel.tooth_type_list DROP COLUMN value;
 ALTER TABLE laravel.way_of_withdrawal_list DROP COLUMN value;
 
 ALTER TABLE laravel.animal OWNER TO gozdovi;
-ALTER TABLE laravel.bear_territory_type_list OWNER TO gozdovi;
 ALTER TABLE laravel.biometry_loss_reason_list OWNER TO gozdovi;
 ALTER TABLE laravel.collar_list OWNER TO gozdovi;
 ALTER TABLE laravel.color_list OWNER TO gozdovi;
@@ -268,7 +248,6 @@ ALTER TABLE laravel.tooth_type_list OWNER TO gozdovi;
 ALTER TABLE laravel.way_of_withdrawal_list OWNER TO gozdovi;
 
 GRANT SELECT ON TABLE laravel.animal TO gozdovi;
-GRANT SELECT ON TABLE laravel.bear_territory_type_list TO gozdovi;
 GRANT SELECT ON TABLE laravel.biometry_loss_reason_list TO gozdovi;
 GRANT SELECT ON TABLE laravel.collar_list TO gozdovi;
 GRANT SELECT ON TABLE laravel.color_list TO gozdovi;

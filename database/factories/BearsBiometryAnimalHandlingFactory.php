@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use App\Models\Animal;
 use App\Models\AnimalRemovalList;
-use App\Models\BearTerritoryTypeList;
 use App\Models\BiometryLossReasonList;
 use App\Models\PlaceTypeList;
 use App\Models\SpatialUnit;
@@ -37,7 +36,6 @@ class BearsBiometryAnimalHandlingFactory extends Factory
 			'place_of_removal' => Str::random(10),
 			'place_type_list_id' => PlaceTypeList::all()->random()->id,
 			'place_type_list_details' => Str::random(10),
-			'bear_territory_type_list_id' => BearTerritoryTypeList::all()->random()->id,
 			'lat' => 46.044705 + mt_rand(0, 10) / 10,
 			'lng' => 15.2424903 + mt_rand(0, 10) / 10,
 			'zoom' => mt_rand(0, 10),

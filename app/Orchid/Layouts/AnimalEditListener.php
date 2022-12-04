@@ -5,10 +5,8 @@ namespace App\Orchid\Layouts;
 use App\Models\Animal;
 use App\Models\SexList;
 use App\Models\SpeciesList;
-use Illuminate\Support\Facades\Log;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\Select;
-use Orchid\Screen\Fields\Switcher;
 use Orchid\Screen\Layouts\Listener;
 use Orchid\Support\Facades\Layout;
 
@@ -87,12 +85,12 @@ class AnimalEditListener extends Listener
 				Select::make('animal.species_list_id')
 					->fromModel(SpeciesList::class, 'name')
 					->title(__('Species'))
-					->help(__('Please select species.')),
+					->help(__('Please select the species')),
 
 				Select::make('animal.sex_list_id')
 					->fromModel(SexList::class, 'name')
 					->title(__('Sex'))
-					->help(__('Please select sex.')),
+					->help(__('Please select the sex')),
 
 				Input::make('animal.description')
 					->title('Note'),

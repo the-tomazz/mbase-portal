@@ -29,6 +29,10 @@ use Orchid\Screen\AsSource;
  */
 class GroupType extends Model
 {
+	public const COUNTRIES = 1;
+	public const MBASE2_MODULE_ROLES = 2;
+	public const MBASE2_MODULE_PARAMETERS = 4;
+
 	use AsSource, Filterable, Attachable;
 
 	protected $table = 'group_types';

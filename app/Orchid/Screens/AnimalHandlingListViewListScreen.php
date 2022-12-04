@@ -30,7 +30,7 @@ class AnimalHandlingListViewListScreen extends Screen
      */
     public function name(): ?string
     {
-        return __('Animal Handling List');
+        return __('Animal Handlings');
     }
 
 	/**
@@ -38,7 +38,7 @@ class AnimalHandlingListViewListScreen extends Screen
      */
     public function description(): ?string
     {
-        return __("All Animal Handlings");
+        return __("Animal Handlings");
     }
 
     /**
@@ -49,15 +49,15 @@ class AnimalHandlingListViewListScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-			Link::make('Animals')
+			Link::make(__('Animals'))
                 ->icon('list')
-                ->route('platform.animal.list', ['filter[status]' => Auth::user()->default_animal_status]),
+                ->route('platform.animal.list', ['filter[status]' => Auth::user()->defaultVisualisationAnimalStatus()]),
 
-			Link::make('New animal handling')
+			Link::make(__('New animal handling'))
                 ->icon('pencil')
                 ->route('platform.bearsBiometryAnimalHandling.edit'),
 
-			Link::make('Export to XLS')
+			Link::make(__('Export to XLS'))
                 ->icon('save')
                 ->route('platform.bearsBiometryAnimalHandling.edit')
 		];

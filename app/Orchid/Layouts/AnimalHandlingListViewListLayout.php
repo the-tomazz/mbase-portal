@@ -34,14 +34,14 @@ class AnimalHandlingListViewListLayout extends Table
     protected function columns(): iterable
     {
         return [
-			TD::make('animal_id', "Animal ID")
+			TD::make('animal_id', __('Animal ID'))
 				->render(function (AnimalHandlingListView $animalHandlingListView) {
 					return Link::make($animalHandlingListView->animal_id)
 					->route('platform.bearsBiometryAnimalHandling.edit', [ $animalHandlingListView->animal_id, $animalHandlingListView ]);
 				})
 				->sort(),
 
-			TD::make('animal_name', "Name")
+			TD::make('animal_name', __("Name"))
 				->render(function (AnimalHandlingListView $animalHandlingListView) {
 					return Link::make($animalHandlingListView->animal_name)
 					->route('platform.bearsBiometryAnimalHandling.edit', [ $animalHandlingListView->animal_id, $animalHandlingListView ]);
@@ -49,7 +49,7 @@ class AnimalHandlingListViewListLayout extends Table
 				->sort()
 				->filter(Input::make()),
 
-			TD::make('species_list_id', "Species")
+			TD::make('species_list_id', __("Species"))
 				->render(function (AnimalHandlingListView $animalHandlingListView) {
 					return Link::make($animalHandlingListView->species_list->name)
 					->route('platform.bearsBiometryAnimalHandling.edit', [ $animalHandlingListView->animal_id, $animalHandlingListView ]);
@@ -57,7 +57,7 @@ class AnimalHandlingListViewListLayout extends Table
 				->sort()
 				->filter(Select::make()->fromModel(SpeciesList::class, 'name')->empty(__('<Empty>'))),
 
-			TD::make('sex_list_id', "Sex")
+			TD::make('sex_list_id', __("Sex"))
 				->render(function (AnimalHandlingListView $animalHandlingListView) {
 					return Link::make($animalHandlingListView->sex_list->name)
 					->route('platform.bearsBiometryAnimalHandling.edit', [ $animalHandlingListView->animal_id, $animalHandlingListView ]);
@@ -65,7 +65,7 @@ class AnimalHandlingListViewListLayout extends Table
 				->sort()
 				->filter(Select::make()->fromModel(SexList::class, 'name')->empty(__('<Empty>'))),
 
-			TD::make('animal_status', __("Status"))
+			TD::make('animal_status', __('Status'))
 				->render(function (AnimalHandlingListView $animalHandlingListView) {
 					return $animalHandlingListView->animal_status == Animal::STR_ALIVE
 						? '<i class="text-success">●</i> ' . __('Alive')
@@ -77,19 +77,19 @@ class AnimalHandlingListViewListLayout extends Table
 					Animal::STR_DEAD => __('Dead'),
 				])->empty(__('<Empty>'))),
 
-			TD::make('animal_handling_date', 'Handling date')
+			TD::make('animal_handling_date', __('Handling date'))
 				->render(function ($model) {
 					return $model->animal_handling_date->toDateString();
 				})
 				->sort(),
 
-			TD::make('animal_died_at', 'Died at')
+			TD::make('animal_died_at', __('Died at'))
 				->render(function ($model) {
 					return $model->animal_died_at->toDateString();
 				})
 				->sort(),
 
-			TD::make('bears_biometry_data_status', "Biometry data")
+			TD::make('bears_biometry_data_status', __('Biometry data'))
 				->render(function (AnimalHandlingListView $animalHandlingListView) {
 					return $animalHandlingListView->bears_biometry_data_status == AnimalHandlingListView::STR_EXISTS
 						? Link::make(__('Exists'))
@@ -104,12 +104,12 @@ class AnimalHandlingListViewListLayout extends Table
 					AnimalHandlingListView::STR_MISSING => __('Missing'),
 				])->empty(__('<Empty>'))),
 
-			TD::make('created_at', 'Created')
+			TD::make('created_at', __('Created'))
 				->render(function ($model) {
 					return $model->created_at->toDateString();
 				})
 				->sort(),
-			TD::make('updated_at', 'Last edit')
+			TD::make('updated_at', __('Last edit'))
 				->render(function ($model) {
 					return $model->updated_at->toDateString();
 				})

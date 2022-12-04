@@ -31,8 +31,7 @@ return new class extends Migration
         });
 
 		DB::table('users_groups')->insert([
-			[ 'user_id' => 1, 'group_id' => 1 ],
-			[ 'user_id' => 1, 'group_id' => 22 ],
+			[ 'user_id' => 1, 'group_id' => 21 ], // mortbiom-admin
 		]);
     }
 

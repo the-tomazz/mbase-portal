@@ -7,6 +7,7 @@ namespace App\Orchid\Layouts\User;
 use App\Models\Animal;
 use App\Models\Group;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Actions\DropDown;
 use Orchid\Screen\Actions\Link;
@@ -57,12 +58,25 @@ class UserListLayout extends Table
                     return $user->updated_at->toDateTimeString();
                 }),
 
-			TD::make('default_animal_status', __('Default animal status'))
+			TD::make('user_groups', __('User groups'))
                 ->sort()
                 ->render(function (User $user) {
-					return $user->default_animal_status == Animal::STR_ALIVE
-						? '<i class="text-success">●</i> ' . __('Alive')
-						: '<i class="text-danger">●</i> ' . __('Dead');
+					$groups = '';
+					$length = 0;
+					foreach ($user->groups()->orderBy('group_type_id', 'desc')->get() as $group) {
+						if ($groups == '') {
+							$groups .= $group->name;
+						} else {
+							$groups .= ', ' . ($length>20 ? '<br>' : '') . $group->name;
+							if ($length>20) {
+								$length = 0;
+							}
+						}
+
+						$length += strlen($group->name);
+					}
+
+					return $groups;
                 }),
 
 			TD::make('country', __('Country'))
@@ -78,7 +92,6 @@ class UserListLayout extends Table
                     return DropDown::make()
                         ->icon('options-vertical')
                         ->list([
-
                             Link::make(__('Edit'))
                                 ->route('platform.systems.users.edit', $user->id)
                                 ->icon('pencil'),

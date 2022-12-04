@@ -31,33 +31,46 @@ return new class extends Migration
             }
         );
 
-        $countryIDs = [ 1, 2, 3, 4, 6 ];
-        foreach ($countryIDs as $countryID) { // each country belongs to it self
-            DB::table('groups_group_types_countries')->insert(
-                [
-                [ 'group_id' => $countryID, 'group_type_country_id' => $countryID ],
-                ]
-            );
-        }
+		// all the countries belong to all the countries
+        for ($countryGroupId=1; $countryGroupId<7; $countryGroupId++) {
+			for ($groupTypesCountryId=1; $groupTypesCountryId<7; $groupTypesCountryId++) {
+				DB::table('groups_group_types_countries')->insert(
+					[ 'group_id' => $countryGroupId, 'group_type_country_id' => $groupTypesCountryId ]
+				);
+			}
+		}
 
-        $eogzsIDs = [ 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 ];
-        foreach ($eogzsIDs as $eogzsID) { // all OE GZSs belongs to it Slovenia
-            DB::table('groups_group_types_countries')->insert(
-                [
-                [ 'group_id' => $eogzsID, 'group_type_country_id' => 8 ],
-                ]
-            );
-        }
+		// add all module related roles belong to all the countries
+		for ($mbase2ModuleRoleId = 21; $mbase2ModuleRoleId < 63; $mbase2ModuleRoleId++) {
+			for ($groupTypesCountryId=7; $groupTypesCountryId<13; $groupTypesCountryId++) {
+				DB::table('groups_group_types_countries')->insert(
+						[
+							'group_id' => $mbase2ModuleRoleId,
+							'group_type_country_id' => $groupTypesCountryId
+						],
+				);
+			}
+		}
 
-        $mbase2ModuleRoleIDs = [ 21, 22, 23, 24, 25 ];
-        $groupTypeCountryID= 7;
-        foreach ($mbase2ModuleRoleIDs as $mbase2ModuleRoleID) { // all roles belongs to it all countries
-            DB::table('groups_group_types_countries')->insert(
-				[
-				[ 'group_id' => $mbase2ModuleRoleID, 'group_type_country_id' => $groupTypeCountryID ],
-				]
-			);
-        }
+		// all the območne enote belong to SI-OEGZS that belongs to Slovenia
+		$groupTypesCountryId = 13; // 13 is (OE-GZS, Slovenia)
+		for ($eogzsId=7; $eogzsId<21; $eogzsId++) {
+			DB::table('groups_group_types_countries')->insert(
+				[ 'group_id' => $eogzsId, 'group_type_country_id' => $groupTypesCountryId ],
+		   );
+		}
+
+		// add all mortality biometry specific roles belong to all the countries
+		for ($mortalityBiometry = 63; $mortalityBiometry < 65; $mortalityBiometry++) {
+			for ($groupTypesCountryId=14; $groupTypesCountryId<20; $groupTypesCountryId++) {
+				DB::table('groups_group_types_countries')->insert(
+						[
+							'group_id' => $mortalityBiometry,
+							'group_type_country_id' => $groupTypesCountryId
+						],
+				);
+			}
+		}
     }
 
     /**

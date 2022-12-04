@@ -8,8 +8,6 @@ use App\Models\BearsBiometryData;
 use App\Models\CollarList;
 use App\Models\ColorList;
 use App\Models\IncisorsWearList;
-use App\Models\SexList;
-use App\Models\TeatsWearList;
 use App\Orchid\Layouts\BearsBiometryDataSexListListener;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -65,7 +63,7 @@ class BearsBiometryDataEditScreen extends Screen
      */
     public function name(): ?string
     {
-        return $this->bearsBiometryData->exists ? __('Edit Biometry Data') : __('Creating new Biometry Data');
+        return $this->bearsBiometryData->exists ? __('Edit biometry data') : __('Creating new biometry data');
     }
 
 	/**
@@ -73,7 +71,7 @@ class BearsBiometryDataEditScreen extends Screen
      */
     public function description(): ?string
     {
-        return __("Biometry Data Create / Update Screen");
+        return __('Biometry data Create / Update');
     }
 
     /**
@@ -84,15 +82,10 @@ class BearsBiometryDataEditScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-			Button::make(__('Create Biometry Data'))
+			Button::make(__('Save biometry data'))
                 ->icon('pencil')
                 ->method('createOrUpdate')
                 ->canSee(!$this->bearsBiometryData->exists),
-
-            Button::make('Update')
-                ->icon('note')
-                ->method('createOrUpdate')
-                ->canSee($this->bearsBiometryData->exists),
 
             Button::make('Remove')
                 ->icon('trash')
@@ -170,11 +163,13 @@ class BearsBiometryDataEditScreen extends Screen
 					Input::make('bearsBiometryData.masa_bruto')
 						->mask('999')
 						->title(__('Gross'))
+						->required()
 						->help(__('Insert gross mass of the animal (0-400 kg)')),
 
 					Input::make('bearsBiometryData.masa_neto')
 						->mask('999')
 						->title(__('Net'))
+						->required()
 						->help(__('Insert net mass of the animal (0-400 kg)')),
 
 				])->autoWidth(),
@@ -185,16 +180,19 @@ class BearsBiometryDataEditScreen extends Screen
 					Input::make('bearsBiometryData.hrbtna_dolzina')
 						->mask('999')
 						->title(__('Body length'))
+						->required()
 						->help(__('Insert Body length of the animal (0-300 cm)')),
 
 					Input::make('bearsBiometryData.trebusna_dolzina')
 						->mask('999')
 						->title(__('Body length - inferior'))
+						->required()
 						->help(__('Insert Body length - inferior of the animal (0-300 cm)')),
 
 					Input::make('bearsBiometryData.plecna_visina')
 						->mask('999')
 						->title(__('Shoulder height'))
+						->required()
 						->help(__('Insert Shoulder height of the animal (0-150 cm)')),
 
 				])->autoWidth(),
@@ -205,21 +203,25 @@ class BearsBiometryDataEditScreen extends Screen
 					Input::make('bearsBiometryData.obseg_glave')
 						->mask('999')
 						->title(__('Head circumference'))
+						->required()
 						->help(__('Insert Head circumference of the animal (0-150 cm)')),
 
 					Input::make('bearsBiometryData.obseg_vratu')
 						->mask('999')
 						->title(__('Neck circumference'))
+						->required()
 						->help(__('Insert Neck circumference of the animal (0-150 cm)')),
 
 					Input::make('bearsBiometryData.obseg_prsnega_kosa')
 						->mask('999')
 						->title(__('Thorax circumference'))
+						->required()
 						->help(__('Insert Thorax circumference of the animal (0-150 cm)')),
 
 					Input::make('bearsBiometryData.obseg_trebuha')
 						->mask('999')
 						->title(__('Abdomen circumference'))
+						->required()
 						->help(__('Insert Abdomen circumference of the animal (0-150 cm)')),
 
 				])->autoWidth(),
@@ -230,11 +232,12 @@ class BearsBiometryDataEditScreen extends Screen
 					Input::make('bearsBiometryData.dolzina_repa_prva_meritev')
 						->mask('99')
 						->title(__('Tail length without hair'))
+						->required()
 						->help(__('Insert Tail length without hair (0-60 cm)')),
 
 					Input::make('bearsBiometryData.dolzina_repa_druga_meritev')
 						->mask('99')
-						->title(__('!! This is not obligatory! Length of hair at the end of tail'))
+						->title(__('Length of hair at the end of tail'))
 						->help(__('Insert Length of hair at the end of tail (0-60 cm)')),
 
 				])->autoWidth(),
@@ -245,11 +248,13 @@ class BearsBiometryDataEditScreen extends Screen
 					Input::make('bearsBiometryData.dolzina_usesov')
 						->mask('99')
 						->title(__('Ear length without hair'))
+						->required()
 						->help(__('Insert Ear length without hair (0-20 cm)')),
 
 					Input::make('bearsBiometryData.dolzina_copkov')
 						->mask('99')
-						->title(__('!! This is not obligatory! Length of hair tuft (for lynx only)'))
+						->title(__('Length of hair tuft (for lynx only)'))
+						->required()
 						->help(__('Insert Length of hair tuft (for lynx only) (0-20 cm)')),
 
 				])->autoWidth(),
@@ -260,12 +265,14 @@ class BearsBiometryDataEditScreen extends Screen
 					Input::make('bearsBiometryData.sps_leva')
 						->mask('99')
 						->title(__('Front left paw width'))
+						->required()
 						->help(__('Insert Front left paw width (0-20 cm)')),
 
 					Input::make('bearsBiometryData.dps_leva')
 						->mask('99')
+						->required()
 						->title(__('Front left paw length'))
-						->help(__('Insert Front left paw width (0-25 cm)')),
+						->help(__('Insert Front left paw length (0-25 cm)')),
 
 				])->autoWidth(),
 				// Front left paw end
@@ -274,13 +281,15 @@ class BearsBiometryDataEditScreen extends Screen
 				Group::make([
 					Input::make('bearsBiometryData.sps_desna')
 						->mask('99')
+						->required()
 						->title(__('Front right paw width'))
 						->help(__('Insert Front right paw width (0-20 cm)')),
 
 					Input::make('bearsBiometryData.dps_desna')
 						->mask('99')
 						->title(__('Front right paw length'))
-						->help(__('Insert Front right paw width (0-25 cm)')),
+						->required()
+						->help(__('Insert Front right paw length (0-25 cm)')),
 
 				])->autoWidth(),
 				// Front right paw end
@@ -290,11 +299,13 @@ class BearsBiometryDataEditScreen extends Screen
 					Input::make('bearsBiometryData.szs_leva')
 						->mask('99')
 						->title(__('Hind left paw width'))
+						->required()
 						->help(__('Insert Hind left paw width (0-20 cm)')),
 
 					Input::make('bearsBiometryData.dzs_leva')
 						->mask('99')
 						->title(__('Hind left paw length'))
+						->required()
 						->help(__('Insert Hind left paw width (0-25 cm)')),
 
 				])->autoWidth(),
@@ -305,12 +316,14 @@ class BearsBiometryDataEditScreen extends Screen
 					Input::make('bearsBiometryData.szs_desna')
 						->mask('99')
 						->title(__('Hind left paw width'))
+						->required()
 						->help(__('Insert Hind left paw width (0-20 cm)')),
 
 					Input::make('bearsBiometryData.dzs_desna')
 						->mask('99')
 						->title(__('Hind left paw length'))
-						->help(__('Insert Hind left paw width (0-25 cm)')),
+						->required()
+						->help(__('Insert Hind left paw length (0-25 cm)')),
 
 				])->autoWidth(),
 				// Hind right paw end
@@ -320,11 +333,13 @@ class BearsBiometryDataEditScreen extends Screen
 					Input::make('bearsBiometryData.dzp_leva')
 						->mask('99')
 						->title(__('Length of Upper left canines'))
+						->required()
 						->help(__('Insert Length of Upper left canines (0-6 cm)')),
 
 					Input::make('bearsBiometryData.dsp_leva')
 						->mask('99')
 						->title(__('Length of Lower left canines'))
+						->required()
 						->help(__('Insert Length of Lower left canines (0-5 cm)')),
 
 				])->autoWidth(),
@@ -351,13 +366,13 @@ class BearsBiometryDataEditScreen extends Screen
 						->options($premolarsOptions)
 						->title(__('Number of premolars in the Upper jaw (left + right)'))
 						->required()
-						->help(__('Please insert Number of premolars in the Upper jaw (left + right).')),
+						->help(__('Please insert Number of premolars in the Upper jaw (left + right)')),
 
 					Select::make('bearsBiometryData.sp_spodaj')
 						->options($premolarsOptions)
 						->title(__('Number of premolars in the Lower jaw (left + right)'))
 						->required()
-						->help(__('Please insert Number of premolars in the Lower jaw (left + right).')),
+						->help(__('Please insert Number of premolars in the Lower jaw (left + right)')),
 
 				])->autoWidth(),
 				// Number of premolars end
@@ -368,7 +383,7 @@ class BearsBiometryDataEditScreen extends Screen
 						->fromModel(IncisorsWearList::class, 'name')
 						->title(__('Incisors (front teeth) wear'))
 						->required()
-						->help(__('Please insert Incisors (front teeth) wear.')),
+						->help(__('Please insert Incisors (front teeth) wear')),
 
 					Select::make('bearsBiometryData.color_list_id')
 						->fromModel(ColorList::class, 'name')
@@ -389,7 +404,7 @@ class BearsBiometryDataEditScreen extends Screen
 				TextArea::make('bearsBiometryData.stanje_lesine')
 					->title(__('Physical condition, illness, injuries, other observations, notes'))
 					->required()
-					->help(__('Please insert Physical condition, illness, injuries, other observations, notes ')),
+					->help(__('Please insert Physical condition, illness, injuries, other observations, notes')),
 
 				// Date and time of biometry measurements start
 				Input::make('bearsBiometryData.cas_biometrije')
@@ -422,7 +437,7 @@ class BearsBiometryDataEditScreen extends Screen
 			$request->input('bearsBiometryData.attachment', [])
 		);
 
-        Alert::info(__('You have successfully created or updated Biometry Data.'));
+        Alert::info(__('You have successfully created or updated Biometry Data'));
 
         return redirect()->route('platform.bearsBiometryData.list');
     }
@@ -437,7 +452,7 @@ class BearsBiometryDataEditScreen extends Screen
     {
         $bearsBiometryData->delete();
 
-        Alert::info(__('You have successfully deleted Biometry Data.'));
+        Alert::info(__('You have successfully deleted Biometry Data'));
 
         return redirect()->route('platform.bearsBiometryData.list');
     }

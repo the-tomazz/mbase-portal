@@ -15,9 +15,6 @@ use App\Orchid\Screens\User\UserProfileScreen;
 use Illuminate\Support\Facades\Route;
 use Tabuna\Breadcrumbs\Trail;
 
-use App\Orchid\Screens\BearsBiometrySampleEditScreen;
-use App\Orchid\Screens\BearsBiometrySampleListScreen;
-
 use App\Orchid\Screens\AnimalEditScreen;
 use App\Orchid\Screens\AnimalListScreen;
 
@@ -102,16 +99,9 @@ Route::screen('roles', RoleListScreen::class)
 			->push(__('Roles'), route('platform.systems.roles'));
 	});
 
-Route::screen('bearsBiometrySample/{bearsBiometrySample?}', BearsBiometrySampleEditScreen::class)->name('platform.bearsBiometrySample.edit');
-Route::screen('bearsBiometrySamples', BearsBiometrySampleListScreen::class)->name('platform.bearsBiometrySample.list');
-
 Route::screen('bearsBiometryAnimalHandling/{animal?}/{bearsBiometryAnimalHandling?}', BearsBiometryAnimalHandlingEditScreen::class)->name('platform.bearsBiometryAnimalHandling.edit');
 Route::screen('animalHandlings', AnimalHandlingListViewListScreen::class)->name('platform.animalHandling.list');
-
 Route::screen('bearsBiometryData/{bearsBiometryAnimalHandling?}/{bearsBiometryData?}', BearsBiometryDataEditScreen::class)->name('platform.bearsBiometryData.edit');
 
 Route::screen('animal/{animal?}', AnimalEditScreen::class)->name('platform.animal.edit');
 Route::screen('animals', AnimalListScreen::class)->name('platform.animal.list');
-
-Route::screen('testScreen', TestScreen::class)->name('platform.testScreen');
-Route::screen('testScreen2', TestScreen2::class)->name('platform.testScreen2');

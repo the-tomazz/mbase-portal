@@ -33,19 +33,32 @@ return new class extends Migration
 
         DB::table('group_types_countries')->insert(
             [
-            // COUNTRIES
-            [ 'group_type_id' => 1, 'country_id' => 1 ],
-            [ 'group_type_id' => 1, 'country_id' => 2 ],
-            [ 'group_type_id' => 1, 'country_id' => 3 ],
-            [ 'group_type_id' => 1, 'country_id' => 4 ],
-            [ 'group_type_id' => 1, 'country_id' => 5 ],
-            [ 'group_type_id' => 1, 'country_id' => 6 ],
+				// COUNTRIES
+				[ 'group_type_id' => 1, 'country_id' => 1 ],
+				[ 'group_type_id' => 1, 'country_id' => 2 ],
+				[ 'group_type_id' => 1, 'country_id' => 3 ],
+				[ 'group_type_id' => 1, 'country_id' => 4 ],
+				[ 'group_type_id' => 1, 'country_id' => 5 ],
+				[ 'group_type_id' => 1, 'country_id' => 6 ],
 
-            // MBASE-MODULE-ROLES
-            [ 'group_type_id' => 2, 'country_id' => 1 ],
+				// MBASE-MODULE-ROLES
+				[ 'group_type_id' => 2, 'country_id' => 1 ],
+				[ 'group_type_id' => 2, 'country_id' => 2 ],
+				[ 'group_type_id' => 2, 'country_id' => 3 ],
+				[ 'group_type_id' => 2, 'country_id' => 4 ],
+				[ 'group_type_id' => 2, 'country_id' => 5 ],
+				[ 'group_type_id' => 2, 'country_id' => 6 ],
 
-            // SI-OEGZS
-            [ 'group_type_id' => 3, 'country_id' => 1 ],
+				// SI-OEGZS
+				[ 'group_type_id' => 3, 'country_id' => 1 ],
+
+				// MBASE-MODULE-PARAMETERS
+				[ 'group_type_id' => 4, 'country_id' => 1 ],
+				[ 'group_type_id' => 4, 'country_id' => 2 ],
+				[ 'group_type_id' => 4, 'country_id' => 3 ],
+				[ 'group_type_id' => 4, 'country_id' => 4 ],
+				[ 'group_type_id' => 4, 'country_id' => 5 ],
+				[ 'group_type_id' => 4, 'country_id' => 6 ],
             ]
         );
     }

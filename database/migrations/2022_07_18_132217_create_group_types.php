@@ -25,9 +25,10 @@ return new class extends Migration
 
         DB::table('group_types')->insert(
             [
-            [ 'slug' => 'COUNTRIES', 'name' => 'Countries', 'is_spatial_unit_group_type' => 0 ],
-            [ 'slug' => 'MBASE2-ROLES', 'name' => 'MBase2 roles', 'is_spatial_unit_group_type' => 0 ],
-            [ 'slug' => 'SI-OEGZS', 'name' => 'Območna enota ZGS', 'is_spatial_unit_group_type' => 1 ],
+				[ 'slug' => 'COUNTRIES', 'name' => 'Countries', 'is_spatial_unit_group_type' => 0 ],
+				[ 'slug' => 'MBASE2-MODULE-ROLES', 'name' => 'MBase2 roles', 'is_spatial_unit_group_type' => 0 ],
+				[ 'slug' => 'SI-OEGZS', 'name' => 'Območna enota ZGS', 'is_spatial_unit_group_type' => 1 ],
+				[ 'slug' => 'MBASE2-MODULE-PARAMETERS', 'name' => 'Module parameters', 'is_spatial_unit_group_type' => 0 ],
             ]
         );
     }
