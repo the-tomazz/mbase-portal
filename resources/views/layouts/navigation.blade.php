@@ -13,16 +13,14 @@
 						</x-slot>
 
 						<x-slot name="content">
-							{{-- <x-dropdown-link :href="route('home')" :hidden="request()->routeIs('home')">
-								{{ __('Dashboard') }}
-							</x-dropdown-link> --}}
-
-							<x-dropdown-link :href="route('platform.systems.users')"
-								:hidden="request()->routeIs('platform.systems.users')">
+							<x-dropdown-link :href="route('platform.main')"
+								:hidden="request()->routeIs('platform.main')">
 								{{ __('Dashboard') }}
 							</x-dropdown-link>
 
+							@if (!request()->routeIs('platform.main'))
 							<hr />
+							@endif
 
 							<x-dropdown-link href="/mbase2/map">
 								{{ __('Map') }}
