@@ -24,6 +24,9 @@ That should be it.
 
 
 --}}
+
+
+@push('head')
 <script>
 	var markers = [
 @foreach ($animalHandlings as $animalHandling)
@@ -37,52 +40,43 @@ That should be it.
 	];
 </script>
 
+<style>
+	#map {
+		height: 400px;
+		/* The height is 400 pixels */
+		width: 100%;
+		/* The width is the width of the web page */
+		margin-bottom: 15px;
+	}
+</style>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+	integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+	integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+
+<script>
+	function initMap() {
+		console.log("Initializing map");
+		const center = { lat: 46.1203, lng: 14.8156 };
+
+		var map = L.map('map').setView([center.lat, center.lng], 8);
+
+		L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+		}).addTo(map);
+
+		markers.forEach(element => {
+			L.marker([element.position.lat, element.position.lng]).addTo(map)
+			.bindPopup(element.title);
+		});
+	}
+
+	window.onload = initMap;
+</script>
+
+@endpush
+
 <div>
-	<style>
-		#map {
-			height: 400px;
-			/* The height is 400 pixels */
-			width: 100%;
-			/* The width is the width of the web page */
-			margin-bottom: 15px;
-		}
-	</style>
-
-	<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-	<script
-		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCIkGfNH8Rqht-VeBTJLvnmQ2F82Vzp5-E&callback=initMap&v=weekly"
-		defer></script>
-
-	<script>
-		// var markers = [
-		// 	{ lat: 46.1209, lng: 14.8156 },
-		// 	{ lat: 46.2315, lng: 14.8456 },
-		// 	{ lat: 46.3315, lng: 14.8456 }
-		// ];
-
-		function initMap() {
-			console.log("Initializing map");
-
-			const center = { lat: 46.1203, lng: 14.8156 };
-			const map = new google.maps.Map(document.getElementById("map"), {
-				zoom: 8,
-				center: center,
-			});
-
-			markers.forEach(element => {
-				const marker = new google.maps.Marker({
-					position: element.position,
-					title: element.title,
-					map: map,
-				});
-			});
-		}
-
-		window.initMap = initMap;
-
-	</script>
-
 	<div id="map"></div>
-
-
 </div>
