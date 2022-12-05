@@ -27,13 +27,13 @@ class BearsBiometryDataEditScreen extends Screen
 {
 	public $bearsBiometryData;
 
-    /**
-     * Query data.
-     *
-     * @return array
-     */
-    public function query(BearsBiometryAnimalHandling $bearsBiometryAnimalHandling, BearsBiometryData $bearsBiometryData): iterable
-    {
+	/**
+	 * Query data.
+	 *
+	 * @return array
+	 */
+	public function query(BearsBiometryAnimalHandling $bearsBiometryAnimalHandling, BearsBiometryData $bearsBiometryData): iterable
+	{
 		if (!$bearsBiometryData->exists) {
 			$bearsBiometryData['bears_biometry_animal_handling_id'] = $bearsBiometryAnimalHandling->id;
 		}
@@ -45,83 +45,83 @@ class BearsBiometryDataEditScreen extends Screen
 		$bearsBiometryData['bears_biometry_animal_handling_animal_species_list_name'] = $bearsBiometryAnimalHandling->animal->species_list->name;
 		$bearsBiometryData['sex_list_id'] = $bearsBiometryAnimalHandling->animal->sex_list_id;
 		$bearsBiometryData['bears_biometry_animal_handling_animal_status'] = $bearsBiometryAnimalHandling->animal->status == Animal::STR_ALIVE
-					? __('Alive')
-					: __('Dead');
+			? __('Alive')
+			: __('Dead');
 
 
 		$bearsBiometryData->load('attachment');
 
-        return [
+		return [
 			'bearsBiometryData' => $bearsBiometryData
 		];
-    }
-
-    /**
-     * Display header name.
-     *
-     * @return string|null
-     */
-    public function name(): ?string
-    {
-        return $this->bearsBiometryData->exists ? __('Edit biometry data') : __('Creating new biometry data');
-    }
-
-	/**
-     * The description is displayed on the user's screen under the heading
-     */
-    public function description(): ?string
-    {
-        return __('Biometry data Create / Update');
-    }
-
-    /**
-     * Button commands.
-     *
-     * @return \Orchid\Screen\Action[]
-     */
-    public function commandBar(): iterable
-    {
-        return [
-			Button::make(__('Save biometry data'))
-                ->icon('pencil')
-                ->method('createOrUpdate')
-                ->canSee(!$this->bearsBiometryData->exists),
-
-            Button::make('Remove')
-                ->icon('trash')
-                ->method('remove')
-                ->canSee($this->bearsBiometryData->exists),
-		];
-    }
-
-	public function asyncUpdateDataSexListListenerData($triggers)
-    {
-		Log::debug(['asyncUpdateDataSexListListenerData', $triggers]);
-
-        return [
-            'bearsBiometryData' => new Repository([
-                'sex_list_id'			=> $triggers['sex_list_id'],
-				'age'      				=> $triggers['age'],
-                'dolzina_spolne_kosti'	=> $triggers['dolzina_spolne_kosti'] ?? null,
-				'dolzina_seskov'		=> $triggers['dolzina_seskov'] ?? null,
-				'teats_wear_list_id'	=> $triggers['teats_wear_list_id'] ?? null,
-            ]),
-        ];
 	}
 
-    /**
-     * Views.
-     *
-     * @return \Orchid\Screen\Layout[]|string[]
-     */
-    public function layout(): iterable
-    {
+	/**
+	 * Display header name.
+	 *
+	 * @return string|null
+	 */
+	public function name(): ?string
+	{
+		return $this->bearsBiometryData->exists ? __('Edit biometry data') : __('Creating new biometry data');
+	}
+
+	/**
+	 * The description is displayed on the user's screen under the heading
+	 */
+	public function description(): ?string
+	{
+		return __('Biometry data Create / Update');
+	}
+
+	/**
+	 * Button commands.
+	 *
+	 * @return \Orchid\Screen\Action[]
+	 */
+	public function commandBar(): iterable
+	{
+		return [
+			Button::make(__('Save biometry data'))
+				->icon('pencil')
+				->method('createOrUpdate')
+				->canSee(!$this->bearsBiometryData->exists),
+
+			Button::make('Remove')
+				->icon('trash')
+				->method('remove')
+				->canSee($this->bearsBiometryData->exists),
+		];
+	}
+
+	public function asyncUpdateDataSexListListenerData($triggers)
+	{
+		Log::debug(['asyncUpdateDataSexListListenerData', $triggers]);
+
+		return [
+			'bearsBiometryData' => new Repository([
+				'sex_list_id'			=> $triggers['sex_list_id'],
+				'age'      				=> $triggers['age'],
+				'dolzina_spolne_kosti'	=> $triggers['dolzina_spolne_kosti'] ?? null,
+				'dolzina_seskov'		=> $triggers['dolzina_seskov'] ?? null,
+				'teats_wear_list_id'	=> $triggers['teats_wear_list_id'] ?? null,
+			]),
+		];
+	}
+
+	/**
+	 * Views.
+	 *
+	 * @return \Orchid\Screen\Layout[]|string[]
+	 */
+	public function layout(): iterable
+	{
 		$premolarsOptions = [];
 		foreach (BearsBiometryData::PREMOLARS_VALUES as $premolar_value) {
 			$premolarsOptions[$premolar_value] = $premolar_value;
 		}
 
-        return [
+		return [
 			Layout::columns([
 				Layout::rows([
 					Label::make('bearsBiometryData.bears_biometry_animal_handling_animal_id')
@@ -415,21 +415,26 @@ class BearsBiometryDataEditScreen extends Screen
 
 				// images start
 				Upload::make('bearsBiometryData.attachment')
-						->title('All files')
+					->title('All files'),
 				// images end
+
+				Button::make(__('Save biometry data'))
+					->icon('pencil')
+					->method('createOrUpdate')
+					->canSee(!$this->bearsBiometryData->exists),
 			])
 		];
 	}
 
 	/**
-     * @param BearsBiometryData    $bearsBiometryData
-     * @param Request $request
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function createOrUpdate(BearsBiometryData $bearsBiometryData, Request $request)
-    {
-        $bearsBiometryData->fill($request->get('bearsBiometryData'))->save();
+	 * @param BearsBiometryData    $bearsBiometryData
+	 * @param Request $request
+	 *
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
+	public function createOrUpdate(BearsBiometryData $bearsBiometryData, Request $request)
+	{
+		$bearsBiometryData->fill($request->get('bearsBiometryData'))->save();
 
 		Log::debug(['bearsBiometryData createOrUpdate', $request->get('bearsBiometryData')]);
 
@@ -437,23 +442,23 @@ class BearsBiometryDataEditScreen extends Screen
 			$request->input('bearsBiometryData.attachment', [])
 		);
 
-        Alert::info(__('You have successfully created or updated Biometry Data'));
+		Alert::info(__('You have successfully created or updated Biometry Data'));
 
-        return redirect()->route('platform.bearsBiometryData.list');
-    }
+		return redirect()->route('platform.bearsBiometryData.list');
+	}
 
-    /**
-     * @param BearsBiometryData $bearsBiometryData
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Exception
-     */
-    public function remove(BearsBiometryData $bearsBiometryData)
-    {
-        $bearsBiometryData->delete();
+	/**
+	 * @param BearsBiometryData $bearsBiometryData
+	 *
+	 * @return \Illuminate\Http\RedirectResponse
+	 * @throws \Exception
+	 */
+	public function remove(BearsBiometryData $bearsBiometryData)
+	{
+		$bearsBiometryData->delete();
 
-        Alert::info(__('You have successfully deleted Biometry Data'));
+		Alert::info(__('You have successfully deleted Biometry Data'));
 
-        return redirect()->route('platform.bearsBiometryData.list');
-    }
+		return redirect()->route('platform.bearsBiometryData.list');
+	}
 }
