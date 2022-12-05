@@ -31,12 +31,12 @@ return new class extends Migration
 
 		DB::table('groups')->insert([
 			// COUNTRIES
-			[ 'slug' => 'si', 'name' => '{"sl":"Slovenija", "hr":"Slovenija", "it":"Slovenia", "de":"Slowenien", "ro":"Slovenia", "sk":"Slovinsko"}', 'group_type_id' => 1, 'created_at' => now(), 'updated_at' => now() ],
-			[ 'slug' => 'hr', 'name' => '{"sl":"Hrvaška", "hr":"Hrvatska", "it":"Croazia", "de":"Kroatien", "ro":"Croaţia", "sk":"Chorvátsko"}', 'group_type_id' => 1, 'created_at' => now(), 'updated_at' => now() ],
-			[ 'slug' => 'it', 'name' => '{"sl":"Italija", "hr":"Italija", "it":"Italia", "de":"Italien", "ro":"Italia", "sk":"Taliansko"}', 'group_type_id' => 1 , 'created_at' => now(), 'updated_at' => now() ],
-			[ 'slug' => 'at', 'name' => '{"sl":"Avstrija", "hr":"Austrija", "it":"Austria", "de":"Österreich", "ro":"Austria", "sk":"Rakúsko"}', 'group_type_id' => 1 , 'created_at' => now(), 'updated_at' => now() ],
-			[ 'slug' => 'ro', 'name' => '{"sl":"Romunia", "hr":"Rumunjska", "it":"Romania", "de":"Rumänien", "ro":"România", "sk":"Rumunsko"}', 'group_type_id' => 1 , 'created_at' => now(), 'updated_at' => now() ],
-			[ 'slug' => 'sl', 'name' => '{"sl":"Slovaška", "hr":"slovački", "it":"Slovacco", "de":"slowakisch", "ro":"Slovacă", "sk":"Slovenský"}', 'group_type_id' => 1, 'created_at' => now(), 'updated_at' => now() ],
+			[ 'slug' => 'si', 'name' => '{"en": "Slovenia", "sl":"Slovenija", "hr":"Slovenija", "it":"Slovenia", "de":"Slowenien", "ro":"Slovenia", "sk":"Slovinsko"}', 'group_type_id' => 1, 'created_at' => now(), 'updated_at' => now() ],;
+			[ 'slug' => 'hr', 'name' => '{"en": "Croatia", "sl":"Hrvaška", "hr":"Hrvatska", "it":"Croazia", "de":"Kroatien", "ro":"Croaţia", "sk":"Chorvátsko"}', 'group_type_id' => 1, 'created_at' => now(), 'updated_at' => now() ],
+			[ 'slug' => 'it', 'name' => '{"en": "Italy", "sl":"Italija", "hr":"Italija", "it":"Italia", "de":"Italien", "ro":"Italia", "sk":"Taliansko"}', 'group_type_id' => 1 , 'created_at' => now(), 'updated_at' => now() ],
+			[ 'slug' => 'at', 'name' => '{"en": "Austira", "sl":"Avstrija", "hr":"Austrija", "it":"Austria", "de":"Österreich", "ro":"Austria", "sk":"Rakúsko"}', 'group_type_id' => 1 , 'created_at' => now(), 'updated_at' => now() ],
+			[ 'slug' => 'ro', 'name' => '{"en": "Romaina", "sl":"Romunia", "hr":"Rumunjska", "it":"Romania", "de":"Rumänien", "ro":"România", "sk":"Rumunsko"}', 'group_type_id' => 1 , 'created_at' => now(), 'updated_at' => now() ],
+			[ 'slug' => 'sl', 'name' => '{"en": "Slovakia", "sl":"Slovaška", "hr":"slovački", "it":"Slovacco", "de":"slowakisch", "ro":"Slovacă", "sk":"Slovenský"}', 'group_type_id' => 1, 'created_at' => now(), 'updated_at' => now() ],
 
 			// SI-OEGZS
 			[ 'slug' => 'SI-OEGZS-14',  'name' => '{"sl":"SEŽANA"}', 'group_type_id' => 3, 'created_at' => now(), 'updated_at' => now() ],
