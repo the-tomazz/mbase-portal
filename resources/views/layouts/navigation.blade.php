@@ -67,6 +67,74 @@
 								{{ __('Interventions') }}
 							</x-dropdown-link>
 							@endif
+
+							<hr />
+
+							{{-- ADMIN --}}
+
+							@if (Auth::user()->hasRole('MBASE2LAdmin'))
+
+							<x-dropdown-link href="/admin/roles">
+								{{ __('Roles') }}
+							</x-dropdown-link>
+							<x-dropdown-link href="/admin/users">
+								{{ __('Users') }}
+							</x-dropdown-link>
+							<hr />
+							<x-dropdown-link href="/admin/crud/list/group-type-resources">
+								{{ __('User group types') }}
+							</x-dropdown-link>
+							<x-dropdown-link href="/admin/crud/list/group-resources">
+								{{ __('User groups') }}
+							</x-dropdown-link>
+							<hr />
+							<x-dropdown-link href="/admin/crud/list/spatial-unit-filter-type-resources">
+								{{ __('Spatial Unit Filter Types') }}
+							</x-dropdown-link>
+							<x-dropdown-link href="/admin/crud/list/spatial-unit-filter-element-resources">
+								{{ __('Spatial Unit Filter Elements') }}
+							</x-dropdown-link>
+							<hr />
+							<x-dropdown-link href="/admin/crud/list/species-lists">
+								{{ __('Species') }}
+							</x-dropdown-link>
+							<x-dropdown-link href="/admin/crud/list/sex-lists">
+								{{ __('Sex') }}
+							</x-dropdown-link>
+
+							@endif
+
+							<hr />
+
+							@if (Auth::user()->isInGroup('mbase2', 'mortbiom', 'admin'))
+
+							<x-dropdown-link href="/admin/crud/list/animal-removal-lists">
+								{{ __('Animal Removal') }}
+							</x-dropdown-link>
+							<x-dropdown-link href="/admin/crud/list/biometry-loss-reason-lists">
+								{{ __('Loss Reason') }}
+							</x-dropdown-link>
+							<x-dropdown-link href="/admin/crud/list/collar-lists">
+								{{ __('Collar') }}
+							</x-dropdown-link>
+							<x-dropdown-link href="/admin/crud/list/color-lists">
+								{{ __('Color') }}
+							</x-dropdown-link>
+							<x-dropdown-link href="/admin/crud/list/incisors-wear-lists">
+								{{ __('Incisors Wear') }}
+							</x-dropdown-link>
+							<x-dropdown-link href="/admin/crud/list/place-type-lists">
+								{{ __('Place Of Removal') }}
+							</x-dropdown-link>
+							<x-dropdown-link href="/admin/crud/list/teats-wear-lists">
+								{{ __('Teats Wear') }}
+							</x-dropdown-link>
+							<x-dropdown-link href="/admin/crud/list/tooth-type-lists">
+								{{ __('Tooth Type') }}
+							</x-dropdown-link>
+
+							@endif
+
 						</x-slot>
 					</x-dropdown>
 				</div>
