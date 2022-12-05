@@ -14,12 +14,7 @@ class Controller extends BaseController
 
 	public function index()
 	{
-		$isAdmin = false;
-		$user = auth()->user();
-		if ($user != null) {
-			$isAdmin = $user->permissions ?? ( $user->permissions["mbase2l.admin"] ?? false );
-		}
-
+		$isAdmin = auth()->user() && auth()->user()->hasRole('mbase2l.admin');
 		return view('dashboard', compact('isAdmin'));
 	}
 }

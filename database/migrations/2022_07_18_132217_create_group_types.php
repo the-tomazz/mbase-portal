@@ -27,7 +27,7 @@ return new class extends Migration
             [
 				[ 'slug' => 'COUNTRIES', 'name' => 'Countries', 'is_spatial_unit_group_type' => 0 ],
 				[ 'slug' => 'MBASE2-MODULE-ROLES', 'name' => 'MBase2 roles', 'is_spatial_unit_group_type' => 0 ],
-				[ 'slug' => 'SI-OEGZS', 'name' => 'Območna enota ZGS', 'is_spatial_unit_group_type' => 1 ],
+				[ 'slug' => 'SI-OEZGS', 'name' => 'Območna enota ZGS', 'is_spatial_unit_group_type' => 1 ],
 				[ 'slug' => 'MBASE2-MODULE-PARAMETERS', 'name' => 'Module parameters', 'is_spatial_unit_group_type' => 0 ],
             ]
         );

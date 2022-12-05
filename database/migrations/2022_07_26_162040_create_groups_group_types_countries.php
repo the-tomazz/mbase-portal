@@ -52,11 +52,11 @@ return new class extends Migration
 			}
 		}
 
-		// all the območne enote belong to SI-OEGZS that belongs to Slovenia
+		// all the območne enote belong to SI-OEZGS that belongs to Slovenia
 		$groupTypesCountryId = 13; // 13 is (OE-GZS, Slovenia)
-		for ($eogzsId=7; $eogzsId<21; $eogzsId++) {
+		for ($oezgsId=7; $oezgsId<21; $oezgsId++) {
 			DB::table('groups_group_types_countries')->insert(
-				[ 'group_id' => $eogzsId, 'group_type_country_id' => $groupTypesCountryId ],
+				[ 'group_id' => $oezgsId, 'group_type_country_id' => $groupTypesCountryId ],
 		   );
 		}
 

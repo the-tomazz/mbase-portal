@@ -72,7 +72,7 @@
 
 							{{-- ADMIN --}}
 
-							@if (Auth::user()->hasRole('MBASE2LAdmin'))
+							@if (Auth::user() && Auth::user()->hasRole('MBASE2LAdmin'))
 
 							<x-dropdown-link href="/admin/roles">
 								{{ __('Roles') }}
@@ -106,7 +106,7 @@
 
 							<hr />
 
-							@if (Auth::user()->isInGroup('mbase2', 'mortbiom', 'admin'))
+							@if (Auth::user() && Auth::user()->isInGroup('mbase2', 'mortbiom', 'admin'))
 
 							<x-dropdown-link href="/admin/crud/list/animal-removal-lists">
 								{{ __('Animal Removal') }}

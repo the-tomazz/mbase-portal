@@ -49,7 +49,7 @@ return new class extends Migration
 				[ 'group_type_id' => 2, 'country_id' => 5 ],
 				[ 'group_type_id' => 2, 'country_id' => 6 ],
 
-				// SI-OEGZS
+				// SI-OEZGS
 				[ 'group_type_id' => 3, 'country_id' => 1 ],
 
 				// MBASE-MODULE-PARAMETERS
