@@ -15,6 +15,13 @@ return new class extends Migration
     {
         DB::table('roles')->insert([
 			[
+				'slug' => 'MBASE2LSuperAdmin',
+				'name' => 'MBASE2L Super Admin',
+				'permissions' => '{"mbase2l.super_admin": "1", "platform.index": "1", "platform.systems.roles": "1", "platform.systems.users": "1", "mbase2l.registered_user": "1", "platform.systems.attachment": "0"}',
+				'created_at' => '2022-07-25 17:40:29',
+				'updated_at' => '2022-07-25 17:40:29'
+			],
+			[
 				'slug' => 'MBASE2LAdmin',
 				'name' => 'MBASE2L Admin',
 				'permissions' => '{"mbase2l.admin": "1", "platform.index": "1", "platform.systems.roles": "1", "platform.systems.users": "1", "mbase2l.registered_user": "1", "platform.systems.attachment": "0"}',
@@ -33,6 +40,7 @@ return new class extends Migration
 		DB::table('role_users')->insert([
 			[ 'role_id' => 1, 'user_id' => 1 ],
 			[ 'role_id' => 2, 'user_id' => 1 ],
+			[ 'role_id' => 3, 'user_id' => 1 ],
 		]);
     }
 

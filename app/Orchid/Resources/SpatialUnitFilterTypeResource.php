@@ -44,7 +44,7 @@ class SpatialUnitFilterTypeResource extends Resource
 
 	public static function permission(): ?string
 	{
-		return 'mbase2l.admin';
+		return 'mbase2l.super_admin';
 	}
 
 	/**

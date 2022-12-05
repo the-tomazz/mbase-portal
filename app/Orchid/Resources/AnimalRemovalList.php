@@ -7,7 +7,7 @@ use App\Orchid\BaseResources\BaseList;
 
 class AnimalRemovalList extends BaseList
 {
-	public static $moduleList = ['mortbioms'];
+	protected static $moduleList = ['mortbiom'];
 
     /**
      * The model the resource corresponds to.

@@ -10,5 +10,5 @@ return [
 		'sl' => 'Slovenščina',
 		'sk' => 'Slovenský jazyk'
 	],
-	'changeLanguage' => 'Change language'
+	'changeLanguage' => __('Change language')
 ];

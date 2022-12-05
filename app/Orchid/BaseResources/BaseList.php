@@ -12,7 +12,7 @@ use Orchid\Screen\TD;
 
 class BaseList extends Resource
 {
-	public static $moduleList = [];
+	protected static $moduleList = [];
 	/**
 	 * Get the resource should be displayed in the navigation
 	 *
@@ -25,16 +25,16 @@ class BaseList extends Resource
 
 	protected function groupPermissions(User $user)
 	{
-		Log::debug([self::$moduleList]);
+		Log::debug([static::$moduleList]);
 
-		foreach (self::$moduleList as $module)
+		foreach (static::$moduleList as $module)
 		{
 			if ($user->isInGroup('mbase2', $module, 'admin')) {
 				return true;
 			}
 		}
 
-		return count(self::$moduleList) == 0 && $user->hasRole('MBASE2LAdmin');
+		return count(static::$moduleList) == 0 && $user->hasRole('MBASE2LAdmin');
 	}
 
 	/**

@@ -10,6 +10,8 @@ use Orchid\Screen\TD;
 
 class AnimalWithdrawalList extends BaseList
 {
+	protected static $moduleList = ['mortbiom'];
+
 	/**
 	 * The model the resource corresponds to.
 	 *
