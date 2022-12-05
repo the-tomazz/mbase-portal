@@ -55,6 +55,10 @@ Route::middleware(['web'])->group(
 			session(['locale' => $locale]);
 			App::setLocale($locale);
 
+			if (request()->input('ref')) {
+				return redirect(request()->input('ref'));
+			}
+
 			return redirect()->route('home');
 		})->name('locale.change');
 	}

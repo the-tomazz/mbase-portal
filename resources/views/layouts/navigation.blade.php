@@ -102,7 +102,8 @@
 
 						<x-slot name="content">
 							@foreach ($languages as $language)
-							<x-dropdown-link :href="route('locale.change', ['locale' => $language->code])">
+							<x-dropdown-link
+								:href="route('locale.change', ['locale' => $language->code, 'ref' => url()->full() ])">
 								{{ $language->name }}
 							</x-dropdown-link>
 							@endforeach
