@@ -27,19 +27,6 @@ That should be it.
 
 
 @push('head')
-<script>
-	var markers = [
-@foreach ($animalHandlings as $animalHandling)
-	{{'{'}}
-		position: {{'{'}}
-			lat: {{$animalHandling->lat}}, lng: {{$animalHandling->lng}}
-		{{'}'}},
-		title: '{{$animalHandling->animal_name}}'
-	{{'}'}},
-@endforeach
-	];
-</script>
-
 <style>
 	#map {
 		height: 400px;
@@ -54,6 +41,24 @@ That should be it.
 	integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
 <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
 	integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+
+
+
+@endpush
+
+<script>
+	var markers = [
+		@foreach ($animalHandlings as $animalHandling)
+		{{'{'}}
+		position: {{'{'}}
+		lat: {{$animalHandling->lat}}, lng: {{$animalHandling->lng}}
+		{{'}'}},
+		title: '{{$animalHandling->animal_name}}'
+		{{'}'}},
+		@endforeach
+	];
+	console.log("Registering markers", markers);
+</script>
 
 <script>
 	function initMap() {
@@ -71,11 +76,12 @@ That should be it.
 			.bindPopup(element.title);
 		});
 	}
-
-	window.onload = initMap;
+	// window.onload = initMap;
+	setTimeout(() => {
+		console.log("Setting up map init");
+		initMap();
+	}, "1000")
 </script>
-
-@endpush
 
 <div>
 	<div id="map"></div>
