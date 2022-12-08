@@ -225,5 +225,9 @@
 	"Scroll to top": "Na vrh",
 
 	"Add": "Dodaj",
-	"Change language": "Spremeni jezik"
+	"Change language": "Spremeni jezik",
+
+	"<Empty>": "Ni izbrano",
+
+	"Save animal": "Shrani podatke o živali"
 }

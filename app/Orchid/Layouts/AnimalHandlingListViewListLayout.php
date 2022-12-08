@@ -85,7 +85,7 @@ class AnimalHandlingListViewListLayout extends Table
 
 			TD::make('animal_died_at', __('Died at'))
 				->render(function ($model) {
-					return $model->animal_died_at->toDateString();
+					return $model->animal_died_at ? $model->animal_died_at->toDateString() : '';
 				})
 				->sort(),
 

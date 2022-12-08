@@ -5,3 +5,11 @@
 a[hidden="hidden"] {
 	display: none;
 }
+
+.table-responsive table tbody tr td {
+	vertical-align: top;
+}
+
+.table-responsive table thead tr th {
+	vertical-align: top;
+}

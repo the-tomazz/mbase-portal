@@ -14,6 +14,7 @@ use App\Orchid\Layouts\BearsBiometryAnimalHandlingGeoLocationListener;
 use App\Orchid\Layouts\BearsBiometryAnimalHandlingHunterFinderSwitchListener;
 use App\Orchid\Layouts\BearsBiometryAnimalHandlingPlaceTypeListListener;
 use App\Orchid\Layouts\BearsBiometryAnimalHandlingSamplesListener;
+use Orchid\Support\Color;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -43,12 +44,12 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 	public function query(Animal $animal, BearsBiometryAnimalHandling $bearsBiometryAnimalHandling): iterable
 	{
 		if ($bearsBiometryAnimalHandling->exists) {
-			// HACK, Stanko, this is for you :)
 			$bearsBiometryAnimalHandling['geo_location'] = [
 				'lat' => $bearsBiometryAnimalHandling->lat,
 				'lng' => $bearsBiometryAnimalHandling->lng,
 			];
 		} else {
+			// HACK, Stanko, this is for you :)
 			$bearsBiometryAnimalHandling['geo_location'] = [
 				'lat' => 46.044705,
 				'lng' => 15.2424903,
@@ -117,12 +118,11 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 	{
 		return [
 			Button::make(__('Save animal handling'))
-				->icon('pencil')
-				->method('createOrUpdateAndDoNotAddBiometryData')
-				->canSee(!$this->bearsBiometryAnimalHandling->exists),
+				->icon('check')
+				->method('createOrUpdateAndDoNotAddBiometryData'),
 
 			Button::make(__('Save animal handling and add biometry data'))
-				->icon('pencil')
+				->icon('check')
 				->method('createOrUpdateAndAddBiometryData')
 				->canSee(!$this->bearsBiometryAnimalHandling->exists),
 
@@ -404,20 +404,27 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 
 					Input::make('bearsBiometryAnimalHandling.taxidermist_surname')
 						->title(__('Taxidermist surname'))
-						->help(__('Please insert the surname of the Taxidermist')),
+						->help(__('Please insert the surname of the Taxidermist'))
 				])->autoWidth(),
-				Group::make([
-					Button::make(__('Save animal handling'))
-						->icon('pencil')
-						->method('createOrUpdateAndDoNotAddBiometryData')
-						->canSee(!$this->bearsBiometryAnimalHandling->exists),
+			]),
 
-					Button::make(__('Save animal handling and add biometry data'))
-						->icon('pencil')
-						->method('createOrUpdateAndAddBiometryData')
-				])->autoWidth()
-			])
 			// TAXIDERMIST SECTION END
+
+			Layout::block([])
+				->commands(
+					[
+						Button::make(__('Save animal handling'))
+							->type(Color::DEFAULT())
+							->icon('check')
+							->method('createOrUpdateAndDoNotAddBiometryData'),
+
+							Button::make(__('Save animal handling and add biometry data'))
+								->type(Color::DEFAULT())
+								->icon('check')
+								->method('createOrUpdateAndAddBiometryData')
+								->canSee($this->bearsBiometryAnimalHandling !== null && !$this->bearsBiometryAnimalHandling->exists)
+					]
+				),
 		];
 
 		return array_merge(

@@ -671,6 +671,48 @@ VALUES
 		'{"hr":"","en":"Translocation to another population, translocation into an enclosure (alive) - individual plays no role in the source population anymore","de":"","it":"","sl":"Preselitev v drugo populacijo, preselitev v oboro ali ujetništvo - osebek nima več funkcije v izvorni populaciji","default":"Translocation to another population, translocation into an enclosure (alive) - individual plays no role in the source population anymore"}'
 	);
 
+
+CREATE TABLE laravel.conflict_animal_removal (
+	id serial PRIMARY KEY,
+	title varchar(128),
+	name jsonb,
+	description jsonb,
+	created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+	updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+	deleted_at TIMESTAMPTZ DEFAULT NULL
+);
+
+INSERT INTO
+	laravel.conflict_animal_removal (id, title, name, description)
+VALUES
+	(
+		3657,
+		'Preserving protected species and habitats',
+		'{"en":"Preserving protected species and habitats","sl":"Varstvo zavarovanih vrst in habitatov","default":"Preserving protected species and habitats"}',
+		'{"hr":"","en":"Exception \u0022a\u0022 of the Habitat\u0027s Directive: cull due to the protection of animal and plant species; e.g. removal of hybrids","de":"","it":"","sl":"Izjema \u0022a\u0022 Habitatne direktive: odstrel zaradi varstva \u017eivalskih in rastlinskih vrst; npr. odstrel kri\u017eancev","default":"Exception \u0022a\u0022 of the Habitat\u0027s Directive: cull due to the protection of animal and plant species; e.g. removal of hybrids"}'
+	);
+
+INSERT INTO
+	laravel.conflict_animal_removal (id, title, name, description)
+VALUES
+	(
+		3658,
+		'Preventing serious damage',
+		'{"en":"Preventing serious damage","sl":"Prepre\u010devanje nastanka resne \u0161kode","default":"Preventing serious damage"}',
+		'{"hr":"","en":"Exception \u0022b\u0022 of the Habitat\u0027s Directive: cull due to prevention of serious damage to human property; i.e. permits issued in a longer procedure\r\n","de":"","it":"","sl":"Izjema \u0022b\u0022 Habitatne direktive: odstrel zaradi prepre\u010devanja resne \u0161kode na premo\u017eenju; t.j. ve\u010dina postopkov za izdajo dovoljenj po redni (dalj\u0161i) poti","default":"Exception \u0022b\u0022 of the Habitat\u0027s Directive: cull due to prevention of serious damage to human property; i.e. permits issued in a longer procedure\r\n"}'
+	);
+
+INSERT INTO
+	laravel.conflict_animal_removal (id, title, name, description)
+VALUES
+	(
+		3659,
+		'Ensuring human health and safety',
+		'{"en":"Ensuring human health and safety","sl":"Zagotavljanje zdravja in varnosti ljudi","default":"Ensuring human health and safety"}',
+		'{"hr":"","en":"Exception \u0022c\u0022 of the Habitat\u0027s Directive: cull due to ensuring human health and safety; i.e. permits issued in a fast procedure as human safety is compromised (oral permissions)","de":"","it":"","sl":"Izjema \u0022c\u0022 Habitatne direktive: odstrel zaradi zagotavljanja zdravja in varnosti ljudi; t.j. dovoljenja, izdana po hitrem postopku zaradi ogro\u017eanja varnosti ljudi (ustne odlo\u010dbe)","default":"Exception \u0022c\u0022 of the Habitat\u0027s Directive: cull due to ensuring human health and safety; i.e. permits issued in a fast procedure as human safety is compromised (oral permissions)"}'
+	);
+
+
 CREATE TABLE laravel.animal (
 	id serial PRIMARY KEY,
 	species_list_id INTEGER REFERENCES species_list (id),
@@ -683,8 +725,8 @@ CREATE TABLE laravel.animal (
 	description jsonb,
 	created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 	updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-	died_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-	deleted_at TIMESTAMPTZ DEFAULT NULL
+	died_at TIMESTAMPTZ DEFAULT NOW(),
+    deleted_at TIMESTAMPTZ DEFAULT NULL
 );
 
 ALTER TABLE
@@ -806,3 +848,7 @@ SELECT
 GRANT
 SELECT
 	ON TABLE laravel.way_of_withdrawal_list TO gozdovi;
+
+GRANT
+SELECT
+	ON TABLE laravel.conflict_animal_removal TO gozdovi;

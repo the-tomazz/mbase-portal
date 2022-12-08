@@ -7,6 +7,7 @@ use App\Orchid\Layouts\AnimalListLayout;
 use Illuminate\Support\Facades\Auth;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Screen;
+use Orchid\Support\Facades\Layout;
 
 class AnimalListScreen extends Screen
 {
@@ -68,6 +69,7 @@ class AnimalListScreen extends Screen
     public function layout(): iterable
     {
         return [
+			Layout::view('animalMapDisplay'),
 			AnimalListLayout::class
 		];
     }

@@ -54,7 +54,7 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
     protected function layouts(): iterable
     {
 		if (isset($this->query)) {
-			Log::debug(['BearsBiometryAnimalHandlingAnimalListener', $this->query->get('bearsBiometryAnimalHandling')]);
+			// Log::debug(['BearsBiometryAnimalHandlingAnimalListener', $this->query->get('bearsBiometryAnimalHandling')]);
 			$existingAnimalSelected = null !== $this->query->get('bearsBiometryAnimalHandling.animal_id') ? $this->query->get('bearsBiometryAnimalHandling.animal_id') : false;
 			$isAlive = null !== $this->query->get('bearsBiometryAnimalHandling.animal_status') ? $this->query->get('bearsBiometryAnimalHandling.animal_status') == Animal::STR_ALIVE : false;
 			$animalIDAvailable = !is_null($this->query->get('bearsBiometryAnimalHandling.animal_id'));
@@ -77,27 +77,27 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 					->options([
 						Animal::STR_ALIVE => __('Alive'),
 						Animal::STR_DEAD => __('Dead'),
-					]),
-					// ->canSee(!$existingAnimalSelected),
+					])
+					->disabled(!$isAlive && $existingAnimalSelected),
 
 				Select::make('bearsBiometryAnimalHandling.animal_id')
 					->fromQuery(Animal::where('status', '=', Animal::STR_ALIVE), 'name')
 					->title(__('Animal'))
 					->help(__('Please select the ID of the individual, if the animal is known.'))
 					->empty(__('<New animal>'))
-					->canSee($isAlive),
+					->disabled($existingAnimalSelected),
 
 				Input::make('bearsBiometryAnimalHandling.animal_name')
 					->title('Name')
 					->required()
-					->canSee($isAlive && !$existingAnimalSelected),
+					->disabled($existingAnimalSelected),
 
 				Select::make('bearsBiometryAnimalHandling.animal_species_list_id')
 					->fromModel(SpeciesList::class, 'name')
 					->required()
 					->title(__('Species'))
 					->help(__('Please select the species'))
-					->canSee(!$existingAnimalSelected),
+					->disabled($existingAnimalSelected),
 
 				Select::make('bearsBiometryAnimalHandling.animal_sex_list_id')
 					->fromModel(SexList::class, 'name')
@@ -105,11 +105,11 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 					->value(SexList::NEUTRAL_SEX_ID)
 					->title(__('Sex'))
 					->help(__('Please select the sex'))
-					->canSee(!$existingAnimalSelected),
+					->disabled($existingAnimalSelected),
 
 				Input::make('bearsBiometryAnimalHandling.animal_description')
 					->title('Note')
-					->canSee(!$existingAnimalSelected),
+					->disabled($existingAnimalSelected),
 			])
 		];
     }

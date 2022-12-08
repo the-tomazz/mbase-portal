@@ -13,6 +13,7 @@ use Orchid\Screen\Repository;
 use Orchid\Support\Facades\Alert;
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Layout;
+use Orchid\Support\Color;
 
 class AnimalEditScreen extends Screen
 {
@@ -56,25 +57,9 @@ class AnimalEditScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-			Button::make(__('Create animal'))
-                ->icon('pencil')
-                ->method('createOrUpdate')
-                ->canSee(!$this->animal->exists),
-
-			Button::make(__('Create animal and add animal handling'))
-                ->icon('pencil')
-                ->method('createOrUpdateAndAddAnimalHandling')
-                ->canSee(!$this->animal->exists),
-
-            Button::make(__('Update'))
-                ->icon('note')
-                ->method('createOrUpdate')
-                ->canSee($this->animal->exists),
-
-			Button::make(__('Update animal and add animal handling'))
-                ->icon('note')
-                ->method('createOrUpdateAndAddAnimalHandling')
-                ->canSee($this->animal->exists),
+			Button::make(__('Save animal data'))
+                ->icon('check')
+                ->method('createOrUpdate'),
 
             Button::make(__('Remove'))
                 ->icon('trash')
@@ -109,7 +94,16 @@ class AnimalEditScreen extends Screen
     public function layout(): iterable
     {
         return [
-			AnimalEditListener::class
+			AnimalEditListener::class,
+			Layout::block([])
+				->commands(
+					[
+						Button::make(__('Save animal'))
+							->type(Color::DEFAULT())
+							->icon('check')
+							->method('createOrUpdateAndNoNotAddAnimalHandling')
+					]
+				),
 		];
     }
 
@@ -119,7 +113,7 @@ class AnimalEditScreen extends Screen
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function createOrUpdate(Animal $animal, Request $request)
+    private function createOrUpdate(Animal $animal, Request $request)
     {
         $animal->fill($request->get('animal'));
 
@@ -143,40 +137,7 @@ class AnimalEditScreen extends Screen
 
         Alert::info(__('You have successfully updated an Animal.'));
 
-        return redirect()->route('platform.animal.list');
-    }
-
-	/**
-     * @param Animal $animal
-     * @param Request $request
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function createOrUpdateAndAddAnimalHandling(Animal $animal, Request $request)
-    {
-        $animal->fill($request->get('animal'));
-
-		if ($request->get('animal')['status'] == Animal::STR_DEAD) {
-			$defaultData = [
-				'value' => 'N/A',
-				'name' => 'N/A'
-			];
-			$animal->fill($defaultData)->save();
-
-			if (is_null($request->get('animal')['name']) || $request->get('animal')['name']=='') {
-				$correctData = [
-					'name' => $animal->id
-				];
-
-				$animal->fill($correctData);
-			}
-		}
-
-		$animal->save();
-
-        Alert::info(__('You have successfully created an Animal.'));
-
-        return redirect()->route('platform.bearsBiometryAnimalHandling.edit', $animal);
+		return redirect()->route('platform.animal.list');
     }
 
     /**

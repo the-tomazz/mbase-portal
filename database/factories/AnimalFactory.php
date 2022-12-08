@@ -26,7 +26,7 @@ class AnimalFactory extends Factory
         return [
 			'status' => $isAlive ? Animal::STR_ALIVE : Animal::STR_DEAD,
 			'previous_status' => $isAlive && ( random_int(0, 1) > 0 ) ? Animal::STR_ALIVE : Animal::STR_DEAD,
-			'died_at' => date("Y-m-d H:i:s", mt_rand(1262055681,1262055681)),
+			'died_at' => !$isAlive ? date("Y-m-d H:i:s", mt_rand(1262055681,1262055681)) : null,
 			'name' => $isAlive ? fake()->name() : 'Same As ID',
 			'description' => $val,
 			'species_list_id' => SpeciesList::all()->random()->id,

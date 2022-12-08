@@ -5,6 +5,7 @@ namespace App\Orchid\Layouts;
 use App\Models\Animal;
 use App\Models\SexList;
 use App\Models\SpeciesList;
+use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\Select;
 use Orchid\Screen\Layouts\Listener;
@@ -94,7 +95,7 @@ class AnimalEditListener extends Listener
 
 				Input::make('animal.description')
 					->title('Note'),
-            ])// ->title($this->query->get('animal.id') ? __('Animal ID: ') . $this->query->get('animal.id') : ''),
+            ])
 		];
     }
 }

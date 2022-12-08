@@ -48,6 +48,10 @@ class AnimalListLayout extends Table
 				->sort()
 				->filter(Input::make()),
 
+			TD::make('description', __('Description'))
+				->sort()
+				->filter(Input::make()),
+
 			TD::make('species_list_id', __('Species'))
 				->render(function (Animal $animal) {
 					return Link::make($animal->species_list->name)
@@ -76,15 +80,29 @@ class AnimalListLayout extends Table
 					Animal::STR_DEAD => __('Dead'),
 				])->empty(__('<Empty>'))),
 
-			TD::make('description', __('Description'))
-				->sort()
-				->filter(Input::make()),
-
 			TD::make('died_at', __('Date of death'))
 				->render(function ($model) {
-					return $model->died_at->toDateString();
+					return $model->died_at ? $model->died_at->toDateString() : '';
 				})
 				->sort(),
+
+			TD::make('animal_handlings', __('Animal handlings'))
+				->render(function (Animal $animal) {
+					$animalHandlingsRender = '';
+					foreach ($animal->bearsBiometryAnimalHandlings()->get() as $animalHandling) {
+						$animalHandlingRender = Link::make($animalHandling->animal_handling_date . ' ' . $animalHandling->hunting_management_area)
+							->route('platform.bearsBiometryAnimalHandling.edit', [ $animalHandling->animal_id, $animalHandling ]);
+
+						if ($animalHandlingsRender == '') {
+							$animalHandlingsRender .= $animalHandlingRender;
+						} else {
+							$animalHandlingsRender .= '<br>' . $animalHandlingRender;
+						}
+					}
+					return $animalHandlingsRender;
+				})
+				->sort()
+				->filter(Select::make()->fromModel(SexList::class, 'name')->empty(__('<Empty>'))),
 
 			TD::make('created_at', __('Date of creation'))
 				->render(function ($model) {
