@@ -13,6 +13,7 @@
 		"laravel/framework": "^9.19",
 		"laravel/sanctum": "^2.14.1",
 		"laravel/tinker": "^2.7",
+		"league/csv": "^9.0",
 		"mbase2/dtl": "dev-master",
 		"mstaack/laravel-postgis": "^5.4",
 		"orchid/crud": "^3.7",

@@ -61,6 +61,9 @@ Route::middleware(['web'])->group(
 
 			return redirect()->route('home');
 		})->name('locale.change');
+
+
+		Route::get('/csv/animal-handlings', [Controller::class, 'exportAnimalHandlings'])->name('app.export.csv.animalhandlings');
 	}
 );
 

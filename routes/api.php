@@ -15,13 +15,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+	return $request->user();
 });
 
 Route::any('/test', function (Request $request) {
 	return 'networking';
 });
-
-use App\Http\Controllers\LUOAndLOVFromLongLatProvider;
-
-Route::get('/LUOAndLOVFromLongLat/{long}/{lat}', LUOAndLOVFromLongLatProvider::class);
