@@ -29,6 +29,8 @@ use Orchid\Screen\AsSource;
  */
 class BiometryLossReasonList extends BaseList
 {
+	public const OTHER = 233;
+
 	use AsSource, Filterable;
 	use SoftDeletes;
 

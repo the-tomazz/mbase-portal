@@ -1,8 +1,10 @@
 CREATE TABLE laravel.bears_biometry_animal_handling (
 	id serial primary key,
-	animal_removal_list_id INTEGER REFERENCES animal_removal_list (id),
+	way_of_withdrawal_list_id INTEGER REFERENCES way_of_withdrawal_list (id) NOT NULL,
+	conflict_animal_removal_list_id INTEGER REFERENCES conflict_animal_removal_list (id),
 	licence_number character varying(255),
 	project_name character varying(255),
+	receiving_country character varying(255),
 	telementry_uid character varying(255),
 	biometry_loss_reason_list_id INTEGER REFERENCES biometry_loss_reason_list (id),
 	biometry_loss_reason_description text,
@@ -34,6 +36,7 @@ CREATE TABLE laravel.bears_biometry_animal_handling (
 	hunting_ground character varying(255),
 	spatial_unit_gid INTEGER REFERENCES mbase2_ge.spatial_units (gid),
 	number_of_removal_in_the_hunting_administration_area text,
+	animal_status_on_handling varchar(16),
 	created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 	updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 	deleted_at TIMESTAMPTZ DEFAULT NULL

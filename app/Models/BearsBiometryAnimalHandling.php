@@ -22,6 +22,7 @@ use Orchid\Screen\AsSource;
  * @property int|null $way_of_withdrawal_list_id
  * @property string|null $licence_number
  * @property string|null $project_name
+ * @property string|null $receiving_country
  * @property string|null $telementry_uid
  * @property int|null $biometry_loss_reason_list_id
  * @property string|null $biometry_loss_reason_description
@@ -53,7 +54,8 @@ use Orchid\Screen\AsSource;
  * @property int|null $animal_id
  * @property string|null $hunting_ground
  * @property USER-DEFINED|null $gcell
- * @property int|null $animal_removal_list_id
+ * @property int|null $way_of_withdrawal_list_id
+ * @property int|null $conflict_animal_removal_list_id
  * @property string|null $removal_annual_uid
  * @property USER-DEFINED|null $geom
  * @property Carbon|null $created_at
@@ -68,7 +70,7 @@ use Orchid\Screen\AsSource;
  * @property ToothTypeList|null $tooth_type_list
  * @property User|null $user
  * @property Animal|null $animal
- * @property AnimalRemovalList|null $animal_removal_list
+ * @property AnimalRemovalList|null $conflict_animal_removal_list
  *
  * @package App\Models
  */
@@ -98,13 +100,15 @@ class BearsBiometryAnimalHandling extends Model
 		'data_entered_by_user_id' => 'int',
 		'animal_id' => 'int',
 		'spatial_unit_gid' => 'int',
-		'animal_removal_list_id' => 'int'
+		'way_of_withdrawal_list_id' => 'int',
+		'conflict_animal_removal_list_id' => 'int'
 	];
 
 	protected $fillable = [
 		'id',
 		'licence_number',
 		'project_name',
+		'receiving_country',
 		'telementry_uid',
 		'biometry_loss_reason_list_id',
 		'biometry_loss_reason_description',
@@ -136,7 +140,8 @@ class BearsBiometryAnimalHandling extends Model
 		'animal_id',
 		'hunting_ground',
 		'spatial_unit_gid',
-		'animal_removal_list_id',
+		'way_of_withdrawal_list_id',
+		'conflict_animal_removal_list_id',
 		'removal_annual_uid'
 	];
 
@@ -193,9 +198,9 @@ class BearsBiometryAnimalHandling extends Model
 		return $this->belongsTo(Animal::class);
 	}
 
-	public function animal_removal_list()
+	public function conflict_animal_removal_list()
 	{
-		return $this->belongsTo(AnimalRemovalList::class);
+		return $this->belongsTo(ConflictAnimalRemovalList::class);
 	}
 
 	public function SpatialUnit()

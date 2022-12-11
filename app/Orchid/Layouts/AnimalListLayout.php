@@ -90,7 +90,11 @@ class AnimalListLayout extends Table
 				->render(function (Animal $animal) {
 					$animalHandlingsRender = '';
 					foreach ($animal->bearsBiometryAnimalHandlings()->get() as $animalHandling) {
-						$animalHandlingRender = Link::make($animalHandling->animal_handling_date . ' ' . $animalHandling->hunting_management_area)
+						$animalStatusRender = $animal->status == Animal::STR_ALIVE
+							? '<i class="text-success">●</i> ' . __('Alive')
+							: '<i class="text-danger">●</i> ' . __('Dead');
+
+						$animalHandlingRender = $animalStatusRender . ' ' . Link::make($animalHandling->animal_handling_date . ' ' . $animalHandling->hunting_management_area)
 							->route('platform.bearsBiometryAnimalHandling.edit', [ $animalHandling->animal_id, $animalHandling ]);
 
 						if ($animalHandlingsRender == '') {
@@ -102,7 +106,10 @@ class AnimalListLayout extends Table
 					return $animalHandlingsRender;
 				})
 				->sort()
-				->filter(Select::make()->fromModel(SexList::class, 'name')->empty(__('<Empty>'))),
+				->filter(Select::make()->options([
+					Animal::STR_ALIVE => __('Alive'),
+					Animal::STR_DEAD => __('Dead'),
+				])->empty(__('<Empty>'))),
 
 			TD::make('created_at', __('Date of creation'))
 				->render(function ($model) {

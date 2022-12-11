@@ -28,6 +28,12 @@ use Orchid\Screen\AsSource;
  */
 class WayOfWithdrawalList extends Model
 {
+	public const REGULAR_CULL = 133;
+	public const CONFLICT_ANIMAL_REMOVAL = 134;
+	public const LOSS = 135;
+	public const LIVE_CAPTURE = 136;
+	public const TRANSLOCATION_OUT_OF_POPULATION = 3661;
+
 	protected $table = 'way_of_withdrawal_list';
 
 	use AsSource, Filterable, Attachable;

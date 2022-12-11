@@ -27,10 +27,10 @@ use Orchid\Screen\AsSource;
  *
  * @package App\Models
  */
-class AnimalRemovalList extends BaseList
+class ConflictAnimalRemovalList extends BaseList
 {
 	use AsSource, Filterable;
 	use SoftDeletes;
 
-	protected $table = 'animal_removal_list';
+	protected $table = 'conflict_animal_removal_list';
 }

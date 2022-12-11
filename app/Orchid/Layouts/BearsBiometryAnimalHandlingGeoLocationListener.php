@@ -37,7 +37,7 @@ class BearsBiometryAnimalHandlingGeoLocationListener extends Listener
 	protected function layouts(): iterable
 	{
 		if (isset($this->query)) {
-			Log::debug(['BearsBiometryAnimalHandlingGeoLocationListener', $this->query->get('bearsBiometryAnimalHandling')]);
+			// Log::debug(['BearsBiometryAnimalHandlingGeoLocationListener', $this->query->get('bearsBiometryAnimalHandling')]);
 		}
 
 		return [

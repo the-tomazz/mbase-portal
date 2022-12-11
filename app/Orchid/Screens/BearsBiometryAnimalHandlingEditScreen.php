@@ -9,11 +9,13 @@ use App\Models\BearsBiometrySample;
 use App\Models\SexList;
 use App\Models\SpeciesList;
 use App\Models\ToothTypeList;
+use App\Models\WayOfWithdrawalList;
 use App\Orchid\Layouts\BearsBiometryAnimalHandlingAnimalListener;
 use App\Orchid\Layouts\BearsBiometryAnimalHandlingGeoLocationListener;
 use App\Orchid\Layouts\BearsBiometryAnimalHandlingHunterFinderSwitchListener;
 use App\Orchid\Layouts\BearsBiometryAnimalHandlingPlaceTypeListListener;
 use App\Orchid\Layouts\BearsBiometryAnimalHandlingSamplesListener;
+use App\Orchid\Layouts\WayOfRemovalListener;
 use Orchid\Support\Color;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -155,12 +157,28 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 			]),
 		];
 	}
+
 	public function asyncUpdateAnimalHandlingPlaceTypeListListenerData($triggers)
 	{
 		return [
 			'bearsBiometryAnimalHandling' => new Repository([
 				'place_type_list_id'      => $triggers['place_type_list_id'],
 				'place_type_list_details' => $triggers['place_type_list_details'] ?? null,
+			]),
+		];
+	}
+
+	public function asyncUpdateAnimalHandlingWayOfRemovalListenerData($triggers)
+	{
+		return [
+			'bearsBiometryAnimalHandling' => new Repository([
+				'way_of_withdrawal_list_id' => $triggers['way_of_withdrawal_list_id'],
+				'licence_number' => $triggers['licence_number'] ?? null,
+				'conflict_animal_removal_list_id' => $triggers['conflict_animal_removal_list_id'] ?? null,
+				'biometry_loss_reason_list_id' => $triggers['biometry_loss_reason_list_id'] ?? null,
+				'biometry_loss_reason_description' => $triggers['biometry_loss_reason_description'] ?? null,
+				'project_name' => $triggers['project_name'] ?? null,
+				'receiving_country' => $triggers['receiving_country'] ?? null
 			]),
 		];
 	}
@@ -324,13 +342,11 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 					->mask('999999999999-9999')
 					->title(__('Number and the year of removal in hunting administrative area'))
 					->help(__('Please insert number and the year of removal in hunting administrative area.')),
+			]),
 
-				Select::make('bearsBiometryAnimalHandling.animal_removal_list_id')
-					->fromModel(AnimalRemovalList::class, 'name')
-					->title(__('Type of removal / handling'))
-					->required()
-					->help(__('Please select the type of removal / handling')),
+			WayOfRemovalListener::class,
 
+			Layout::rows([
 				Input::make('bearsBiometryAnimalHandling.telemetry_uid')
 					->title(__('Ear-tag number or radio-collar (telemetry) identification'))
 					->help(__('Please describe animal-borne markings (ear-tags, collar, microchips, etc.)')),
@@ -441,26 +457,29 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 	 */
 	private function createOrUpdate(Animal $animal, BearsBiometryAnimalHandling $bearsBiometryAnimalHandling, Request $request)
 	{
-		Log::debug(['createOrUpdate 1 BearsBiometryAnimalHandling', $request->get('bearsBiometryAnimalHandling')]);
+		Log::debug(['createOrUpdate 1 BearsBiometryAnimalHandling', $request]);
 
 		$bearsBiometryAnimalHandling->fill($request->get('bearsBiometryAnimalHandling'));
 
 		$animalId = $request->get('bearsBiometryAnimalHandling')['animal_id'] ?? null;
+		$animalStatus = $request->get('bearsBiometryAnimalHandling')['animal_status'];
+
+		$bearsBiometryAnimalHandling['animal_status_on_handling'] = $animalStatus;
 
 		if (!$animalId) {
 			// create new animal
 			$animal = new Animal();
 
-			$isAlive = $request->get('bearsBiometryAnimalHandling')['animal_status'] == Animal::STR_ALIVE;
+			$isAlive = $animalStatus == Animal::STR_ALIVE;
 
 			$animal->fill([
-				'status' => $request->get('bearsBiometryAnimalHandling')['animal_status'],
+				'status' => $animalStatus,
 				'name' => $isAlive ? $request->get('bearsBiometryAnimalHandling')['animal_name'] : '',
 				'species_list_id' => $request->get('bearsBiometryAnimalHandling')['animal_species_list_id'],
 				'sex_list_id' => $request->get('bearsBiometryAnimalHandling')['animal_sex_list_id'],
 				'description' => $request->get('bearsBiometryAnimalHandling')['animal_description'],
 				'died_at' => now(),
-				'previous_status' => $isAlive ? Animal::STR_DEAD : Animal::STR_DEAD
+				'previous_status' => $isAlive ? Animal::STR_ALIVE : Animal::STR_DEAD
 			]);
 
 			$animal->save();
@@ -471,6 +490,10 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 			}
 
 			$bearsBiometryAnimalHandling['animal_id'] = $animal->id;
+		} else {
+			$animal = Animal::find($animalId);
+			$animal['status'] = $animalStatus;
+			$animal->save();
 		}
 
 		$bearsBiometryAnimalHandling->lat = $request->get('bearsBiometryAnimalHandling')['geo_location']['lat'];

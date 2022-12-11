@@ -19,6 +19,7 @@ use Orchid\Screen\AsSource;
  * @property int|null $way_of_withdrawal_list_id
  * @property string|null $licence_number
  * @property string|null $project_name
+ * @property string|null $receiving_country
  * @property string|null $telementry_uid
  * @property int|null $biometry_loss_reason_list_id
  * @property string|null $biometry_loss_reason_description
@@ -50,7 +51,8 @@ use Orchid\Screen\AsSource;
  * @property int|null $animal_id
  * @property string|null $hunting_ground
  * @property USER-DEFINED|null $gcell
- * @property int|null $animal_removal_list_id
+ * @property int|null $way_of_withdrawal_list_id
+ * @property int|null $conflict_animal_removal_list_id
  * @property string|null $removal_annual_uid
  * @property USER-DEFINED|null $geom
  * @property Carbon|null $created_at
@@ -65,7 +67,7 @@ use Orchid\Screen\AsSource;
  * @property ToothTypeList|null $tooth_type_list
  * @property User|null $user
  * @property Animal|null $animal
- * @property AnimalRemovalList|null $animal_removal_list
+ * @property AnimalRemovalList|null $conflict_animal_removal_list
  *
  * @package App\Models
  */
@@ -101,7 +103,8 @@ class AnimalHandlingListView extends Model
 		'data_entered_by_user_id' => 'int',
 		'animal_id' => 'int',
 		'spatial_unit_gid' => 'int',
-		'animal_removal_list_id' => 'int',
+		'way_of_withdrawal_list_id' => 'int',
+		'conflict_animal_removal_list_id' => 'int',
 		'animal_name' => LocalizedJsonData::class,
 		'animal_died_at' => 'datetime',
 		'species_list_id' => 'int',
@@ -115,6 +118,7 @@ class AnimalHandlingListView extends Model
 	protected $allowedSorts = [
 		'animal_id',
         'animal_status',
+		'animal_status_on_handling',
 		'animal_previous_status',
 		'animal_name',
 		'species_list_id',
@@ -130,6 +134,7 @@ class AnimalHandlingListView extends Model
 
 	protected $allowedFilters = [
 		'animal_status',
+		'animal_status_on_handling',
 		'animal_previous_status',
 		'animal_name',
 		'species_list_id',
@@ -193,7 +198,7 @@ class AnimalHandlingListView extends Model
 		return $this->animal->is_alive;
 	}
 
-	public function animal_removal_list()
+	public function conflict_animal_removal_list()
 	{
 		return $this->belongsTo(AnimalRemovalList::class);
 	}

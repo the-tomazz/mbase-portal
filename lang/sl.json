@@ -134,6 +134,7 @@
 	"Note": "Opomba",
 
 	"Status": "Status",
+	"Status on handling": "Status ob rokovanju",
 	"Handling date": "Datum rokovanja",
 	"Died at": "Datum smrti",
 	"Biometry data": "Biometrični podatki",
@@ -229,5 +230,20 @@
 
 	"<Empty>": "Ni izbrano",
 
-	"Save animal": "Shrani podatke o živali"
+	"Save animal": "Shrani podatke o živali",
+
+	"Way of withdrawal": "Način odvzema",
+	"Select the way of withdrawal": "Izberite način odvzema",
+	"Permit number": "Številka dovoljenja",
+	"Please enter the permit number": "Vpišite številko dovoljenja",
+	"Type of conflict animal removal": "Vzrok za odvzem konfliktnega osebka",
+	"Please select the type conflict animal removal": "Izberite vzrok za odvzem konfliktnega osebka",
+	"Loss reason": "Vzrok izgube",
+	"Please select the reason for death": "Številka ušesne značke ali identifikacija ovratnice",
+	"Loss reason description": "Vzrok izgube",
+	"Please insert the reason for death or describe circumstances": "Vpišite vzrok smrti oziroma opišite stanje",
+	"Project title and description; Contact name": "Ime in opis projekta ter kontaktna oseba",
+	"Please insert the project name and description and provide a contact person": "Vpišite ime in opis projekta ter navedite kontaktno osebo",
+	"Receiving country and institutions": "Država, kamor osebek preseljen",
+	"Please define the receiving country and provide names of involved institutions (permits, transport etc.)": "Navedite državo, kamor osebek preseljen, in vpletene inštitucije (npr. izdaja dovoljenj, transport)"
 }

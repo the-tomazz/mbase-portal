@@ -54,7 +54,6 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
     protected function layouts(): iterable
     {
 		if (isset($this->query)) {
-			// Log::debug(['BearsBiometryAnimalHandlingAnimalListener', $this->query->get('bearsBiometryAnimalHandling')]);
 			$existingAnimalSelected = null !== $this->query->get('bearsBiometryAnimalHandling.animal_id') ? $this->query->get('bearsBiometryAnimalHandling.animal_id') : false;
 			$isAlive = null !== $this->query->get('bearsBiometryAnimalHandling.animal_status') ? $this->query->get('bearsBiometryAnimalHandling.animal_status') == Animal::STR_ALIVE : false;
 			$animalIDAvailable = !is_null($this->query->get('bearsBiometryAnimalHandling.animal_id'));
@@ -64,11 +63,17 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 			$animalIDAvailable = false;
 		}
 
+		if ($animalIDAvailable) {
+			$animalEntityId = $this->query->get('bearsBiometryAnimalHandling.animal_id');
+			$animalEntity = Animal::find($animalEntityId);
+			$animalInDatabaseIsAlive = $animalEntity->status == Animal::STR_ALIVE;
+		}
+
         return [
 			Layout::rows([
 				Input::make('bearsBiometryAnimalHandling.animal_id')
 					->title('Animal ID')
-					->disabled()
+					->readonly()
 					->canSee($animalIDAvailable),
 
 				Select::make('bearsBiometryAnimalHandling.animal_status')
@@ -78,19 +83,20 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 						Animal::STR_ALIVE => __('Alive'),
 						Animal::STR_DEAD => __('Dead'),
 					])
-					->disabled(!$isAlive && $existingAnimalSelected),
+					->disabled($animalIDAvailable && !$animalInDatabaseIsAlive),
 
 				Select::make('bearsBiometryAnimalHandling.animal_id')
 					->fromQuery(Animal::where('status', '=', Animal::STR_ALIVE), 'name')
 					->title(__('Animal'))
 					->help(__('Please select the ID of the individual, if the animal is known.'))
 					->empty(__('<New animal>'))
-					->disabled($existingAnimalSelected),
+					->disabled(!$isAlive || $animalIDAvailable),
 
 				Input::make('bearsBiometryAnimalHandling.animal_name')
 					->title('Name')
-					->required()
-					->disabled($existingAnimalSelected),
+					->required($isAlive)
+					->disabled($existingAnimalSelected)
+					->canSee($isAlive && !$existingAnimalSelected),
 
 				Select::make('bearsBiometryAnimalHandling.animal_species_list_id')
 					->fromModel(SpeciesList::class, 'name')

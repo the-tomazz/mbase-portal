@@ -5,7 +5,7 @@ namespace App\Orchid\Resources;
 use App\Models\User;
 use App\Orchid\BaseResources\BaseList;
 
-class AnimalRemovalList extends BaseList
+class ConflictAnimalRemovalList extends BaseList
 {
 	protected static $moduleList = ['mortbiom'];
 
@@ -14,5 +14,5 @@ class AnimalRemovalList extends BaseList
      *
      * @var string
      */
-    public static $model = \App\Models\AnimalRemovalList::class;
+    public static $model = \App\Models\ConflictAnimalRemovalList::class;
 }

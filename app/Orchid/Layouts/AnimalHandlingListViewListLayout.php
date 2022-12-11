@@ -77,6 +77,18 @@ class AnimalHandlingListViewListLayout extends Table
 					Animal::STR_DEAD => __('Dead'),
 				])->empty(__('<Empty>'))),
 
+			TD::make('animal_status_on_handling', __('Status on handling'))
+				->render(function (AnimalHandlingListView $animalHandlingListView) {
+					return $animalHandlingListView->animal_status_on_handling == Animal::STR_ALIVE
+						? '<i class="text-success">●</i> ' . __('Alive')
+						: '<i class="text-danger">●</i> ' . __('Dead');
+				})
+				->sort()
+				->filter(Select::make()->options([
+					Animal::STR_ALIVE => __('Alive'),
+					Animal::STR_DEAD => __('Dead'),
+				])->empty(__('<Empty>'))),
+
 			TD::make('animal_handling_date', __('Handling date'))
 				->render(function ($model) {
 					return $model->animal_handling_date->toDateString();

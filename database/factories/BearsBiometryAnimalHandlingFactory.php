@@ -3,13 +3,14 @@
 namespace Database\Factories;
 
 use App\Models\Animal;
-use App\Models\AnimalRemovalList;
 use App\Models\BiometryLossReasonList;
 use App\Models\PlaceTypeList;
 use App\Models\SpatialUnit;
-use App\Models\SpeciesList;
 use App\Models\ToothTypeList;
 use App\Models\User;
+use App\Models\Confli;
+use App\Models\ConflictAnimalRemovalList;
+use App\Models\WayOfWithdrawalList;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -26,9 +27,11 @@ class BearsBiometryAnimalHandlingFactory extends Factory
 	public function definition()
 	{
 		return [
-			'animal_removal_list_id' => AnimalRemovalList::all()->random()->id,
+			'way_of_withdrawal_list_id' => WayOfWithdrawalList::All()->random()->id,
+			'conflict_animal_removal_list_id' => ConflictAnimalRemovalList::all()->random()->id,
 			'licence_number' => Str::random(10),
 			'project_name' => Str::random(10),
+			'receiving_country' => Str::random(10),
 			'telementry_uid' => Str::random(10),
 			'biometry_loss_reason_list_id' => BiometryLossReasonList::all()->random()->id,
 			'biometry_loss_reason_description' => Str::random(10),
@@ -59,8 +62,8 @@ class BearsBiometryAnimalHandlingFactory extends Factory
 			'animal_id' => Animal::all()->random()->id,
 			'hunting_ground' => Str::random(10),
 			'spatial_unit_gid' => SpatialUnit::all()->random()->id,
-			'animal_removal_list_id' => AnimalRemovalList::all()->random()->id,
-			'number_of_removal_in_the_hunting_administration_area' => Str::random(10)
+			'number_of_removal_in_the_hunting_administration_area' => Str::random(10),
+			'animal_status_on_handling' => Animal::STR_ALIVE
 		];
 	}
 }

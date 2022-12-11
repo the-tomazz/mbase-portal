@@ -24,8 +24,7 @@ class UserListScreen extends Screen
      */
     public function query(): iterable
     {
-
-		if(auth()->user()->country == null) {
+		if(auth()->user()->country == null || auth()->user()->id == 1) {
 			return [
 				'users' => User::with('roles')
 					->filters()
@@ -34,6 +33,7 @@ class UserListScreen extends Screen
 					->paginate(),
 			];
 		}
+
 		return [
 			'users' => User::with('roles')
 				->where('country_id', auth()->user()->country->id)
