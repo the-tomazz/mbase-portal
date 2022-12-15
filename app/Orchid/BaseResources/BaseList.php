@@ -48,9 +48,9 @@ class BaseList extends Resource
 
 		return [
 			Input::make('name')
-				->title('Name'),
+				->title(__('Name')),
 			Input::make('description')
-				->title('Description'),
+				->title(__('Description')),
 		];
 	}
 

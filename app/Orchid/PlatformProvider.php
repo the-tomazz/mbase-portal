@@ -121,10 +121,14 @@ class PlatformProvider extends OrchidServiceProvider
 
 			if (Auth::user()->isInGroup('mbase2', 'mortbiom', 'admin')) {
 				// MORTBIOM MODULE RELATED LISTS
-				$menu[] = Menu::make('Animal Removal')
+				$menu[] = Menu::make('Conflict Animal Removal')
 					->title('Mortality and biometry lists')
 					->icon('list')
-					->href('/admin/crud/list/animal-removal-lists');
+					->href('/admin/crud/list/conflict-animal-removal-lists');
+
+				$menu[] = Menu::make('Animal Removal')
+					->icon('list')
+					->href('/admin/crud/list/animal-withdrawal-lists');
 
 				$menu[] = Menu::make('Loss Reason')
 					->icon('list')

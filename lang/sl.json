@@ -18,7 +18,7 @@
 	"Type of removal / handling": "Način odvzema / rokovanja",
 	"Please select the type of removal / handling": "Izberite način odvzema / rokovanja",
 	"Ear-tag number or radio-collar (telemetry) identification": "Številka ušesne značke ali identifikacija ovratnice",
-	"Please describe animal-borne markings (ear-tags, collar, microchips, etc.)": "Opišite označbe na živali (ušesne značke, ovratnico, mikročip ipd.)",
+	"Please describe animal-borne markings (ear-tags, collar, microchips, etc.)": "Opišite označbe na živali (ušesne značke, ovratnice, mikročip ipd.)",
 	"Date and time of removal / handling": "Datum in ura umika / rokovanja",
 	"Geo location / Local name": "Geo lokacija / naziv lokacije",
 	"Please insert geographical location / local name": "Prosim vnesite geo lokacijo / naziv lokacije",
@@ -212,9 +212,13 @@
 	"Spatial unit filter types and elements": "Elementi in tipi prostorskih filtrov",
 
 	"Color": "Barva kožuha",
-	"Collar": "Prisotnost ovratnice",
+	"Collar": "Prisotnost ovratnika",
 
 	"Animal Removal": "Način odvzema",
+	"Conflict Animal Removal": "Odvzem konfliktnega osebka",
+	"Conflict Animal Removal Lists": "Odvzem konfliktnega osebka",
+	"Create Conflict Animal Removal Lists": "Dodaj odvzem konfliktnega osebka",
+
 	"Loss Reason": "Vzrok izgube",
 	"Incisors Wear": "Obraba sekalcev",
 
