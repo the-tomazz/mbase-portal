@@ -19,4 +19,23 @@ class IncisorsWearList extends BaseList
      */
     public static $model = \App\Models\IncisorsWearList::class;
 
+	/**
+	 * Get the displayable label of the resource.
+	 *
+	 * @return string
+	 */
+	public static function label(): string
+	{
+		return __('Conflict animal removals');
+	}
+
+	/**
+	 * Get the displayable singular label of the resource.
+	 *
+	 * @return string
+	 */
+	public static function singularLabel(): string
+	{
+		return __('Conflict animal removal');
+	}
 }

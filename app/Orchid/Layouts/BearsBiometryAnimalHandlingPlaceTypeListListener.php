@@ -2,6 +2,7 @@
 
 namespace App\Orchid\Layouts;
 
+use App\Models\Base\BaseList;
 use App\Models\PlaceTypeList;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
@@ -46,7 +47,7 @@ class BearsBiometryAnimalHandlingPlaceTypeListListener extends Listener
 		return [
 			Layout::rows([
 				Select::make('bearsBiometryAnimalHandling.place_type_list_id')
-					->fromModel(PlaceTypeList::class, 'name')
+					->fromQuery(PlaceTypeList::where('status', '=', BaseList::STR_ACTIVE), 'name')
 					->title(__('Place of removal type'))
 					->required()
 					->help(('Please select the place of removal type.')),

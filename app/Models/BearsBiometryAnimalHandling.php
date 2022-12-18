@@ -79,7 +79,7 @@ class BearsBiometryAnimalHandling extends Model
 	protected $table = 'bears_biometry_animal_handling';
 
 	use AsSource, Filterable;
-	use SoftDeletes, HasFactory;
+	use HasFactory;
 
 	protected $casts = [
 		'id' => 'int',

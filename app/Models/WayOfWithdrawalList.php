@@ -30,7 +30,6 @@ use Orchid\Screen\AsSource;
 class WayOfWithdrawalList extends BaseList
 {
 	use AsSource, Filterable;
-	use SoftDeletes;
 
 	public const REGULAR_CULL = 133;
 	public const CONFLICT_ANIMAL_REMOVAL = 134;
@@ -39,4 +38,13 @@ class WayOfWithdrawalList extends BaseList
 	public const TRANSLOCATION_OUT_OF_POPULATION = 3661;
 
 	protected $table = 'way_of_withdrawal_list';
+
+	public function bearsBiometryAnimalHandling()
+	{
+		return $this->hasOne(BearsBiometryAnimalHandling::class);
+	}
+
+	public function isDeletable(): bool {
+		return !$this->bearsBiometryAnimalHandling;
+	}
 }

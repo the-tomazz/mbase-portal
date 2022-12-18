@@ -25,7 +25,7 @@ return new class extends Migration
 					->references('id')
 					->on('group_types')
 					->onUpdate('cascade')
-					->onDelete('cascade');
+					->onDelete('restrict');
 			}
 		);
 

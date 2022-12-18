@@ -6,12 +6,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use App\Casts\LocalizedJsonData;
 use App\Models\Base\BaseList;
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Orchid\Attachment\Attachable;
 use Orchid\Filters\Filterable;
 use Orchid\Screen\AsSource;
 
@@ -32,7 +27,15 @@ class BiometryLossReasonList extends BaseList
 	public const OTHER = 233;
 
 	use AsSource, Filterable;
-	use SoftDeletes;
 
 	protected $table = 'biometry_loss_reason_list';
+
+	public function bearsBiometryAnimalHandling()
+	{
+		return $this->hasOne(BearsBiometryAnimalHandling::class);
+	}
+
+	public function isDeletable(): bool {
+		return !$this->bearsBiometryAnimalHandling;
+	}
 }

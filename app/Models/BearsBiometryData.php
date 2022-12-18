@@ -99,7 +99,7 @@ use Orchid\Screen\AsSource;
 class BearsBiometryData extends Model
 {
 	use AsSource, Filterable, Attachable;
-	use SoftDeletes, HasFactory;
+	use HasFactory;
 
 	public const PREMOLARS_VALUES = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ];
 

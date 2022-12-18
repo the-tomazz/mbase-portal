@@ -56,16 +56,24 @@ class AnimalEditScreen extends Screen
      */
     public function commandBar(): iterable
     {
-        return [
-			Button::make(__('Save animal data'))
-                ->icon('check')
-                ->method('createOrUpdate'),
+		if ($this->animal && !$this->animal->bearsBiometryAnimalHandlings) {
+			return [
+				Button::make(__('Save animal data'))
+					->icon('check')
+					->method('createOrUpdate'),
 
-            Button::make(__('Remove'))
-                ->icon('trash')
-                ->method('remove')
-                ->canSee($this->animal->exists),
-		];
+				Button::make(__('Remove'))
+					->icon('trash')
+					->method('remove')
+					->canSee($this->animal->exists),
+			];
+		} else {
+			return [
+				Button::make(__('Save animal data'))
+					->icon('check')
+					->method('createOrUpdate')
+			];
+		}
     }
 
 	public function asyncUpdateAnimalListenerData($triggers)

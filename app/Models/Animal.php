@@ -33,7 +33,6 @@ class Animal extends Model
 	use HasFactory;
 
 	use AsSource, Filterable;
-	use SoftDeletes;
 
 	public const STR_ALIVE = 'alive';
 	public const STR_DEAD = 'dead';

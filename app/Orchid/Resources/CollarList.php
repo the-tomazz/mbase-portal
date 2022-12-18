@@ -19,4 +19,23 @@ class CollarList extends BaseList
      */
     public static $model = \App\Models\CollarList::class;
 
+	/**
+	 * Get the displayable label of the resource.
+	 *
+	 * @return string
+	 */
+	public static function label(): string
+	{
+		return __('Presences of bear collars');
+	}
+
+	/**
+	 * Get the displayable singular label of the resource.
+	 *
+	 * @return string
+	 */
+	public static function singularLabel(): string
+	{
+		return __('Presence of bear collar');
+	}
 }

@@ -80,7 +80,6 @@ class AnimalHandlingListView extends Model
     protected $table = 'animal_handling_list_view';
 
 	use AsSource, Filterable;
-	use SoftDeletes;
 
 	protected $casts = [
 		'id' => 'int',

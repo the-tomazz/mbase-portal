@@ -3,6 +3,7 @@
 namespace App\Orchid\Layouts;
 
 use App\Models\Animal;
+use App\Models\Base\BaseList;
 use App\Models\SexList;
 use App\Models\SpeciesList;
 use Orchid\Screen\Actions\Button;
@@ -84,7 +85,7 @@ class AnimalEditListener extends Listener
 					->title('Name'),
 
 				Select::make('animal.species_list_id')
-					->fromModel(SpeciesList::class, 'name')
+					->fromQuery(SpeciesList::where('status', '=', BaseList::STR_ACTIVE), 'name')
 					->title(__('Species'))
 					->help(__('Please select the species')),
 

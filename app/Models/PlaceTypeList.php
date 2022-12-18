@@ -30,10 +30,18 @@ use Orchid\Screen\AsSource;
 class PlaceTypeList extends BaseList
 {
 	use AsSource, Filterable;
-	use SoftDeletes;
 
 	public const OTHER_ID = 148;
 
 	protected $table = 'place_type_list';
+
+	public function bearsBiometryAnimalHandling()
+	{
+		return $this->hasOne(BearsBiometryAnimalHandling::class);
+	}
+
+	public function isDeletable(): bool {
+		return !$this->bearsBiometryAnimalHandling;
+	}
 }
 

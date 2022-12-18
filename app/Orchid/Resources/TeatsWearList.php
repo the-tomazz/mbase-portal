@@ -19,4 +19,23 @@ class TeatsWearList extends BaseList
      */
     public static $model = \App\Models\TeatsWearList::class;
 
+	/**
+	 * Get the displayable label of the resource.
+	 *
+	 * @return string
+	 */
+	public static function label(): string
+	{
+		return __('Teats use');
+	}
+
+	/**
+	 * Get the displayable singular label of the resource.
+	 *
+	 * @return string
+	 */
+	public static function singularLabel(): string
+	{
+		return __('Teats use');
+	}
 }

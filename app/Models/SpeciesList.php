@@ -11,6 +11,7 @@ use App\Casts\LocalizedJsonData;
 use App\Models\Base\BaseList;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Log;
 use Orchid\Attachment\Attachable;
 use Orchid\Filters\Filterable;
 use Orchid\Screen\AsSource;
@@ -30,7 +31,15 @@ use Orchid\Screen\AsSource;
 class SpeciesList extends BaseList
 {
 	use AsSource, Filterable;
-	use SoftDeletes;
 
 	protected $table = 'species_list';
+
+	public function animal()
+	{
+		return $this->hasOne(Animal::class);
+	}
+
+	public function isDeletable(): bool {
+		return !$this->animal;
+	}
 }

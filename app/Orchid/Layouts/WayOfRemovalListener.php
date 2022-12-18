@@ -2,6 +2,7 @@
 
 namespace App\Orchid\Layouts;
 
+use App\Models\Base\BaseList;
 use App\Models\BiometryLossReasonList;
 use App\Models\ConflictAnimalRemovalList;
 use App\Models\WayOfWithdrawalList;
@@ -63,7 +64,7 @@ class WayOfRemovalListener extends Listener
 			Layout::rows([
 				Group::make([
 					Select::make('bearsBiometryAnimalHandling.way_of_withdrawal_list_id')
-						->fromModel(WayOfWithdrawalList::class, 'name')
+						->fromQuery(WayOfWithdrawalList::where('status', '=', BaseList::STR_ACTIVE), 'name')
 						->title(__('Way of withdrawal'))
 						->required()
 						->empty('<Empty>')
@@ -75,13 +76,13 @@ class WayOfRemovalListener extends Listener
 						->canSee($regularCullSelected || $conflictAnimalRemovalSelected),
 
 					Select::make('bearsBiometryAnimalHandling.conflict_animal_removal_list_id')
-						->fromModel(ConflictAnimalRemovalList::class, 'name')
+						->fromQuery(ConflictAnimalRemovalList::where('status', '=', BaseList::STR_ACTIVE), 'name')
 						->title(__('Type of conflict animal removal'))
 						->help(__('Please select the type conflict animal removal'))
 						->canSee($conflictAnimalRemovalSelected),
 
 					Select::make('bearsBiometryAnimalHandling.biometry_loss_reason_list_id')
-						->fromModel(BiometryLossReasonList::class, 'name')
+						->fromQuery(BiometryLossReasonList::where('status', '=', BaseList::STR_ACTIVE), 'name')
 						->title(__('Loss reason'))
 						->help(__('Please select the reason for death'))
 						->canSee($lossSelected),

@@ -30,7 +30,15 @@ use Orchid\Screen\AsSource;
 class ToothTypeList extends BaseList
 {
 	use AsSource, Filterable;
-	use SoftDeletes;
 
 	protected $table = 'tooth_type_list';
+
+	public function bearsBiometryData()
+	{
+		return $this->hasOne(BearsBiometryData::class);
+	}
+
+	public function isDeletable(): bool {
+		return !$this->bearsBiometryData;
+	}
 }

@@ -4,6 +4,7 @@ namespace App\Orchid\Screens;
 
 use App\Models\Animal;
 use App\Models\AnimalRemovalList;
+use App\Models\Base\BaseList;
 use App\Models\BearsBiometryAnimalHandling;
 use App\Models\BearsBiometrySample;
 use App\Models\SexList;
@@ -403,7 +404,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 						->help(__('Please note if Blood sample has been collected')),
 
 					Select::make('bearsBiometryAnimalHandling.tooth_type_list_id')
-						->fromModel(ToothTypeList::class, 'name')
+						->fromQuery(ToothTypeList::where('status', '=', BaseList::STR_ACTIVE), 'name')
 						->title(__('Tooth Type'))
 						->help(__('Please select the Tooth Type'))
 						->empty(__('<Empty>')),
@@ -434,11 +435,11 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 							->icon('check')
 							->method('createOrUpdateAndDoNotAddBiometryData'),
 
-							Button::make(__('Save animal handling and add biometry data'))
-								->type(Color::DEFAULT())
-								->icon('check')
-								->method('createOrUpdateAndAddBiometryData')
-								->canSee($this->bearsBiometryAnimalHandling !== null && !$this->bearsBiometryAnimalHandling->exists)
+						Button::make(__('Save animal handling and add biometry data'))
+							->type(Color::DEFAULT())
+							->icon('check')
+							->method('createOrUpdateAndAddBiometryData')
+							->canSee($this->bearsBiometryAnimalHandling !== null && !$this->bearsBiometryAnimalHandling->exists)
 					]
 				),
 		];

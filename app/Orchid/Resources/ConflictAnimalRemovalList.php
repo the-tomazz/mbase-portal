@@ -15,4 +15,24 @@ class ConflictAnimalRemovalList extends BaseList
      * @var string
      */
     public static $model = \App\Models\ConflictAnimalRemovalList::class;
+
+	/**
+	 * Get the displayable label of the resource.
+	 *
+	 * @return string
+	 */
+	public static function label(): string
+	{
+		return __('Incisors wears');
+	}
+
+	/**
+	 * Get the displayable singular label of the resource.
+	 *
+	 * @return string
+	 */
+	public static function singularLabel(): string
+	{
+		return __('Incisors wear');
+	}
 }

@@ -30,7 +30,15 @@ use Orchid\Screen\AsSource;
 class ConflictAnimalRemovalList extends BaseList
 {
 	use AsSource, Filterable;
-	use SoftDeletes;
 
 	protected $table = 'conflict_animal_removal_list';
+
+	public function bearsBiometryAnimalHandling()
+	{
+		return $this->hasOne(BearsBiometryAnimalHandling::class);
+	}
+
+	public function isDeletable(): bool {
+		return !$this->bearsBiometryAnimalHandling;
+	}
 }

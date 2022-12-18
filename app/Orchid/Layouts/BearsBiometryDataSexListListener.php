@@ -2,6 +2,7 @@
 
 namespace App\Orchid\Layouts;
 
+use App\Models\Base\BaseList;
 use App\Models\PlaceTypeList;
 use App\Models\SexList;
 use App\Models\TeatsWearList;
@@ -54,7 +55,7 @@ class BearsBiometryDataSexListListener extends Listener
 				// Sex and age start
 				Group::make([
 					Select::make('bearsBiometryData.sex_list_id')
-						->fromModel(SexList::class, 'name')
+						->fromQuery(SexList::where('status', '=', BaseList::STR_ACTIVE), 'name')
 						->title(__('Sex'))
 						->required()
 						->help(__('Select the sex of the animal')),
@@ -80,7 +81,7 @@ class BearsBiometryDataSexListListener extends Listener
 						->canSee($isFemale && !$isNeutral),
 
 					Select::make('bearsBiometryData.teats_wear_list_id')
-						->fromModel(TeatsWearList::class, 'name')
+						->fromQuery(TeatsWearList::where('status', '=', BaseList::STR_ACTIVE), 'name')
 						->title(__('Nipple use'))
 						->required()
 						->help(__('Select nipple use'))

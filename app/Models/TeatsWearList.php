@@ -28,7 +28,15 @@ use Orchid\Screen\AsSource;
 class TeatsWearList extends BaseList
 {
 	use AsSource, Filterable;
-	use SoftDeletes;
 
 	protected $table = 'teats_wear_list';
+
+	public function bearsBiometryData()
+	{
+		return $this->hasOne(BearsBiometryData::class);
+	}
+
+	public function isDeletable(): bool {
+		return !$this->bearsBiometryData;
+	}
 }

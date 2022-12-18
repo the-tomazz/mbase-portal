@@ -19,4 +19,23 @@ class PlaceTypeList extends BaseList
      */
     public static $model = \App\Models\PlaceTypeList::class;
 
+	/**
+	 * Get the displayable label of the resource.
+	 *
+	 * @return string
+	 */
+	public static function label(): string
+	{
+		return __('Places of removal');
+	}
+
+	/**
+	 * Get the displayable singular label of the resource.
+	 *
+	 * @return string
+	 */
+	public static function singularLabel(): string
+	{
+		return __('Place of removal');
+	}
 }

@@ -18,4 +18,24 @@ class BiometryLossReasonList extends BaseList
      * @var string
      */
     public static $model = \App\Models\BiometryLossReasonList::class;
+
+	/**
+	 * Get the displayable label of the resource.
+	 *
+	 * @return string
+	 */
+	public static function label(): string
+	{
+		return __('Loss reasons');
+	}
+
+	/**
+	 * Get the displayable singular label of the resource.
+	 *
+	 * @return string
+	 */
+	public static function singularLabel(): string
+	{
+		return __('Loss reason');
+	}
 }

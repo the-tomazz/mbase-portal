@@ -3,6 +3,7 @@
 namespace App\Orchid\Layouts;
 
 use App\Models\Animal;
+use App\Models\Base\BaseList;
 use App\Models\SexList;
 use App\Models\SpeciesList;
 use Illuminate\Support\Facades\Auth;
@@ -99,14 +100,14 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 					->canSee($isAlive && !$existingAnimalSelected),
 
 				Select::make('bearsBiometryAnimalHandling.animal_species_list_id')
-					->fromModel(SpeciesList::class, 'name')
+					->fromQuery(SpeciesList::where('status', '=', BaseList::STR_ACTIVE), 'name')
 					->required()
 					->title(__('Species'))
 					->help(__('Please select the species'))
 					->disabled($existingAnimalSelected),
 
 				Select::make('bearsBiometryAnimalHandling.animal_sex_list_id')
-					->fromModel(SexList::class, 'name')
+					->fromQuery(SexList::where('status', '=', BaseList::STR_ACTIVE), 'name')
 					->required()
 					->value(SexList::NEUTRAL_SEX_ID)
 					->title(__('Sex'))

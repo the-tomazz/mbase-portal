@@ -49,13 +49,13 @@ class AnimalHandlingListViewListScreen extends Screen
 	public function commandBar(): iterable
 	{
 		return [
-			Link::make(__('Animals'))
-				->icon('list')
-				->route('platform.animal.list', ['filter[status]' => Auth::user()->defaultVisualisationAnimalStatus()]),
-
 			Link::make(__('New animal handling'))
 				->icon('pencil')
 				->route('platform.bearsBiometryAnimalHandling.edit'),
+
+			Link::make(__('Animals'))
+				->icon('list')
+				->route('platform.animal.list', ['filter[status]' => Auth::user()->defaultVisualisationAnimalStatus()]),
 
 			Link::make(__('Export to XLS'))
 				->icon('save')

@@ -31,7 +31,15 @@ class SexList extends BaseList
 	public const NEUTRAL_SEX_ID=3237;
 
 	use AsSource, Filterable;
-	use SoftDeletes;
 
 	protected $table = 'sex_list';
+
+	public function animal()
+	{
+		return $this->hasOne(Animal::class);
+	}
+
+	public function isDeletable(): bool {
+		return !$this->animal;
+	}
 }

@@ -4,9 +4,9 @@ CREATE TABLE laravel.biometry_loss_reason_list (
 	value text,
 	name jsonb,
 	description jsonb,
+	status varchar(16) default 'active',
 	created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-	updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-	deleted_at TIMESTAMPTZ DEFAULT NULL
+	updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 INSERT INTO
@@ -114,9 +114,9 @@ CREATE TABLE laravel.collar_list (
 	value text,
 	name jsonb,
 	description jsonb,
+	status varchar(16) default 'active',
 	created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-	updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-	deleted_at TIMESTAMPTZ DEFAULT NULL
+	updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 INSERT INTO
@@ -147,9 +147,9 @@ CREATE TABLE laravel.color_list (
 	value text,
 	name jsonb,
 	description jsonb,
+	status varchar(16) default 'active',
 	created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-	updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-	deleted_at TIMESTAMPTZ DEFAULT NULL
+	updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 INSERT INTO
@@ -202,9 +202,9 @@ CREATE TABLE laravel.conflict_animal_removal_list (
 	value text,
 	name jsonb,
 	description jsonb,
+	status varchar(16) default 'active',
 	created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-	updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-	deleted_at TIMESTAMPTZ DEFAULT NULL
+	updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 INSERT INTO
@@ -215,7 +215,7 @@ VALUES
 		'conflict_animal_removal',
 		'Preserving protected species and habitats',
 		'{"en":"Preserving protected species and habitats","sl":"Varstvo zavarovanih vrst in habitatov","default":"Preserving protected species and habitats"}',
-		'{"hr":"","en":"Exception ˝a˝ of the Habitat´s Directive: cull due to the protection of animal and plant species; e.g. removal of hybrids","de":"","it":"","sl":"Exception ˝a˝ of the Habitat´s Directive: cull due to the protection of animal and plant species; e.g. removal of hybrids"}'
+		'{"hr":"","en":"Exception ˝a˝ of the Habitat´s Directive: cull due to the protection of animal and plant species; e.g. removal of hybrids","de":"","it":"","sl":"Izjema ˝a˝ Habitatne direktive: odstrel zaradi varstva živalskih in rastlinskih vrst; npr. odstrel križancev"}'
 	);
 
 INSERT INTO
@@ -246,9 +246,9 @@ CREATE TABLE laravel.incisors_wear_list (
 	value text,
 	name jsonb,
 	description jsonb,
+	status varchar(16) default 'active',
 	created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-	updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-	deleted_at TIMESTAMPTZ DEFAULT NULL
+	updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 INSERT INTO
@@ -290,9 +290,9 @@ CREATE TABLE laravel.place_type_list (
 	value text,
 	name jsonb,
 	description jsonb,
+	status varchar(16) default 'active',
 	created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-	updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-	deleted_at TIMESTAMPTZ DEFAULT NULL
+	updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 INSERT INTO
@@ -367,9 +367,9 @@ CREATE TABLE laravel.sex_list (
 	value text,
 	name jsonb,
 	description jsonb,
+	status varchar(16) default 'active',
 	created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-	updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-	deleted_at TIMESTAMPTZ DEFAULT NULL
+	updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 INSERT INTO
@@ -411,9 +411,9 @@ CREATE TABLE laravel.species_list (
 	value text,
 	name jsonb,
 	description jsonb,
+	status varchar(16) default 'active',
 	created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-	updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-	deleted_at TIMESTAMPTZ DEFAULT NULL
+	updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 INSERT INTO
@@ -466,9 +466,9 @@ CREATE TABLE laravel.teats_wear_list (
 	value text,
 	name jsonb,
 	description jsonb,
+	status varchar(16) default 'active',
 	created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-	updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-	deleted_at TIMESTAMPTZ DEFAULT NULL
+	updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 INSERT INTO
@@ -510,9 +510,9 @@ CREATE TABLE laravel.tooth_type_list (
 	value text,
 	name jsonb,
 	description jsonb,
+	status varchar(16) default 'active',
 	created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-	updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-	deleted_at TIMESTAMPTZ DEFAULT NULL
+	updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 INSERT INTO
@@ -609,9 +609,9 @@ CREATE TABLE laravel.way_of_withdrawal_list (
 	value text,
 	name jsonb,
 	description jsonb,
+	status varchar(16) default 'active',
 	created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-	updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-	deleted_at TIMESTAMPTZ DEFAULT NULL
+	updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 INSERT INTO
@@ -673,8 +673,8 @@ VALUES
 
 CREATE TABLE laravel.animal (
 	id serial PRIMARY KEY,
-	species_list_id INTEGER REFERENCES species_list (id),
-	sex_list_id INTEGER REFERENCES sex_list (id),
+	species_list_id INTEGER NOT NULL REFERENCES species_list (id) ON DELETE RESTRICT,
+	sex_list_id INTEGER NOT NULL REFERENCES sex_list (id) ON DELETE RESTRICT,
 	status varchar(16),
 	previous_status varchar(16),
 	title varchar(128),
@@ -683,8 +683,7 @@ CREATE TABLE laravel.animal (
 	description jsonb,
 	created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 	updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-	died_at TIMESTAMPTZ DEFAULT NOW(),
-	deleted_at TIMESTAMPTZ DEFAULT NULL
+	died_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 ALTER TABLE

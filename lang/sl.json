@@ -39,7 +39,7 @@
 	"You have successfully deleted the animal handling": "You have successfully deleted the animal handling",
 
 	"Alive": "Živa",
-	"Dead": "Ni živa",
+	"Dead": "Mrtva",
 
 	"Edit biometry data": "Uredi biometrične podatke",
 	"Creating new biometry data": "Pripravi nove biometrične podatke",
@@ -130,7 +130,6 @@
 
 	"Date and time of death": "Datum in čas smrti",
 	"Name": "Ime",
-	"Species": "Živalska vrsta",
 	"Note": "Opomba",
 
 	"Status": "Status",
@@ -142,11 +141,10 @@
 	"Missing": "Ne obstajajo",
 	"Created": "Ustvarjeno",
 	"Last edit": "Urejeno",
-	"Sex": "Spol",
 	"Description": "Opis",
 	"Date of death": "Datum smrti",
-	"Date of creation": "Datum ustvarjanja",
-	"Update date": "Datum urejanja",
+	"Created at": "Ustvarjeno",
+	"Updated at": "Zadnja sprememba",
 
 	"Please select the ID of the individual, if the animal is known.": "Prosimo vnesite ID živali v primeru, da je živa neznana",
 	"<New animal>": "<Neznana žival>",
@@ -242,12 +240,53 @@
 	"Please enter the permit number": "Vpišite številko dovoljenja",
 	"Type of conflict animal removal": "Vzrok za odvzem konfliktnega osebka",
 	"Please select the type conflict animal removal": "Izberite vzrok za odvzem konfliktnega osebka",
-	"Loss reason": "Vzrok izgube",
 	"Please select the reason for death": "Številka ušesne značke ali identifikacija ovratnice",
 	"Loss reason description": "Vzrok izgube",
 	"Please insert the reason for death or describe circumstances": "Vpišite vzrok smrti oziroma opišite stanje",
 	"Project title and description; Contact name": "Ime in opis projekta ter kontaktna oseba",
 	"Please insert the project name and description and provide a contact person": "Vpišite ime in opis projekta ter navedite kontaktno osebo",
 	"Receiving country and institutions": "Država, kamor osebek preseljen",
-	"Please define the receiving country and provide names of involved institutions (permits, transport etc.)": "Navedite državo, kamor osebek preseljen, in vpletene inštitucije (npr. izdaja dovoljenj, transport)"
+	"Please define the receiving country and provide names of involved institutions (permits, transport etc.)": "Navedite državo, kamor osebek preseljen, in vpletene inštitucije (npr. izdaja dovoljenj, transport)",
+
+	"View": "Poglej",
+	"Edit": "Uredi",
+	"Actions": "Akcije",
+
+	"Update": "Uredi",
+	"Delete": "Izbriši",
+
+	"Create": "Dodaj",
+	"Are you sure?": "Ali ste prepričani?",
+	"Are you sure you want to delete this resource?": "Ali ste prepričani, da želite obrisati ta zapis?",
+	"Cancel": "Prekinitev",
+
+	"The entity was deleted!": "Podatek je bil obrisan!",
+	"The entity was created!": "Podatek je bil dodan!",
+	"The entity was updated!": "Podatek je bil urejen!",
+
+	"Configure columns": "Nastavi stolpce",
+
+	"Active": "Aktivno",
+	"Inactive": "Neaktivno",
+
+	"Types of removal": "Načini odvzema",
+	"Type of removal": "Način odvzema",
+	"Conflict animal removals": "Odvzemi konfliktnih osebkov",
+	"Conflict animal removal": "Odvzem konfliktnega osebka",
+	"Loss reasons": "Vzroki izgube",
+	"Loss reason": "Vzrok izgube",
+	"Presences of bear collars": "Prisotnosti ovratnikov pri medvedih",
+	"Presence of bear collar": "Prisotnost ovratnika pri medvedu",
+	"Bear fur colours": "Barve kožuhov medvedov",
+	"Bear fur colour": "Barva kožuha medveda",
+	"Incisors wears": "Obrabe sekalcev",
+	"Incisors wear": "Obraba sekalcev",
+	"Places of removal": "Kraji odvzemov",
+	"Place of removal": "Kraj odvzema",
+	"Sex": "Spol",
+	"Species": "Živalske vrste",
+	"Specie": "Živalska vrsta",
+	"Teats use": "Uporabljenost seskov",
+	"Tooth types": "Vrste zoba",
+	"Tooth type": "Vrsta zoba"
 }

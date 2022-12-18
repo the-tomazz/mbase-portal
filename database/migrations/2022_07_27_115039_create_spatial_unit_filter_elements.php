@@ -22,7 +22,7 @@ return new class extends Migration
 				->references('id')
 				->on('spatial_unit_filter_types')
 				->onUpdate('cascade')
-				->onDelete('cascade');
+				->onDelete('restrict');
         });
 
 		DB::table('spatial_unit_filter_elements')->insert([

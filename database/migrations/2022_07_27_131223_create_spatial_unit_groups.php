@@ -20,12 +20,12 @@ return new class extends Migration
 				->references('gid')
 				->on('mbase2_ge.spatial_units')
 				->onUpdate('cascade')
-				->onDelete('cascade');
+				->onDelete('restrict');
 			$table->foreign('group_id')
 				->references('id')
 				->on('groups')
 				->onUpdate('cascade')
-				->onDelete('cascade');
+				->onDelete('restrict');
 		});
 
 		DB::table('spatial_unit_groups')->insert([

@@ -8,9 +8,6 @@ namespace App\Models\Base;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Casts\LocalizedJsonData;
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Orchid\Attachment\Attachable;
 use Orchid\Filters\Filterable;
 use Orchid\Screen\AsSource;
 
@@ -22,14 +19,14 @@ use Orchid\Screen\AsSource;
  * @property string|null $name
  * @property string|null $description
  *
- * @property BearsBiometryAnimalHandling $bears_biometry_animal_handling
- *
  * @package App\Models
  */
 class BaseList extends Model
 {
+	public const STR_ACTIVE = 'active';
+	public const STR_INACTIVE = 'inactive';
+
 	use AsSource, Filterable;
-	use SoftDeletes;
 
 	protected $casts = [
 		'id' => 'int',
@@ -39,12 +36,14 @@ class BaseList extends Model
 
 	protected $fillable = [
 		'name',
-		'description'
+		'description',
+		'status',
 	];
 
 	protected $allowedFilters = [
 		'name',
-		'description'
+		'description',
+		'status'
 	];
 
 	/**
@@ -54,12 +53,12 @@ class BaseList extends Model
         'id',
         'name',
         'description',
+		'status',
         'created_at',
         'updated_at',
     ];
 
-	public function bears_biometry_animal_handling()
-	{
-		return $this->hasOne(BearsBiometryAnimalHandling::class);
+	public function isDeletable(): bool {
+		return true;
 	}
 }

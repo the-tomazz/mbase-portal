@@ -111,13 +111,13 @@ class AnimalListLayout extends Table
 					Animal::STR_DEAD => __('Dead'),
 				])->empty(__('<Empty>'))),
 
-			TD::make('created_at', __('Date of creation'))
+			TD::make('created_at', __('Created at'))
 				->render(function ($model) {
 					return $model->created_at->toDateString();
 				})
 				->sort(),
 
-			TD::make('updated_at', __('Update date'))
+			TD::make('updated_at', __('Updated at'))
 				->render(function ($model) {
 					return $model->updated_at->toDateString();
 				})

@@ -2,11 +2,15 @@
 
 namespace App\Orchid\BaseResources;
 
+use App\Models\Base\BaseList as BaseListModel;
 use App\Models\User;
+use Orchid\Support\Facades\Alert;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Orchid\Crud\Resource;
 use Orchid\Screen\Fields\Input;
+use Orchid\Screen\Fields\Select;
 use Orchid\Screen\Sight;
 use Orchid\Screen\TD;
 
@@ -51,6 +55,12 @@ class BaseList extends Resource
 				->title(__('Name')),
 			Input::make('description')
 				->title(__('Description')),
+			Select::make('status')
+				->title('Status')
+				->options([
+					BaseListModel::STR_ACTIVE => __('Active'),
+					BaseListModel::STR_INACTIVE => __('Inactive'),
+				]),
 		];
 	}
 
@@ -74,13 +84,25 @@ class BaseList extends Resource
 				->sort()
 				->filter(Input::make()),
 
-			TD::make('created_at', 'Date of creation')
+			TD::make('status', __('Status'))
+				->render(function ($model) {
+					return $model->status == BaseListModel::STR_ACTIVE
+						? '<i class="text-success">●</i> ' . __('Active')
+						: '<i class="text-danger">●</i> ' . __('Inactive');
+				})
+				->sort()
+				->filter(Select::make()->options([
+					BaseListModel::STR_ACTIVE => __('Active'),
+					BaseListModel::STR_INACTIVE => __('Inactive'),
+				])->empty(__('<Empty>'))),
+
+			TD::make('created_at', __('Created at'))
 				->sort()
 				->render(function ($model) {
 					return $model->created_at->toDateTimeString();
 				}),
 
-			TD::make('updated_at', 'Update date')
+			TD::make('updated_at', __('Updated at'))
 				->sort()
 				->render(function ($model) {
 					return $model->updated_at->toDateTimeString();
@@ -102,12 +124,31 @@ class BaseList extends Resource
 			Sight::make('name', "Name"),
 			Sight::make('description', "Description"),
 
-			Sight::make('created_at', 'Date of creation')
+			TD::make('status', __('Status'))
+				->render(function ($model) {
+					return $model->status == BaseListModel::STR_ACTIVE
+						? '<i class="text-success">●</i> ' . __('Active')
+						: '<i class="text-danger">●</i> ' . __('Inactive');
+				})
+				->sort()
+				->filter(Select::make()->options([
+					BaseListModel::STR_ACTIVE => __('Active'),
+					BaseListModel::STR_INACTIVE => __('Inactive'),
+				])->empty(__('<Empty>'))),
+
+			Sight::make('status', __('Status'))
+				->render(function ($model) {
+					return $model->status == BaseListModel::STR_ACTIVE
+						? '<i class="text-success">●</i> ' . __('Active')
+						: '<i class="text-danger">●</i> ' . __('Inactive');
+				}),
+
+			Sight::make('created_at', t('Created at'))
 				->render(function ($model) {
 					return $model->created_at->toDateTimeString();
 				}),
 
-			Sight::make('updated_at', 'Update date')
+			Sight::make('updated_at', __('Updated at'))
 				->render(function ($model) {
 					return $model->updated_at->toDateTimeString();
 				}),
@@ -128,4 +169,65 @@ class BaseList extends Resource
 	{
 		return 'mbase2l.admin';
 	}
+
+	public static function createButtonLabel(): string
+	{
+		return __('Create');
+	}
+
+	public static function createToastMessage(): string
+	{
+		return __('The entity was created!');
+	}
+
+	public static function updateButtonLabel(): string
+	{
+		return __('Update');
+	}
+
+	public static function updateToastMessage(): string
+	{
+		return __('The entity was updated!');
+	}
+
+	public static function deleteButtonLabel(): string
+	{
+		return __('Delete');
+	}
+
+	public static function deleteToastMessage(): string
+	{
+		return __('The entity was deleted!');
+	}
+
+	/**
+	 * Get the text for the list breadcrumbs.
+	 *
+	 * @return string
+	 */
+	public static function listBreadcrumbsMessage(): string
+	{
+		return static::label();
+	}
+
+	/**
+	 * Get the text for the create breadcrumbs.
+	 *
+	 * @return string
+	 */
+	public static function createBreadcrumbsMessage(): string
+	{
+		return __('Create');
+	}
+
+	/**
+	 * Get the text for the edit breadcrumbs.
+	 *
+	 * @return string
+	 */
+	public static function editBreadcrumbsMessage(): string
+	{
+		return __('Edit');
+	}
+
 }

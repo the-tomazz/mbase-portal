@@ -83,7 +83,6 @@ return new class extends Migration
 				$table->unsignedInteger('status');
 
 				$table->timestamps();
-				$table->softDeletes();
 
 				$table->foreign('bears_biometry_animal_handling_id')
 					->references('id')
@@ -95,31 +94,31 @@ return new class extends Migration
 					->references('id')
 					->on('teats_wear_list')
 					->onUpdate('cascade')
-					->onDelete('cascade');
+					->onDelete('restrict');
 
 				$table->foreign('incisors_wear_list_id')
 					->references('id')
 					->on('incisors_wear_list')
 					->onUpdate('cascade')
-					->onDelete('cascade');
+					->onDelete('restrict');
 
 				$table->foreign('color_list_id')
 					->references('id')
 					->on('color_list')
 					->onUpdate('cascade')
-					->onDelete('cascade');
+					->onDelete('restrict');
 
 				$table->foreign('collar_list_id')
 					->references('id')
 					->on('collar_list')
 					->onUpdate('cascade')
-					->onDelete('cascade');
+					->onDelete('restrict');
 
 				$table->foreign('meritve_opravil_id')
 					->references('id')
 					->on('users')
 					->onUpdate('cascade')
-					->onDelete('cascade');
+					->onDelete('restrict');
 			}
 		);
 	}

@@ -17,4 +17,24 @@ class SpeciesList extends BaseList
      */
     public static $model = \App\Models\SpeciesList::class;
 
+	/**
+	 * Get the displayable label of the resource.
+	 *
+	 * @return string
+	 */
+	public static function label(): string
+	{
+		return __('Species');
+	}
+
+	/**
+	 * Get the displayable singular label of the resource.
+	 *
+	 * @return string
+	 */
+	public static function singularLabel(): string
+	{
+		return __('Specie');
+	}
+
 }

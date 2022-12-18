@@ -3,6 +3,7 @@
 namespace App\Orchid\Screens;
 
 use App\Models\Animal;
+use App\Models\Base\BaseList;
 use App\Models\BearsBiometryAnimalHandling;
 use App\Models\BearsBiometryData;
 use App\Models\CollarList;
@@ -380,19 +381,19 @@ class BearsBiometryDataEditScreen extends Screen
 				// Other observations start
 				Group::make([
 					Select::make('bearsBiometryData.incisors_wear_list_id')
-						->fromModel(IncisorsWearList::class, 'name')
+						->fromQuery(IncisorsWearList::where('status', '=', BaseList::STR_ACTIVE), 'name')
 						->title(__('Incisors (front teeth) wear'))
 						->required()
 						->help(__('Please insert Incisors (front teeth) wear')),
 
 					Select::make('bearsBiometryData.color_list_id')
-						->fromModel(ColorList::class, 'name')
+						->fromQuery(ColorList::where('status', '=', BaseList::STR_ACTIVE), 'name')
 						->title(__('Color'))
 						->required()
 						->help(__('Please insert Color')),
 
 					Select::make('bearsBiometryData.collar_list_id')
-						->fromModel(CollarList::class, 'name')
+						->fromQuery(CollarList::where('status', '=', BaseList::STR_ACTIVE), 'name')
 						->title(__('Light neck stripe "collar"'))
 						->required()
 						->help(__('Please insert Light neck stripe "collar"')),

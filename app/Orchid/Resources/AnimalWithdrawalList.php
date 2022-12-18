@@ -18,4 +18,24 @@ class AnimalWithdrawalList extends BaseList
 	 * @var string
 	 */
 	public static $model = \App\Models\WayOfWithdrawalList::class;
+
+	/**
+	 * Get the displayable label of the resource.
+	 *
+	 * @return string
+	 */
+	public static function label(): string
+	{
+		return __('Types of removal');
+	}
+
+	/**
+	 * Get the displayable singular label of the resource.
+	 *
+	 * @return string
+	 */
+	public static function singularLabel(): string
+	{
+		return __('Type of removal');
+	}
 }
