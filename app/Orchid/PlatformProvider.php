@@ -126,7 +126,7 @@ class PlatformProvider extends OrchidServiceProvider
 					->icon('list')
 					->href('/admin/crud/list/conflict-animal-removal-lists');
 
-				$menu[] = Menu::make('Animal Removal')
+				$menu[] = Menu::make('Type of removal')
 					->icon('list')
 					->href('/admin/crud/list/animal-withdrawal-lists');
 
@@ -134,11 +134,11 @@ class PlatformProvider extends OrchidServiceProvider
 					->icon('list')
 					->href('/admin/crud/list/biometry-loss-reason-lists');
 
-				$menu[] = Menu::make('Collar')
+				$menu[] = Menu::make('Presence of bear colla')
 					->icon('list')
 					->href('/admin/crud/list/collar-lists');
 
-				$menu[] = Menu::make('Color')
+				$menu[] = Menu::make('Bear fur colour')
 					->icon('list')
 					->href('/admin/crud/list/color-lists');
 
@@ -150,7 +150,7 @@ class PlatformProvider extends OrchidServiceProvider
 					->icon('list')
 					->href('/admin/crud/list/place-type-lists');
 
-				$menu[] = Menu::make('Teats Wear')
+				$menu[] = Menu::make('Teats use')
 					->icon('list')
 					->href('/admin/crud/list/teats-wear-lists');
 

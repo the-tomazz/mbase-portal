@@ -143,7 +143,7 @@ class BaseList extends Resource
 						: '<i class="text-danger">●</i> ' . __('Inactive');
 				}),
 
-			Sight::make('created_at', t('Created at'))
+			Sight::make('created_at', __('Created at'))
 				->render(function ($model) {
 					return $model->created_at->toDateTimeString();
 				}),
