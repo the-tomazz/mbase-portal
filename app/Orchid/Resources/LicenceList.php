@@ -2,10 +2,13 @@
 
 namespace App\Orchid\Resources;
 
-use App\Models\User;
 use App\Orchid\BaseResources\BaseList;
+use Orchid\Crud\Resource;
+use Orchid\Screen\Fields\Input;
+use Orchid\Screen\Sight;
+use Orchid\Screen\TD;
 
-class ConflictAnimalRemovalList extends BaseList
+class LicenceList extends BaseList
 {
 	protected static $moduleList = ['mortbiom'];
 
@@ -14,7 +17,7 @@ class ConflictAnimalRemovalList extends BaseList
      *
      * @var string
      */
-    public static $model = \App\Models\ConflictAnimalRemovalList::class;
+    public static $model = \App\Models\LicenceList::class;
 
 	/**
 	 * Get the displayable label of the resource.
@@ -23,7 +26,7 @@ class ConflictAnimalRemovalList extends BaseList
 	 */
 	public static function label(): string
 	{
-		return __('Conflict animal removals');
+		return __('Licences');
 	}
 
 	/**
@@ -33,6 +36,6 @@ class ConflictAnimalRemovalList extends BaseList
 	 */
 	public static function singularLabel(): string
 	{
-		return __('Conflict animal removal');
+		return __('Licences');
 	}
 }

@@ -7,6 +7,8 @@ use App\Models\AnimalRemovalList;
 use App\Models\Base\BaseList;
 use App\Models\BearsBiometryAnimalHandling;
 use App\Models\BearsBiometrySample;
+use App\Models\LicenceList;
+use App\Models\LicencesList;
 use App\Models\SexList;
 use App\Models\SpeciesList;
 use App\Models\ToothTypeList;
@@ -24,11 +26,14 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Orchid\Support\Facades\Alert;
 use Orchid\Screen\Actions\Button;
+use Orchid\Screen\Actions\ModalToggle;
 use Orchid\Screen\Fields\Group;
 use Orchid\Screen\Fields\Input;
+use Orchid\Screen\Fields\Label;
 use Orchid\Screen\Fields\Select;
 use Orchid\Screen\Fields\Switcher;
 use Orchid\Screen\Fields\Upload;
+use Orchid\Screen\Layouts\Modal;
 use Orchid\Screen\Repository;
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Layout;
@@ -58,6 +63,10 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 				'lng' => 15.2424903,
 			];
 
+			if (Auth::user()->defaultVisualisationAnimalStatus() == Animal::STR_DEAD) {
+				$bearsBiometryAnimalHandling['licence_list_id'] = LicenceList::INT_ZGS_LICENCE;
+			}
+
 			if ($animal->exists) {
 				$bearsBiometryAnimalHandling->animal_id = $animal->id;
 			}
@@ -86,8 +95,6 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 
 			$sampleNumber++;
 		}
-
-		Log::debug(['BearsBiometryAnimalHandling query', $bearsBiometryAnimalHandling]);
 
 		return [
 			'bearsBiometryAnimalHandling' => $bearsBiometryAnimalHandling
@@ -129,9 +136,10 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 				->method('createOrUpdateAndAddBiometryData')
 				->canSee(!$this->bearsBiometryAnimalHandling->exists),
 
-			Button::make('Remove')
-				->icon('trash')
+			ModalToggle::make('Remove')
+				->modal('modalRemove')
 				->method('remove')
+				->icon('trash')
 				->canSee($this->bearsBiometryAnimalHandling->exists),
 		];
 	}
@@ -186,8 +194,6 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 
 	public function asyncUpdateAnimalHandlingGeoLocationListenerData($triggers)
 	{
-		Log::debug(['asyncUpdateAnimalHandlingGeoLocationListenerData', $triggers]);
-
 		$lng = $triggers['geo_location']['lng'];
 		$lat = $triggers['geo_location']['lat'];
 
@@ -253,12 +259,10 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 			', [$gid, '__-LOV']);
 
 			if (count($LUOResults) > 0) {
-				Log::debug($LUOResults[0]->name);
 				$LUO = json_decode($LUOResults[0]->name)->name;
 			}
 
 			if (count($LOVResults) > 0) {
-				Log::debug($LOVResults[0]->name);
 				$LOV = json_decode($LOVResults[0]->name)->name;
 			}
 
@@ -291,8 +295,6 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 
 	public function asyncUpdateAnimalHandlingHunterFinderSwitchListenerData($triggers)
 	{
-		Log::debug(['asyncUpdateAnimalHandlingHunterFinderSwitchListenerData', $triggers]);
-
 		return [
 			'bearsBiometryAnimalHandling' => new Repository([
 				'unknown_hunter_finder'      => $triggers['unknown_hunter_finder'],
@@ -304,8 +306,6 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 
 	public function asyncUpdateAnimalHandlingSamplesListenerData($triggers)
 	{
-		Log::debug(['asyncUpdateAnimalHandlingSamplesListenerData', $triggers]);
-
 		$repositoryElements = [];
 		for ($sampleNumber = 1; $sampleNumber <= self::MAX_SAMPLE_NUMBER; $sampleNumber++) {
 			$repositoryElement = [
@@ -316,8 +316,6 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 
 			$repositoryElements = array_merge($repositoryElements, $repositoryElement);
 		}
-
-		Log::debug(['repositoryElements', $repositoryElements]);
 
 		return [
 			'bearsBiometryAnimalHandling' => new Repository($repositoryElements)
@@ -339,6 +337,12 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 			]),
 
 			Layout::rows([
+				Select::make('bearsBiometryAnimalHandling.licence_list_id')
+						->fromQuery(LicenceList::where('status', '=', BaseList::STR_ACTIVE), 'name')
+						->title(__('Licence'))
+						->help(__('Please select the Licence'))
+						->required(),
+
 				Input::make('bearsBiometryAnimalHandling.number_of_removal_in_the_hunting_administrative_area')
 					->mask('999999999999-9999')
 					->title(__('Number and the year of removal in hunting administrative area'))
@@ -442,12 +446,24 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 							->canSee($this->bearsBiometryAnimalHandling !== null && !$this->bearsBiometryAnimalHandling->exists)
 					]
 				),
+
+			Layout::modal('modalRemove', [
+				Layout::rows([
+					Label::make('label')
+						->title(__('Are you sure you want to remove this animal handling?'))
+						->disabled(),
+				]),
+			])
+				->title(__('Remove Animal handling'))
+				->size(Modal::SIZE_LG)
+				->applyButton(__('Remove'))
+				->closeButton(__('Close')),
 		];
 
 		return array_merge(
 			$preBiometryAnimalHandlingSampleListeners,
 			$biometryAnimalHandlingSamplesListeners,
-			$postBiometryAnimalHandlingSampleListeners
+			$postBiometryAnimalHandlingSampleListeners,
 		);
 	}
 
@@ -458,12 +474,19 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 	 */
 	private function createOrUpdate(Animal $animal, BearsBiometryAnimalHandling $bearsBiometryAnimalHandling, Request $request)
 	{
-		Log::debug(['createOrUpdate 1 BearsBiometryAnimalHandling', $request]);
-
 		$bearsBiometryAnimalHandling->fill($request->get('bearsBiometryAnimalHandling'));
 
 		$animalId = $request->get('bearsBiometryAnimalHandling')['animal_id'] ?? null;
-		$animalStatus = $request->get('bearsBiometryAnimalHandling')['animal_status'];
+		if ($animalId) {
+			$animal = Animal::find($animalId);
+			if ($animal->status == Animal::STR_DEAD) {
+				$animalStatus = Animal::STR_DEAD;
+			} else {
+				$animalStatus = $request->get('bearsBiometryAnimalHandling')['animal_status'];
+			}
+		} else {
+			$animalStatus = $request->get('bearsBiometryAnimalHandling')['animal_status'];
+		}
 
 		$bearsBiometryAnimalHandling['animal_status_on_handling'] = $animalStatus;
 
@@ -522,8 +545,6 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 			}
 		}
 
-		Log::debug(['bearsBiometryAnimalHandling createOrUpdate', $bearsBiometryAnimalHandling]);
-
 		Alert::info(__('You have successfully created or updated a Biometry Animal Handling.'));
 	}
 
@@ -561,7 +582,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 	 * @return \Illuminate\Http\RedirectResponse
 	 * @throws \Exception
 	 */
-	public function remove(BearsBiometryAnimalHandling $bearsBiometryAnimalHandling)
+	public function remove(Animal $animal, BearsBiometryAnimalHandling $bearsBiometryAnimalHandling)
 	{
 		$bearsBiometryAnimalHandling->delete();
 

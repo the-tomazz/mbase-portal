@@ -137,6 +137,10 @@ Keep this running in a seperate terminal:
 
   sail artisan orchid:install
 
+## link public storage
+ 
+  sail artisan storage:link
+
 ## add user
   
   sail artisan orchid:admin admin admin@admin.com password

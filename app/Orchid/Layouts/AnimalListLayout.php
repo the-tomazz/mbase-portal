@@ -5,6 +5,7 @@ namespace App\Orchid\Layouts;
 use App\Models\Animal;
 use App\Models\SexList;
 use App\Models\SpeciesList;
+use Illuminate\Support\Facades\Log;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\Select;
@@ -36,14 +37,14 @@ class AnimalListLayout extends Table
 			TD::make('id', __('Animal ID'))
 				->render(function (Animal $animal) {
 					return Link::make($animal->id)
-					->route('platform.animal.edit', $animal);
+					->route('platform.animalData.view', $animal);
 				})
 				->sort(),
 
 			TD::make('name', __('Name'))
 				->render(function (Animal $animal) {
 					return Link::make($animal->name)
-					->route('platform.animal.edit', $animal);
+					->route('platform.animalData.view', $animal);
 				})
 				->sort()
 				->filter(Input::make()),
@@ -55,18 +56,24 @@ class AnimalListLayout extends Table
 			TD::make('species_list_id', __('Species'))
 				->render(function (Animal $animal) {
 					return Link::make($animal->species_list->name)
-					->route('platform.animal.edit', $animal);
+					->route('platform.animalData.view', $animal);
 				})
 				->sort()
-				->filter(Select::make()->fromModel(SpeciesList::class, 'name')->empty(__('<Empty>'))),
+				->filter(Select::make()->fromModel(SpeciesList::class, 'name')->empty(__('<Empty>')))
+				->filterValue(function ($species_list_id) {
+						return SpeciesList::find($species_list_id)->name;
+				}),
 
 			TD::make('sex_list_id', __('Sex'))
 				->render(function (Animal $animal) {
 					return Link::make($animal->sex_list->name)
-					->route('platform.animal.edit', $animal);
+					->route('platform.animalData.view', $animal);
 				})
 				->sort()
-				->filter(Select::make()->fromModel(SexList::class, 'name')->empty(__('<Empty>'))),
+				->filter(Select::make()->fromModel(SexList::class, 'name')->empty(__('<Empty>')))
+				->filterValue(function ($sex_list_id) {
+					return SexList::find($sex_list_id)->name;
+				}),
 
 			TD::make('status', __('Status'))
 				->render(function (Animal $animal) {
@@ -78,7 +85,10 @@ class AnimalListLayout extends Table
 				->filter(Select::make()->options([
 					Animal::STR_ALIVE => __('Alive'),
 					Animal::STR_DEAD => __('Dead'),
-				])->empty(__('<Empty>'))),
+				])->empty(__('<Empty>')))
+				->filterValue(function ($status) {
+					return $status == Animal::STR_ALIVE ? __('Alive') : __('Dead');
+				}),
 
 			TD::make('died_at', __('Date of death'))
 				->render(function ($model) {
@@ -105,11 +115,14 @@ class AnimalListLayout extends Table
 					}
 					return $animalHandlingsRender;
 				})
-				->sort()
+				/*->sort()
 				->filter(Select::make()->options([
 					Animal::STR_ALIVE => __('Alive'),
 					Animal::STR_DEAD => __('Dead'),
-				])->empty(__('<Empty>'))),
+				])->empty(__('<Empty>')))
+				->filterValue(function ($status) {
+					return $status == Animal::STR_ALIVE ? __('Alive') : __('Dead');
+				})*/,
 
 			TD::make('created_at', __('Created at'))
 				->render(function ($model) {

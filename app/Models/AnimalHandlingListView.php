@@ -128,7 +128,8 @@ class AnimalHandlingListView extends Model
 		'place_of_removal',
         'created_at',
         'updated_at',
-		'bears_biometry_data_status'
+		'bears_biometry_data_status',
+		'species_list'
     ];
 
 	protected $allowedFilters = [

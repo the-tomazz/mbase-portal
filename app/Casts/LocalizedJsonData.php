@@ -68,10 +68,8 @@ class LocalizedJsonData implements CastsAttributes
             return json_encode($value);
         }
 
-        return json_encode(
-            [
-            App::getLocale() => $value
-            ]
-        );
+		$new = json_decode($attributes[$key], true);
+		$new[App::getLocale()] = $value;
+        return json_encode($new);
     }
 }

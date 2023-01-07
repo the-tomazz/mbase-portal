@@ -1,12 +1,12 @@
 {
-	"Cannot delete the animal because it contains one or more handlings. You have to delete the animal handling first!": "Ne morete obrisati podatkov o živali, ker ima eno ali več povezanih rokovanj. Najprej obrišite podatke o rokovanjih!",
-	"You have successfully deleted the animal": "Uspešno ste obrisali podatke o živali",
+	"Cannot delete the animal because it contains one or more handlings. You have to delete the animal handling first!": "Ne morete izbrisati podatkov o živali, ker ima eno ali več povezanih rokovanj. Najprej obrišite podatke o rokovanjih!",
+	"You have successfully deleted the animal": "Uspešno ste izbrisali podatke o živali",
 	"Animal Handlings": "Rokovanja z živalmi",
 	"Animals": "Živali",
 	"New animal handling": "Novo rokovanje z živaljo",
 	"Export to XLS": "Izvoz v XLS",
 	"Animals": "Živali",
-	"Animal handling": "Upravljanja z živalmi",
+	"Animal handling": "Rokovanje z živaljo",
 	"Edit animal handling": "Uredi rokovanje z živaljo",
 	"New animal handling": "Novo rokovanje z živaljo",
 	"Animal Handling Create / Update": "Ustvarjanje novih / urejanje podatkov o upravljanju z živaljo",
@@ -52,7 +52,6 @@
 	"Animal": "Žival",
 	"Animal handling ID": "ID rokovanja z živaljo",
 	"Animal handling date": "Datum rokovanja z živaljo",
-	"Place of removal / handling": "Lokacija rokovanja z živaljo",
 
 	"Gross": "Bruto",
 	"Net": "Neto",
@@ -126,7 +125,7 @@
 	"All files": "Vsi fajli",
 
 	"You have successfully created or updated Biometry Data": "Uspešno ste ustvarili ali popravili biometrične podatke",
-	"You have successfully deleted Biometry Data": "Uspešno ste obrisali biometrične podatke",
+	"You have successfully deleted Biometry Data": "Uspešno ste izbrisali biometrične podatke",
 
 	"Date and time of death": "Datum in čas smrti",
 	"Name": "Ime",
@@ -153,7 +152,7 @@
 
 	"Location": "Lokacija",
 	"Hunting-management area (LUO)": "Lovsko Upravljalsko Območje",
-	"Hunting ground": "Lovso Območje",
+	"Hunting ground": "Lovsko Območje",
 
 	"Unknown Hunder/Finder": "Neznan uplenitelj / najditelj",
 	"Hunter/Finder name": "Ime uplenitelja / najditelja",
@@ -232,7 +231,8 @@
 
 	"<Empty>": "Ni izbrano",
 
-	"Save animal": "Shrani podatke o živali",
+	"Save animal data": "Shrani podatke o živali",
+	"Edit Animal": "Uredi podatke o živali",
 
 	"Way of withdrawal": "Način odvzema",
 	"Select the way of withdrawal": "Izberite način odvzema",
@@ -257,10 +257,10 @@
 
 	"Create": "Dodaj",
 	"Are you sure?": "Ali ste prepričani?",
-	"Are you sure you want to delete this resource?": "Ali ste prepričani, da želite obrisati ta zapis?",
+	"Are you sure you want to delete this resource?": "Ali ste prepričani, da želite izbrisati ta zapis?",
 	"Cancel": "Prekinitev",
 
-	"The entity was deleted!": "Podatek je bil obrisan!",
+	"The entity was deleted!": "Podatek je bil izbrisan!",
 	"The entity was created!": "Podatek je bil dodan!",
 	"The entity was updated!": "Podatek je bil urejen!",
 
@@ -269,15 +269,15 @@
 	"Active": "Aktivno",
 	"Inactive": "Neaktivno",
 
-	"Types of removal": "Načini odvzema",
+	"Types of removal": "Način odvzema",
 	"Type of removal": "Način odvzema",
-	"Conflict animal removals": "Odvzemi konfliktnih osebkov",
+	"Conflict animal removals": "Odvzem konfliktnega osebka",
 	"Conflict animal removal": "Odvzem konfliktnega osebka",
-	"Loss reasons": "Vzroki izgube",
+	"Loss reasons": "Vzrok izgube",
 	"Loss reason": "Vzrok izgube",
-	"Presences of bear collars": "Prisotnosti ovratnikov pri medvedih",
+	"Presences of bear collars": "Prisotnost ovratnika pri medvedu",
 	"Presence of bear collar": "Prisotnost ovratnika pri medvedu",
-	"Bear fur colours": "Barve kožuhov medvedov",
+	"Bear fur colours": "Barva kožuha medveda",
 	"Bear fur colour": "Barva kožuha medveda",
 	"Incisors wears": "Obrabe sekalcev",
 	"Incisors wear": "Obraba sekalcev",
@@ -288,5 +288,21 @@
 	"Specie": "Živalska vrsta",
 	"Teats use": "Uporabljenost seskov",
 	"Tooth types": "Vrste zoba",
-	"Tooth type": "Vrsta zoba"
+	"Tooth type": "Vrsta zoba",
+
+	"Apply": "Uporabi",
+	"Licences": "Licence",
+	"Licence": "Licenca",
+	"Please select the Licence": "Prosim izberite licenco",
+
+	"Save biometry data": "Shrani biometrične podatke",
+
+	"Remove Animal handling": "Izbriši rokovanje z živaljo",
+	"Are you sure you want to remove this animal handling?": "Ali ste prepričani, da želite izbrisati rokovanje z živaljo?",
+
+	"Remove Biometry data": "Izbriši biometrične podatke",
+	"Are you sure you want to remove this biometry data?": "Ali ste prepričani, da želite izbrisati biometrične podatke?",
+
+	"Remove Animal data": "Izbriši podatke o živali",
+	"Are you sure you want to remove this Animal data?": "Ali ste prepričani, da želite izbrisati podatke o živali?"
 }

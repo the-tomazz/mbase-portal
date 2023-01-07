@@ -6,6 +6,7 @@ use App\Models\Base\BaseList as BaseListModel;
 use App\Models\User;
 use Orchid\Support\Facades\Alert;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Orchid\Crud\Resource;
@@ -16,6 +17,8 @@ use Orchid\Screen\TD;
 
 class BaseList extends Resource
 {
+	private const MAX_DESCRIPTION_LENGTH = 60;
+
 	protected static $moduleList = [];
 	/**
 	 * Get the resource should be displayed in the navigation
@@ -29,8 +32,6 @@ class BaseList extends Resource
 
 	protected function groupPermissions(User $user)
 	{
-		Log::debug([static::$moduleList]);
-
 		foreach (static::$moduleList as $module)
 		{
 			if ($user->isInGroup('mbase2', $module, 'admin')) {
@@ -77,18 +78,21 @@ class BaseList extends Resource
 			TD::make('id')
 				->sort()
 				->filter(Input::make()),
-			TD::make('name', "Name")
+			TD::make('name', __('Name'))
 				->sort()
 				->filter(Input::make()),
-			TD::make('description', "Description")
+			TD::make('description', __('Description'))
 				->sort()
-				->filter(Input::make()),
+				->filter(Input::make())
+				->render(function ($model) {
+					return strlen($model->description) > self::MAX_DESCRIPTION_LENGTH ?
+						substr($model->description, 0, self::MAX_DESCRIPTION_LENGTH) . '...' :
+						$model->description;
+				}),
 
 			TD::make('status', __('Status'))
 				->render(function ($model) {
-					return $model->status == BaseListModel::STR_ACTIVE
-						? '<i class="text-success">●</i> ' . __('Active')
-						: '<i class="text-danger">●</i> ' . __('Inactive');
+					return $model->renderStatus();
 				})
 				->sort()
 				->filter(Select::make()->options([
@@ -124,23 +128,9 @@ class BaseList extends Resource
 			Sight::make('name', "Name"),
 			Sight::make('description', "Description"),
 
-			TD::make('status', __('Status'))
-				->render(function ($model) {
-					return $model->status == BaseListModel::STR_ACTIVE
-						? '<i class="text-success">●</i> ' . __('Active')
-						: '<i class="text-danger">●</i> ' . __('Inactive');
-				})
-				->sort()
-				->filter(Select::make()->options([
-					BaseListModel::STR_ACTIVE => __('Active'),
-					BaseListModel::STR_INACTIVE => __('Inactive'),
-				])->empty(__('<Empty>'))),
-
 			Sight::make('status', __('Status'))
 				->render(function ($model) {
-					return $model->status == BaseListModel::STR_ACTIVE
-						? '<i class="text-success">●</i> ' . __('Active')
-						: '<i class="text-danger">●</i> ' . __('Inactive');
+					return $model->renderStatus();
 				}),
 
 			Sight::make('created_at', __('Created at'))

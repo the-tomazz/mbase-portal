@@ -39,9 +39,6 @@ class BearsBiometryAnimalHandlingPlaceTypeListListener extends Listener
 	 */
 	protected function layouts(): iterable
 	{
-		if (isset($this->query)) {
-			Log::debug(['place_type_list_id', $this->query->get('bearsBiometryAnimalHandling.place_type_list_id')]);
-		}
 		$canSee = isset($this->query) ? $this->query->get('bearsBiometryAnimalHandling.place_type_list_id') == PlaceTypeList::OTHER_ID : false;
 
 		return [

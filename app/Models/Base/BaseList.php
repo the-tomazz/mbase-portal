@@ -58,6 +58,12 @@ class BaseList extends Model
         'updated_at',
     ];
 
+	public function renderStatus() {
+		return $this->status == self::STR_ACTIVE
+			? '<i class="text-success">●</i> ' . __('Active')
+			: '<i class="text-danger">●</i> ' . __('Inactive');
+	}
+
 	public function isDeletable(): bool {
 		return true;
 	}

@@ -6,6 +6,8 @@ use App\Models\AnimalHandlingListView;
 use App\Orchid\Layouts\AnimalHandlingListViewListLayout;
 use Illuminate\Support\Facades\Auth;
 use Orchid\Screen\Actions\Link;
+use Orchid\Screen\Actions\ModalToggle;
+use Orchid\Screen\Layouts\Modal;
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Layout;
 
@@ -55,13 +57,15 @@ class AnimalHandlingListViewListScreen extends Screen
 
 			Link::make(__('Animals'))
 				->icon('list')
-				->route('platform.animal.list', ['filter[status]' => Auth::user()->defaultVisualisationAnimalStatus()]),
+				->route('platform.animals.list', ['filter[status]' => Auth::user()->defaultVisualisationAnimalStatus()]),
 
 			Link::make(__('Export to XLS'))
 				->icon('save')
-				->route('app.export.csv.animalhandlings', request()->input())
+				->route('app.export.csv.animalhandlings', request()->input()),
 		];
 	}
+
+
 
 	/**
 	 * Views.
@@ -74,5 +78,10 @@ class AnimalHandlingListViewListScreen extends Screen
 			Layout::view('animalHandlingMapDisplay'),
 			AnimalHandlingListViewListLayout::class
 		];
+	}
+
+	public function action(): void
+	{
+		Toast::info('Hello, world! This is a toast message.');
 	}
 }

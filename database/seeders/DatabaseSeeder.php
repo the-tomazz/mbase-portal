@@ -21,8 +21,8 @@ class DatabaseSeeder extends Seeder
 			->create();
 
 		\App\Models\BearsBiometryAnimalHandling::factory(10)
-			->hasBearsBiometryData(random_int(0, 1))
-			->hasBearsBiometrySamples(random_int(0, 3))
+			->hasBearsBiometryData(1)
+			->hasBearsBiometrySamples(3)
 			->create();
     }
 }

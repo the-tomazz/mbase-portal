@@ -31,7 +31,6 @@ use Orchid\Screen\AsSource;
 class Animal extends Model
 {
 	use HasFactory;
-
 	use AsSource, Filterable;
 
 	public const STR_ALIVE = 'alive';

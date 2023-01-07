@@ -205,8 +205,6 @@ class UserEditScreen extends Screen
 		$data = $request->collect('user')->except(['password', 'permissions', 'roles'])->toArray();
 		if (array_key_exists('country_id', $data)) $data['country_id'] = $data['country_id'][0];
 
-		Log::debug(['user save', $data]);
-
 		$user
 			->fill($data)
 			->fill(['permissions' => $permissions])

@@ -2,6 +2,7 @@ CREATE TABLE laravel.bears_biometry_animal_handling (
 	id serial primary key,
 	way_of_withdrawal_list_id INTEGER NOT NULL REFERENCES way_of_withdrawal_list (id) ON DELETE RESTRICT,
 	conflict_animal_removal_list_id INTEGER REFERENCES conflict_animal_removal_list (id) ON DELETE RESTRICT,
+	licence_list_id INTEGER REFERENCES licence_list (id) ON DELETE RESTRICT,
 	licence_number character varying(255),
 	project_name character varying(255),
 	receiving_country character varying(255),
@@ -38,8 +39,7 @@ CREATE TABLE laravel.bears_biometry_animal_handling (
 	number_of_removal_in_the_hunting_administration_area text,
 	animal_status_on_handling varchar(16),
 	created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-	updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-	deleted_at TIMESTAMPTZ DEFAULT NULL
+	updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 ALTER TABLE laravel.bears_biometry_animal_handling OWNER TO gozdovi;

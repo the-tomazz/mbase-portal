@@ -45,8 +45,6 @@ class BearsBiometryDataSexListListener extends Listener
 	 */
 	protected function layouts(): iterable
 	{
-		Log::debug(['BearsBiometryDataSexListListener', $this->query->get('bearsBiometryData')]);
-
 		$isFemale = isset($this->query) ? $this->query->get('bearsBiometryData.sex_list_id') == SexList::FEMALE_SEX_ID : true;
 		$isNeutral = isset($this->query) ? $this->query->get('bearsBiometryData.sex_list_id') == SexList::NEUTRAL_SEX_ID : true;
 

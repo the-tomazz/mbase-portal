@@ -15,4 +15,6 @@ yarn-error.log
 /.vscode
 
 /public/mbase2dtl*
+/public/vendor/mbase2dtl*
+public/vendor/mbase2dtl/*
 

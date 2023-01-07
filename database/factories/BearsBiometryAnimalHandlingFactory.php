@@ -8,8 +8,8 @@ use App\Models\PlaceTypeList;
 use App\Models\SpatialUnit;
 use App\Models\ToothTypeList;
 use App\Models\User;
-use App\Models\Confli;
 use App\Models\ConflictAnimalRemovalList;
+use App\Models\LicenceList;
 use App\Models\WayOfWithdrawalList;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
@@ -29,6 +29,7 @@ class BearsBiometryAnimalHandlingFactory extends Factory
 		return [
 			'way_of_withdrawal_list_id' => WayOfWithdrawalList::All()->random()->id,
 			'conflict_animal_removal_list_id' => ConflictAnimalRemovalList::all()->random()->id,
+			'licence_list_id' => LicenceList::all()->random()->id,
 			'licence_number' => Str::random(10),
 			'project_name' => Str::random(10),
 			'receiving_country' => Str::random(10),

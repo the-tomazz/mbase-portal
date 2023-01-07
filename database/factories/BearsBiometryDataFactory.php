@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\BearsBiometryAnimalHandling;
+use App\Models\BearsBiometryData;
 use App\Models\CollarList;
 use App\Models\ColorList;
 use App\Models\IncisorsWearList;
@@ -23,7 +24,7 @@ class BearsBiometryDataFactory extends Factory
     public function definition()
     {
         return [
-            // 'bears_biometry_animal_handling_id' => BearsBiometryAnimalHandling::factory(),
+			# 'bears_biometry_animal_handling_id' => BearsBiometryData::all()->random()->id,
 			'age' => random_int(1,8),
 			'masa_bruto' => random_int(1,8),
 			'masa_neto' => random_int(1,8),

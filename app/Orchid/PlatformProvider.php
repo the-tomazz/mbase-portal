@@ -134,7 +134,7 @@ class PlatformProvider extends OrchidServiceProvider
 					->icon('list')
 					->href('/admin/crud/list/biometry-loss-reason-lists');
 
-				$menu[] = Menu::make('Presence of bear colla')
+				$menu[] = Menu::make('Presence of bear collar')
 					->icon('list')
 					->href('/admin/crud/list/collar-lists');
 
@@ -157,6 +157,10 @@ class PlatformProvider extends OrchidServiceProvider
 				$menu[] = Menu::make('Tooth Type')
 					->icon('list')
 					->href('/admin/crud/list/tooth-type-lists');
+
+				$menu[] = Menu::make('Licences')
+					->icon('list')
+					->href('/admin/crud/list/licence-lists');
 			}
 		}
 

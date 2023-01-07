@@ -460,6 +460,173 @@ VALUES
 		'{"hr":"","en":"Canis aureus","de":"","it":"","sl":"Canis aureus","default":"Canis aureus"}'
 	);
 
+CREATE TABLE laravel.licence_list (
+	id serial PRIMARY KEY,
+	title varchar(128),
+	value text,
+	name jsonb,
+	description jsonb,
+	status varchar(16) default 'active',
+	created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+	updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+INSERT INTO
+	laravel.licence_list (id, title, value, name, description)
+VALUES
+	(
+	 	'22',
+		'FVM Zagreb_lynx licence',
+		'',
+		'{"en":""}',
+		'{"en":"This data belongs to the Faculty of Veterinary Medicine, University of Zagreb, Croatia and can not be used or reproduced in any case without written consent of Faculty of Veterinary Medicine, University of Zagreb. For its Terms of Use please contact Faculty of Veterinary Medicine, University of Zagreb Heinzelova 55, 10 0000 Zagreb, Croatia. Phone number +385 1 2390 156, e-mail: lifelynx.hr@gmail.com."}'
+	);
+
+INSERT INTO
+	laravel.licence_list (id, title, value, name, description)
+VALUES
+	(
+	 	'19',
+		'FVM Zagreb and UL BF Dept Biology LJ licence',
+		'',
+		'{"en":""}',
+		'{"en":"This data belongs to Faculty of Veterinary Medicine, Zagreb, Croatia and to University of Ljubljana, Biotechnical Faculty, Department of Biology, Ljubljana, Slovenia. Data can not be used or reproduced in any case without written consent of its owners. For its Terms of Use please contact: - (Tomaž Skrbinšek) Department of Biology, Biotechnical Faculty, University of Ljubljana, Večna pot 111, Sl-1000 Ljubljana. Phone number +386 1 320 3345, e-mail: raziskovanje.medvedov@gmail.com or - (Josip Kusak) Faculty of Veterinary Medicine, Heinzelova 55, 10 000 Zagreb, Croatia. Phone number +385 1 23 90 158, e-mail: josip.kusak@gmail.com."}'
+	);
+
+INSERT INTO
+	laravel.licence_list (id, title, value, name, description)
+VALUES
+	(
+	 	'12',
+		'PAT-Forest and Wildlife Service licence',
+		'',
+		'{"en":""}',
+		'{"en":"This data belongs to Provincia Autonoma di Trento - Forest and Wildlife Service, Italy, and can not be used or reproduced in any case without written consent of the data owner. For its Terms of Use please contact Provincia Autonoma di Trento, Forest and Wildlife Service, G.B. Trener 3, I-38123 Trento, Italy. Phone number +39 0461 49 59 43; e-mail: serv.foreste@pec.provincia.tn.it. "}'
+	);
+
+INSERT INTO
+	laravel.licence_list (id, title, value, name, description)
+VALUES
+	(
+	 	'14',
+		'FVM Zagreb_bear licence',
+		'',
+		'{"en":""}',
+		'{"en":"This data belongs to Faculty of Veterinary Medicine, Zagreb, Croatia, and can not be used or reproduced in any case without written consent of Faculty of Veterinary Medicine. For its Terms of Use please contact Faculty of Veterinary Medicine, Heinzelova 55, 10 000 Zagreb, Croatia. Phone number +385 1 23 90 158, e-mail: slaven.reljic@gmail.com. "}'
+	);
+
+INSERT INTO
+	laravel.licence_list (id, title, value, name, description)
+VALUES
+	(
+		'15',
+		'FIWI licence',
+		'',
+		'{"en":""}',
+		'{"en":"This data belongs to Research Institute of Wildlife Ecology (Department of Interdisciplinary Life Sciences), University of Veterinary Medicine Vienna, Austria, and can not be used or reproduced in any case without written consent of the data owner. For its Terms of Use please contact dr. Jörg Rauer or dr. Felix Knauer (Conservation medicine unit), Research Institute of Wildlife Ecology, University of Veterinary Medicine Vienna, Savoyenstraße 1, A-1160 Wien; e-mail: felix.knauer@vetmeduni.ac.at or Georg.Rauer@vetmeduni.ac.at"}'
+	);
+
+INSERT INTO
+	laravel.licence_list (id, title, value, name, description)
+VALUES
+	(
+		'16',
+		'UL BF Dept Forestry_bear licence',
+		'',
+		'{"en":""}',
+		'{"en":"This data belongs to University of Ljubljana, Biotechnical Faculty, Department of Forestry and Renewable resources, Ljubljana, Slovenia, and can not be used or reproduced in any case without written consent of data owner. For its Terms of Use please contact Department of Forestry and Renewable resources, Večna pot 83, Sl-1000 Ljubljana. E-mail: klemen.jerina@bf.uni-lj.si."}'
+	);
+
+INSERT INTO
+	laravel.licence_list (id, title, value, name, description)
+VALUES
+	(
+		'23',
+		'UL BF Dept Biology_telem licence',
+		'',
+		'{"en":""}',
+		'{"en":"This data belongs to University of Ljubljana, Biotechnical Faculty, Department of Biology, Ljubljana, Slovenia, and can not be used or reproduced in any case without written consent of its owner. For its Terms of Use please contact Department of Biology, Biotechnical Faculty (University of Ljubljana), Večna pot 111,  Sl-1000 Ljubljana. Phone number +386 1 320 3345, e-mail: hubert.potocnik@bf.uni-lj.si or hubert.potocnik@gmail.com (Hubert Potočnik). "}'
+	);
+
+INSERT INTO
+	laravel.licence_list (id, title, value, name, description)
+VALUES
+	(
+		'11',
+		'Slovenia Forest Service licence',
+		'',
+		'{"en":""}',
+		'{"en":"This data belongs to Slovenia Forest Service, Slovenia, and can not be used or reproduced in any case without written consent of Slovenia Forest Service. For its Terms of Use please contact Slovenia Forest Service, Večna pot 2, Sl-1000 Ljubljana. Phone number +386 1 470 00 50, +386 1 470 00 82, e-mail: dinalpbear@gmail.com, medvedidev@gmail.com."}'
+	);
+
+INSERT INTO
+	laravel.licence_list (id, title, value, name, description)
+VALUES
+	(
+		'20',
+		'SFS and UL BF Dept Biology licence',
+		'',
+		'{"en":""}',
+		'{"en":"This data belongs to Slovenia Forest Service, Slovenia, and to University of Ljubljana, Biotechnical Faculty, Department of Biology, Ljubljana, Slovenia. Data can not be used or reproduced in any case without written consent of data owners. For its Terms of Use please contact - (Matej Bartol) Slovenia Forest Service, Večna pot 2, Sl-1000 Ljubljana. Phone number +386 1 470 00 50, +386 1 470 00 82, e-mail: dinalpbear@gmail.com, medvedidev@gmail.com or - (Tomaž Skrbinšek) Department of Biology, Biotechnical Faculty (University of Ljubljana), Večna pot 111, Sl-1000 Ljubljana. Phone number +386 1 320 33 45, e-mail: raziskovanje.medvedov@gmail.com. "}'
+	);
+
+INSERT INTO
+	laravel.licence_list (id, title, value, name, description)
+VALUES
+	(
+		'21',
+		'UL BF Dept Forestry_lynx licence',
+		'',
+		'{"en":""}',
+		'{"en":"This data belongs to Department for Forestry, Biotechnical Faculty, University of Ljubljana, Slovenia, and can not be used or reproduced in any case without written consent from data owner. For its Terms of Use please contact Dr. Miha Krofel, Dept. for forestry, Biotechnical Faculty, University of Ljubljana, Večna pot 83, Sl-1000 Ljubljana. Phone number + 386 1 3203 509, e-mail: miha.krofel@bf.uni-lj.si. "}'
+	);
+
+INSERT INTO
+	laravel.licence_list (id, title, value, name, description)
+VALUES
+	(
+		'17',
+		'UL BF Dept Biology_lab licence',
+		'',
+		'{"en":""}',
+		'{"en":"This data belongs to University of Ljubljana, Biotechnical Faculty, Department of biology, Ljubljana, Slovenia, and can not be used or reproduced in any case without written consent of its owner. For its Terms of Use please contact Department of biology, Biotechnical Faculty (University of Ljubljana), Večna pot 111, Sl-1000 Ljubljana. Phone number +386 1 320 3345, e-mail: raziskovanje.medvedov@gmail.com. "}'
+	);
+
+INSERT INTO
+	laravel.licence_list (id, title, value, name, description)
+VALUES
+	(
+		'18',
+		'Regione Veneto licence',
+		'',
+		'{"en":""}',
+		'{"en":"This data belongs to Regione del Veneto, Italy, and can not be used or reproduced in any case without written consent of the data owner. For its Terms of Use please contact Regione del Veneto, Direzione Agroambiente, Caccia e Pesca, Via Torino 110, 30172 Mestre Venezia, Italy. E-mail: sonia.calderola@regione.veneto.it; tel. +39 041 2795436."}'
+	);
+
+INSERT INTO
+	laravel.licence_list (id, title, value, name, description)
+VALUES
+	(
+		'13',
+		'Progetto Lince Italia - CUFAA licence',
+		'',
+		'{"en":""}',
+		'{"en":"This data belongs to Progetto Lince Italia and CUFAA, Italy, and cannot be used or reproduced in any case without a written consent of Progetto Lince Italia. For the Terms of Use please contact Progetto Lince Italia, Via Roma 43, 33018 Tarvisio, e-mail: info@progettolinceitalia.it. "}'
+	);
+
+INSERT INTO
+	laravel.licence_list (id, title, value, name, description)
+VALUES
+	(
+		'24',
+		'ACDB licence',
+		'',
+		'{"en":""}',
+		'{"en":"This data belongs to ACDB, Romania, and cannot be used or reproduced in any case without written consent of ACDB. For its Terms of Use please contact ACDB, Ion Creanga 12, Focsani 620083, Romania. Phone number +40 720 217546, +40 737 493179, e-mail: teodora.sin.g@gmail.com, andreagazzola@yahoo.it."}'
+	);
+
+UPDATE laravel.licence_list SET name = (concat('{"en":"', title, '", "sl":"', title, '"}'))::jsonb;
+
 CREATE TABLE laravel.teats_wear_list (
 	id serial PRIMARY KEY,
 	title varchar(128),
@@ -714,6 +881,9 @@ ALTER TABLE
 	laravel.species_list DROP COLUMN value;
 
 ALTER TABLE
+	laravel.licence_list DROP COLUMN value;
+
+ALTER TABLE
 	laravel.teats_wear_list DROP COLUMN value;
 
 ALTER TABLE
@@ -748,6 +918,9 @@ ALTER TABLE
 
 ALTER TABLE
 	laravel.species_list OWNER TO gozdovi;
+
+ALTER TABLE
+	laravel.licence_list OWNER TO gozdovi;
 
 ALTER TABLE
 	laravel.teats_wear_list OWNER TO gozdovi;
@@ -793,6 +966,10 @@ SELECT
 GRANT
 SELECT
 	ON TABLE laravel.species_list TO gozdovi;
+
+GRANT
+SELECT
+	ON TABLE laravel.licence_list TO gozdovi;
 
 GRANT
 SELECT

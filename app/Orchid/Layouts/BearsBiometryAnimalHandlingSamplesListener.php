@@ -49,10 +49,6 @@ class BearsBiometryAnimalHandlingSamplesListener extends Listener
 	 */
 	protected function layouts(): iterable
 	{
-		if (isset($this->query)) {
-			Log::debug(['bearsBiometryAnimalHandlingSamplesListener', $this->query->get('bearsBiometryAnimalHandlingSamplesListener')]);
-		}
-
 		$previousCanSee = true;
 		$biometryAnimalHandlingSampleListenerLayout = [];
 
