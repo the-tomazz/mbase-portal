@@ -4,6 +4,7 @@ namespace App\Casts;
 
 use App;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
+use Illuminate\Support\Facades\Log;
 
 class LocalizedJsonData implements CastsAttributes
 {
@@ -68,7 +69,10 @@ class LocalizedJsonData implements CastsAttributes
             return json_encode($value);
         }
 
-		$new = json_decode($attributes[$key], true);
+		if (isset($attributes[$key])) {
+			$new = json_decode($attributes[$key], true);
+		}
+
 		$new[App::getLocale()] = $value;
         return json_encode($new);
     }
