@@ -37,6 +37,9 @@ use Orchid\Screen\Layouts\Modal;
 use Orchid\Screen\Repository;
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Layout;
+use proj4php\Proj4php;
+use proj4php\Proj;
+use proj4php\Point;
 
 class BearsBiometryAnimalHandlingEditScreen extends Screen
 {
@@ -62,6 +65,8 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 				'lat' => 46.044705,
 				'lng' => 15.2424903,
 			];
+
+			$bearsBiometryAnimalHandling['projection_type'] = BearsBiometryAnimalHandling::PT_MAP_LANG_LAT;
 
 			if (Auth::user()->defaultVisualisationAnimalStatus() == Animal::STR_DEAD) {
 				$bearsBiometryAnimalHandling['licence_list_id'] = LicenceList::INT_ZGS_LICENCE;
@@ -194,8 +199,49 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 
 	public function asyncUpdateAnimalHandlingGeoLocationListenerData($triggers)
 	{
-		$lng = $triggers['geo_location']['lng'];
-		$lat = $triggers['geo_location']['lat'];
+		$proj4 = new Proj4php();
+		$proj4->addDef("EPSG:3912",'+proj=tmerc +lat_0=0 +lon_0=15 +k=0.9999 +x_0=500000 +y_0=-5000000 +ellps=bessel +towgs84=409.545,72.164,486.872,3.085957,5.469110,-11.020289,17.919665 +units=m +no_defs');
+		$proj4->addDef("EPSG:3794",'+proj=tmerc +lat_0=0 +lon_0=15 +k=0.9999 +x_0=500000 +y_0=-5000000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs');
+
+		$projEPSG4326 = new Proj('EPSG:4326', $proj4);
+		$projEPSG3912 = new Proj('EPSG:3912', $proj4);
+        $projEPSG3794 = new Proj('EPSG:3794', $proj4);
+
+		switch ($triggers['projection_type']) {
+			case BearsBiometryAnimalHandling::PT_MAP_LANG_LAT:
+				$pointEPSG4326 = new Point($triggers['geo_location']['lng'], $triggers['geo_location']['lat'], $projEPSG4326);
+				$sourcePoint = clone $pointEPSG4326; $pointEPSG3912 = $proj4->transform($projEPSG3912, $sourcePoint);
+				$sourcePoint = clone $pointEPSG4326; $pointEPSG3794 = $proj4->transform($projEPSG3794, $sourcePoint);
+
+				break;
+			case BearsBiometryAnimalHandling::PT_3912:
+				if (isset($triggers['EPSG_3912_x'])) {
+					$pointEPSG3912 = new Point($triggers['EPSG_3912_x'], $triggers['EPSG_3912_y'], $projEPSG3912);
+					$sourcePoint = clone $pointEPSG3912; $pointEPSG4326 = $proj4->transform($projEPSG4326, $sourcePoint);
+					$sourcePoint = clone $pointEPSG4326; $pointEPSG3794 = $proj4->transform($projEPSG3794, $sourcePoint);
+				} else {
+					$pointEPSG4326 = new Point($triggers['geo_location']['lng'], $triggers['geo_location']['lat'], $projEPSG4326);
+					$sourcePoint = clone $pointEPSG4326; $pointEPSG3912 = $proj4->transform($projEPSG3912, $sourcePoint);
+					$sourcePoint = clone $pointEPSG4326; $pointEPSG3794 = $proj4->transform($projEPSG3794, $sourcePoint);
+				}
+
+				break;
+			case BearsBiometryAnimalHandling::PT_3794:
+				if (isset($triggers['EPSG_3794_x'])) {
+					$pointEPSG3794 = new Point($triggers['EPSG_3794_x'], $triggers['EPSG_3794_y'], $projEPSG3794);
+					$sourcePoint = clone $pointEPSG3794; $pointEPSG4326 = $proj4->transform($projEPSG4326, $sourcePoint);
+					$sourcePoint = clone $pointEPSG4326; $pointEPSG3912 = $proj4->transform($projEPSG3912, $sourcePoint);
+				} else {
+					$pointEPSG4326 = new Point($triggers['geo_location']['lng'], $triggers['geo_location']['lat'], $projEPSG4326);
+					$sourcePoint = clone $pointEPSG4326; $pointEPSG3912 = $proj4->transform($projEPSG3912, $sourcePoint);
+					$sourcePoint = clone $pointEPSG4326; $pointEPSG3794 = $proj4->transform($projEPSG3794, $sourcePoint);
+				}
+
+				break;
+		}
+
+		$lat = $pointEPSG4326->y;
+		$lng = $pointEPSG4326->x;
 
 		$results = DB::select('
 			SELECT
@@ -269,9 +315,14 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 			return [
 				'bearsBiometryAnimalHandling' => [
 					'geo_location' => new Repository([
-						'lat' => $triggers['geo_location']['lat'],
-						'lng' => $triggers['geo_location']['lng'],
+						'lat' => $pointEPSG4326->y,
+						'lng' => $pointEPSG4326->x,
 					]),
+					'EPSG_3912_y' => $pointEPSG3912->y,
+					'EPSG_3912_x' => $pointEPSG3912->x,
+					'EPSG_3794_y' => $pointEPSG3794->y,
+					'EPSG_3794_x' => $pointEPSG3794->x,
+					'projection_type' => $triggers['projection_type'],
 					'hunting_management_area' => $LUO ?? '',
 					'hunting_ground' => $LOV ?? '',
 					'gid' => $gid
@@ -281,9 +332,14 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 			return [
 				'bearsBiometryAnimalHandling' => [
 					'geo_location' => new Repository([
-						'lat' => $triggers['geo_location']['lat'],
-						'lng' => $triggers['geo_location']['lng'],
+						'lat' => $pointEPSG4326->y,
+						'lng' => $pointEPSG4326->x,
 					]),
+					'EPSG_3912_y' => $pointEPSG3912->y,
+					'EPSG_3912_x' => $pointEPSG3912->x,
+					'EPSG_3794_y' => $pointEPSG3794->y,
+					'EPSG_3794_x' => $pointEPSG3794->x,
+					'projection_type' => $triggers['projection_type'],
 					'hunting_management_area' => 'N/A',
 					'hunting_ground' => 'N/A',
 					'gid' => null

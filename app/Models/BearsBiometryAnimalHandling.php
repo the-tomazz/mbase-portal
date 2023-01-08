@@ -76,6 +76,10 @@ class BearsBiometryAnimalHandling extends Model
 {
 	protected $table = 'bears_biometry_animal_handling';
 
+	public const PT_MAP_LANG_LAT = 1;
+	public const PT_3912 = 2;
+	public const PT_3794 = 3;
+
 	use AsSource, Filterable;
 	use HasFactory;
 
