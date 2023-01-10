@@ -26,7 +26,7 @@ class IncisorsWearList extends BaseList
 	 */
 	public static function label(): string
 	{
-		return __('Conflict animal removals');
+		return __('Incisors wear');
 	}
 
 	/**
@@ -36,6 +36,6 @@ class IncisorsWearList extends BaseList
 	 */
 	public static function singularLabel(): string
 	{
-		return __('Conflict animal removal');
+		return __('Incisors wear');
 	}
 }

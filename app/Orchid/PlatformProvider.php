@@ -158,7 +158,7 @@ class PlatformProvider extends OrchidServiceProvider
 					->icon('list')
 					->href('/admin/crud/list/tooth-type-lists');
 
-				$menu[] = Menu::make('Licences')
+				$menu[] = Menu::make('Licence')
 					->icon('list')
 					->href('/admin/crud/list/licence-lists');
 			}

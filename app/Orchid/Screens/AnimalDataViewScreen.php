@@ -78,7 +78,7 @@ class AnimalDataViewScreen extends Screen
         return [
 			Layout::legend('animal', [
                 Sight::make('id'), // ->popover('Identifier, a symbol which uniquely identifies an object or record'),
-				Sight::make('specie_list_id', __('Specie'))
+				Sight::make('specie_list_id', __('Species'))
 					->render(function ($animal) {
 						return SpeciesList::find($animal->species_list_id)->name;
 					}),

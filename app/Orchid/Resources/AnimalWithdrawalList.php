@@ -26,7 +26,7 @@ class AnimalWithdrawalList extends BaseList
 	 */
 	public static function label(): string
 	{
-		return __('Types of removal');
+		return __('Type of removal');
 	}
 
 	/**

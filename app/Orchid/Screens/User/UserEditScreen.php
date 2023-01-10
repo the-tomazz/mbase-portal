@@ -44,7 +44,7 @@ class UserEditScreen extends Screen
 	{
 		$user->load(['roles']);
 
-		return [
+		$payload = [
 			'user'       => $user,
 			'permission' => $user->getStatusPermission(),
 			'country_specific_groups' => $user->groups
@@ -58,6 +58,8 @@ class UserEditScreen extends Screen
 				->where('group_type_id', '<>', GroupType::COUNTRIES)
 				->where('group_type_id', GroupType::MBASE2_MODULE_PARAMETERS),
 		];
+
+		return $payload;
 	}
 
 	/**
@@ -67,7 +69,7 @@ class UserEditScreen extends Screen
 	 */
 	public function name(): ?string
 	{
-		return $this->user->exists ? 'Edit User' : 'Create User';
+		return $this->user->exists ? __('Edit User') : __('Create User');
 	}
 
 	/**
@@ -77,7 +79,7 @@ class UserEditScreen extends Screen
 	 */
 	public function description(): ?string
 	{
-		return 'Details such as name, email and password';
+		return __('Details such as name, email and password');
 	}
 
 	/**
@@ -100,7 +102,7 @@ class UserEditScreen extends Screen
 		return [
 			Button::make(__('Impersonate user'))
 				->icon('login')
-				->confirm('You can revert to your original state by logging out.')
+				->confirm(__('You can revert to your original state by logging out.'))
 				->method('loginAs')
 				->canSee($this->user->exists && \request()->user()->id !== $this->user->id),
 
@@ -124,7 +126,7 @@ class UserEditScreen extends Screen
 		$layout = [
 			Layout::block(UserEditLayout::class)
 				->title(__('Profile Information'))
-				->description(__('Update your account\'s profile information and email address.')),
+				->description(__('Your account\'s profile information and email address.')),
 
 			Layout::block(UserPasswordLayout::class)
 				->title(__('Password'))

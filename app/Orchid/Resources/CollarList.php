@@ -26,7 +26,7 @@ class CollarList extends BaseList
 	 */
 	public static function label(): string
 	{
-		return __('Presences of bear collars');
+		return __('Presence of bear collar');
 	}
 
 	/**

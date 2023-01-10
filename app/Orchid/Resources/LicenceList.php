@@ -26,7 +26,7 @@ class LicenceList extends BaseList
 	 */
 	public static function label(): string
 	{
-		return __('Licences');
+		return __('Licence');
 	}
 
 	/**
@@ -36,6 +36,6 @@ class LicenceList extends BaseList
 	 */
 	public static function singularLabel(): string
 	{
-		return __('Licences');
+		return __('Licence');
 	}
 }

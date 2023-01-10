@@ -26,7 +26,7 @@ class BiometryLossReasonList extends BaseList
 	 */
 	public static function label(): string
 	{
-		return __('Loss reasons');
+		return __('Loss reason');
 	}
 
 	/**

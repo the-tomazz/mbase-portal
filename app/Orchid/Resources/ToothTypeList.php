@@ -26,7 +26,7 @@ class ToothTypeList extends BaseList
 	 */
 	public static function label(): string
 	{
-		return __('Tooth types');
+		return __('Tooth type');
 	}
 
 	/**

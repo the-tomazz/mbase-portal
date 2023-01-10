@@ -24,7 +24,7 @@ class SexList extends BaseList
 	 */
 	public static function label(): string
 	{
-		return __('Spol');
+		return __('Sex');
 	}
 
 	/**
@@ -34,6 +34,6 @@ class SexList extends BaseList
 	 */
 	public static function singularLabel(): string
 	{
-		return __('Spol');
+		return __('Sex');
 	}
 }

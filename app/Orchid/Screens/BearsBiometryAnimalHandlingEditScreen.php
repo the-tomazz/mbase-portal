@@ -601,7 +601,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 			}
 		}
 
-		Alert::info(__('You have successfully created or updated a Biometry Animal Handling.'));
+		Alert::info(__('You have successfully created or updated an Animal Handling form.') . 'ID: ' . $bearsBiometryAnimalHandling->id . ' ' . __('Name') . ': ' . $animal->name);
 	}
 
 	/**

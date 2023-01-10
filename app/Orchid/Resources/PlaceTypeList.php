@@ -26,7 +26,7 @@ class PlaceTypeList extends BaseList
 	 */
 	public static function label(): string
 	{
-		return __('Places of removal');
+		return __('Place of removal');
 	}
 
 	/**

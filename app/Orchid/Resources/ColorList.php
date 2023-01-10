@@ -26,7 +26,7 @@ class ColorList extends BaseList
 	 */
 	public static function label(): string
 	{
-		return __('Bear fur colours');
+		return __('Bear fur colour');
 	}
 
 	/**

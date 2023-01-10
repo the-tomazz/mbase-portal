@@ -34,7 +34,7 @@ class SpeciesList extends BaseList
 	 */
 	public static function singularLabel(): string
 	{
-		return __('Specie');
+		return __('Species');
 	}
 
 }

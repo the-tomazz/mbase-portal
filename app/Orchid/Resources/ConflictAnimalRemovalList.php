@@ -23,7 +23,7 @@ class ConflictAnimalRemovalList extends BaseList
 	 */
 	public static function label(): string
 	{
-		return __('Conflict animal removals');
+		return __('Conflict animal removal');
 	}
 
 	/**
