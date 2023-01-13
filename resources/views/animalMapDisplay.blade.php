@@ -74,7 +74,11 @@ That should be it.
 		});
 	}
 
-	window.onload = initMap;
+	// window.onload = initMap;
+	setTimeout(() => {
+		console.log("Setting up map init");
+		initMap();
+	}, "1000")
 </script>
 
 @endpush
