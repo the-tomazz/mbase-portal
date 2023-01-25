@@ -9,6 +9,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Orchid\Attachment\Attachable;
 use Orchid\Filters\Filterable;
 use Orchid\Screen\AsSource;
 
@@ -18,13 +19,16 @@ use Orchid\Screen\AsSource;
  * @property int|null $id
  * @property int|null $species_list_id
  * @property int|null $way_of_withdrawal_list_id
+ * @property int|null animal_conflictedness
+ * @property int|null animal_conflictedness_details
  * @property string|null $licence_number
  * @property string|null $project_name
  * @property string|null $receiving_country
  * @property string|null $telementry_uid
  * @property int|null $biometry_loss_reason_list_id
  * @property string|null $biometry_loss_reason_description
- * @property int|null $animal_handling_date
+ * @property Carbon|null $animal_handling_date
+ * @property Carbon|null $date_and_time_of_biometry_measurements
  * @property string|null $place_of_removal
  * @property int|null $place_type_list_id
  * @property string|null $place_type_list_details
@@ -33,20 +37,18 @@ use Orchid\Screen\AsSource;
  * @property int|null $zoom
  * @property float|null $x
  * @property float|null $y
+ * @property float|null unknown_hunter_finder,
  * @property string|null $hunting_management_area
  * @property int|null $hunting_management_area_id
- * @property string|null $hunter_finder_name
- * @property string|null $hunter_finder_surname
- * @property string|null $hunter_finder_address
+ * @property string|null $hunter_finder_name_and_surname
  * @property int|null $hunter_finder_country_id
- * @property string|null $witness_accompanying_person_name
- * @property string|null $witness_accompanying_person_surname
- * @property int|null $sample_taken
+ * @property string|null $witness_accompanying_person_name_and_surname
  * @property int|null $hair_sample_taken
- * @property int|null $blood_sample_taken
+ * @property int|null $hair_sample_taken_details
+ * @property int|null $dna_sample_taken
+ * @property int|null $dna_sample_taken_details
  * @property int|null $tooth_type_list_id
- * @property string|null $taxidermist_name
- * @property string|null $taxidermist_surname
+ * @property string|null $taxidermist_name_and_surname
  * @property int|null $data_entered_by_user_id
  * @property int|null $data_input_timestamp
  * @property int|null $animal_id
@@ -55,6 +57,11 @@ use Orchid\Screen\AsSource;
  * @property int|null $way_of_withdrawal_list_id
  * @property int|null $conflict_animal_removal_list_id
  * @property string|null $removal_annual_uid
+ * @property string|null $photos_collected
+ * @property string|null $jaw_photos_collected
+ * @property string|null $liver_samples_collected
+ * @property string|null $measurer_name_and_surname
+ * @property string|null $hunting_ground_representative
  * @property USER-DEFINED|null $geom
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
@@ -80,34 +87,41 @@ class BearsBiometryAnimalHandling extends Model
 	public const PT_3912 = 2;
 	public const PT_3794 = 3;
 
-	use AsSource, Filterable;
+	use AsSource, Filterable, Attachable;
 	use HasFactory;
 
 	protected $casts = [
 		'id' => 'int',
 		'biometry_loss_reason_list_id' => 'int',
 		'animal_handling_date' => 'datetime',
+		'date_and_time_of_biometry_measurements' => 'datetime',
 		'place_type_list_id' => 'int',
 		'lat' => 'float',
 		'lng' => 'float',
 		'zoom' => 'int',
 		'x' => 'float',
 		'y' => 'float',
+		'unknown_hunter_finder' => 'boolean',
 		'hunting_management_area_id' => 'int',
 		'hunter_finder_country_id' => 'int',
 		'sample_taken' => 'int',
 		'hair_sample_taken' => 'int',
-		'blood_sample_taken' => 'int',
+		'dna_sample_taken' => 'int',
 		'tooth_type_list_id' => 'int',
 		'data_entered_by_user_id' => 'int',
 		'animal_id' => 'int',
 		'spatial_unit_gid' => 'int',
 		'way_of_withdrawal_list_id' => 'int',
-		'conflict_animal_removal_list_id' => 'int'
+		'conflict_animal_removal_list_id' => 'int',
+		'photos_collected' => 'boolean',
+		'jaw_photos_collected' => 'boolean',
+		'liver_samples_collected' => 'boolean'
 	];
 
 	protected $fillable = [
 		'id',
+		'animal_conflictedness',
+		'animal_conflictedness_details',
 		'licence_number',
 		'project_name',
 		'receiving_country',
@@ -115,6 +129,7 @@ class BearsBiometryAnimalHandling extends Model
 		'biometry_loss_reason_list_id',
 		'biometry_loss_reason_description',
 		'animal_handling_date',
+		'date_and_time_of_biometry_measurements',
 		'place_of_removal',
 		'place_type_list_id',
 		'place_type_list_details',
@@ -123,20 +138,19 @@ class BearsBiometryAnimalHandling extends Model
 		'zoom',
 		'x',
 		'y',
+		'unknown_hunter_finder',
 		'hunting_management_area',
 		'hunting_management_area_id',
-		'hunter_finder_name',
-		'hunter_finder_surname',
-		'hunter_finder_address',
+		'hunter_finder_name_and_surname',
 		'hunter_finder_country_id',
-		'witness_accompanying_person_name',
-		'witness_accompanying_person_surname',
+		'witness_accompanying_person_name_and_surname',
 		'sample_taken',
 		'hair_sample_taken',
-		'blood_sample_taken',
+		'hair_sample_taken_details',
+		'dna_sample_taken',
+		'dna_sample_taken_details',
 		'tooth_type_list_id',
-		'taxidermist_name',
-		'taxidermist_surname',
+		'taxidermist_name_and_surname',
 		'data_entered_by_user_id',
 		'data_input_timestamp',
 		'animal_id',
@@ -144,11 +158,16 @@ class BearsBiometryAnimalHandling extends Model
 		'spatial_unit_gid',
 		'way_of_withdrawal_list_id',
 		'conflict_animal_removal_list_id',
-		'removal_annual_uid'
+		'removal_annual_uid',
+		'photos_collected',
+		'jaw_photos_collected',
+		'liver_samples_collected',
+		'measurer_name_and_surname',
+		'hunting_ground_representative'
 	];
 
 	protected $allowedSorts = [
-        'animal_id',
+		'animal_id',
         'created_at',
         'updated_at',
     ];

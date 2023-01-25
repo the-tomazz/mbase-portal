@@ -6,6 +6,7 @@ use App\Models\Base\BaseList;
 use App\Models\PlaceTypeList;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
+use Orchid\Screen\Fields\Group;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\Select;
 use Orchid\Screen\Layouts\Listener;
@@ -43,16 +44,20 @@ class BearsBiometryAnimalHandlingPlaceTypeListListener extends Listener
 
 		return [
 			Layout::rows([
-				Select::make('bearsBiometryAnimalHandling.place_type_list_id')
-					->fromQuery(PlaceTypeList::where('status', '=', BaseList::STR_ACTIVE), 'name')
-					->title(__('Place of removal type'))
-					->required()
-					->help(('Please select the place of removal type.')),
+				Group::make([
+					Select::make('bearsBiometryAnimalHandling.place_type_list_id')
+						->fromQuery(PlaceTypeList::where('status', '=', BaseList::STR_ACTIVE), 'name')
+						->title(__('Place of removal type'))
+						->required()
+						->empty(__('<Select>'))
+						->help(('Please select the place of removal type')),
 
-				Input::make('bearsBiometryAnimalHandling.place_type_list_details')
-					->title(__('Other place of removal type'))
-					->help(__('Please insert the other place of removal type'))
-					->canSee($canSee),
+					Input::make('bearsBiometryAnimalHandling.place_type_list_details')
+						->title(__('Other place of removal type'))
+						->help(__('Please insert the other place of removal type'))
+						->canSee($canSee),
+
+				])->autoWidth()
 			]),
 		];
 	}

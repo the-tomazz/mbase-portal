@@ -1,30 +1,16 @@
 <?php
 
-/**
- * Created by Reliese Model.
- */
-
 namespace App\Models;
 
 use App\Models\Base\BaseList;
 use Orchid\Filters\Filterable;
 use Orchid\Screen\AsSource;
 
-/**
- * Class CollarList
- *
- * @property int|null $id
- * @property string|null $title
- * @property string|null $name
- * @property string|null $description
- *
- * @package App\Models
- */
-class CollarList extends BaseList
+class FurPatternInLynxList extends BaseList
 {
 	use AsSource, Filterable;
 
-	protected $table = 'collar_list';
+	protected $table = 'fur_pattern_in_lynx_list';
 
 	public function bearsBiometryData()
 	{

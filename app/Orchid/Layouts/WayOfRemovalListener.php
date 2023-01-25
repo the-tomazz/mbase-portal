@@ -34,7 +34,8 @@ class WayOfRemovalListener extends Listener
 		'bearsBiometryAnimalHandling.biometry_loss_reason_list_id',
 		'bearsBiometryAnimalHandling.biometry_loss_reason_description',
 		'bearsBiometryAnimalHandling.project_name',
-		'bearsBiometryAnimalHandling.receiving_country'
+		'bearsBiometryAnimalHandling.receiving_country',
+		'bearsBiometryAnimalHandling.number_of_removal_in_the_hunting_administrative_area'
 	];
 
     /**
@@ -67,7 +68,7 @@ class WayOfRemovalListener extends Listener
 						->fromQuery(WayOfWithdrawalList::where('status', '=', BaseList::STR_ACTIVE), 'name')
 						->title(__('Way of withdrawal'))
 						->required()
-						->empty('<Empty>')
+						->empty(__('<Select>'))
 						->help(__('Select the way of withdrawal')),
 
 					Input::make('bearsBiometryAnimalHandling.licence_number')
@@ -78,12 +79,16 @@ class WayOfRemovalListener extends Listener
 					Select::make('bearsBiometryAnimalHandling.conflict_animal_removal_list_id')
 						->fromQuery(ConflictAnimalRemovalList::where('status', '=', BaseList::STR_ACTIVE), 'name')
 						->title(__('Type of conflict animal removal'))
+						->empty(__('<Select>'))
+						->required()
 						->help(__('Please select the type conflict animal removal'))
 						->canSee($conflictAnimalRemovalSelected),
 
 					Select::make('bearsBiometryAnimalHandling.biometry_loss_reason_list_id')
 						->fromQuery(BiometryLossReasonList::where('status', '=', BaseList::STR_ACTIVE), 'name')
 						->title(__('Loss reason'))
+						->empty(__('<Select>'))
+						->required()
 						->help(__('Please select the reason for death'))
 						->canSee($lossSelected),
 
@@ -105,6 +110,11 @@ class WayOfRemovalListener extends Listener
 						->required($translocationOutOfPopulationSelected)
 						->canSee($translocationOutOfPopulationSelected),
 				]),
+
+				Input::make('bearsBiometryAnimalHandling.number_of_removal_in_the_hunting_administrative_area')
+					->mask('999999999999-9999')
+					->title(__('Number and the year of removal in hunting administrative area'))
+					->help(__('Please insert number and the year of removal in hunting administrative area')),
 			])
 		];
     }

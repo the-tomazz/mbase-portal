@@ -49,7 +49,6 @@ class Animal extends Model
 
 	protected $fillable = [
 		'status',
-		'previous_status',
 		'name',
 		'description',
 		'species_list_id',
@@ -58,7 +57,6 @@ class Animal extends Model
 
 	protected $allowedFilters = [
 		'status',
-		'previous_status',
 		'status',
 		'name',
 		'description',
@@ -73,7 +71,6 @@ class Animal extends Model
     protected $allowedSorts = [
 		'id',
         'status',
-		'previous_status',
         'name',
         'description',
 		'died_at',
@@ -101,5 +98,17 @@ class Animal extends Model
 	public function bearsBiometryAnimalHandlings()
 	{
 		return $this->hasMany(BearsBiometryAnimalHandling::class);
+	}
+
+	public function statusRender()
+	{
+		return $this->status == self::STR_ALIVE ?
+			'<i class="text-success">●</i> ' . __('Alive') :
+			'<i class="text-danger">●</i> ' . __('Dead');
+	}
+
+	public function statusString()
+	{
+		return $this->status == self::STR_ALIVE ? __('Alive') : __('Dead');
 	}
 }

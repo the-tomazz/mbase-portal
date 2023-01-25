@@ -284,6 +284,50 @@ VALUES
 		'{"en":"","sl":"","default":""}'
 	);
 
+CREATE TABLE laravel.fur_pattern_in_lynx_list (
+	id serial PRIMARY KEY,
+	title varchar(128),
+	value text,
+	name jsonb,
+	description jsonb,
+	status varchar(16) default 'active',
+	created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+	updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+INSERT INTO
+	laravel.fur_pattern_in_lynx_list (id, title, value, name, description)
+VALUES
+	(
+		1,
+		'fur_pattern_in_lynx',
+		'Spotted',
+		'{"en":"Spotted","sl":"Pikast","default":"Spotted"}',
+		'{"en":"","sl":"","default":""}'
+	);
+
+INSERT INTO
+	laravel.fur_pattern_in_lynx_list (id, title, value, name, description)
+VALUES
+	(
+		2,
+		'fur_pattern_in_lynx',
+		'Rosette',
+		'{"en":"Rosette","sl":"Rozetast","default":"Rosette"}',
+		'{"en":"","sl":"","default":""}'
+	);
+
+INSERT INTO
+	laravel.fur_pattern_in_lynx_list (id, title, value, name, description)
+VALUES
+	(
+		3,
+		'fur_pattern_in_lynx',
+		'No pattern',
+		'{"en":"No pattern","sl":"Brez vzorca","default":"No pattern"}',
+		'{"en":"","sl":"","default":""}'
+	);
+
 CREATE TABLE laravel.place_type_list (
 	id serial PRIMARY KEY,
 	title varchar(128),
@@ -449,6 +493,7 @@ VALUES
 		'{"hr":"Lynx lynx","en":"Lynx lynx","de":"Lynx lynx","it":"Lynx lynx","sl":"Lynx lynx","default":"Lynx lynx"}'
 	);
 
+/*
 INSERT INTO
 	laravel.species_list (id, title, value, name, description)
 VALUES
@@ -459,6 +504,7 @@ VALUES
 		'{"en":"Golden jackal","sl":"Šakal","default":"Golden jackal"}',
 		'{"hr":"","en":"Canis aureus","de":"","it":"","sl":"Canis aureus","default":"Canis aureus"}'
 	);
+*/
 
 CREATE TABLE laravel.licence_list (
 	id serial PRIMARY KEY,
@@ -478,7 +524,7 @@ VALUES
 	 	'22',
 		'FVM Zagreb_lynx licence',
 		'',
-		'{"en":""}',
+		'{"en":"FVM Zagreb_lynx licence","sl":"Licenca FVM Zagreb - Risi"}',
 		'{"en":"This data belongs to the Faculty of Veterinary Medicine, University of Zagreb, Croatia and can not be used or reproduced in any case without written consent of Faculty of Veterinary Medicine, University of Zagreb. For its Terms of Use please contact Faculty of Veterinary Medicine, University of Zagreb Heinzelova 55, 10 0000 Zagreb, Croatia. Phone number +385 1 2390 156, e-mail: lifelynx.hr@gmail.com."}'
 	);
 
@@ -489,7 +535,7 @@ VALUES
 	 	'19',
 		'FVM Zagreb and UL BF Dept Biology LJ licence',
 		'',
-		'{"en":""}',
+		'{"en":"FVM Zagreb and UL BF Dept Biology LJ licence","sl":""}',
 		'{"en":"This data belongs to Faculty of Veterinary Medicine, Zagreb, Croatia and to University of Ljubljana, Biotechnical Faculty, Department of Biology, Ljubljana, Slovenia. Data can not be used or reproduced in any case without written consent of its owners. For its Terms of Use please contact: - (Tomaž Skrbinšek) Department of Biology, Biotechnical Faculty, University of Ljubljana, Večna pot 111, Sl-1000 Ljubljana. Phone number +386 1 320 3345, e-mail: raziskovanje.medvedov@gmail.com or - (Josip Kusak) Faculty of Veterinary Medicine, Heinzelova 55, 10 000 Zagreb, Croatia. Phone number +385 1 23 90 158, e-mail: josip.kusak@gmail.com."}'
 	);
 
@@ -500,7 +546,7 @@ VALUES
 	 	'12',
 		'PAT-Forest and Wildlife Service licence',
 		'',
-		'{"en":""}',
+		'{"en":"PAT-Forest and Wildlife Service licence","sl":""}',
 		'{"en":"This data belongs to Provincia Autonoma di Trento - Forest and Wildlife Service, Italy, and can not be used or reproduced in any case without written consent of the data owner. For its Terms of Use please contact Provincia Autonoma di Trento, Forest and Wildlife Service, G.B. Trener 3, I-38123 Trento, Italy. Phone number +39 0461 49 59 43; e-mail: serv.foreste@pec.provincia.tn.it. "}'
 	);
 
@@ -511,7 +557,7 @@ VALUES
 	 	'14',
 		'FVM Zagreb_bear licence',
 		'',
-		'{"en":""}',
+		'{"en":"FVM Zagreb_bear licence","sl":""}',
 		'{"en":"This data belongs to Faculty of Veterinary Medicine, Zagreb, Croatia, and can not be used or reproduced in any case without written consent of Faculty of Veterinary Medicine. For its Terms of Use please contact Faculty of Veterinary Medicine, Heinzelova 55, 10 000 Zagreb, Croatia. Phone number +385 1 23 90 158, e-mail: slaven.reljic@gmail.com. "}'
 	);
 
@@ -522,7 +568,7 @@ VALUES
 		'15',
 		'FIWI licence',
 		'',
-		'{"en":""}',
+		'{"en":"FIWI licence","sl":""}',
 		'{"en":"This data belongs to Research Institute of Wildlife Ecology (Department of Interdisciplinary Life Sciences), University of Veterinary Medicine Vienna, Austria, and can not be used or reproduced in any case without written consent of the data owner. For its Terms of Use please contact dr. Jörg Rauer or dr. Felix Knauer (Conservation medicine unit), Research Institute of Wildlife Ecology, University of Veterinary Medicine Vienna, Savoyenstraße 1, A-1160 Wien; e-mail: felix.knauer@vetmeduni.ac.at or Georg.Rauer@vetmeduni.ac.at"}'
 	);
 
@@ -533,7 +579,7 @@ VALUES
 		'16',
 		'UL BF Dept Forestry_bear licence',
 		'',
-		'{"en":""}',
+		'{"en":"UL BF Dept Forestry_bear licence","sl":""}',
 		'{"en":"This data belongs to University of Ljubljana, Biotechnical Faculty, Department of Forestry and Renewable resources, Ljubljana, Slovenia, and can not be used or reproduced in any case without written consent of data owner. For its Terms of Use please contact Department of Forestry and Renewable resources, Večna pot 83, Sl-1000 Ljubljana. E-mail: klemen.jerina@bf.uni-lj.si."}'
 	);
 
@@ -544,7 +590,7 @@ VALUES
 		'23',
 		'UL BF Dept Biology_telem licence',
 		'',
-		'{"en":""}',
+		'{"en":"UL BF Dept Biology_telem licence","sl":""}',
 		'{"en":"This data belongs to University of Ljubljana, Biotechnical Faculty, Department of Biology, Ljubljana, Slovenia, and can not be used or reproduced in any case without written consent of its owner. For its Terms of Use please contact Department of Biology, Biotechnical Faculty (University of Ljubljana), Večna pot 111,  Sl-1000 Ljubljana. Phone number +386 1 320 3345, e-mail: hubert.potocnik@bf.uni-lj.si or hubert.potocnik@gmail.com (Hubert Potočnik). "}'
 	);
 
@@ -555,7 +601,7 @@ VALUES
 		'11',
 		'Slovenia Forest Service licence',
 		'',
-		'{"en":""}',
+		'{"en":"Slovenia Forest Service licence","sl":""}',
 		'{"en":"This data belongs to Slovenia Forest Service, Slovenia, and can not be used or reproduced in any case without written consent of Slovenia Forest Service. For its Terms of Use please contact Slovenia Forest Service, Večna pot 2, Sl-1000 Ljubljana. Phone number +386 1 470 00 50, +386 1 470 00 82, e-mail: dinalpbear@gmail.com, medvedidev@gmail.com."}'
 	);
 
@@ -566,7 +612,7 @@ VALUES
 		'20',
 		'SFS and UL BF Dept Biology licence',
 		'',
-		'{"en":""}',
+		'{"en":"SFS and UL BF Dept Biology licence","sl":""}',
 		'{"en":"This data belongs to Slovenia Forest Service, Slovenia, and to University of Ljubljana, Biotechnical Faculty, Department of Biology, Ljubljana, Slovenia. Data can not be used or reproduced in any case without written consent of data owners. For its Terms of Use please contact - (Matej Bartol) Slovenia Forest Service, Večna pot 2, Sl-1000 Ljubljana. Phone number +386 1 470 00 50, +386 1 470 00 82, e-mail: dinalpbear@gmail.com, medvedidev@gmail.com or - (Tomaž Skrbinšek) Department of Biology, Biotechnical Faculty (University of Ljubljana), Večna pot 111, Sl-1000 Ljubljana. Phone number +386 1 320 33 45, e-mail: raziskovanje.medvedov@gmail.com. "}'
 	);
 
@@ -577,7 +623,7 @@ VALUES
 		'21',
 		'UL BF Dept Forestry_lynx licence',
 		'',
-		'{"en":""}',
+		'{"en":"UL BF Dept Forestry_lynx licence","sl":""}',
 		'{"en":"This data belongs to Department for Forestry, Biotechnical Faculty, University of Ljubljana, Slovenia, and can not be used or reproduced in any case without written consent from data owner. For its Terms of Use please contact Dr. Miha Krofel, Dept. for forestry, Biotechnical Faculty, University of Ljubljana, Večna pot 83, Sl-1000 Ljubljana. Phone number + 386 1 3203 509, e-mail: miha.krofel@bf.uni-lj.si. "}'
 	);
 
@@ -588,7 +634,7 @@ VALUES
 		'17',
 		'UL BF Dept Biology_lab licence',
 		'',
-		'{"en":""}',
+		'{"en":"UL BF Dept Biology_lab licence","sl":""}',
 		'{"en":"This data belongs to University of Ljubljana, Biotechnical Faculty, Department of biology, Ljubljana, Slovenia, and can not be used or reproduced in any case without written consent of its owner. For its Terms of Use please contact Department of biology, Biotechnical Faculty (University of Ljubljana), Večna pot 111, Sl-1000 Ljubljana. Phone number +386 1 320 3345, e-mail: raziskovanje.medvedov@gmail.com. "}'
 	);
 
@@ -599,7 +645,7 @@ VALUES
 		'18',
 		'Regione Veneto licence',
 		'',
-		'{"en":""}',
+		'{"en":"Regione Veneto licence"}',
 		'{"en":"This data belongs to Regione del Veneto, Italy, and can not be used or reproduced in any case without written consent of the data owner. For its Terms of Use please contact Regione del Veneto, Direzione Agroambiente, Caccia e Pesca, Via Torino 110, 30172 Mestre Venezia, Italy. E-mail: sonia.calderola@regione.veneto.it; tel. +39 041 2795436."}'
 	);
 
@@ -610,7 +656,7 @@ VALUES
 		'13',
 		'Progetto Lince Italia - CUFAA licence',
 		'',
-		'{"en":""}',
+		'{"en":"Progetto Lince Italia - CUFAA licence"}',
 		'{"en":"This data belongs to Progetto Lince Italia and CUFAA, Italy, and cannot be used or reproduced in any case without a written consent of Progetto Lince Italia. For the Terms of Use please contact Progetto Lince Italia, Via Roma 43, 33018 Tarvisio, e-mail: info@progettolinceitalia.it. "}'
 	);
 
@@ -621,11 +667,132 @@ VALUES
 		'24',
 		'ACDB licence',
 		'',
-		'{"en":""}',
+		'{"en":"ACDB licence"}',
 		'{"en":"This data belongs to ACDB, Romania, and cannot be used or reproduced in any case without written consent of ACDB. For its Terms of Use please contact ACDB, Ion Creanga 12, Focsani 620083, Romania. Phone number +40 720 217546, +40 737 493179, e-mail: teodora.sin.g@gmail.com, andreagazzola@yahoo.it."}'
 	);
 
 UPDATE laravel.licence_list SET name = (concat('{"en":"', title, '", "sl":"', title, '"}'))::jsonb;
+
+CREATE TABLE laravel.sample_type_list (
+	id serial PRIMARY KEY,
+	title varchar(128),
+	value text,
+	name jsonb,
+	description jsonb,
+	status varchar(16) default 'active',
+	created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+	updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+INSERT INTO
+	laravel.sample_type_list (id, title, value, name, description)
+VALUES
+	(
+		1,
+		'sample_type',
+		'Blood',
+		'{"en":"Blood","sl":"Kri","default":"Blood"}',
+		'{"hr":"","en":"","de":"","it":"","sl":"","default":""}'
+	);
+
+INSERT INTO
+	laravel.sample_type_list (id, title, value, name, description)
+VALUES
+	(
+		2,
+		'sample_type',
+		'Bone',
+		'{"en":"Bone","sl":"Kost","default":"Bone"}',
+		'{"hr":"","en":"","de":"","it":"","sl":"","default":""}'
+	);
+
+INSERT INTO
+	laravel.sample_type_list (id, title, value, name, description)
+VALUES
+	(
+		3,
+		'sample_type',
+		'Decomposing tissue',
+		'{"en":"Decomposing tissue","sl":"Tkivo - razpadajoče","default":"Decomposing tissue"}',
+		'{"hr":"","en":"","de":"","it":"","sl":"","default":""}'
+	);
+
+INSERT INTO
+	laravel.sample_type_list (id, title, value, name, description)
+VALUES
+	(
+		4,
+		'sample_type',
+		'Feces',
+		'{"en":"Feces","sl":"Iztrebek","default":"Feces"}',
+		'{"hr":"","en":"Samples collected from scats","de":"","it":"","sl":"","default":""}'
+	);
+
+INSERT INTO
+	laravel.sample_type_list (id, title, value, name, description)
+VALUES
+	(
+		5,
+		'sample_type',
+		'Hair',
+		'{"en":"Hair","sl":"Dlaka","default":"Hair"}',
+		'{"hr":"","en":"","de":"","it":"","sl":"","default":""}'
+	);
+
+INSERT INTO
+	laravel.sample_type_list (id, title, value, name, description)
+VALUES
+	(
+		6,
+		'sample_type',
+		'Saliva - direct',
+		'{"en":"Saliva - direct","sl":"Slina - neposredno","default":"Saliva - direct"}',
+		'{"hr":"","en":"mucosa on the gums, mouth","de":"","it":"","sl":"sluznica z dlesni, ust","default":""}'
+	);
+
+INSERT INTO
+	laravel.sample_type_list (id, title, value, name, description)
+VALUES
+	(
+		7,
+		'sample_type',
+		'Saliva from the object',
+		'{"en":"Saliva from the object","sl":"Slina s predmeta","default":"Saliva from the object"}',
+		'{"hr":"","en":"from prey remains, bite wounds on prey, bite marks from feeding items","de":"","it":"","sl":"z ugriznih ran na plenu, z ugriznih površin na hrani","default":""}'
+	);
+
+INSERT INTO
+	laravel.sample_type_list (id, title, value, name, description)
+VALUES
+	(
+		8,
+		'sample_type',
+		'Tissue',
+		'{"en":"Tissue","sl":"Tkivo","default":"Tissue"}',
+		'{"hr":"","en":"","de":"","it":"","sl":"","default":""}'
+	);
+
+INSERT INTO
+	laravel.sample_type_list (id, title, value, name, description)
+VALUES
+	(
+		9,
+		'sample_type',
+		'Tooth',
+		'{"en":"Tooth","sl":"Zob","default":"Tooth"}',
+		'{"hr":"","en":"","de":"","it":"","sl":"","default":""}'
+	);
+
+INSERT INTO
+	laravel.sample_type_list (id, title, value, name, description)
+VALUES
+	(
+		10,
+		'sample_type',
+		'Urine',
+		'{"en":"Urine","sl":"Urin","default":"Urine"}',
+		'{"hr":"","en":"","de":"","it":"","sl":"","default":""}'
+	);
 
 CREATE TABLE laravel.teats_wear_list (
 	id serial PRIMARY KEY,
@@ -642,7 +809,18 @@ INSERT INTO
 	laravel.teats_wear_list (id, title, value, name, description)
 VALUES
 	(
-		140,
+		1,
+		'teats_wear',
+		'Lactation',
+		'{"en":"Lactation","sl":"Laktacija (mlečnost)","default":"Lactation"}',
+		'{"hr":"","en":"","de":"","it":"","sl":"","default":""}'
+	);
+
+INSERT INTO
+	laravel.teats_wear_list (id, title, value, name, description)
+VALUES
+	(
+		2,
 		'teats_wear',
 		'Low',
 		'{"en":"Low","sl":"Majhna","default":"Low"}',
@@ -653,23 +831,25 @@ INSERT INTO
 	laravel.teats_wear_list (id, title, value, name, description)
 VALUES
 	(
-		141,
+		3,
 		'teats_wear',
 		'Medium',
 		'{"en":"Medium","sl":"Srednja","default":"Medium"}',
-		'{"hr":"","en":"","de":"","it":"","sl":"","default":""}'
+		'{"hr":"","en":"","sl":"","default":""}'
 	);
 
 INSERT INTO
 	laravel.teats_wear_list (id, title, value, name, description)
 VALUES
 	(
-		142,
+		4,
 		'teats_wear',
-		'Strong',
-		'{"en":"Strong","sl":"Močna","default":"Strong"}',
-		'{"hr":"","en":"","de":"","it":"","sl":"","default":""}'
+		'No usage',
+		'{"en":"No usage","sl":"Močna","default":"Ni uporabe"}',
+		'{"en":"","sl":"","default":""}'
 	);
+
+
 
 CREATE TABLE laravel.tooth_type_list (
 	id serial PRIMARY KEY,
@@ -843,7 +1023,6 @@ CREATE TABLE laravel.animal (
 	species_list_id INTEGER NOT NULL REFERENCES species_list (id) ON DELETE RESTRICT,
 	sex_list_id INTEGER NOT NULL REFERENCES sex_list (id) ON DELETE RESTRICT,
 	status varchar(16),
-	previous_status varchar(16),
 	title varchar(128),
 	value text,
 	name jsonb,
@@ -884,6 +1063,9 @@ ALTER TABLE
 	laravel.licence_list DROP COLUMN value;
 
 ALTER TABLE
+	laravel.sample_type_list DROP COLUMN value;
+
+ALTER TABLE
 	laravel.teats_wear_list DROP COLUMN value;
 
 ALTER TABLE
@@ -921,6 +1103,9 @@ ALTER TABLE
 
 ALTER TABLE
 	laravel.licence_list OWNER TO gozdovi;
+
+ALTER TABLE
+	laravel.sample_type_list OWNER TO gozdovi;
 
 ALTER TABLE
 	laravel.teats_wear_list OWNER TO gozdovi;
@@ -970,6 +1155,10 @@ SELECT
 GRANT
 SELECT
 	ON TABLE laravel.licence_list TO gozdovi;
+
+GRANT
+SELECT
+	ON TABLE laravel.sample_type_list TO gozdovi;
 
 GRANT
 SELECT

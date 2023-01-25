@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Orchid\Screens;
+namespace App\Orchid\Screens\Animal;
 
 use App\Models\Animal;
 use App\Orchid\Layouts\AnimalListLayout;

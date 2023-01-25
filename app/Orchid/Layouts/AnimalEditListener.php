@@ -6,6 +6,7 @@ use App\Models\Animal;
 use App\Models\Base\BaseList;
 use App\Models\SexList;
 use App\Models\SpeciesList;
+use Illuminate\Support\Facades\App;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\Select;
@@ -29,7 +30,6 @@ class AnimalEditListener extends Listener
     protected $targets = [
 		'animal.id',
 		'animal.status',
-        'animal.previous_status',
 		'animal.died_at',
 		'animal.name',
 		'animal.species_list_id',
@@ -62,19 +62,13 @@ class AnimalEditListener extends Listener
 					->disabled(),
 
 				Select::make('animal.status')
-					->title('Status')
+					->title(__('Status'))
+					->empty(__('<Select>'))
+					->required()
 					->options([
 						Animal::STR_ALIVE => __('Alive'),
 						Animal::STR_DEAD => __('Dead'),
 					]),
-
-				Select::make('animal.previous_status')
-					->title('Previous status')
-					->options([
-						Animal::STR_ALIVE => __('Alive'),
-						Animal::STR_DEAD => __('Dead'),
-					])
-					->canSee(!$isAlive),
 
 				Input::make('animal.died_at')
 					->title('Date and time of death')
@@ -85,13 +79,25 @@ class AnimalEditListener extends Listener
 					->title('Name'),
 
 				Select::make('animal.species_list_id')
-					->fromQuery(SpeciesList::where('status', '=', BaseList::STR_ACTIVE), 'name')
+					->fromQuery(
+						SpeciesList::where('status', '=', BaseList::STR_ACTIVE)
+							->orderBy('name->' . App::getLocale(), 'asc'),
+						'name'
+					)
 					->title(__('Species'))
+					->empty(__('<Select>'))
+					->required()
 					->help(__('Please select the species')),
 
 				Select::make('animal.sex_list_id')
-					->fromModel(SexList::class, 'name')
+					->fromQuery(
+						SexList::where('status', '=', BaseList::STR_ACTIVE)
+							->orderBy('name->' . App::getLocale(), 'asc'),
+						'name'
+					)
 					->title(__('Sex'))
+					->empty(__('<Select>'))
+					->required()
 					->help(__('Please select the sex')),
 
 				Input::make('animal.description')

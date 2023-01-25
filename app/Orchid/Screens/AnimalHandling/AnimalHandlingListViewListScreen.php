@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Orchid\Screens;
+namespace App\Orchid\Screens\AnimalHandling;
 
 use App\Models\AnimalHandlingListView;
 use App\Orchid\Layouts\AnimalHandlingListViewListLayout;
 use Illuminate\Support\Facades\Auth;
 use Orchid\Screen\Actions\Link;
-use Orchid\Screen\Actions\ModalToggle;
-use Orchid\Screen\Layouts\Modal;
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Layout;
 

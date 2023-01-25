@@ -2,9 +2,12 @@
 
 namespace App\Orchid\Layouts;
 
+use App\Models\Base\BaseList;
 use App\Models\BearsBiometryAnimalHandling;
+use App\Models\PlaceTypeList;
 use Database\Factories\BearsBiometryAnimalHandlingFactory;
 use Illuminate\Support\Facades\Log;
+use Orchid\Screen\Fields\Group;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\Map;
 use Orchid\Screen\Fields\Select;
@@ -26,6 +29,9 @@ class BearsBiometryAnimalHandlingGeoLocationListener extends Listener
 		'bearsBiometryAnimalHandling.EPSG_3912_y',
 		'bearsBiometryAnimalHandling.EPSG_3794_x',
 		'bearsBiometryAnimalHandling.EPSG_3794_y',
+		'bearsBiometryAnimalHandling.place_of_removal',
+		'bearsBiometryAnimalHandling.place_type_list_id',
+		'bearsBiometryAnimalHandling.place_type_list_details',
 	];
 
 	/**
@@ -46,11 +52,11 @@ class BearsBiometryAnimalHandlingGeoLocationListener extends Listener
 	{
 		$canSee3912 = isset($this->query) ? $this->query->get('bearsBiometryAnimalHandling.projection_type') == BearsBiometryAnimalHandling::PT_3912 : false;
 		$canSee3794 = isset($this->query) ? $this->query->get('bearsBiometryAnimalHandling.projection_type') == BearsBiometryAnimalHandling::PT_3794 : false;
+		$canSeePlaceTypeListDetails = isset($this->query) ? $this->query->get('bearsBiometryAnimalHandling.place_type_list_id') == PlaceTypeList::OTHER_ID : false;
 
 		return [
 			Layout::rows([
 				Map::make('bearsBiometryAnimalHandling.geo_location')
-					->title(__('Location'))
 					->required()
 					->help(__(''))
 					->zoom(7)
@@ -64,25 +70,29 @@ class BearsBiometryAnimalHandlingGeoLocationListener extends Listener
 					])
 					->title('Projection type'),
 
-				Input::make('bearsBiometryAnimalHandling.EPSG_3912_x')
-					->required()
-					->title(__('EPSG_3912_x'))
-					->canSee($canSee3912),
+				Group::make([
+					Input::make('bearsBiometryAnimalHandling.EPSG_3912_x')
+						->required()
+						->title(__('EPSG_3912_x'))
+						->canSee($canSee3912),
 
-				Input::make('bearsBiometryAnimalHandling.EPSG_3912_y')
-					->required()
-					->title(__('EPSG_3912_y'))
-					->canSee($canSee3912),
+					Input::make('bearsBiometryAnimalHandling.EPSG_3912_y')
+						->required()
+						->title(__('EPSG_3912_y'))
+						->canSee($canSee3912)
+				])->autoWidth(),
 
-				Input::make('bearsBiometryAnimalHandling.EPSG_3794_x')
-					->required()
-					->title(__('EPSG_3794_x'))
-					->canSee($canSee3794),
+				Group::make([
+					Input::make('bearsBiometryAnimalHandling.EPSG_3794_x')
+						->required()
+						->title(__('EPSG_3794_x'))
+						->canSee($canSee3794),
 
-				Input::make('bearsBiometryAnimalHandling.EPSG_3794_y')
-					->required()
-					->title(__('EPSG_3794_y'))
-					->canSee($canSee3794),
+					Input::make('bearsBiometryAnimalHandling.EPSG_3794_y')
+						->required()
+						->title(__('EPSG_3794_y'))
+						->canSee($canSee3794),
+				])->autoWidth(),
 
 				Input::make('bearsBiometryAnimalHandling.hunting_management_area')
 					->required()
@@ -90,8 +100,26 @@ class BearsBiometryAnimalHandlingGeoLocationListener extends Listener
 
 				Input::make('bearsBiometryAnimalHandling.hunting_ground')
 					->required()
-					->title(__('Hunting ground'))
-			]),
+					->title(__('Hunting ground')),
+
+				Input::make('bearsBiometryAnimalHandling.place_of_removal')
+					->title(__('Geo location / Local name'))
+					->help(__('Please insert geographical location / local name')),
+
+				Group::make([
+					Select::make('bearsBiometryAnimalHandling.place_type_list_id')
+						->fromQuery(PlaceTypeList::where('status', '=', BaseList::STR_ACTIVE), 'name')
+						->title(__('Place of removal type'))
+						->required()
+						->empty(__('<Select>'))
+						->help(('Please select the place of removal type')),
+
+					Input::make('bearsBiometryAnimalHandling.place_type_list_details')
+						->title(__('Other place of removal type'))
+						->help(__('Please insert the other place of removal type'))
+						->canSee($canSeePlaceTypeListDetails),
+				])->autoWidth()
+			])->title(__('Location')),
 		];
 	}
 }

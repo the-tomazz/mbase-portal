@@ -110,14 +110,24 @@ class PlatformProvider extends OrchidServiceProvider
 				->href('/admin/crud/list/spatial-unit-filter-element-resources');
 
 			// GENERAL LISTS
-			$menu[] = Menu::make('Species')
-				->icon('list')
-				->title('General lists')
-				->href('/admin/crud/list/species-lists');
+			if (Auth::user()->hasRole('MBASE2LAdmin')) {
+				$menu[] = Menu::make('Licence')
+					->title('General lists')
+					->icon('list')
+					->href('/admin/crud/list/licence-lists');
 
-			$menu[] = Menu::make('Sex')
-				->icon('list')
-				->href('/admin/crud/list/sex-lists');
+				$menu[] = Menu::make('Sample type')
+					->icon('list')
+					->href('/admin/crud/list/sample-type-lists');
+
+				$menu[] = Menu::make('Sex')
+					->icon('list')
+					->href('/admin/crud/list/sex-lists');
+
+				$menu[] = Menu::make('Species')
+					->icon('list')
+					->href('/admin/crud/list/species-lists');
+			}
 
 			if (Auth::user()->isInGroup('mbase2', 'mortbiom', 'admin')) {
 				// MORTBIOM MODULE RELATED LISTS
@@ -138,7 +148,11 @@ class PlatformProvider extends OrchidServiceProvider
 					->icon('list')
 					->href('/admin/crud/list/collar-lists');
 
-				$menu[] = Menu::make('Bear fur colour')
+				$menu[] = Menu::make('Lynx fur pattern')
+					->icon('list')
+					->href('/admin/crud/list/fur-pattern-in-lynx-lists');
+
+				$menu[] = Menu::make('Bear fur color')
 					->icon('list')
 					->href('/admin/crud/list/color-lists');
 
@@ -150,17 +164,13 @@ class PlatformProvider extends OrchidServiceProvider
 					->icon('list')
 					->href('/admin/crud/list/place-type-lists');
 
-				$menu[] = Menu::make('Teats use')
+				$menu[] = Menu::make('Teats usage')
 					->icon('list')
 					->href('/admin/crud/list/teats-wear-lists');
 
 				$menu[] = Menu::make('Tooth Type')
 					->icon('list')
 					->href('/admin/crud/list/tooth-type-lists');
-
-				$menu[] = Menu::make('Licence')
-					->icon('list')
-					->href('/admin/crud/list/licence-lists');
 			}
 		}
 

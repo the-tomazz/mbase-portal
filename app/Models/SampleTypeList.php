@@ -6,12 +6,13 @@
 
 namespace App\Models;
 
+
 use App\Models\Base\BaseList;
 use Orchid\Filters\Filterable;
 use Orchid\Screen\AsSource;
 
 /**
- * Class CollarList
+ * Class SexList
  *
  * @property int|null $id
  * @property string|null $title
@@ -20,18 +21,19 @@ use Orchid\Screen\AsSource;
  *
  * @package App\Models
  */
-class CollarList extends BaseList
+class SampleTypeList extends BaseList
 {
 	use AsSource, Filterable;
 
-	protected $table = 'collar_list';
+	protected $table = 'sample_type_list';
 
-	public function bearsBiometryData()
+	public function bearsBiometrySample()
 	{
-		return $this->hasOne(BearsBiometryData::class);
+		return $this->hasOne(BearsBiometrySample::class);
 	}
 
-	public function isDeletable(): bool {
-		return !$this->bearsBiometryData;
+	public function isDeletable(): bool
+	{
+		return !$this->bearsBiometrySample;
 	}
 }

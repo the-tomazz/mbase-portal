@@ -30,7 +30,6 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
     protected $targets = [
 		'bearsBiometryAnimalHandling.animal_id',
 		'bearsBiometryAnimalHandling.animal_status',
-        'bearsBiometryAnimalHandling.animal_previous_status',
 		'bearsBiometryAnimalHandling.animal_died_at',
 		'bearsBiometryAnimalHandling.animal_name',
 		'bearsBiometryAnimalHandling.animal_species_list_id',
@@ -79,6 +78,7 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 
 				Select::make('bearsBiometryAnimalHandling.animal_status')
 					->title('Status')
+					->empty(__('<Select>'))
 					->required()
 					->options([
 						Animal::STR_ALIVE => __('Alive'),
@@ -102,6 +102,7 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 				Select::make('bearsBiometryAnimalHandling.animal_species_list_id')
 					->fromQuery(SpeciesList::where('status', '=', BaseList::STR_ACTIVE), 'name')
 					->required()
+					->empty(__('<Select>'))
 					->title(__('Species'))
 					->help(__('Please select the species'))
 					->disabled($existingAnimalSelected),
@@ -109,6 +110,7 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 				Select::make('bearsBiometryAnimalHandling.animal_sex_list_id')
 					->fromQuery(SexList::where('status', '=', BaseList::STR_ACTIVE), 'name')
 					->required()
+					->empty(__('<Select>'))
 					->value(SexList::NEUTRAL_SEX_ID)
 					->title(__('Sex'))
 					->help(__('Please select the sex'))
@@ -117,7 +119,20 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 				Input::make('bearsBiometryAnimalHandling.animal_description')
 					->title('Note')
 					->disabled($existingAnimalSelected),
-			])
+			])->title(__('Animal')),
+
+			Layout::rows([
+				Input::make('bearsBiometryAnimalHandling.animal_handling_date')
+					->required()
+					->type('datetime-local')
+					->title(__('Date and time of removal / handling')),
+
+				// Date and time of biometry measurements start
+				Input::make('bearsBiometryAnimalHandling.date_and_time_of_biometry_measurements')
+					->type('datetime-local')
+					->title(__('Date and time of biometry measurements')),
+
+			])->title(__('Date and time'))
 		];
     }
 }

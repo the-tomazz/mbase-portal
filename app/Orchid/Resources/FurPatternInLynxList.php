@@ -4,7 +4,7 @@ namespace App\Orchid\Resources;
 
 use App\Orchid\BaseResources\BaseList;
 
-class CollarList extends BaseList
+class FurPatternInLynxList extends BaseList
 {
 	protected static $moduleList = ['mortbiom'];
 
@@ -13,7 +13,7 @@ class CollarList extends BaseList
      *
      * @var string
      */
-    public static $model = \App\Models\CollarList::class;
+    public static $model = \App\Models\FurPatternInLynxList::class;
 
 	/**
 	 * Get the displayable label of the resource.
@@ -22,7 +22,7 @@ class CollarList extends BaseList
 	 */
 	public static function label(): string
 	{
-		return __('Presence of bear collar');
+		return __('Lynx fur pattern');
 	}
 
 	/**
@@ -32,6 +32,7 @@ class CollarList extends BaseList
 	 */
 	public static function singularLabel(): string
 	{
-		return __('Presence of bear collar');
+		return __('Lynx fur pattern');
 	}
 }
+

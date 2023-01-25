@@ -4,9 +4,11 @@ namespace App\Orchid\Layouts;
 
 use App\Models\Animal;
 use App\Models\AnimalHandlingListView;
+use App\Models\Base\BaseList;
 use App\Models\PlaceTypeList;
 use App\Models\SexList;
 use App\Models\SpeciesList;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Fields\Input;
@@ -34,17 +36,31 @@ class AnimalHandlingListViewListLayout extends Table
 	protected function columns(): iterable
 	{
 		return [
+			TD::make('id', __('ID'))
+				->render(function (AnimalHandlingListView $animalHandlingListView) {
+					return Link::make($animalHandlingListView->id)
+						->route('platform.animalHandling.view', [ $animalHandlingListView ]);
+				})
+				->sort(),
+
+			TD::make('animal_handling_date', __('Handling date'))
+				->render(function (AnimalHandlingListView $animalHandlingListView) {
+					return Link::make($animalHandlingListView->animal_handling_date->toDateString())
+						->route('platform.animalHandling.view', [ $animalHandlingListView ]);
+				})
+				->sort(),
+
 			TD::make('animal_id', __('Animal ID'))
 				->render(function (AnimalHandlingListView $animalHandlingListView) {
 					return Link::make($animalHandlingListView->animal_id)
-					->route('platform.bearsBiometryAnimalHandling.edit', [ $animalHandlingListView->animal_id, $animalHandlingListView ]);
+						->route('platform.animalData.view', [ $animalHandlingListView->animal_id ]);
 				})
 				->sort(),
 
 			TD::make('animal_name', __("Name"))
 				->render(function (AnimalHandlingListView $animalHandlingListView) {
 					return Link::make($animalHandlingListView->animal_name)
-					->route('platform.bearsBiometryAnimalHandling.edit', [ $animalHandlingListView->animal_id, $animalHandlingListView ]);
+						->route('platform.animalData.view', [ $animalHandlingListView->animal_id ]);
 				})
 				->sort()
 				->filter(Input::make()),
@@ -52,23 +68,35 @@ class AnimalHandlingListViewListLayout extends Table
 			TD::make('species_list_id', __("Species"))
 				->render(function (AnimalHandlingListView $animalHandlingListView) {
 					return Link::make($animalHandlingListView->species_list->name)
-					->route('platform.bearsBiometryAnimalHandling.edit', [ $animalHandlingListView->animal_id, $animalHandlingListView ]);
+						->route('platform.animalData.view', [ $animalHandlingListView->animal_id ]);
 				})
 				->sort()
-				->filter(Select::make()->fromModel(SpeciesList::class, 'name')->empty(__('<Empty>')))
-				->filterValue(function ($species_list_id) {
-						return SpeciesList::find($species_list_id)->name;
+				->filter(
+					Select::make()->fromQuery(
+						SpeciesList::where('status', '=', BaseList::STR_ACTIVE)
+							->orderBy('name->' . App::getLocale(), 'asc'),
+						'name'
+					)
+					->empty(__('<Select>')))
+					->filterValue(function ($species_list_id) {
+							return SpeciesList::find($species_list_id)->name;
 				}),
 
 			TD::make('sex_list_id', __("Sex"))
 				->render(function (AnimalHandlingListView $animalHandlingListView) {
 					return Link::make($animalHandlingListView->sex_list->name)
-					->route('platform.bearsBiometryAnimalHandling.edit', [ $animalHandlingListView->animal_id, $animalHandlingListView ]);
+						->route('platform.animalData.view', [ $animalHandlingListView->animal_id ]);
 				})
 				->sort()
-				->filter(Select::make()->fromModel(SexList::class, 'name')->empty(__('<Empty>')))
+				->filter(
+					Select::make()->fromQuery(
+						SexList::where('status', '=', BaseList::STR_ACTIVE)
+							->orderBy('name->' . App::getLocale(), 'asc'),
+						'name'
+					)->empty(__('<Select>'))
+				)
 				->filterValue(function ($sex_list_id) {
-						return SexList::find($sex_list_id)->name;
+							return SexList::find($sex_list_id)->name;
 				}),
 
 			TD::make('animal_status', __('Status'))
@@ -78,13 +106,15 @@ class AnimalHandlingListViewListLayout extends Table
 						: '<i class="text-danger">●</i> ' . __('Dead');
 				})
 				->sort()
-				->filter(Select::make()->options([
-					Animal::STR_ALIVE => __('Alive'),
-					Animal::STR_DEAD => __('Dead'),
-				])->empty(__('<Empty>')))
-				->filterValue(function ($status) {
-					return $status == Animal::STR_ALIVE ? __('Alive') : __('Dead');
-				}),
+				->filter(
+					Select::make()->options([
+						Animal::STR_ALIVE => __('Alive'),
+						Animal::STR_DEAD => __('Dead'),
+					])
+						->empty(__('<Select>')))
+						->filterValue(function ($status) {
+							return $status == Animal::STR_ALIVE ? __('Alive') : __('Dead');
+					}),
 
 			TD::make('animal_status_on_handling', __('Status on handling'))
 				->render(function (AnimalHandlingListView $animalHandlingListView) {
@@ -93,19 +123,14 @@ class AnimalHandlingListViewListLayout extends Table
 						: '<i class="text-danger">●</i> ' . __('Dead');
 				})
 				->sort()
-				->filter(Select::make()->options([
-					Animal::STR_ALIVE => __('Alive'),
-					Animal::STR_DEAD => __('Dead'),
-				])->empty(__('<Empty>')))
-				->filterValue(function ($status) {
-					return $status == Animal::STR_ALIVE ? __('Alive') : __('Dead');
-				}),
-
-			TD::make('animal_handling_date', __('Handling date'))
-				->render(function ($model) {
-					return $model->animal_handling_date->toDateString();
-				})
-				->sort(),
+				->filter(
+					Select::make()->options([
+						Animal::STR_ALIVE => __('Alive'),
+						Animal::STR_DEAD => __('Dead'),
+					])->empty(__('<Select>')))
+					->filterValue(function ($status) {
+						return $status == Animal::STR_ALIVE ? __('Alive') : __('Dead');
+					}),
 
 			TD::make('animal_died_at', __('Died at'))
 				->render(function ($model) {
@@ -123,19 +148,22 @@ class AnimalHandlingListViewListLayout extends Table
 							# ->route('platform.bearsBiometryData.view', $animalHandlingListView);
 				})
 				->sort()
-				->filter(Select::make()->options([
-					AnimalHandlingListView::STR_EXISTS => __('Exists'),
-					AnimalHandlingListView::STR_MISSING => __('Missing'),
-				])->empty(__('<Empty>')))
-				->filterValue(function ($status) {
-					return $status == AnimalHandlingListView::STR_EXISTS ? __('Exists') : __('Missing');
-				}),
+				->filter(
+					Select::make()->options([
+						AnimalHandlingListView::STR_EXISTS => __('Exists'),
+						AnimalHandlingListView::STR_MISSING => __('Missing'),
+					])
+					->empty(__('<Select>')))
+					->filterValue(function ($status) {
+						return $status == AnimalHandlingListView::STR_EXISTS ? __('Exists') : __('Missing');
+					}),
 
 			TD::make('created_at', __('Created'))
 				->render(function ($model) {
 					return $model->created_at->toDateString();
 				})
 				->sort(),
+
 			TD::make('updated_at', __('Last edit'))
 				->render(function ($model) {
 					return $model->updated_at->toDateString();

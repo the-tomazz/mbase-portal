@@ -32,7 +32,7 @@ class Controller extends BaseController
 		// $payload = $data->map->only(['id', 'licence_number'])->values();
 		foreach ($data as $animalHandlingListElement) {
 			$row = [];
-			// export animal related columns - 'id', 'species_list_id', 'sex_list_id', 'status', 'previous_status', 'title', 'name', 'description'
+			// export animal related columns - 'id', 'species_list_id', 'sex_list_id', 'status', 'title', 'name', 'description'
 			$animal = Animal::find($animalHandlingListElement->animal_id);
 			$row[] = $animal->id;
 			$row[] = $animal->species_list_id;
@@ -40,7 +40,6 @@ class Controller extends BaseController
 			$row[] = $animal->sex_list_id;
 			$row[] = $animal->sex_list != null ?? $animal->sex_list->name;
 			$row[] = $animal->status;
-			$row[] = $animal->previous_status;
 			$row[] = $animal->title;
 			$row[] = $animal->name;
 			$row[] = $animal->description;
@@ -50,6 +49,8 @@ class Controller extends BaseController
 			$row[] = $animalHandling->id;
 			$row[] = $animalHandling->way_of_withdrawal_list_id;
 			$row[] = $animalHandling->way_of_withdrawal_list != null ?? $animalHandling->way_of_withdrawal_list->name;
+			$row[] = $animalHandling->animal_conflictedness;
+			$row[] = $animalHandling->animal_conflictedness_details;
 			$row[] = $animalHandling->conflict_animal_removal_list_id;
 			$row[] = $animalHandling->conflict_animal_removal_list != null ?? $animalHandling->conflict_animal_removal_list->name;
 			$row[] = $animalHandling->licence_list_id;
@@ -62,6 +63,7 @@ class Controller extends BaseController
 			$row[] = $animalHandling->biometry_loss_reason_list != null ?? $animalHandling->biometry_loss_reason_list->name;
 			$row[] = $animalHandling->biometry_loss_reason_description;
 			$row[] = $animalHandling->animal_handling_date;
+			$row[] = $animalHandling->date_and_time_of_biometry_measurements;
 			$row[] = $animalHandling->place_of_removal;
 			$row[] = $animalHandling->place_type_list_id;
 			$row[] = $animalHandling->place_type_list != null ?? $animalHandling->place_type_list->name;
@@ -70,18 +72,17 @@ class Controller extends BaseController
 			$row[] = $animalHandling->lng;
 			$row[] = $animalHandling->hunting_management_area;
 			$row[] = $animalHandling->hunting_management_area_id;
-			$row[] = $animalHandling->hunter_finder_name;
-			$row[] = $animalHandling->hunter_finder_surname;
-			$row[] = $animalHandling->hunter_finder_address;
+			$row[] = $animalHandling->hunter_finder_name_and_surname;
 			$row[] = $animalHandling->hunter_finder_country_id;
-			$row[] = $animalHandling->witness_accompanying_person_name;
-			$row[] = $animalHandling->witness_accompanying_person_surname;
-			$row[] = $animalHandling->sample_taken;
-			$row[] = $animalHandling->blood_sample_taken;
+			$row[] = $animalHandling->hunter_finder_country_id != null ?? $animalHandling->hunter_finder_country->name;
+			$row[] = $animalHandling->witness_accompanying_person_name_and_surname;
+			$row[] = $animalHandling->hair_sample_taken;
+			$row[] = $animalHandling->hair_sample_taken_details;
+			$row[] = $animalHandling->dna_sample_taken;
+			$row[] = $animalHandling->dna_sample_taken_details;
 			$row[] = $animalHandling->tooth_type_list_id;
-			$row[] = $animalHandling->tooth_type_list != null ?? $animalHandling->tooth_type_list_id->name;
-			$row[] = $animalHandling->taxidermist_name;
-			$row[] = $animalHandling->taxidermist_surname;
+			$row[] = $animalHandling->tooth_type_list_id != null ?? $animalHandling->tooth_type_list->name;
+			$row[] = $animalHandling->taxidermist_name_and_surname;
 			$row[] = $animalHandling->hunting_ground;
 			$row[] = $animalHandling->spatial_unit_gid;
 			$row[] = $animalHandling->number_of_removal_in_the_hunting_administration_area;
@@ -95,44 +96,46 @@ class Controller extends BaseController
 				$row[] = $biometricData->age;
 				$row[] = $biometricData->masa_bruto;
 				$row[] = $biometricData->masa_neto;
-				$row[] = $biometricData->hrbtna_dolzina;
-				$row[] = $biometricData->trebusna_dolzina;
-				$row[] = $biometricData->plecna_visina;
-				$row[] = $biometricData->obseg_glave;
-				$row[] = $biometricData->obseg_vratu;
-				$row[] = $biometricData->obseg_prsnega_kosa;
-				$row[] = $biometricData->obseg_trebuha;
-				$row[] = $biometricData->dolzina_spolne_kosti;
-				$row[] = $biometricData->dolzina_seskov;
+				$row[] = $biometricData->body_length;
+				$row[] = $biometricData->shoulder_height;
+				$row[] = $biometricData->head_circumference;
+				$row[] = $biometricData->neck_circumference;
+				$row[] = $biometricData->thorax_circumference;
+				$row[] = $biometricData->abdomen_circumference;
+				$row[] = $biometricData->baculum_length;
+				$row[] = $biometricData->nipple_length;
 				$row[] = $biometricData->teats_wear_list_id;
 				$row[] = $biometricData->teats_wear_list != null ?? $biometricData->teats_wear_list->name;
-				$row[] = $biometricData->dolzina_repa_prva_meritev;
-				$row[] = $biometricData->dolzina_repa_druga_meritev;
-				$row[] = $biometricData->dolzina_usesov;
-				$row[] = $biometricData->dolzina_copkov;
-				$row[] = $biometricData->dzs_leva;
-				$row[] = $biometricData->dzs_desna;
-				$row[] = $biometricData->dps_desna;
-				$row[] = $biometricData->dps_leva;
-				$row[] = $biometricData->szs_leva;
-				$row[] = $biometricData->szs_desna;
-				$row[] = $biometricData->sps_leva;
-				$row[] = $biometricData->sps_desna;
-				$row[] = $biometricData->dzp_leva;
-				$row[] = $biometricData->dzp_desna;
-				$row[] = $biometricData->dsp_leva;
-				$row[] = $biometricData->dsp_desna;
-				$row[] = $biometricData->sp_zgoraj;
-				$row[] = $biometricData->sp_spodaj;
+				$row[] = $biometricData->tail_length;
+				$row[] = $biometricData->ear_length_without_hair;
+				$row[] = $biometricData->hair_tuft_length;
+				$row[] = $biometricData->hind_left_paw_length;
+				$row[] = $biometricData->hind_right_paw_length;
+				$row[] = $biometricData->front_right_paw_length;
+				$row[] = $biometricData->front_left_paw_length;
+				$row[] = $biometricData->hind_left_paw_width;
+				$row[] = $biometricData->hind_right_paw_width;
+				$row[] = $biometricData->front_left_paw_width;
+				$row[] = $biometricData->front_right_paw_width;
+				$row[] = $biometricData->upper_left_canines;
+				$row[] = $biometricData->upper_right_canines;
+				$row[] = $biometricData->number_of_premolars_in_the_upper_jaw;
+				$row[] = $biometricData->number_of_premolars_in_the_lower_jaw;
+				$row[] = $biometricData->distance_between_upper_canines;
+				$row[] = $biometricData->distance_between_lower_canines;
+				$row[] = $biometricData->testicals_left_length;
+				$row[] = $biometricData->testicals_left_width;
+				$row[] = $biometricData->testicals_right_length;
+				$row[] = $biometricData->testicals_right_width;
 				$row[] = $biometricData->incisors_wear_list_id;
 				$row[] = $biometricData->teats_wear_list != null ?? $biometricData->teats_wear_list->name;
 				$row[] = $biometricData->color_list_id;
 				$row[] = $biometricData->color_list != null ?? $biometricData->color_list->name;
 				$row[] = $biometricData->collar_list_id;
 				$row[] = $biometricData->collar_list != null ?? $biometricData->collar_list->name;
-				$row[] = $biometricData->opombe;
-				$row[] = $biometricData->cas_biometrije;
-				$row[] = $biometricData->cas_vnosa;
+				$row[] = $biometricData->fur_pattern_in_lynx_list_id;
+				$row[] = $biometricData->fur_pattern_in_lynx_list_id != null ?? $biometricData->fur_pattern_in_lynx_list_id->name;
+				$row[] = $biometricData->date_and_time_of_data_input;
 				$row[] = $biometricData->depot;
 				$row[] = $biometricData->status;
 			}
@@ -144,9 +147,16 @@ class Controller extends BaseController
 
 		// We insert the CSV header
 		$csv->insertOne([
-			'animal_id', 'species_list_id', 'species', 'sex_list_id', 'sex', 'status', 'previous_status', 'title', 'name', 'description', '',
-			'animal_handling_id', 'way_of_withdrawal_list_id', 'way_of_withdrawal', 'conflict_animal_removal_list_id', 'conflict_animal_removal', 'licence_list_id', 'licence_list', 'licence_number', 'project_name', 'receiving_country', 'telementry_uid', 'biometry_loss_reason_list_id', 'biometry_loss_reason_list', 'biometry_loss_reason_description', 'animal_handling_date', 'place_of_removal', 'place_type_list_id', 'place_type_lis', 'place_type_list_details', 'lat', 'lng', 'hunting_management_area', 'hunting_management_area_id', 'hunter_finder_name', 'hunter_finder_surname', 'hunter_finder_address', 'hunter_finder_country_id', 'witness_accompanying_person_name', 'witness_accompanying_person_surname', 'sample_taken', 'blood_sample_taken', 'tooth_type_list_id', 'tooth_type_list', 'taxidermist_name', 'taxidermist_surname', 'hunting_ground', 'spatial_unit_gid', 'number_of_removal_in_the_hunting_administration_area', 'animal_status_on_handling', ' ',
-			'biometry_data_id', 'age', 'masa_bruto', 'masa_neto', 'hrbtna_dolzina', 'trebusna_dolzina', 'plecna_visina', 'obseg_glave', 'obseg_vratu', 'obseg_prsnega_kosa', 'obseg_trebuha', 'dolzina_spolne_kosti', 'dolzina_seskov', 'teats_wear_list_id', 'teats_wear_list', 'dolzina_repa_prva_meritev', 'dolzina_repa_druga_meritev', 'dolzina_usesov', 'dolzina_copkov', 'dzs_leva', 'dzs_desna', 'dps_desna', 'dps_leva', 'szs_leva', 'szs_desna', 'sps_leva', 'sps_desna', 'dzp_leva', 'dzp_desna', 'dsp_leva', 'dsp_desna', 'sp_zgoraj', 'sp_spodaj', 'incisors_wear_list_id', 'teats_wear_list', 'color_list_id', 'color_list', 'collar_list_id', 'collar_list', 'opombe', 'cas_biometrije', 'cas_vnosa', 'depot', 'status'
+			'animal_id', 'species_list_id', 'species', 'sex_list_id', 'sex', 'status', 'title', 'name', 'description', '',
+			'animal_handling_id', 'way_of_withdrawal_list_id', 'way_of_withdrawal',
+			'animal_conflictedness', 'animal_conflictedness_details',
+			'conflict_animal_removal_list_id', 'conflict_animal_removal', 'licence_list_id', 'licence_list', 'licence_number', 'project_name', 'receiving_country', 'telementry_uid', 'biometry_loss_reason_list_id', 'biometry_loss_reason_list', 'biometry_loss_reason_description', 'animal_handling_date', 'date_and_time_of_biometry_measurements','place_of_removal', 'place_type_list_id', 'place_type_lis', 'place_type_list_details', 'lat', 'lng', 'hunting_management_area', 'hunting_management_area_id', 'hunter_finder_name_and_surname', 'hunter_finder_country_id', 'hunter_finder_country', 'witness_accompanying_person_name_and_surname', 'hair_sample_taken', 'hair_sample_taken_details', 'dna_sample_taken', 'dna_sample_taken_details', 'tooth_type_list_id', 'tooth_type_list', 'taxidermist_name_and_surname', 'hunting_ground', 'spatial_unit_gid', 'number_of_removal_in_the_hunting_administration_area', 'animal_status_on_handling', ' ',
+			'biometry_data_id', 'age', 'masa_bruto', 'masa_neto', 'body_length', 'shoulder_height', 'head_circumference', 'neck_circumference', 'thorax_circumference', 'abdomen_circumference', 'baculum_length', 'nipple_length', 'teats_wear_list_id', 'teats_wear_list', 'tail_length', 'ear_length_without_hair', 'hair_tuft_length', 'hind_left_paw_length', 'hind_right_paw_length', 'front_right_paw_length', 'front_left_paw_length', 'hind_left_paw_width', 'hind_right_paw_width', 'front_left_paw_width', 'front_right_paw_width',
+			'upper_left_canines_length', 'lower_left_canines_length', 'upper_right_canines_length', 'lower_right_canines_length',
+			'number_of_premolars_in_the_upper_jaw', 'number_of_premolars_in_the_lower_jaw',
+			'distance_between_upper_canines', 'distance_between_lower_canines',
+			'testicals_left_length', 'testicals_left_width', 'testicals_right_length', 'testicals_right_width',
+			'incisors_wear_list_id', 'teats_wear_list', 'color_list_id', 'color_list', 'collar_list_id', 'collar_list', 'fur_pattern_in_lynx_list_id', 'fur_pattern_in_lynx_list', 'date_and_time_of_data_input', 'depot', 'status'
 		]);
 
 		// The PDOStatement Object implements the Traversable Interface

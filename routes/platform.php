@@ -2,8 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Orchid\Screens\AnimalDataEditScreen;
-use App\Orchid\Screens\AnimalDataViewScreen;
+
 use App\Orchid\Screens\PlatformScreen;
 use App\Orchid\Screens\Role\RoleEditScreen;
 use App\Orchid\Screens\Role\RoleListScreen;
@@ -13,12 +12,17 @@ use App\Orchid\Screens\User\UserProfileScreen;
 use Illuminate\Support\Facades\Route;
 use Tabuna\Breadcrumbs\Trail;
 
-use App\Orchid\Screens\BearsBiometryAnimalHandlingEditScreen;
-use App\Orchid\Screens\AnimalHandlingListViewListScreen;
-use App\Orchid\Screens\AnimalListScreen;
-use App\Orchid\Screens\BiometryDataCreateScreen;
-use App\Orchid\Screens\BiometryDataEditScreen;
-use App\Orchid\Screens\BiometryDataViewScreen;
+use App\Orchid\Screens\AnimalHandling\BearsBiometryAnimalHandlingEditScreen;
+use App\Orchid\Screens\AnimalHandling\AnimalHandlingListViewListScreen;
+use App\Orchid\Screens\AnimalHandling\AnimalHandlingViewScreen;
+
+use App\Orchid\Screens\Animal\AnimalListScreen;
+use App\Orchid\Screens\Animal\AnimalDataEditScreen;
+use App\Orchid\Screens\Animal\AnimalDataViewScreen;
+
+use App\Orchid\Screens\BiometryData\BiometryDataCreateScreen;
+use App\Orchid\Screens\BiometryData\BiometryDataEditScreen;
+use App\Orchid\Screens\BiometryData\BiometryDataViewScreen;
 
 /*
 |--------------------------------------------------------------------------
@@ -100,6 +104,8 @@ Route::screen('roles', RoleListScreen::class)
 
 Route::screen('bearsBiometryAnimalHandling/{animal?}/{bearsBiometryAnimalHandling?}', BearsBiometryAnimalHandlingEditScreen::class)
 	->name('platform.bearsBiometryAnimalHandling.edit');
+Route::screen('animalHandling/{bearsBiometryAnimalHandling}', AnimalHandlingViewScreen::class)
+	->name('platform.animalHandling.view');
 Route::screen('animalHandlings', AnimalHandlingListViewListScreen::class)
 	->name('platform.animalHandling.list');
 
@@ -113,7 +119,7 @@ Route::screen('biometryData/view/{bearsBiometryData}', BiometryDataViewScreen::c
 
 Route::screen('animalData/edit/{animal?}', AnimalDataEditScreen::class)
 	->name('platform.animalData.edit');
-Route::screen('animalData/view/{animal?}', AnimalDataViewScreen::class)
+Route::screen('animalData/view/{animal}', AnimalDataViewScreen::class)
 	->name('platform.animalData.view');
 Route::screen('animals', AnimalListScreen::class)
 	->name('platform.animals.list');

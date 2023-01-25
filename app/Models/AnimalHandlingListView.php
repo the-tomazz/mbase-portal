@@ -23,7 +23,8 @@ use Orchid\Screen\AsSource;
  * @property string|null $telementry_uid
  * @property int|null $biometry_loss_reason_list_id
  * @property string|null $biometry_loss_reason_description
- * @property int|null $animal_handling_date
+ * @property Carbon|null $animal_handling_date
+ * @property Carbon|null $date_and_time_of_biometry_measurements
  * @property string|null $place_of_removal
  * @property int|null $place_type_list_id
  * @property string|null $place_type_list_details
@@ -34,18 +35,11 @@ use Orchid\Screen\AsSource;
  * @property float|null $y
  * @property string|null $hunting_management_area
  * @property int|null $hunting_management_area_id
- * @property string|null $hunter_finder_name
- * @property string|null $hunter_finder_surname
- * @property string|null $hunter_finder_address
+ * @property string|null $hunter_finder_name_and_surname
  * @property int|null $hunter_finder_country_id
- * @property string|null $witness_accompanying_person_name
- * @property string|null $witness_accompanying_person_surname
- * @property int|null $sample_taken
- * @property int|null $hair_sample_taken
- * @property int|null $blood_sample_taken
+ * @property string|null $witness_accompanying_person_name_and_surname
  * @property int|null $tooth_type_list_id
- * @property string|null $taxidermist_name
- * @property string|null $taxidermist_surname
+ * @property string|null $taxidermist_name_and_surname
  * @property int|null $data_entered_by_user_id
  * @property int|null $data_input_timestamp
  * @property int|null $animal_id
@@ -87,6 +81,7 @@ class AnimalHandlingListView extends Model
 		'sex_list_id' => 'int',
 		'biometry_loss_reason_list_id' => 'int',
 		'animal_handling_date' => 'datetime',
+		'date_and_time_of_biometry_measurements' => 'datetime',
 		'place_type_list_id' => 'int',
 		'lat' => 'float',
 		'lng' => 'float',
@@ -95,9 +90,8 @@ class AnimalHandlingListView extends Model
 		'y' => 'float',
 		'hunting_management_area_id' => 'int',
 		'hunter_finder_country_id' => 'int',
-		'sample_taken' => 'int',
 		'hair_sample_taken' => 'int',
-		'blood_sample_taken' => 'int',
+		'dna_sample_taken' => 'int',
 		'tooth_type_list_id' => 'int',
 		'data_entered_by_user_id' => 'int',
 		'animal_id' => 'int',
@@ -115,15 +109,16 @@ class AnimalHandlingListView extends Model
 	];
 
 	protected $allowedSorts = [
+		'id',
 		'animal_id',
         'animal_status',
 		'animal_status_on_handling',
-		'animal_previous_status',
 		'animal_name',
 		'species_list_id',
 		'sex_list_id',
 		'animal_description',
 		'animal_handling_date',
+		'date_and_time_of_biometry_measurements',
 		'animal_died_at',
 		'place_of_removal',
         'created_at',
@@ -135,7 +130,6 @@ class AnimalHandlingListView extends Model
 	protected $allowedFilters = [
 		'animal_status',
 		'animal_status_on_handling',
-		'animal_previous_status',
 		'animal_name',
 		'species_list_id',
 		'sex_list_id',

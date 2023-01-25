@@ -22,63 +22,43 @@ return new class extends Migration
 				$table->unsignedInteger('age')->nullable();
 				$table->float('masa_bruto')->nullable();
 				$table->float('masa_neto')->nullable();
-				$table->float('hrbtna_dolzina')->nullable();
-				$table->float('trebusna_dolzina')->nullable();
-				$table->float('plecna_visina')->nullable();
-				$table->float('obseg_glave')->nullable();
-				$table->float('obseg_vratu')->nullable();
-				$table->float('obseg_prsnega_kosa')->nullable();
-				$table->float('obseg_trebuha')->nullable();
-				$table->float('dolzina_spolne_kosti')->nullable();
-				$table->float('dolzina_seskov')->nullable();
+				$table->float('body_length')->nullable();
+				$table->float('shoulder_height')->nullable();
+				$table->float('head_circumference')->nullable();
+				$table->float('neck_circumference')->nullable();
+				$table->float('thorax_circumference')->nullable();
+				$table->float('abdomen_circumference')->nullable();
+				$table->float('baculum_length')->nullable();
+				$table->float('nipple_length')->nullable();
 				$table->unsignedInteger('teats_wear_list_id')->nullable();
-				$table->float('dolzina_repa_prva_meritev')->nullable();
-				$table->float('dolzina_repa_druga_meritev')->nullable();
-				$table->float('dolzina_usesov')->nullable();
-				$table->float('dolzina_copkov')->nullable();
-				$table->float('dzs_leva')->nullable();
-				$table->float('dzs_desna')->nullable();
-				$table->float('dps_desna')->nullable();
-				$table->float('dps_leva')->nullable();
-				$table->float('szs_leva')->nullable();
-				$table->float('szs_desna')->nullable();
-				$table->float('sps_leva')->nullable();
-				$table->float('sps_desna')->nullable();
-				$table->float('dzp_leva')->nullable();
-				$table->float('dzp_desna')->nullable();
-				$table->float('dsp_leva')->nullable();
-				$table->float('dsp_desna')->nullable();
-				$table->float('sp_zgoraj')->nullable();
-				$table->float('sp_spodaj')->nullable();
+				$table->float('tail_length')->nullable();
+				$table->float('ear_length_without_hair')->nullable();
+				$table->float('hair_tuft_length')->nullable();
+				$table->float('hind_left_paw_length')->nullable();
+				$table->float('hind_right_paw_length')->nullable();
+				$table->float('front_right_paw_length')->nullable();
+				$table->float('front_left_paw_length')->nullable();
+				$table->float('hind_left_paw_width')->nullable();
+				$table->float('hind_right_paw_width')->nullable();
+				$table->float('front_left_paw_width')->nullable();
+				$table->float('front_right_paw_width')->nullable();
+				$table->float('upper_left_canines_length')->nullable();
+				$table->float('upper_right_canines_length')->nullable();
+				$table->float('lower_left_canines_length')->nullable();
+				$table->float('lower_right_canines_length')->nullable();
+				$table->float('number_of_premolars_in_the_upper_jaw')->nullable();
+				$table->float('number_of_premolars_in_the_lower_jaw')->nullable();
+				$table->float('distance_between_upper_canines')->nullable();
+				$table->float('distance_between_lower_canines')->nullable();
+				$table->float('testicals_left_length')->nullable();
+				$table->float('testicals_left_width')->nullable();
+				$table->float('testicals_right_length')->nullable();
+				$table->float('testicals_right_width')->nullable();
 				$table->unsignedInteger('incisors_wear_list_id')->nullable();
 				$table->unsignedInteger('color_list_id')->nullable();
 				$table->unsignedInteger('collar_list_id')->nullable();
-				$table->text('stanje_lesine')->nullable();
-				$table->string('zdt')->nullable();
-				$table->string('masa_mesa')->nullable();
-				$table->string('udt')->nullable();
-				$table->string('dg')->nullable();
-				$table->string('dnpp')->nullable();
-				$table->string('lds')->nullable();
-				$table->string('ltv')->nullable();
-				$table->string('kds')->nullable();
-				$table->string('ktv')->nullable();
-				$table->string('boja_barve')->nullable();
-				$table->string('stare_ozljede')->nullable();
-				$table->string('dio')->nullable();
-				$table->string('opce_stanje')->nullable();
-				$table->string('tco_ime')->nullable();
-				$table->string('tco_prezime')->nullable();
-				$table->string('tco_naziv')->nullable();
-				$table->string('tco_adresa')->nullable();
-				$table->unsignedInteger('meritve_opravil_id')->nullable();
-				$table->string('meritve_opravil_ime')->nullable();
-				$table->string('meritve_opravil_priimek')->nullable();
-				$table->unsignedInteger('meritve_opravil_drzava')->nullable();
-				$table->string('ostala_opazanja')->nullable();
-				$table->text('opombe')->nullable();
-				$table->timestamp('cas_biometrije')->nullable();
-				$table->timestamp('cas_vnosa')->nullable();
+				$table->unsignedInteger('fur_pattern_in_lynx_list_id')->nullable();
+				$table->text('observations_and_notes')->nullable();
 				$table->text('depot')->nullable();
 				$table->unsignedInteger('status')->nullable();
 
@@ -114,9 +94,9 @@ return new class extends Migration
 					->onUpdate('cascade')
 					->onDelete('restrict');
 
-				$table->foreign('meritve_opravil_id')
+				$table->foreign('fur_pattern_in_lynx_list_id')
 					->references('id')
-					->on('users')
+					->on('fur_pattern_in_lynx_list')
 					->onUpdate('cascade')
 					->onDelete('restrict');
 			}

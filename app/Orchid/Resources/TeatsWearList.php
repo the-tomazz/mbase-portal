@@ -26,7 +26,7 @@ class TeatsWearList extends BaseList
 	 */
 	public static function label(): string
 	{
-		return __('Teats use');
+		return __('Teats usage');
 	}
 
 	/**

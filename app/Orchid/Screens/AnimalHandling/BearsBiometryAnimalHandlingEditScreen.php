@@ -1,38 +1,34 @@
 <?php
 
-namespace App\Orchid\Screens;
+namespace App\Orchid\Screens\AnimalHandling;
 
 use App\Models\Animal;
-use App\Models\AnimalRemovalList;
 use App\Models\Base\BaseList;
 use App\Models\BearsBiometryAnimalHandling;
 use App\Models\BearsBiometrySample;
 use App\Models\LicenceList;
-use App\Models\LicencesList;
 use App\Models\SexList;
-use App\Models\SpeciesList;
 use App\Models\ToothTypeList;
-use App\Models\WayOfWithdrawalList;
+use App\Orchid\Layouts\AnimalHandlingSamplesLayout;
+use App\Orchid\Layouts\BearsBiometryAnimalHandlingAnimalConflictednessListener;
 use App\Orchid\Layouts\BearsBiometryAnimalHandlingAnimalListener;
+use App\Orchid\Layouts\BearsBiometryAnimalHandlingDNASampleTakenListener;
 use App\Orchid\Layouts\BearsBiometryAnimalHandlingGeoLocationListener;
+use App\Orchid\Layouts\BearsBiometryAnimalHandlingHairSampleTakenListener;
 use App\Orchid\Layouts\BearsBiometryAnimalHandlingHunterFinderSwitchListener;
-use App\Orchid\Layouts\BearsBiometryAnimalHandlingPlaceTypeListListener;
 use App\Orchid\Layouts\BearsBiometryAnimalHandlingSamplesListener;
 use App\Orchid\Layouts\WayOfRemovalListener;
 use Orchid\Support\Color;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Orchid\Support\Facades\Alert;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Actions\ModalToggle;
-use Orchid\Screen\Fields\Group;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\Label;
 use Orchid\Screen\Fields\Select;
 use Orchid\Screen\Fields\Switcher;
-use Orchid\Screen\Fields\Upload;
 use Orchid\Screen\Layouts\Modal;
 use Orchid\Screen\Repository;
 use Orchid\Screen\Screen;
@@ -45,8 +41,9 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 {
 	private const MAX_SAMPLE_NUMBER = 10;
 
-	public $bearsBiometryAnimalHandling;
 	public $animal;
+	public $bearsBiometryAnimalHandling;
+
 	/**
 	 * Query data.
 	 *
@@ -60,8 +57,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 				'lng' => $bearsBiometryAnimalHandling->lng,
 			];
 		} else {
-			// HACK, Stanko, this is for you :)
-			$bearsBiometryAnimalHandling['geo_location'] = [
+			$bearsBiometryAnimalHandling['geo_location'] = [ // HACK, Stanko, this is for you :)
 				'lat' => 46.044705,
 				'lng' => 15.2424903,
 			];
@@ -75,12 +71,13 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 			if ($animal->exists) {
 				$bearsBiometryAnimalHandling->animal_id = $animal->id;
 			}
+
+			$bearsBiometryAnimalHandling['measurer_name_and_surname'] = Auth::user()->name;
 		}
 
 		// LOAD ANIMAL
 		if ($bearsBiometryAnimalHandling->animal_id) {
 			$bearsBiometryAnimalHandling['animal_status'] = $animal->status;
-			$bearsBiometryAnimalHandling['animal_previous_status'] = $animal->previous_status;
 			$bearsBiometryAnimalHandling['animal_died_at'] = $animal->died_at;
 			$bearsBiometryAnimalHandling['animal_name'] = $animal->name;
 			$bearsBiometryAnimalHandling['animal_species_list_id'] = $animal->species_list_id;
@@ -101,7 +98,10 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 			$sampleNumber++;
 		}
 
+		$bearsBiometryAnimalHandling->load('attachment');
+
 		return [
+			'animal' => $animal,
 			'bearsBiometryAnimalHandling' => $bearsBiometryAnimalHandling
 		];
 	}
@@ -149,20 +149,28 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 		];
 	}
 
+	public function asyncUpdateAnimalHandlingAnimalConflictednessListenerData($triggers)
+	{
+		return [
+			'bearsBiometryAnimalHandling' => new Repository([
+				'animal_conflictedness'      => $triggers['animal_conflictedness'],
+				'animal_conflictedness_details' => $triggers['animal_conflictedness_details'] ?? null,
+			]),
+		];
+	}
+
 	public function asyncUpdateAnimalHandlingAnimalListenerData($triggers)
 	{
 		$animalId = $triggers['animal_id'] ?? null;
 
 		if ($animalId) {
 			$triggers['animal_status'] = $triggers['animal_status'] ?? Auth::user()->defaultVisualisationAnimalStatus();
-			$triggers['animal_previous_status'] = $triggers['animal_previous_status'] ?? (Auth::user()->defaultVisualisationAnimalStatus() == Animal::STR_ALIVE ? Animal::STR_ALIVE : Animal::STR_DEAD);
 		}
 
 		return [
 			'bearsBiometryAnimalHandling' 	=> new Repository([
 				'animal_id'      			=> $triggers['animal_id'] ?? null,
 				'animal_status'      		=> $triggers['animal_status'] ?? null,
-				'animal_previous_status' 	=> $triggers['animal_previous_status'] ?? null,
 				'animal_died_at' 			=> $triggers['animal_died_at'] ?? null,
 				'animal_name'      			=> $triggers['animal_name'] ?? null,
 				'animal_species_list_id'	=> $triggers['animal_species_list_id'] ?? null,
@@ -172,12 +180,22 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 		];
 	}
 
-	public function asyncUpdateAnimalHandlingPlaceTypeListListenerData($triggers)
+	public function asyncUpdateAnimalHandlingHairSampleTakenListenerData($triggers)
 	{
 		return [
 			'bearsBiometryAnimalHandling' => new Repository([
-				'place_type_list_id'      => $triggers['place_type_list_id'],
-				'place_type_list_details' => $triggers['place_type_list_details'] ?? null,
+				'hair_sample_taken'      => $triggers['hair_sample_taken'],
+				'hair_sample_taken_details' => $triggers['hair_sample_taken_details'] ?? null,
+			]),
+		];
+	}
+
+	public function asyncUpdateAnimalHandlingDNASampleTakenListenerData($triggers)
+	{
+		return [
+			'bearsBiometryAnimalHandling' => new Repository([
+				'dna_sample_taken'      => $triggers['dna_sample_taken'],
+				'dna_type_list_details' => $triggers['dna_sample_taken_details'] ?? null,
 			]),
 		];
 	}
@@ -192,7 +210,8 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 				'biometry_loss_reason_list_id' => $triggers['biometry_loss_reason_list_id'] ?? null,
 				'biometry_loss_reason_description' => $triggers['biometry_loss_reason_description'] ?? null,
 				'project_name' => $triggers['project_name'] ?? null,
-				'receiving_country' => $triggers['receiving_country'] ?? null
+				'receiving_country' => $triggers['receiving_country'] ?? null,
+				'number_of_removal_in_the_hunting_administrative_area' => $triggers['number_of_removal_in_the_hunting_administrative_area']
 			]),
 		];
 	}
@@ -200,41 +219,51 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 	public function asyncUpdateAnimalHandlingGeoLocationListenerData($triggers)
 	{
 		$proj4 = new Proj4php();
-		$proj4->addDef("EPSG:3912",'+proj=tmerc +lat_0=0 +lon_0=15 +k=0.9999 +x_0=500000 +y_0=-5000000 +ellps=bessel +towgs84=409.545,72.164,486.872,3.085957,5.469110,-11.020289,17.919665 +units=m +no_defs');
-		$proj4->addDef("EPSG:3794",'+proj=tmerc +lat_0=0 +lon_0=15 +k=0.9999 +x_0=500000 +y_0=-5000000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs');
+		$proj4->addDef("EPSG:3912", '+proj=tmerc +lat_0=0 +lon_0=15 +k=0.9999 +x_0=500000 +y_0=-5000000 +ellps=bessel +towgs84=409.545,72.164,486.872,3.085957,5.469110,-11.020289,17.919665 +units=m +no_defs');
+		$proj4->addDef("EPSG:3794", '+proj=tmerc +lat_0=0 +lon_0=15 +k=0.9999 +x_0=500000 +y_0=-5000000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs');
 
 		$projEPSG4326 = new Proj('EPSG:4326', $proj4);
 		$projEPSG3912 = new Proj('EPSG:3912', $proj4);
-        $projEPSG3794 = new Proj('EPSG:3794', $proj4);
+		$projEPSG3794 = new Proj('EPSG:3794', $proj4);
 
 		switch ($triggers['projection_type']) {
 			case BearsBiometryAnimalHandling::PT_MAP_LANG_LAT:
 				$pointEPSG4326 = new Point($triggers['geo_location']['lng'], $triggers['geo_location']['lat'], $projEPSG4326);
-				$sourcePoint = clone $pointEPSG4326; $pointEPSG3912 = $proj4->transform($projEPSG3912, $sourcePoint);
-				$sourcePoint = clone $pointEPSG4326; $pointEPSG3794 = $proj4->transform($projEPSG3794, $sourcePoint);
+				$sourcePoint = clone $pointEPSG4326;
+				$pointEPSG3912 = $proj4->transform($projEPSG3912, $sourcePoint);
+				$sourcePoint = clone $pointEPSG4326;
+				$pointEPSG3794 = $proj4->transform($projEPSG3794, $sourcePoint);
 
 				break;
 			case BearsBiometryAnimalHandling::PT_3912:
 				if (isset($triggers['EPSG_3912_x'])) {
 					$pointEPSG3912 = new Point($triggers['EPSG_3912_x'], $triggers['EPSG_3912_y'], $projEPSG3912);
-					$sourcePoint = clone $pointEPSG3912; $pointEPSG4326 = $proj4->transform($projEPSG4326, $sourcePoint);
-					$sourcePoint = clone $pointEPSG4326; $pointEPSG3794 = $proj4->transform($projEPSG3794, $sourcePoint);
+					$sourcePoint = clone $pointEPSG3912;
+					$pointEPSG4326 = $proj4->transform($projEPSG4326, $sourcePoint);
+					$sourcePoint = clone $pointEPSG4326;
+					$pointEPSG3794 = $proj4->transform($projEPSG3794, $sourcePoint);
 				} else {
 					$pointEPSG4326 = new Point($triggers['geo_location']['lng'], $triggers['geo_location']['lat'], $projEPSG4326);
-					$sourcePoint = clone $pointEPSG4326; $pointEPSG3912 = $proj4->transform($projEPSG3912, $sourcePoint);
-					$sourcePoint = clone $pointEPSG4326; $pointEPSG3794 = $proj4->transform($projEPSG3794, $sourcePoint);
+					$sourcePoint = clone $pointEPSG4326;
+					$pointEPSG3912 = $proj4->transform($projEPSG3912, $sourcePoint);
+					$sourcePoint = clone $pointEPSG4326;
+					$pointEPSG3794 = $proj4->transform($projEPSG3794, $sourcePoint);
 				}
 
 				break;
 			case BearsBiometryAnimalHandling::PT_3794:
 				if (isset($triggers['EPSG_3794_x'])) {
 					$pointEPSG3794 = new Point($triggers['EPSG_3794_x'], $triggers['EPSG_3794_y'], $projEPSG3794);
-					$sourcePoint = clone $pointEPSG3794; $pointEPSG4326 = $proj4->transform($projEPSG4326, $sourcePoint);
-					$sourcePoint = clone $pointEPSG4326; $pointEPSG3912 = $proj4->transform($projEPSG3912, $sourcePoint);
+					$sourcePoint = clone $pointEPSG3794;
+					$pointEPSG4326 = $proj4->transform($projEPSG4326, $sourcePoint);
+					$sourcePoint = clone $pointEPSG4326;
+					$pointEPSG3912 = $proj4->transform($projEPSG3912, $sourcePoint);
 				} else {
 					$pointEPSG4326 = new Point($triggers['geo_location']['lng'], $triggers['geo_location']['lat'], $projEPSG4326);
-					$sourcePoint = clone $pointEPSG4326; $pointEPSG3912 = $proj4->transform($projEPSG3912, $sourcePoint);
-					$sourcePoint = clone $pointEPSG4326; $pointEPSG3794 = $proj4->transform($projEPSG3794, $sourcePoint);
+					$sourcePoint = clone $pointEPSG4326;
+					$pointEPSG3912 = $proj4->transform($projEPSG3912, $sourcePoint);
+					$sourcePoint = clone $pointEPSG4326;
+					$pointEPSG3794 = $proj4->transform($projEPSG3794, $sourcePoint);
 				}
 
 				break;
@@ -325,7 +354,10 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 					'projection_type' => $triggers['projection_type'],
 					'hunting_management_area' => $LUO ?? '',
 					'hunting_ground' => $LOV ?? '',
-					'gid' => $gid
+					'gid' => $gid,
+					'place_of_removal' => $triggers['place_of_removal'],
+					'place_type_list_id'      => $triggers['place_type_list_id'],
+					'place_type_list_details' => $triggers['place_type_list_details'] ?? null,
 				],
 			];
 		} else {
@@ -342,8 +374,10 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 					'projection_type' => $triggers['projection_type'],
 					'hunting_management_area' => 'N/A',
 					'hunting_ground' => 'N/A',
-					'gid' => null
-
+					'gid' => null,
+					'place_of_removal' => $triggers['place_of_removal'],
+					'place_type_list_id'      => $triggers['place_type_list_id'],
+					'place_type_list_details' => $triggers['place_type_list_details'] ?? null,
 				],
 			];
 		}
@@ -353,9 +387,11 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 	{
 		return [
 			'bearsBiometryAnimalHandling' => new Repository([
-				'unknown_hunter_finder'      => $triggers['unknown_hunter_finder'],
-				'hunter_finder_name' => $triggers['hunter_finder_name'] ?? null,
-				'hunter_finder_surname' => $triggers['hunter_finder_surname'] ?? null,
+				'unknown_hunter_finder'      					=> $triggers['unknown_hunter_finder'],
+				'hunter_finder_name_and_surname' 				=> $triggers['hunter_finder_name_and_surname'] ?? null,
+				'hunter_finder_country_id' 						=> $triggers['hunter_finder_country_id'] ?? null,
+				'witness_accompanying_person_name_and_surname' 	=> $triggers['witness_accompanying_person_name_and_surname'] ?? null,
+				'taxidermist_name_and_surname' 					=> $triggers['taxidermist_name_and_surname'] ?? null,
 			]),
 		];
 	}
@@ -392,50 +428,28 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 				BearsBiometryAnimalHandlingGeoLocationListener::class,
 			]),
 
+			WayOfRemovalListener::class,
+
+			BearsBiometryAnimalHandlingAnimalConflictednessListener::class,
+
 			Layout::rows([
 				Select::make('bearsBiometryAnimalHandling.licence_list_id')
-						->fromQuery(LicenceList::where('status', '=', BaseList::STR_ACTIVE), 'name')
-						->title(__('Licence'))
-						->help(__('Please select the Licence'))
-						->required(),
-
-				Input::make('bearsBiometryAnimalHandling.number_of_removal_in_the_hunting_administrative_area')
-					->mask('999999999999-9999')
-					->title(__('Number and the year of removal in hunting administrative area'))
-					->help(__('Please insert number and the year of removal in hunting administrative area.')),
+					->fromQuery(LicenceList::where('status', '=', BaseList::STR_ACTIVE), 'name')
+					->title(__('Licence'))
+					->help(__('Please select the Licence'))
+					->empty(__('<Select>'))
+					->required(),
 			]),
 
-			WayOfRemovalListener::class,
+			BearsBiometryAnimalHandlingHunterFinderSwitchListener::class,
 
 			Layout::rows([
 				Input::make('bearsBiometryAnimalHandling.telemetry_uid')
 					->title(__('Ear-tag number or radio-collar (telemetry) identification'))
 					->help(__('Please describe animal-borne markings (ear-tags, collar, microchips, etc.)')),
 
-				Input::make('bearsBiometryAnimalHandling.animal_handling_date')
-					->required()
-					->type('datetime-local')
-					->title(__('Date and time of removal / handling')),
 				// ->value('2011-08-19T13:45:00')
 				// ->horizontal(),
-
-				Input::make('bearsBiometryAnimalHandling.place_of_removal')
-					->title(__('Geo location / Local name'))
-					->help(__('Please insert geographical location / local name')),
-			]),
-
-			BearsBiometryAnimalHandlingPlaceTypeListListener::class,
-
-			BearsBiometryAnimalHandlingHunterFinderSwitchListener::class,
-
-			Layout::rows([
-				Input::make('bearsBiometryAnimalHandling.witness_accompanying_person_name')
-					->title(__('Witness/Accompanying person name'))
-					->help(__('Please insert the name of the Witness/Accompanying person')),
-
-				Input::make('bearsBiometryAnimalHandling.witness_accompanying_person_surname')
-					->title(__('Witness/Accompanying person surname'))
-					->help(__('Please insert the surname of the witness / Accompanying person')),
 			]),
 		];
 
@@ -450,42 +464,34 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 		*/
 
 		$postBiometryAnimalHandlingSampleListeners = [
-			// SAMPLES TYPE SECTION START
-			Layout::rows([
-				Group::make([
-					Switcher::make('bearsBiometryAnimalHandling.hair_sample_taken')
-						->sendTrueOrFalse()
-						->title(__('Hair sample collected'))
-						->help(__('Please note if hair sample has been collected')),
-
-					Switcher::make('bearsBiometryAnimalHandling.blood_sample_taken')
-						->sendTrueOrFalse()
-						->title(__('Blood sample collected'))
-						->help(__('Please note if Blood sample has been collected')),
-
-					Select::make('bearsBiometryAnimalHandling.tooth_type_list_id')
-						->fromQuery(ToothTypeList::where('status', '=', BaseList::STR_ACTIVE), 'name')
-						->title(__('Tooth Type'))
-						->help(__('Please select the Tooth Type'))
-						->empty(__('<Empty>')),
-				])->autoWidth(),
-			]),
 			// SAMPLES TYPE SECTION END
 
-			// TAXIDERMIST SECTION START
-			Layout::rows([
-				Group::make([
-					Input::make('bearsBiometryAnimalHandling.taxidermist_name')
-						->title(__('Taxidermist name'))
-						->help(__('Please insert the name of the taxidermist')),
+			AnimalHandlingSamplesLayout::class,
 
-					Input::make('bearsBiometryAnimalHandling.taxidermist_surname')
-						->title(__('Taxidermist surname'))
-						->help(__('Please insert the surname of the Taxidermist'))
-				])->autoWidth(),
+			BearsBiometryAnimalHandlingHairSampleTakenListener::class,
+			BearsBiometryAnimalHandlingDNASampleTakenListener::class,
+
+			// SAMPLES TYPE SECTION START
+			Layout::rows([
+				Switcher::make('bearsBiometryAnimalHandling.liver_samples_collected')
+					->sendTrueOrFalse()
+					->title(__('Liver samples collected')),
+
+				Select::make('bearsBiometryAnimalHandling.tooth_type_list_id')
+					->fromQuery(ToothTypeList::where('status', '=', BaseList::STR_ACTIVE), 'name')
+					->title(__('Tooth Type'))
+					->help(__('Please select the Tooth Type'))
+					->empty(__('<Select>'))
+					->required(),
 			]),
 
-			// TAXIDERMIST SECTION END
+			Layout::rows([
+				Input::make('bearsBiometryAnimalHandling.measurer_name_and_surname')
+					->title(__('Measurer name and surname')),
+
+				Input::make('bearsBiometryAnimalHandling.hunting_ground_representative')
+					->title(__('Hunting ground representative')),
+			]),
 
 			Layout::block([])
 				->commands(
@@ -532,6 +538,8 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 	{
 		$bearsBiometryAnimalHandling->fill($request->get('bearsBiometryAnimalHandling'));
 
+		$bearsBiometryAnimalHandling['animal_conflictedness'] = intval($request->get('bearsBiometryAnimalHandling')['animal_conflictedness']);
+
 		$animalId = $request->get('bearsBiometryAnimalHandling')['animal_id'] ?? null;
 		if ($animalId) {
 			$animal = Animal::find($animalId);
@@ -558,8 +566,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 				'species_list_id' => $request->get('bearsBiometryAnimalHandling')['animal_species_list_id'],
 				'sex_list_id' => $request->get('bearsBiometryAnimalHandling')['animal_sex_list_id'],
 				'description' => $request->get('bearsBiometryAnimalHandling')['animal_description'],
-				'died_at' => now(),
-				'previous_status' => $isAlive ? Animal::STR_ALIVE : Animal::STR_DEAD
+				'died_at' => now()
 			]);
 
 			$animal->save();
@@ -601,7 +608,11 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 			}
 		}
 
-		Alert::info(__('You have successfully created or updated an Animal Handling form.') . 'ID: ' . $bearsBiometryAnimalHandling->id . ' ' . __('Name') . ': ' . $animal->name);
+		$bearsBiometryAnimalHandling->attachment()->syncWithoutDetaching(
+			$request->input('bearsBiometryAnimalHandling.attachment', [])
+		);
+
+		Alert::info(__('You have successfully created or updated an Animal Handling form.') . ' ID: ' . $bearsBiometryAnimalHandling->id . ' ' . __('Name') . ': ' . $animal->name);
 	}
 
 	/**

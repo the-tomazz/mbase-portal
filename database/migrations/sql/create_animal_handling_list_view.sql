@@ -6,7 +6,6 @@ CREATE OR REPLACE VIEW animal_handling_list_view AS
 	laravel.animal.species_list_id as species_list_id,
 	laravel.animal.sex_list_id as sex_list_id,
     laravel.animal.status as animal_status,
-	laravel.animal.previous_status as animal_previous_status,
 	laravel.animal.died_at as animal_died_at,
 	laravel.bears_biometry_data.id as bears_biometry_data_id,
 	CASE WHEN laravel.bears_biometry_data.id is null THEN 'missing' ELSE 'exists' END as bears_biometry_data_status

@@ -10,9 +10,7 @@ use Orchid\Screen\TD;
 
 class LicenceList extends BaseList
 {
-	protected static $moduleList = ['mortbiom'];
-
-    /**
+	/**
      * The model the resource corresponds to.
      *
      * @var string

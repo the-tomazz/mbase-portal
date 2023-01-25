@@ -98,7 +98,7 @@ class BaseList extends Resource
 				->filter(Select::make()->options([
 					BaseListModel::STR_ACTIVE => __('Active'),
 					BaseListModel::STR_INACTIVE => __('Inactive'),
-				])->empty(__('<Empty>'))),
+				])->empty(__('<Select>'))),
 
 			TD::make('created_at', __('Created at'))
 				->sort()

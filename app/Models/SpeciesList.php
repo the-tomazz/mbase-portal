@@ -30,6 +30,10 @@ use Orchid\Screen\AsSource;
  */
 class SpeciesList extends BaseList
 {
+	public const WOLF_ID = 12;
+	public const BROWN_BEAR_ID = 13;
+	public const LYNX_ID = 14;
+
 	use AsSource, Filterable;
 
 	protected $table = 'species_list';

@@ -3,17 +3,19 @@
 namespace App\Orchid\Resources;
 
 use App\Orchid\BaseResources\BaseList;
+use Orchid\Crud\Resource;
+use Orchid\Screen\Fields\Input;
+use Orchid\Screen\Sight;
+use Orchid\Screen\TD;
 
-class CollarList extends BaseList
+class SampleTypeList extends BaseList
 {
-	protected static $moduleList = ['mortbiom'];
-
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\CollarList::class;
+    public static $model = \App\Models\SampleTypeList::class;
 
 	/**
 	 * Get the displayable label of the resource.
@@ -22,7 +24,7 @@ class CollarList extends BaseList
 	 */
 	public static function label(): string
 	{
-		return __('Presence of bear collar');
+		return __('Sample type');
 	}
 
 	/**
@@ -32,6 +34,6 @@ class CollarList extends BaseList
 	 */
 	public static function singularLabel(): string
 	{
-		return __('Presence of bear collar');
+		return __('Sample type');
 	}
 }

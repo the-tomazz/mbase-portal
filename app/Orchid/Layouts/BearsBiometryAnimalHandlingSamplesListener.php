@@ -2,8 +2,11 @@
 
 namespace App\Orchid\Layouts;
 
+use App\Models\Base\BaseList;
+use App\Models\SampleTypeList;
 use Illuminate\Support\Facades\Log;
 use Orchid\Screen\Fields\Input;
+use Orchid\Screen\Fields\Select;
 use Orchid\Screen\Layouts\Listener;
 use Orchid\Support\Facades\Layout;
 
@@ -61,21 +64,24 @@ class BearsBiometryAnimalHandlingSamplesListener extends Listener
 			$biometryAnimalHandlingSampleListenerLayout =
 				Layout::rows([
 					Input::make('bearsBiometryAnimalHandling.sample_code_' . $sampleNumber)
-						->title(__('Sample ') . $sampleNumber . __(' code'))
+						->title(__('Sample ' . $sampleNumber . ' code'))
 						->maxlength(10)
-						->help(__('Please input the sample ') . $sampleNumber . __(' code'))
+						->help(__('Please input the sample code'))
 						->canSee($previousCanSee),
 
-					Input::make('bearsBiometryAnimalHandling.sample_tissue_' . $sampleNumber)
-						->title(__('Sample ') . $sampleNumber . __(' type (sampled tissue)'))
+					Select::make('bearsBiometryAnimalHandling.sample_tissue_' . $sampleNumber)
+						->fromQuery(SampleTypeList::where('status', '=', BaseList::STR_ACTIVE), 'name')
+						->empty(__('<Select>'))
+						->required()
+						->title(__('Sample type'))
 						->maxlength(20)
-						->help(__('Please input the Sample ') . $sampleNumber . __(' type (sampled tissue)'))
+						->help(__('Please input the sample type'))
 						->canSee($canSee),
 
 					Input::make('bearsBiometryAnimalHandling.sample_comment_' . $sampleNumber)
-						->title(__('Sample ') . $sampleNumber . __(' comment'))
+						->title(__('Sample comment'))
 						->maxlength(20)
-						->help(__('Please input the Sample ') . $sampleNumber . __(' comment'))
+						->help(__('Please input the sample comment'))
 						->canSee($canSee),
 				])->canSee($previousCanSee);
 

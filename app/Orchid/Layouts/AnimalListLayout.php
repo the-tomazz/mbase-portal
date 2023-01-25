@@ -59,10 +59,13 @@ class AnimalListLayout extends Table
 					->route('platform.animalData.view', $animal);
 				})
 				->sort()
-				->filter(Select::make()->fromModel(SpeciesList::class, 'name')->empty(__('<Empty>')))
-				->filterValue(function ($species_list_id) {
-						return SpeciesList::find($species_list_id)->name;
-				}),
+				->filter(
+					Select::make()
+						->fromModel(SpeciesList::class, 'name')
+						->empty(__('<Select>')))
+						->filterValue(function ($species_list_id) {
+								return SpeciesList::find($species_list_id)->name;
+					}),
 
 			TD::make('sex_list_id', __('Sex'))
 				->render(function (Animal $animal) {
@@ -70,10 +73,12 @@ class AnimalListLayout extends Table
 					->route('platform.animalData.view', $animal);
 				})
 				->sort()
-				->filter(Select::make()->fromModel(SexList::class, 'name')->empty(__('<Empty>')))
-				->filterValue(function ($sex_list_id) {
-					return SexList::find($sex_list_id)->name;
-				}),
+				->filter(
+					Select::make()->fromModel(SexList::class, 'name')
+					->empty(__('<Select>')))
+					->filterValue(function ($sex_list_id) {
+						return SexList::find($sex_list_id)->name;
+					}),
 
 			TD::make('status', __('Status'))
 				->render(function (Animal $animal) {
@@ -82,13 +87,15 @@ class AnimalListLayout extends Table
 						: '<i class="text-danger">●</i> ' . __('Dead');
 				})
 				->sort()
-				->filter(Select::make()->options([
-					Animal::STR_ALIVE => __('Alive'),
-					Animal::STR_DEAD => __('Dead'),
-				])->empty(__('<Empty>')))
-				->filterValue(function ($status) {
-					return $status == Animal::STR_ALIVE ? __('Alive') : __('Dead');
-				}),
+				->filter(
+					Select::make()->options([
+						Animal::STR_ALIVE => __('Alive'),
+						Animal::STR_DEAD => __('Dead'),
+					])
+					->empty(__('<Select>')))
+					->filterValue(function ($status) {
+						return $status == Animal::STR_ALIVE ? __('Alive') : __('Dead');
+					}),
 
 			TD::make('died_at', __('Date of death'))
 				->render(function ($model) {
@@ -114,15 +121,7 @@ class AnimalListLayout extends Table
 						}
 					}
 					return $animalHandlingsRender;
-				})
-				/*->sort()
-				->filter(Select::make()->options([
-					Animal::STR_ALIVE => __('Alive'),
-					Animal::STR_DEAD => __('Dead'),
-				])->empty(__('<Empty>')))
-				->filterValue(function ($status) {
-					return $status == Animal::STR_ALIVE ? __('Alive') : __('Dead');
-				})*/,
+				}),
 
 			TD::make('created_at', __('Created at'))
 				->render(function ($model) {

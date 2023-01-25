@@ -23,63 +23,49 @@ use Orchid\Screen\AsSource;
  * @property int|null $age
  * @property float|null $masa_bruto
  * @property float|null $masa_neto
- * @property float|null $hrbtna_dolzina
- * @property float|null $trebusna_dolzina
- * @property float|null $plecna_visina
- * @property float|null $obseg_glave
- * @property float|null $obseg_vratu
- * @property float|null $obseg_prsnega_kosa
- * @property float|null $obseg_trebuha
- * @property float|null $dolzina_spolne_kosti
- * @property float|null $dolzina_seskov
+ * @property float|null $body_length
+ * @property float|null $shoulder_height
+ * @property float|null $head_circumference
+ * @property float|null $neck_circumference
+ * @property float|null $thorax_circumference
+ * @property float|null $abdomen_circumference
+ * @property float|null $baculum_length
+ * @property float|null $nipple_length
  * @property int|null $teats_wear_list_id
- * @property float|null $dolzina_repa_prva_meritev
- * @property float|null $dolzina_repa_druga_meritev
- * @property float|null $dolzina_usesov
- * @property float|null $dolzina_copkov
- * @property float|null $dzs_leva
- * @property float|null $dzs_desna
- * @property float|null $dps_desna
- * @property float|null $dps_leva
- * @property float|null $szs_leva
- * @property float|null $szs_desna
- * @property float|null $sps_leva
- * @property float|null $sps_desna
- * @property float|null $dzp_leva
- * @property float|null $dzp_desna
- * @property float|null $dsp_leva
- * @property float|null $dsp_desna
- * @property float|null $sp_zgoraj
- * @property float|null $sp_spodaj
+ * @property float|null $tail_length
+ * @property float|null $ear_length_without_hair
+ * @property float|null $hair_tuft_length
+ * @property float|null $hind_left_paw_length
+ * @property float|null $hind_right_paw_length
+ * @property float|null $front_right_paw_length
+ * @property float|null $front_left_paw_length
+ * @property float|null $hind_left_paw_width
+ * @property float|null $hind_right_paw_width
+ * @property float|null $front_left_paw_width
+ * @property float|null $front_right_paw_width
+ * @property float|null $upper_left_canines_length
+ * @property float|null $upper_right_canines_length
+ * @property float|null $number_of_premolars_in_the_upper_jaw
+ * @property float|null $number_of_premolars_in_the_lower_jaw
+ * @property float|null $distance_between_upper_canines
+ * @property float|null $distance_between_lower_canines
+ * @property float|null $testicals_left_length
+ * @property float|null $testicals_left_width
+ * @property float|null $testicals_right_length
+ * @property float|null $testicals_right_width
  * @property int|null $incisors_wear_list_id
  * @property int|null $color_list_id
  * @property int|null $collar_list_id
- * @property string|null $stanje_lesine
- * @property string|null $zdt
- * @property string|null $masa_mesa
- * @property string|null $udt
- * @property string|null $dg
- * @property string|null $dnpp
- * @property string|null $lds
- * @property string|null $ltv
- * @property string|null $kds
- * @property string|null $ktv
- * @property string|null $boja_barve
- * @property string|null $stare_ozljede
- * @property string|null $dio
- * @property string|null $opce_stanje
- * @property string|null $tco_ime
- * @property string|null $tco_prezime
- * @property string|null $tco_naziv
- * @property string|null $tco_adresa
- * @property int|null $meritve_opravil_id
- * @property string|null $meritve_opravil_ime
- * @property string|null $meritve_opravil_priimek
- * @property int|null $meritve_opravil_drzava
- * @property string|null $ostala_opazanja
- * @property string|null $opombe
- * @property Carbon|null $cas_biometrije
- * @property Carbon|null $cas_vnosa
+ * @property int|null $fur_pattern_in_lynx_list_id
+ * @property string|null $observations_and_notes
+ * @property string|null $distance_between_upper_canines
+ * @property string|null $distance_between_lower_canines
+ * @property string|null $testicals_left_length
+ * @property string|null $testicals_left_width
+ * @property string|null $testicals_right_length
+ * @property string|null $testicals_right_width
+ * @property string|null $incisors_wear_list_id
+ * @property Carbon|null $date_and_time_of_data_input
  * @property string|null $depot
  * @property int|null $status
  * @property Carbon|null $created_at
@@ -92,13 +78,14 @@ use Orchid\Screen\AsSource;
  * @property IncisorsWearList|null $incisors_wear_list
  * @property ColorList|null $color_list
  * @property CollarList|null $collar_list
+ * @property CollarList|null $fur_pattern_in_lynx_list_id
  * @property User|null $user
  *
  * @package App\Models
  */
 class BearsBiometryData extends Model
 {
-	use AsSource, Filterable, Attachable;
+	use AsSource, Filterable;
 	use HasFactory;
 
 	public const PREMOLARS_VALUES = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ];
@@ -112,45 +99,43 @@ class BearsBiometryData extends Model
 		'age' => 'int',
 		'masa_bruto' => 'float',
 		'masa_neto' => 'float',
-		'hrbtna_dolzina' => 'float',
-		'trebusna_dolzina' => 'float',
-		'plecna_visina' => 'float',
-		'obseg_glave' => 'float',
-		'obseg_vratu' => 'float',
-		'obseg_prsnega_kosa' => 'float',
-		'obseg_trebuha' => 'float',
-		'dolzina_spolne_kosti' => 'float',
-		'dolzina_seskov' => 'float',
+		'body_length' => 'float',
+		'shoulder_height' => 'float',
+		'head_circumference' => 'float',
+		'neck_circumference' => 'float',
+		'thorax_circumference' => 'float',
+		'abdomen_circumference' => 'float',
+		'baculum_length' => 'float',
+		'nipple_length' => 'float',
 		'teats_wear_list_id' => 'int',
-		'dolzina_repa_prva_meritev' => 'float',
-		'dolzina_repa_druga_meritev' => 'float',
-		'dolzina_usesov' => 'float',
-		'dolzina_copkov' => 'float',
-		'dzs_leva' => 'float',
-		'dzs_desna' => 'float',
-		'dps_desna' => 'float',
-		'dps_leva' => 'float',
-		'szs_leva' => 'float',
-		'szs_desna' => 'float',
-		'sps_leva' => 'float',
-		'sps_desna' => 'float',
-		'dzp_leva' => 'float',
-		'dzp_desna' => 'float',
-		'dsp_leva' => 'float',
-		'dsp_desna' => 'float',
-		'sp_zgoraj' => 'float',
-		'sp_spodaj' => 'float',
+		'tail_length' => 'float',
+		'ear_length_without_hair' => 'float',
+		'hair_tuft_length' => 'float',
+		'hind_left_paw_length' => 'float',
+		'hind_right_paw_length' => 'float',
+		'front_right_paw_length' => 'float',
+		'front_left_paw_length' => 'float',
+		'hind_left_paw_width' => 'float',
+		'hind_right_paw_width' => 'float',
+		'front_left_paw_width' => 'float',
+		'front_right_paw_width' => 'float',
+		'upper_left_canines_length' => 'float',
+		'lower_left_canines_length' => 'float',
+		'upper_right_canines_length' => 'float',
+		'lower_right_canines_length' => 'float',
+		'number_of_premolars_in_the_upper_jaw' => 'float',
+		'number_of_premolars_in_the_lower_jaw' => 'float',
+		'distance_between_upper_canines' => 'float',
+		'distance_between_lower_canines' => 'float',
+		'testicals_left_length' => 'float',
+		'testicals_left_width' => 'float',
+		'testicals_right_length' => 'float',
+		'testicals_right_width' => 'float',
 		'incisors_wear_list_id' => 'int',
 		'color_list_id' => 'int',
 		'collar_list_id' => 'int',
-		'meritve_opravil_id' => 'int',
-		'meritve_opravil_drzava' => 'int',
+		'fur_pattern_in_lynx_list_id' => 'int',
 		'status' => 'int'
-	];
-
-	protected $dates = [
-		'cas_biometrije',
-		'cas_vnosa'
 	];
 
 	protected $fillable = [
@@ -159,63 +144,44 @@ class BearsBiometryData extends Model
 		'age',
 		'masa_bruto',
 		'masa_neto',
-		'hrbtna_dolzina',
-		'trebusna_dolzina',
-		'plecna_visina',
-		'obseg_glave',
-		'obseg_vratu',
-		'obseg_prsnega_kosa',
-		'obseg_trebuha',
-		'dolzina_spolne_kosti',
-		'dolzina_seskov',
+		'body_length',
+		'shoulder_height',
+		'head_circumference',
+		'neck_circumference',
+		'thorax_circumference',
+		'abdomen_circumference',
+		'baculum_length',
+		'nipple_length',
 		'teats_wear_list_id',
-		'dolzina_repa_prva_meritev',
-		'dolzina_repa_druga_meritev',
-		'dolzina_usesov',
-		'dolzina_copkov',
-		'dzs_leva',
-		'dzs_desna',
-		'dps_desna',
-		'dps_leva',
-		'szs_leva',
-		'szs_desna',
-		'sps_leva',
-		'sps_desna',
-		'dzp_leva',
-		'dzp_desna',
-		'dsp_leva',
-		'dsp_desna',
-		'sp_zgoraj',
-		'sp_spodaj',
+		'tail_length',
+		'ear_length_without_hair',
+		'hair_tuft_length',
+		'hind_left_paw_length',
+		'hind_right_paw_length',
+		'front_right_paw_length',
+		'front_left_paw_length',
+		'hind_left_paw_width',
+		'hind_right_paw_width',
+		'front_left_paw_width',
+		'front_right_paw_width',
+		'upper_left_canines_length',
+		'lower_left_canines_length',
+		'upper_right_canines_length',
+		'lower_right_canines_length',
+		'number_of_premolars_in_the_upper_jaw',
+		'number_of_premolars_in_the_lower_jaw',
+		'distance_between_upper_canines' => 'float',
+		'distance_between_lower_canines' => 'float',
+		'testicals_left_length' => 'float',
+		'testicals_left_width' => 'float',
+		'testicals_right_length' => 'float',
+		'testicals_right_width' => 'float',
 		'incisors_wear_list_id',
 		'color_list_id',
 		'collar_list_id',
-		'stanje_lesine',
-		'zdt',
-		'masa_mesa',
-		'udt',
-		'dg',
-		'dnpp',
-		'lds',
-		'ltv',
-		'kds',
-		'ktv',
-		'boja_barve',
-		'stare_ozljede',
-		'dio',
-		'opce_stanje',
-		'tco_ime',
-		'tco_prezime',
-		'tco_naziv',
-		'tco_adresa',
-		'meritve_opravil_id',
-		'meritve_opravil_ime',
-		'meritve_opravil_priimek',
-		'meritve_opravil_drzava',
-		'ostala_opazanja',
-		'opombe',
-		'cas_biometrije',
-		'cas_vnosa',
+		'fur_pattern_in_lynx_list_id',
+		'observations_and_notes',
+		'date_and_time_of_data_input',
 		'depot',
 		'status'
 	];
@@ -250,8 +216,8 @@ class BearsBiometryData extends Model
 		return $this->belongsTo(CollarList::class);
 	}
 
-	public function user()
+	public function fur_pattern_in_lynx_list()
 	{
-		return $this->belongsTo(User::class, 'meritve_opravil_id');
+		return $this->belongsTo(FurPatternInLynxList::class);
 	}
 }

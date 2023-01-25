@@ -26,7 +26,7 @@ class ColorList extends BaseList
 	 */
 	public static function label(): string
 	{
-		return __('Bear fur colour');
+		return __('Bear fur color');
 	}
 
 	/**
@@ -36,6 +36,6 @@ class ColorList extends BaseList
 	 */
 	public static function singularLabel(): string
 	{
-		return __('Bear fur colour');
+		return __('Bear fur color');
 	}
 }
