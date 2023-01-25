@@ -21,6 +21,7 @@ use Orchid\Screen\AsSource;
  * @property int|null $way_of_withdrawal_list_id
  * @property int|null animal_conflictedness
  * @property int|null animal_conflictedness_details
+ * @property int|null number_of_removal_in_the_hunting_administrative_area
  * @property string|null $licence_number
  * @property string|null $project_name
  * @property string|null $receiving_country
@@ -122,6 +123,7 @@ class BearsBiometryAnimalHandling extends Model
 		'id',
 		'animal_conflictedness',
 		'animal_conflictedness_details',
+		'number_of_removal_in_the_hunting_administrative_area',
 		'licence_number',
 		'project_name',
 		'receiving_country',
@@ -158,12 +160,13 @@ class BearsBiometryAnimalHandling extends Model
 		'spatial_unit_gid',
 		'way_of_withdrawal_list_id',
 		'conflict_animal_removal_list_id',
+		'licence_list_id',
 		'removal_annual_uid',
 		'photos_collected',
 		'jaw_photos_collected',
 		'liver_samples_collected',
 		'measurer_name_and_surname',
-		'hunting_ground_representative'
+		'hunting_ground_representative',
 	];
 
 	protected $allowedSorts = [
@@ -238,4 +241,11 @@ class BearsBiometryAnimalHandling extends Model
     {
         return $this->hasOne('App\Models\BearsBiometryData');
     }
+
+	public function renderAnimalStatusOnHandling()
+	{
+		return $this->animal_status_on_handling == Animal::STR_ALIVE ?
+			'<i class="text-success">●</i> ' . __('Alive') :
+			'<i class="text-danger">●</i> ' . __('Dead');
+	}
 }

@@ -1,14 +1,12 @@
 {
 	"Cannot delete the animal because it contains one or more handlings. You have to delete the animal handling first!": "Ne morete izbrisati podatkov o živali, ker ima eno ali več povezanih rokovanj. Najprej obrišite podatke o rokovanjih!",
 	"You have successfully deleted the animal": "Uspešno ste izbrisali podatke o živali",
-	"Animal Handlings": "Rokovanja z živalmi",
+	"Animal handlings": "Rokovanja z živalmi",
 	"Animals": "Živali",
 	"New animal handling": "Novo rokovanje z živaljo",
 	"Export to XLS": "Izvoz v XLS",
-	"Animals": "Živali",
 	"Animal handling": "Rokovanje z živaljo",
 	"Edit animal handling": "Uredi rokovanje z živaljo",
-	"New animal handling": "Novo rokovanje z živaljo",
 	"Animal Handling Create / Update": "Ustvarjanje novih / urejanje podatkov o upravljanju z živaljo",
 	"Save animal handling": "Shrani podatke o upravljanju z živaljo",
 	"Save animal handling and add biometry data": "Shrani podatke o upravljanju z živaljo in dodaj biometrične podatke",
@@ -402,5 +400,11 @@
 	"Length": "Dolžina",
 	"Width": "Širina",
 
-	"Other": "Drugo"
+	"Other": "Drugo",
+	"This animal has no handlings recorded": "Za to žival ni zabeleženih rokovanj",
+	"No attachments found": "Ni zabeleženih prilog",
+	"With biometry data": "Vsebuje biometrične podatke",
+	"Biometry data missing": "Brez biometričnih podatkov",
+
+	"You have successfully updated Animal data.": "Uspešno ste uredili podatke o živali"
 }

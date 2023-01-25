@@ -195,7 +195,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 		return [
 			'bearsBiometryAnimalHandling' => new Repository([
 				'dna_sample_taken'      => $triggers['dna_sample_taken'],
-				'dna_type_list_details' => $triggers['dna_sample_taken_details'] ?? null,
+				'dna_sample_taken_details' => $triggers['dna_sample_taken_details'] ?? null,
 			]),
 		];
 	}
@@ -640,7 +640,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 	{
 		$this->createOrUpdate($animal, $bearsBiometryAnimalHandling, $request);
 
-		return redirect()->route('platform.bearsBiometryData.edit', $bearsBiometryAnimalHandling);
+		return redirect()->route('platform.biometryData.edit', $bearsBiometryAnimalHandling);
 	}
 
 	/**

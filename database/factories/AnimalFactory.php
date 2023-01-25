@@ -21,7 +21,7 @@ class AnimalFactory extends Factory
     public function definition()
     {
 		$val = Str::random(10);
-		$isAlive = random_int(0, 1) > 0;
+		$isAlive = random_int(0, 1) == 0;
 
         return [
 			'status' => $isAlive ? Animal::STR_ALIVE : Animal::STR_DEAD,

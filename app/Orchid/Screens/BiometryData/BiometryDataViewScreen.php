@@ -43,7 +43,7 @@ class BiometryDataViewScreen extends Screen
      */
     public function name(): ?string
     {
-        return __('Biometry Data');
+        return __('Biometry Data') . ' ID: ' . $this->bearsBiometryData->id;
     }
 
     /**
@@ -75,42 +75,45 @@ class BiometryDataViewScreen extends Screen
 		$isFemale = $this->bearsBiometryData->sex_list_id == SexList::FEMALE_SEX_ID;
 		$isNeutral = $this->bearsBiometryData->sex_list_id == SexList::NEUTRAL_SEX_ID;
 
-		$idSight = [
-			Sight::make('id')
-		]; // ->popover('Identifier, a symbol which uniquely identifies an object or record'),
-
 		$animalSight = [
-			Sight::make('bears_biometry_animal_handling_animal_id', __('Animal ID'))
-				->render(function ($bearsBiometryData) {
-					return Link::make($bearsBiometryData->bears_biometry_animal_handling->animal_id)
-						->route('platform.animalData.view', [ $bearsBiometryData->bears_biometry_animal_handling->animal_id ])
-						->icon('link');
-				}),
 			Sight::make('bears_biometry_animal_handling_animal_name', __('Animal name'))
 				->render(function ($bearsBiometryData) {
-					return $bearsBiometryData->bears_biometry_animal_handling->animal->name;
+					return Link::make($bearsBiometryData->bears_biometry_animal_handling->animal->name)
+						->route('platform.animalData.view', [ $bearsBiometryData->bears_biometry_animal_handling->animal_id ])
+						->icon('number-list');
 				}),
 			Sight::make('bears_biometry_animal_handling_animal_species_list_name', __('Animal species'))
 				->render(function ($bearsBiometryData) {
 					return $bearsBiometryData->bears_biometry_animal_handling->animal->species_list->name;
 				}),
+
+			Sight::make('bears_biometry_animal_handling->animal->sex_list_id', __('Sex'))
+				->render(function ($bearsBiometryData) {
+					return $bearsBiometryData->bears_biometry_animal_handling->animal->sex_list->name;
+				}),
+
 			Sight::make('bears_biometry_animal_handling_animal_status', __('Animal status'))
 				->render(function ($bearsBiometryData) {
-					return $bearsBiometryData->bears_biometry_animal_handling->animal->statusRender();
+					return $bearsBiometryData->bears_biometry_animal_handling->animal->renderStatus();
+				}),
+
+			Sight::make('died_at', __('Died at'))
+				->render(function ($bearsBiometryData) {
+					return $bearsBiometryData->bears_biometry_animal_handling->animal->died_at;
+				}),
+
+			Sight::make('description', __('Description'))
+				->render(function ($bearsBiometryData) {
+					return $bearsBiometryData->bears_biometry_animal_handling->animal->description;
 				}),
 		];
 
 		$animalHandlingSight = [
-			Sight::make('', __('Animal handling')),
-			Sight::make('bears_biometry_animal_handling->bears_biometry_animal_handling_id', __('Animal handling ID'))
-				->render(function ($bearsBiometryData) {
-					return Link::make($bearsBiometryData->bears_biometry_animal_handling_id)
-						->route('platform.bearsBiometryAnimalHandling.edit', [ $bearsBiometryData->bears_biometry_animal_handling->animal_id, $bearsBiometryData->bears_biometry_animal_handling_id ])
-						->icon('link');
-				}),
 			Sight::make('bears_biometry_animal_handling->animal_handling_date', __('Animal handling date'))
 				->render(function ($bearsBiometryData) {
-					return $bearsBiometryData->bears_biometry_animal_handling->animal_handling_date;
+					return Link::make($bearsBiometryData->bears_biometry_animal_handling->animal_handling_date)
+						->route('platform.bearsBiometryAnimalHandling.edit', [ $bearsBiometryData->bears_biometry_animal_handling->animal_id, $bearsBiometryData->bears_biometry_animal_handling_id ])
+						->icon('number-list');
 				}),
 			Sight::make('bears_biometry_animal_handling->date_and_time_of_biometry_measurements', __('Date and time of biometry measurements'))
 				->render(function ($bearsBiometryData) {
@@ -246,10 +249,9 @@ class BiometryDataViewScreen extends Screen
 		];
 
         return [
-			Layout::legend('bearsBiometryData', $idSight),
-			Layout::legend('bearsBiometryData', $animalSight)->title(__('Animal')),
-			Layout::legend('bearsBiometryData', $animalHandlingSight)->title(__('Animal handling')),
-			Layout::legend('bearsBiometryData', $biometrySight)->title(__('Biometry data')),
+			Layout::legend('bearsBiometryData', $biometrySight),
+			Layout::legend('bearsBiometryData', $animalHandlingSight)->title(__('Animal handling') . ' ID: ' . $this->bearsBiometryData->bears_biometry_animal_handling->id),
+			Layout::legend('bearsBiometryData', $animalSight)->title(__('Animal') . ' ID: ' . $this->bearsBiometryData->bears_biometry_animal_handling->animal_id),
 
 			Layout::modal('modalRemove', [
 				Layout::rows([

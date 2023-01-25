@@ -23,10 +23,10 @@ class AnimalDataViewScreen extends Screen
      *
      * @return array
      */
-    public function query($animal): iterable
+    public function query(Animal $animal): iterable
     {
 		return [
-			'animal' => Animal::find($animal)
+			'animal' => $animal
 		];
     }
 
@@ -37,7 +37,7 @@ class AnimalDataViewScreen extends Screen
      */
     public function name(): ?string
     {
-        return __('Animal');
+        return __('Animal')  . ' ID: ' . $this->animal->id;
     }
 
     /**
@@ -74,29 +74,50 @@ class AnimalDataViewScreen extends Screen
      */
     public function layout(): iterable
     {
+		$animalSight = [
+			Sight::make('name', __('Name')),
+
+			Sight::make('specie_list_id', __('Species'))
+				->render(function ($animal) {
+					return $animal->species_list->name;
+				}),
+			Sight::make('sex_list_id', __('Sex'))
+				->render(function ($animal) {
+					return $animal->sex_list->name;
+				}),
+			Sight::make('status', __('Status'))
+				->render(function ($animal) {
+					return $animal->renderStatus();
+				}),
+
+			Sight::make('died_at', __('Died at')),
+
+			Sight::make('description', __('Description')),
+
+			Sight::make('created_at', __('Created')),
+			Sight::make('updated_at', __('Updated')),
+		];
+
+		if (count($this->animal->bearsBiometryAnimalHandlings()->get()) == 0) {
+			$animalHandlingsSights = [
+				Sight::make('animalHandlings', __('This animal has no handlings recorded')),
+			];
+		} else {
+			$animalHandlingsSights = [];
+			foreach ($this->animal->bearsBiometryAnimalHandlings()->orderBy('animal_handling_date')->get() as $animalHandling) {
+				$animalHandlingsSights[] = Sight::make('animalHandlings', $animalHandling->animal_handling_date)
+					->render(function ($animal) use ($animalHandling) {
+						return Link::make('ID: ' . $animalHandling->id . ' ' . ( $animalHandling->bearsBiometryData ? __('(With biometry data)') : ''))
+							->route('platform.animalHandling.view', [ $animalHandling->id ])
+							->icon('number-list');
+					});
+			}
+		}
+
         return [
-			Layout::legend('animal', [
-                Sight::make('id'), // ->popover('Identifier, a symbol which uniquely identifies an object or record'),
-				Sight::make('specie_list_id', __('Species'))
-					->render(function ($animal) {
-						return SpeciesList::find($animal->species_list_id)->name;
-					}),
-				Sight::make('sex_list_id', __('Sex'))
-					->render(function ($animal) {
-						return SexList::find($animal->sex_list_id)->name;
-					}),
-				Sight::make('status', __('Status'))
-					->render(function ($animal) {
-						return $animal->status == Animal::STR_ALIVE
-							? '<i class="text-success">●</i> ' . __('Alive')
-							: '<i class="text-danger">●</i> ' . __('Dead');
-					}),
-				Sight::make('name', __('Name')),
-				Sight::make('description', __('Description')),
-				Sight::make('created_at', __('Created')),
-                Sight::make('updated_at', __('Updated')),
-				Sight::make('died_at', __('Died at'))
-            ]),
+			Layout::legend('animal', $animalSight),
+			Layout::legend('animal', $animalHandlingsSights)->title(__('Animal handlings')),
+
 			Layout::modal('modalRemove', [
 				Layout::rows([
 					Label::make('label')

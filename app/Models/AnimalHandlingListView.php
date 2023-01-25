@@ -206,4 +206,11 @@ class AnimalHandlingListView extends Model
     {
         return $this->hasMany('App\Models\BearsBiometrySample');
     }
+
+	public function renderAnimalStatusOnHandling()
+	{
+		return $this->animal_status_on_handling == Animal::STR_ALIVE ?
+			'<i class="text-success">●</i> ' . __('Alive') :
+			'<i class="text-danger">●</i> ' . __('Dead');
+	}
 }

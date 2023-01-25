@@ -51,6 +51,7 @@ class Controller extends BaseController
 			$row[] = $animalHandling->way_of_withdrawal_list != null ?? $animalHandling->way_of_withdrawal_list->name;
 			$row[] = $animalHandling->animal_conflictedness;
 			$row[] = $animalHandling->animal_conflictedness_details;
+			$row[] = $animalHandling->number_of_removal_in_the_hunting_administrative_area;
 			$row[] = $animalHandling->conflict_animal_removal_list_id;
 			$row[] = $animalHandling->conflict_animal_removal_list != null ?? $animalHandling->conflict_animal_removal_list->name;
 			$row[] = $animalHandling->licence_list_id;
@@ -149,7 +150,7 @@ class Controller extends BaseController
 		$csv->insertOne([
 			'animal_id', 'species_list_id', 'species', 'sex_list_id', 'sex', 'status', 'title', 'name', 'description', '',
 			'animal_handling_id', 'way_of_withdrawal_list_id', 'way_of_withdrawal',
-			'animal_conflictedness', 'animal_conflictedness_details',
+			'animal_conflictedness', 'animal_conflictedness_details', 'number_of_removal_in_the_hunting_administrative_area',
 			'conflict_animal_removal_list_id', 'conflict_animal_removal', 'licence_list_id', 'licence_list', 'licence_number', 'project_name', 'receiving_country', 'telementry_uid', 'biometry_loss_reason_list_id', 'biometry_loss_reason_list', 'biometry_loss_reason_description', 'animal_handling_date', 'date_and_time_of_biometry_measurements','place_of_removal', 'place_type_list_id', 'place_type_lis', 'place_type_list_details', 'lat', 'lng', 'hunting_management_area', 'hunting_management_area_id', 'hunter_finder_name_and_surname', 'hunter_finder_country_id', 'hunter_finder_country', 'witness_accompanying_person_name_and_surname', 'hair_sample_taken', 'hair_sample_taken_details', 'dna_sample_taken', 'dna_sample_taken_details', 'tooth_type_list_id', 'tooth_type_list', 'taxidermist_name_and_surname', 'hunting_ground', 'spatial_unit_gid', 'number_of_removal_in_the_hunting_administration_area', 'animal_status_on_handling', ' ',
 			'biometry_data_id', 'age', 'masa_bruto', 'masa_neto', 'body_length', 'shoulder_height', 'head_circumference', 'neck_circumference', 'thorax_circumference', 'abdomen_circumference', 'baculum_length', 'nipple_length', 'teats_wear_list_id', 'teats_wear_list', 'tail_length', 'ear_length_without_hair', 'hair_tuft_length', 'hind_left_paw_length', 'hind_right_paw_length', 'front_right_paw_length', 'front_left_paw_length', 'hind_left_paw_width', 'hind_right_paw_width', 'front_left_paw_width', 'front_right_paw_width',
 			'upper_left_canines_length', 'lower_left_canines_length', 'upper_right_canines_length', 'lower_right_canines_length',

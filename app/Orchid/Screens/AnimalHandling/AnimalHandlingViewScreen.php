@@ -38,7 +38,7 @@ class AnimalHandlingViewScreen extends Screen
 	 */
 	public function name(): ?string
 	{
-		return __('Animal handling');
+		return __('Animal handling') . ' ID: ' . $this->bearsBiometryAnimalHandling->id;
 	}
 
 	/**
@@ -50,13 +50,13 @@ class AnimalHandlingViewScreen extends Screen
 	{
 		return [
 			Link::make(__('Biometry data'))
-				->icon('pencil')
+				->icon('number-list')
 				->route('platform.biometryData.view', [ 'bearsBiometryData' => $this->bearsBiometryAnimalHandling->bearsBiometryData ?? -1 ])
 				->canSee(isset($this->bearsBiometryAnimalHandling->bearsBiometryData)),
 
 			Link::make(__('Update'))
 				->icon('pencil')
-				->route('platform.bearsBiometryAnimalHandling.edit', [ 'animal' => $this->bearsBiometryAnimalHandling->animal, 'bearsBiometryAnimalHandling' => $this->bearsBiometryAnimalHandling ]),
+				->route('platform.animalHandling.edit', [ 'animal' => $this->bearsBiometryAnimalHandling->animal, 'bearsBiometryAnimalHandling' => $this->bearsBiometryAnimalHandling ]),
 
 			ModalToggle::make('Remove')
 				->modal('modalRemove')
@@ -72,14 +72,7 @@ class AnimalHandlingViewScreen extends Screen
 	 */
 	public function layout(): iterable
 	{
-		$sights = [
-			Sight::make('bears_biometry_animal_handling_id', __('Animal handling ID'))
-				->render(function ($bearsBiometryAnimalHandling) {
-					return Link::make($bearsBiometryAnimalHandling->id)
-						->route('platform.bearsBiometryAnimalHandling.edit', [ $bearsBiometryAnimalHandling->animal, $bearsBiometryAnimalHandling ])
-						->icon('link');
-				}),
-
+		$animalHandlingSights = [
 			Sight::make('animal_handling_date', __('Date and time of animal handling'))
 				->render(function ($bearsBiometryAnimalHandling) {
 					return $bearsBiometryAnimalHandling->animal_handling_date;
@@ -87,7 +80,11 @@ class AnimalHandlingViewScreen extends Screen
 
 			Sight::make('date_and_time_of_biometry_measurements', __('Date and time of biometry measurements'))
 				->render(function ($bearsBiometryAnimalHandling) {
-					return $bearsBiometryAnimalHandling->date_and_time_of_biometry_measurements;
+					return $this->bearsBiometryAnimalHandling->bearsBiometryData ?
+						Link::make($bearsBiometryAnimalHandling->date_and_time_of_biometry_measurements)
+							->icon('number-list')
+							->route('platform.biometryData.view', [ 'bearsBiometryData' => $this->bearsBiometryAnimalHandling->bearsBiometryData ]) :
+						__('No biometry data found');
 				}),
 
 			Sight::make('place_of_removal', __('Geo location / Local name'))
@@ -99,25 +96,25 @@ class AnimalHandlingViewScreen extends Screen
 				$render = '';
 				$attachments = $bearsBiometryAnimalHandling->attachment->all();
 
-				$counter = 1;
-				foreach ($attachments as $attachment) {
-					$render .= '<a href="' . $attachment->url . '">' . $counter++ . '. ' . $attachment->original_name . "</a><br>";
+				if (count($attachments) > 0) {
+					$counter = 1;
+					foreach ($attachments as $attachment) {
+						$render .= '<a href="' . $attachment->url . '">' . $counter++ . '. ' . $attachment->original_name . "</a><br>";
+					}
+					return $render;
+				} else {
+					return __('No attachments found');
 				}
-				return $render;
+
 			}),
+		];
 
-			Sight::make('', __('Animal')),
-
-			Sight::make('animal_id', __('Animal ID'))
-				->render(function ($bearsBiometryAnimalHandling) {
-					return Link::make($bearsBiometryAnimalHandling->animal->id)
-						->route('platform.animalData.view', [ $bearsBiometryAnimalHandling->animal ])
-						->icon('link');
-				}),
-
+		$animalSights = [
 			Sight::make('animal->name', __('Animal name'))
 				->render(function ($bearsBiometryAnimalHandling) {
-					return $bearsBiometryAnimalHandling->animal->name;
+					return Link::make($bearsBiometryAnimalHandling->animal->name)
+						->route('platform.animalData.view', [ $bearsBiometryAnimalHandling->animal ])
+						->icon('number-list');
 				}),
 
 			Sight::make('bears_biometry_animal_handling->animal->sex_list_id', __('Sex'))
@@ -131,12 +128,23 @@ class AnimalHandlingViewScreen extends Screen
 				}),
 			Sight::make('animal->status', __('Animal status'))
 				->render(function ($bearsBiometryAnimalHandling) {
-					return $bearsBiometryAnimalHandling->animal->status == Animal::STR_ALIVE ? __('Alive') : __('Dead');
+					return $bearsBiometryAnimalHandling->animal->renderStatus();
+				}),
+
+			Sight::make('died_at', __('Died at'))
+				->render(function ($bearsBiometryAnimalHandling) {
+					return $bearsBiometryAnimalHandling->animal->died_at;
+				}),
+
+			Sight::make('description', __('Description'))
+				->render(function ($bearsBiometryAnimalHandling) {
+					return $bearsBiometryAnimalHandling->animal->description;
 				}),
 		];
 
 		return [
-			Layout::legend('bearsBiometryAnimalHandling', $sights),
+			Layout::legend('bearsBiometryAnimalHandling', $animalHandlingSights),
+			Layout::legend('bearsBiometryAnimalHandling', $animalSights)->title(__('Animal') . ' ID: ' . $this->bearsBiometryAnimalHandling->animal_id),
 
 			Layout::modal('modalRemove', [
 				Layout::rows([

@@ -52,7 +52,7 @@ class AnimalDataEditScreen extends Screen
 		return [
 			Button::make(__('Save animal data'))
 				->icon('check')
-				->method('createOrUpdate')
+				->method('createOrUpdateAnimal')
 		];
 	}
 
@@ -86,19 +86,19 @@ class AnimalDataEditScreen extends Screen
 						Button::make(__('Save animal data'))
 							->type(Color::DEFAULT())
 							->icon('check')
-							->method('createOrUpdate')
+							->method('createOrUpdateAnimal')
 					]
 				),
 		];
 	}
 
 	/**
-	 * @param Post    $post
+	 * @param Animal $animal
 	 * @param Request $request
 	 *
 	 * @return \Illuminate\Http\RedirectResponse
 	 */
-	public function createOrUpdate(Animal $animal, Request $request)
+	public function createOrUpdateAnimal(Animal $animal, Request $request)
 	{
 		$animal->fill($request->get('animal'));
 
@@ -114,7 +114,7 @@ class AnimalDataEditScreen extends Screen
 
 		$animal->save();
 
-		Alert::info(__('You have successfully updated Animal data.') . 'ID: ' . $animal->id);
+		Alert::info(__('You have successfully updated Animal data.') . ' ID: ' . $animal->id);
 
 		return redirect()->route('platform.animals.list');
 	}

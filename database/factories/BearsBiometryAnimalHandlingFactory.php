@@ -29,6 +29,7 @@ class BearsBiometryAnimalHandlingFactory extends Factory
 		return [
 			'animal_conflictedness' => mt_rand(0, 1),
 			'animal_conflictedness_details' => Str::random(10),
+			'number_of_removal_in_the_hunting_administrative_area' => Str::random(10),
 			'way_of_withdrawal_list_id' => WayOfWithdrawalList::All()->random()->id,
 			'conflict_animal_removal_list_id' => ConflictAnimalRemovalList::all()->random()->id,
 			'licence_list_id' => LicenceList::all()->random()->id,
@@ -66,7 +67,7 @@ class BearsBiometryAnimalHandlingFactory extends Factory
 			'hunting_ground' => Str::random(10),
 			'spatial_unit_gid' => SpatialUnit::all()->random()->id,
 			'number_of_removal_in_the_hunting_administration_area' => Str::random(10),
-			'animal_status_on_handling' => Animal::STR_ALIVE,
+			'animal_status_on_handling' => mt_rand(0, 1) == 1 ? Animal::STR_ALIVE : Animal::STR_DEAD,
 			'photos_collected' => mt_rand(0, 1),
 			'jaw_photos_collected' => mt_rand(0, 1),
 			'liver_samples_collected' => mt_rand(0, 1),

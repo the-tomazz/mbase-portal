@@ -100,7 +100,7 @@ class Animal extends Model
 		return $this->hasMany(BearsBiometryAnimalHandling::class);
 	}
 
-	public function statusRender()
+	public function renderStatus()
 	{
 		return $this->status == self::STR_ALIVE ?
 			'<i class="text-success">●</i> ' . __('Alive') :

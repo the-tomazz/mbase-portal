@@ -30,7 +30,7 @@ class AnimalHandlingListViewListScreen extends Screen
 	 */
 	public function name(): ?string
 	{
-		return __('Animal Handlings');
+		return __('Animal handlings');
 	}
 
 	/**
@@ -38,7 +38,7 @@ class AnimalHandlingListViewListScreen extends Screen
 	 */
 	public function description(): ?string
 	{
-		return __("Animal Handlings");
+		return __('Animal handlings');
 	}
 
 	/**

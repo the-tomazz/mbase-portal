@@ -51,13 +51,13 @@ class AnimalListScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-			Link::make(__('Animal Handlings'))
+			Link::make(__('Animal handlings'))
 				->icon('list')
 				->route('platform.animalHandling.list', ['filter[animal_status]' => Auth::user()->defaultVisualisationAnimalStatus()]),
 
 			Link::make(__('New animal handling'))
                 ->icon('pencil')
-                ->route('platform.bearsBiometryAnimalHandling.edit'),
+                ->route('platform.animalHandling.edit'),
 		];
     }
 

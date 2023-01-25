@@ -82,9 +82,7 @@ class AnimalListLayout extends Table
 
 			TD::make('status', __('Status'))
 				->render(function (Animal $animal) {
-					return $animal->status == Animal::STR_ALIVE
-						? '<i class="text-success">●</i> ' . __('Alive')
-						: '<i class="text-danger">●</i> ' . __('Dead');
+					return $animal->renderStatus();
 				})
 				->sort()
 				->filter(
@@ -107,12 +105,8 @@ class AnimalListLayout extends Table
 				->render(function (Animal $animal) {
 					$animalHandlingsRender = '';
 					foreach ($animal->bearsBiometryAnimalHandlings()->get() as $animalHandling) {
-						$animalStatusRender = $animal->status == Animal::STR_ALIVE
-							? '<i class="text-success">●</i> ' . __('Alive')
-							: '<i class="text-danger">●</i> ' . __('Dead');
-
-						$animalHandlingRender = $animalStatusRender . ' ' . Link::make($animalHandling->animal_handling_date . ' ' . $animalHandling->hunting_management_area)
-							->route('platform.bearsBiometryAnimalHandling.edit', [ $animalHandling->animal_id, $animalHandling ]);
+						$animalHandlingRender = $animal->renderStatus() . ' ' . Link::make($animalHandling->animal_handling_date)
+							->route('platform.animalHandling.view', [ $animalHandling ]);
 
 						if ($animalHandlingsRender == '') {
 							$animalHandlingsRender .= $animalHandlingRender;

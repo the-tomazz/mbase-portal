@@ -51,9 +51,7 @@ class BiometryDataEditScreen extends Screen
 		$bearsBiometryData['bears_biometry_animal_handling_animal_species_list_name'] = $bearsBiometryAnimalHandling->animal->species_list->name;
 		$bearsBiometryData['bears_biometry_animal_handling_animal_sex_list_id'] = $bearsBiometryAnimalHandling->animal->sex_list_id;
 		$bearsBiometryData['bears_biometry_animal_handling_animal_species_list_id'] = $bearsBiometryAnimalHandling->animal->species_list_id;
-		$bearsBiometryData['bears_biometry_animal_handling_animal_status'] = $bearsBiometryAnimalHandling->animal->status == Animal::STR_ALIVE
-			? __('Alive')
-			: __('Dead');
+		$bearsBiometryData['bears_biometry_animal_handling_animal_status'] = $bearsBiometryAnimalHandling->animal->statusString();
 
 		return [
 			'bearsBiometryAnimalHandling' => $bearsBiometryAnimalHandling,
@@ -81,7 +79,7 @@ class BiometryDataEditScreen extends Screen
 		return [
 			Button::make(__('Save biometry data'))
 				->icon('pencil')
-				->method('update'),
+				->method('createOrUpdateBiometryData'),
 		];
 	}
 
@@ -383,7 +381,7 @@ class BiometryDataEditScreen extends Screen
 			Layout::rows([
 				Button::make(__('Save biometry data'))
 					->icon('pencil')
-					->method('update'),
+					->method('createOrUpdateBiometryData'),
 			]),
 
 			Layout::modal('modalRemove', [
@@ -401,12 +399,13 @@ class BiometryDataEditScreen extends Screen
 	}
 
 	/**
-	 * @param BearsBiometryData    $bearsBiometryData
+	 * @param BearsBiometryAnimalHandling $bearsBiometryAnimalHandling
+	 * @param BearsBiometryData $bearsBiometryData
 	 * @param Request $request
 	 *
 	 * @return \Illuminate\Http\RedirectResponse
 	 */
-	public function update(BearsBiometryAnimalHandling $bearsBiometryAnimalHandling, BearsBiometryData $bearsBiometryData, Request $request)
+	public function createOrUpdateBiometryData(BearsBiometryAnimalHandling $bearsBiometryAnimalHandling, BearsBiometryData $bearsBiometryData, Request $request)
 	{
 		$requestBearsBiometryData = $request->get('bearsBiometryData');
 
