@@ -4,7 +4,10 @@ namespace App\Orchid\Screens\AnimalHandling;
 
 use App\Models\AnimalHandlingListView;
 use App\Orchid\Layouts\AnimalHandlingListViewListLayout;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Orchid\Screen\Actions\DropDown;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Layout;
@@ -18,8 +21,10 @@ class AnimalHandlingListViewListScreen extends Screen
 	 */
 	public function query(): iterable
 	{
+		$perPage = request()->input('per_page') ?? 15;
+
 		return [
-			'animalHandlings' => AnimalHandlingListView::filters()->paginate()
+			'animalHandlings' => AnimalHandlingListView::filters()->paginate($perPage)->withQueryString()
 		];
 	}
 
@@ -60,6 +65,21 @@ class AnimalHandlingListViewListScreen extends Screen
 			Link::make(__('Export to XLS'))
 				->icon('save')
 				->route('app.export.csv.animalhandlings', request()->input()),
+
+			DropDown::make(__('Page size'))
+			->icon('options-vertical')
+			->list([
+				Link::make(15),
+					/* ->route(Route::currentRouteName(), [ 'per_page' => 15 ]),
+				Link::make(30)
+					->route(Route::currentRouteName(), [ 'per_page' => 30 ]),
+				Link::make(50)
+					->route(Route::currentRouteName(), [ 'per_page' => 50 ]),
+				Link::make(100)
+					->route(Route::currentRouteName(), [ 'per_page' => 100 ]),
+				Link::make(__('All'))
+					->route(Route::currentRouteName(), [ 'per_page' => 1000000 ]), */
+			])
 		];
 	}
 

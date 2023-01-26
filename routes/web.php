@@ -64,6 +64,7 @@ Route::middleware(['web'])->group(
 
 
 		Route::get('/csv/animal-handlings', [Controller::class, 'exportAnimalHandlings'])->name('app.export.csv.animalhandlings');
+		Route::get('/csv/animals', [Controller::class, 'exportAnimals'])->name('app.export.csv.animals');
 	}
 );
 

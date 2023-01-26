@@ -12,8 +12,6 @@ use Orchid\Screen\Fields\Select;
 use Orchid\Screen\Layouts\Table;
 use Orchid\Screen\TD;
 
-use Orchid\Filters\Filter;
-
 class AnimalListLayout extends Table
 {
     /**
@@ -130,4 +128,14 @@ class AnimalListLayout extends Table
 				->sort(),
 		];
     }
+
+	/**
+	 * Get the number of models to return per page
+	 *
+	 * @return int
+	 */
+	public static function perPage(): int
+	{
+		return 30;
+	}
 }

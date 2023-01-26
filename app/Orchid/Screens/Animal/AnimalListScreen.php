@@ -58,6 +58,10 @@ class AnimalListScreen extends Screen
 			Link::make(__('New animal handling'))
                 ->icon('pencil')
                 ->route('platform.animalHandling.edit'),
+
+			Link::make(__('Export to XLS'))
+				->icon('save')
+				->route('app.export.csv.animals', request()->input()),
 		];
     }
 
