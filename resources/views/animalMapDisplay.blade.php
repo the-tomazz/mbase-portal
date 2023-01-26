@@ -78,7 +78,7 @@ That should be it.
 	setTimeout(() => {
 		console.log("Setting up map init");
 		initMap();
-	}, "1000")
+	}, "1500")
 </script>
 
 @endpush
