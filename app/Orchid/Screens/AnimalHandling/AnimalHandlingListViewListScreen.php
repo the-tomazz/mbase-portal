@@ -21,7 +21,7 @@ class AnimalHandlingListViewListScreen extends Screen
 	 */
 	public function query(): iterable
 	{
-		$perPage = request()->input('per_page') ?? 15;
+		$perPage = request()->input('per_page') ?? 5;
 
 		return [
 			'animalHandlings' => AnimalHandlingListView::filters()->paginate($perPage)->withQueryString()
@@ -53,6 +53,7 @@ class AnimalHandlingListViewListScreen extends Screen
 	 */
 	public function commandBar(): iterable
 	{
+		$query = request()->input();
 		return [
 			Link::make(__('New animal handling'))
 				->icon('pencil')
@@ -67,19 +68,19 @@ class AnimalHandlingListViewListScreen extends Screen
 				->route('app.export.csv.animalhandlings', request()->input()),
 
 			DropDown::make(__('Page size'))
-			->icon('options-vertical')
-			->list([
-				Link::make(15),
-					/* ->route(Route::currentRouteName(), [ 'per_page' => 15 ]),
-				Link::make(30)
-					->route(Route::currentRouteName(), [ 'per_page' => 30 ]),
-				Link::make(50)
-					->route(Route::currentRouteName(), [ 'per_page' => 50 ]),
-				Link::make(100)
-					->route(Route::currentRouteName(), [ 'per_page' => 100 ]),
-				Link::make(__('All'))
-					->route(Route::currentRouteName(), [ 'per_page' => 1000000 ]), */
-			])
+				->icon('options-vertical')
+				->list([
+					Link::make(15)
+						->route(Route::currentRouteName(), array_merge($query, ['per_page' => 15, 'page' => 1])),
+					Link::make(30)
+						->route(Route::currentRouteName(), array_merge($query, ['per_page' => 30, 'page' => 1])),
+					Link::make(50)
+						->route(Route::currentRouteName(), array_merge($query, ['per_page' => 50, 'page' => 1])),
+					Link::make(100)
+						->route(Route::currentRouteName(), array_merge($query, ['per_page' => 100, 'page' => 1])),
+					Link::make(__('All'))
+						->route(Route::currentRouteName(), array_merge($query, ['per_page' => 1000000, 'page' => 1])),
+				])
 		];
 	}
 
