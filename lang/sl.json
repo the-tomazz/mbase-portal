@@ -128,7 +128,9 @@
 	"Date and time of biometry measurements": "Datum in ura biometričnih meritev",
 	"All files": "Naloži datoteke (fotografije, pdf datoteke…)",
 
-	"You have successfully created or updated Biometry Data": "Uspešno ste ustvarili ali popravili biometrične podatke",
+	"You have successfully created Biometry Data": "Uspešno ste ustvarili biometrične podatke",
+	"You have successfully updated Biometry Data": "Uspešno ste shranili biometrične podatke",
+
 	"You have successfully deleted Biometry Data": "Uspešno ste izbrisali biometrične podatke",
 
 	"Date and time of death": "Datum in čas smrti",

@@ -77,9 +77,15 @@ class BiometryDataEditScreen extends Screen
 	public function commandBar(): iterable
 	{
 		return [
+			Button::make(__('Create biometry data'))
+				->icon('pencil')
+				->method('createBiometryData')
+				->canSee(!$this->bearsBiometryData->exists),
+
 			Button::make(__('Save biometry data'))
 				->icon('pencil')
-				->method('createOrUpdateBiometryData'),
+				->method('updateBiometryData')
+				->canSee($this->bearsBiometryData->exists),
 		];
 	}
 
@@ -379,9 +385,15 @@ class BiometryDataEditScreen extends Screen
 			])->title(__('Other')),
 
 			Layout::rows([
+				Button::make(__('Create biometry data'))
+					->icon('pencil')
+					->method('createBiometryData')
+					->canSee(!$this->bearsBiometryData->exists),
+
 				Button::make(__('Save biometry data'))
 					->icon('pencil')
-					->method('createOrUpdateBiometryData'),
+					->method('updateBiometryData')
+					->canSee($this->bearsBiometryData->exists),
 			]),
 
 			Layout::modal('modalRemove', [
@@ -405,7 +417,41 @@ class BiometryDataEditScreen extends Screen
 	 *
 	 * @return \Illuminate\Http\RedirectResponse
 	 */
-	public function createOrUpdateBiometryData(BearsBiometryAnimalHandling $bearsBiometryAnimalHandling, BearsBiometryData $bearsBiometryData, Request $request)
+	public function createBiometryData(BearsBiometryAnimalHandling $bearsBiometryAnimalHandling, Request $request)
+	{
+		$requestBearsBiometryData = $request->get('bearsBiometryData');
+
+		foreach ($requestBearsBiometryData as $key => $data) {
+			if ( $key != 'updated_at' && $key != 'created_at' ) {
+				$requestBearsBiometryData[$key] = intVal(str_replace('_', '', $data));
+			}
+		}
+
+		$sex_list_id = $requestBearsBiometryData['bears_biometry_animal_handling_animal_sex_list_id'];
+
+		unset($requestBearsBiometryData['bears_biometry_animal_handling_animal_sex_list_id']);
+
+		$animal = Animal::find($bearsBiometryAnimalHandling->animal_id);
+		$animal->sex_list_id = $sex_list_id;
+		$animal->save();
+
+		$bearsBiometryData = new BearsBiometryData();
+		$bearsBiometryData->bears_biometry_animal_handling_id = $bearsBiometryAnimalHandling->id;
+		$bearsBiometryData->fill($requestBearsBiometryData)->save();
+
+		Alert::info(__('You have successfully created Biometry Data') . ' ID: ' . $bearsBiometryAnimalHandling->id . '/' . $bearsBiometryData->id);
+
+		return redirect()->route('platform.animalHandling.list');
+	}
+
+	/**
+	 * @param BearsBiometryAnimalHandling $bearsBiometryAnimalHandling
+	 * @param BearsBiometryData $bearsBiometryData
+	 * @param Request $request
+	 *
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
+	public function updateBiometryData(BearsBiometryAnimalHandling $bearsBiometryAnimalHandling, BearsBiometryData $bearsBiometryData, Request $request)
 	{
 		$requestBearsBiometryData = $request->get('bearsBiometryData');
 
@@ -425,11 +471,7 @@ class BiometryDataEditScreen extends Screen
 
 		$bearsBiometryData->fill($requestBearsBiometryData)->save();
 
-		$bearsBiometryData->attachment()->syncWithoutDetaching(
-			$request->input('bearsBiometryData.attachment', [])
-		);
-
-		Alert::info(__('You have successfully created or updated Biometry Data'));
+		Alert::info(__('You have successfully updated Biometry Data') . ' ID: ' . $bearsBiometryAnimalHandling->id . '/' . $bearsBiometryData->id);
 
 		return redirect()->route('platform.animalHandling.list');
 	}

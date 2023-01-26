@@ -142,7 +142,7 @@ class AnimalHandlingListViewListLayout extends Table
 						? Link::make(__('Exists'))
 							->route('platform.biometryData.view', [ $animalHandlingListView->bears_biometry_data_id ])
 						: Link::make(__('Missing'))
-							->route('platform.biometryData.edit', [ $animalHandlingListView ]);
+							->route('platform.biometryData.create', [ $animalHandlingListView ]);
 				})
 				->sort()
 				->filter(
