@@ -408,5 +408,7 @@
 	"With biometry data": "Vsebuje biometrične podatke",
 	"Biometry data missing": "Brez biometričnih podatkov",
 
-	"You have successfully updated Animal data.": "Uspešno ste uredili podatke o živali"
+	"You have successfully updated Animal data.": "Uspešno ste uredili podatke o živali",
+	"Page size": "Število zapisov",
+	"All": "Vse"
 }
