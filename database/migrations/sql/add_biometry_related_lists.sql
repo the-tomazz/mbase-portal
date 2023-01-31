@@ -1036,7 +1036,7 @@ CREATE TABLE laravel.animal (
 	status varchar(16),
 	title varchar(128),
 	value text,
-	name jsonb,
+	name varchar(128),
 	description jsonb,
 	created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 	updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),

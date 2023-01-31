@@ -82,10 +82,37 @@ class AnimalListLayout extends Table
 								return SpeciesList::find($species_list_id)->name;
 				}),
 
-			TD::make('description', __('Description'))
-				->sort()
-				->filter(Input::make()),
+			TD::make('hunting_management_area', __('Hunting-management area (LUO)'))
+				->render(function (Animal $animal) {
+					$animalHandlingsRender = '';
+					foreach ($animal->bearsBiometryAnimalHandlings()->get() as $animalHandling) {
+						$animalHandlingRender = Link::make($animalHandling->hunting_management_area)
+							->route('platform.animalHandling.view', [ $animalHandling ]);
 
+						if ($animalHandlingsRender == '') {
+							$animalHandlingsRender .= $animalHandlingRender;
+						} else {
+							$animalHandlingsRender .= '<br>' . $animalHandlingRender;
+						}
+					}
+					return $animalHandlingsRender;
+				}),
+
+			TD::make('hunting_ground', __('Hunting ground'))
+				->render(function (Animal $animal) {
+					$animalHandlingsRender = '';
+					foreach ($animal->bearsBiometryAnimalHandlings()->get() as $animalHandling) {
+						$animalHandlingRender = Link::make($animalHandling->hunting_ground)
+							->route('platform.animalHandling.view', [ $animalHandling ]);
+
+						if ($animalHandlingsRender == '') {
+							$animalHandlingsRender .= $animalHandlingRender;
+						} else {
+							$animalHandlingsRender .= '<br>' . $animalHandlingRender;
+						}
+					}
+					return $animalHandlingsRender;
+				}),
 
 			TD::make('sex_list_id', __('Sex'))
 				->render(function (Animal $animal) {
@@ -100,13 +127,70 @@ class AnimalListLayout extends Table
 						return SexList::find($sex_list_id)->name;
 					}),
 
-
-			TD::make('animal_handlings', __('Animal handlings'))
+			TD::make('animal_handling', __('Animal handling date'))
 				->render(function (Animal $animal) {
 					$animalHandlingsRender = '';
 					foreach ($animal->bearsBiometryAnimalHandlings()->get() as $animalHandling) {
-						$animalHandlingRender = $animal->renderStatus() . ' ' . Link::make($animalHandling->animal_handling_date)
+						$animalHandlingRender = Link::make($animalHandling->animal_handling_date->toDateString())
 							->route('platform.animalHandling.view', [ $animalHandling ]);
+
+						if ($animalHandlingsRender == '') {
+							$animalHandlingsRender .= $animalHandlingRender;
+						} else {
+							$animalHandlingsRender .= '<br>' . $animalHandlingRender;
+						}
+					}
+					return $animalHandlingsRender;
+				}),
+
+			TD::make('animal_status_on_handling', __('Animal status on handling'))
+				->render(function (Animal $animal) {
+					$animalHandlingsRender = '';
+					foreach ($animal->bearsBiometryAnimalHandlings()->get() as $animalHandling) {
+						$animalHandlingRender = Link::make($animal->statusString())
+							->route('platform.animalHandling.view', [ $animalHandling ]);
+
+						if ($animalHandlingsRender == '') {
+							$animalHandlingsRender .= $animalHandlingRender;
+						} else {
+							$animalHandlingsRender .= '<br>' . $animalHandlingRender;
+						}
+					}
+					return $animalHandlingsRender;
+				}),
+
+			TD::make('age', __('Visual age estimate'))
+				->render(function (Animal $animal) {
+					$animalHandlingsRender = '';
+					foreach ($animal->bearsBiometryAnimalHandlings()->get() as $animalHandling) {
+						if ($animalHandling->bearsBiometryData) {
+							$animalHandlingRender = Link::make($animalHandling->bearsBiometryData->age)
+								->route('platform.biometryData.view', [ $animalHandling->bearsBiometryData ]);
+						} else {
+							$animalHandlingRender = Link::make(__('NA'))
+								->route('platform.biometryData.edit', [ $animalHandling ]);
+						}
+
+						if ($animalHandlingsRender == '') {
+							$animalHandlingsRender .= $animalHandlingRender;
+						} else {
+							$animalHandlingsRender .= '<br>' . $animalHandlingRender;
+						}
+					}
+					return $animalHandlingsRender;
+				}),
+
+			TD::make('masa_bruto', __('Gross body mass'))
+				->render(function (Animal $animal) {
+					$animalHandlingsRender = '';
+					foreach ($animal->bearsBiometryAnimalHandlings()->get() as $animalHandling) {
+						if ($animalHandling->bearsBiometryData) {
+							$animalHandlingRender = Link::make($animalHandling->bearsBiometryData->masa_bruto)
+								->route('platform.biometryData.view', [ $animalHandling->bearsBiometryData ]);
+						} else {
+							$animalHandlingRender = Link::make(__('NA'))
+								->route('platform.biometryData.edit', [ $animalHandling ]);
+						}
 
 						if ($animalHandlingsRender == '') {
 							$animalHandlingsRender .= $animalHandlingRender;

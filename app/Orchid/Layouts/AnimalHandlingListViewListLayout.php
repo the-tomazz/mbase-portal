@@ -65,6 +65,28 @@ class AnimalHandlingListViewListLayout extends Table
 				->sort()
 				->filter(Input::make()),
 
+			TD::make('animal_status', __('Status'))
+				->render(function (AnimalHandlingListView $animalHandlingListView) {
+					return $animalHandlingListView->animal->renderStatus();
+				})
+				->sort()
+				->filter(
+					Select::make()->options([
+						Animal::STR_ALIVE => __('Alive'),
+						Animal::STR_DEAD => __('Dead'),
+					])
+					->empty(__('<Select>'))
+				)
+						->filterValue(function ($status) {
+							return $status == Animal::STR_ALIVE ? __('Alive') : __('Dead');
+						}),
+
+			TD::make('animal_died_at', __('Died at'))
+				->render(function ($model) {
+					return $model->animal_died_at ? $model->animal_died_at->toDateString() : '';
+				})
+				->sort(),
+
 			TD::make('species_list_id', __("Species"))
 				->render(function (AnimalHandlingListView $animalHandlingListView) {
 					return Link::make($animalHandlingListView->species_list->name)
@@ -83,6 +105,20 @@ class AnimalHandlingListViewListLayout extends Table
 							return SpeciesList::find($species_list_id)->name;
 					}),
 
+			TD::make('hunting_management_area', __('Hunting-management area (LUO)'))
+				->render(function (AnimalHandlingListView $animalHandlingListView) {
+					return Link::make($animalHandlingListView->hunting_management_area)
+						->route('platform.animalHandling.view', [ $animalHandlingListView ]);
+				})
+				->sort(),
+
+			TD::make('hunting_ground', __('Hunting ground'))
+				->render(function (AnimalHandlingListView $animalHandlingListView) {
+					return Link::make($animalHandlingListView->hunting_ground)
+						->route('platform.animalHandling.view', [ $animalHandlingListView ]);
+				})
+				->sort(),
+
 			TD::make('sex_list_id', __("Sex"))
 				->render(function (AnimalHandlingListView $animalHandlingListView) {
 					return Link::make($animalHandlingListView->sex_list->name)
@@ -100,21 +136,7 @@ class AnimalHandlingListViewListLayout extends Table
 							return SexList::find($sex_list_id)->name;
 				}),
 
-			TD::make('animal_status', __('Status'))
-				->render(function (AnimalHandlingListView $animalHandlingListView) {
-					return $animalHandlingListView->animal->renderStatus();
-				})
-				->sort()
-				->filter(
-					Select::make()->options([
-						Animal::STR_ALIVE => __('Alive'),
-						Animal::STR_DEAD => __('Dead'),
-					])
-					->empty(__('<Select>'))
-				)
-						->filterValue(function ($status) {
-							return $status == Animal::STR_ALIVE ? __('Alive') : __('Dead');
-						}),
+
 
 			TD::make('animal_status_on_handling', __('Status on handling'))
 				->render(function (AnimalHandlingListView $animalHandlingListView) {
@@ -133,18 +155,12 @@ class AnimalHandlingListViewListLayout extends Table
 						return $status == Animal::STR_ALIVE ? __('Alive') : __('Dead');
 					}),
 
-			TD::make('animal_died_at', __('Died at'))
-				->render(function ($model) {
-					return $model->animal_died_at ? $model->animal_died_at->toDateString() : '';
-				})
-				->sort(),
-
 			TD::make('bears_biometry_data_status', __('Biometry data'))
 				->render(function (AnimalHandlingListView $animalHandlingListView) {
 					return $animalHandlingListView->bears_biometry_data_status == AnimalHandlingListView::STR_EXISTS
 						? Link::make(__('Exists'))
 							->route('platform.biometryData.view', [ $animalHandlingListView->bears_biometry_data_id ])
-						: Link::make(__('Missing'))
+						: Link::make(__('NA'))
 							->route('platform.biometryData.edit', [ $animalHandlingListView ]);
 				})
 				->sort()

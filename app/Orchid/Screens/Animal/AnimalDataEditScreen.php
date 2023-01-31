@@ -100,6 +100,16 @@ class AnimalDataEditScreen extends Screen
 	 */
 	public function createOrUpdateAnimal(Animal $animal, Request $request)
 	{
+		$request->validate([
+			'animal.description' => 'string|max:255',
+		]);
+
+		if (Animal::where('name', '=', $request->get('animal')['name'])
+				->where('species_list_id', '=', $request->get('animal')['species_list_id'])->first()) {
+			Alert::error(__('Duplicated animal name.') . ' ID: ' . $animal->id);
+			return redirect()->route('platform.animals.list');
+		}
+
 		$animal->fill($request->get('animal'));
 
 		if ($request->get('animal')['status'] == Animal::STR_DEAD) {

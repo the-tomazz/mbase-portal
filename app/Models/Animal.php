@@ -40,7 +40,7 @@ class Animal extends Model
 
 	protected $casts = [
 		'id' => 'int',
-		'name' => LocalizedJsonData::class,
+		// 'name' => LocalizedJsonData::class,
 		'description' => LocalizedJsonData::class,
 		'died_at' => 'datetime',
 		'species_list_id' => 'int',
