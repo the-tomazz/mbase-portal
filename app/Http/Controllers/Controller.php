@@ -191,11 +191,25 @@ class Controller extends BaseController
 			__('Front left paw width'),
 			__('Front right paw width'),
 
-			'upper_left_canines_length', 'lower_left_canines_length', 'upper_right_canines_length', 'lower_right_canines_length',
-			'number_of_premolars_in_the_upper_jaw', 'number_of_premolars_in_the_lower_jaw',
-			'distance_between_upper_canines', 'distance_between_lower_canines',
-			'testicals_left_length', 'testicals_left_width', 'testicals_right_length', 'testicals_right_width',
-			'incisors_wear_list', 'color_list', 'collar_list', 'fur_pattern_in_lynx_list', 'date_and_time_of_data_input' /*, 'depot', 'status' */
+			__('Length of Upper left canines'),
+			__('Length of Lower left canines'),
+			__('Length of Upper right canines'),
+			__('Length of Lower right canines'),
+
+			__('Number of premolars in the Upper jaw (left + right)'),
+			__('Number of premolars in the Lower jaw (left + right)'),
+			__('Distance between upper canines'),
+			__('Distance between lower canines'),
+			__('Left testicle length'),
+			__('Left testicle width'),
+			__('Right testicle length'),
+			__('Right testicle width'),
+
+			__('Incisors (front teeth) wear'),
+			__('Color'),
+			__("Light neck stripe 'collar'"),
+			__('Lynx fur pattern'),
+			__('Date and time of data_input') /*, 'depot', 'status' */
 		]);
 
 		// The PDOStatement Object implements the Traversable Interface
@@ -373,11 +387,25 @@ class Controller extends BaseController
 			__('Front left paw width'),
 			__('Front right paw width'),
 
-			'upper_left_canines_length', 'lower_left_canines_length', 'upper_right_canines_length', 'lower_right_canines_length',
-			'number_of_premolars_in_the_upper_jaw', 'number_of_premolars_in_the_lower_jaw',
-			'distance_between_upper_canines', 'distance_between_lower_canines',
-			'testicals_left_length', 'testicals_left_width', 'testicals_right_length', 'testicals_right_width',
-			'incisors_wear_list', 'color_list', 'collar_list', 'fur_pattern_in_lynx_list', 'date_and_time_of_data_input' /*, 'depot', 'status' */
+			__('Length of Upper left canines'),
+			__('Length of Lower left canines'),
+			__('Length of Upper right canines'),
+			__('Length of Lower right canines'),
+
+			__('Number of premolars in the Upper jaw (left + right)'),
+			__('Number of premolars in the Lower jaw (left + right)'),
+			__('Distance between upper canines'),
+			__('Distance between lower canines'),
+			__('Left testicle length'),
+			__('Left testicle width'),
+			__('Right testicle length'),
+			__('Right testicle width'),
+
+			__('Incisors (front teeth) wear'),
+			__('Color'),
+			__("Light neck stripe 'collar'"),
+			__('Lynx fur pattern'),
+			__('Date and time of data_input') /*, 'depot', 'status' */
 		]);
 
 		// The PDOStatement Object implements the Traversable Interface
