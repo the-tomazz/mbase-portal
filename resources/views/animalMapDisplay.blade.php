@@ -74,11 +74,10 @@ That should be it.
 		});
 	}
 
-	// window.onload = initMap;
-	setTimeout(() => {
+	document.addEventListener("turbo:load", () => {
 		console.log("Setting up map init");
 		initMap();
-	}, "1500")
+	})
 </script>
 
 @endpush
