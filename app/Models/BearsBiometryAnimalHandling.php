@@ -25,11 +25,10 @@ use Orchid\Screen\AsSource;
  * @property string|null $licence_number
  * @property string|null $project_name
  * @property string|null $receiving_country
- * @property string|null $telementry_uid
+ * @property string|null $telemetry_uid
  * @property int|null $biometry_loss_reason_list_id
  * @property string|null $biometry_loss_reason_description
  * @property Carbon|null $animal_handling_date
- * @property Carbon|null $date_and_time_of_biometry_measurements
  * @property string|null $place_of_removal
  * @property int|null $place_type_list_id
  * @property string|null $place_type_list_details
@@ -44,10 +43,6 @@ use Orchid\Screen\AsSource;
  * @property string|null $hunter_finder_name_and_surname
  * @property int|null $hunter_finder_country_id
  * @property string|null $witness_accompanying_person_name_and_surname
- * @property int|null $hair_sample_taken
- * @property int|null $hair_sample_taken_details
- * @property int|null $dna_sample_taken
- * @property int|null $dna_sample_taken_details
  * @property int|null $tooth_type_list_id
  * @property string|null $taxidermist_name_and_surname
  * @property int|null $data_entered_by_user_id
@@ -60,7 +55,6 @@ use Orchid\Screen\AsSource;
  * @property string|null $removal_annual_uid
  * @property string|null $photos_collected
  * @property string|null $jaw_photos_collected
- * @property string|null $liver_samples_collected
  * @property string|null $measurer_name_and_surname
  * @property string|null $hunting_ground_representative
  * @property USER-DEFINED|null $geom
@@ -95,7 +89,6 @@ class BearsBiometryAnimalHandling extends Model
 		'id' => 'int',
 		'biometry_loss_reason_list_id' => 'int',
 		'animal_handling_date' => 'datetime',
-		'date_and_time_of_biometry_measurements' => 'datetime',
 		'place_type_list_id' => 'int',
 		'lat' => 'float',
 		'lng' => 'float',
@@ -105,9 +98,6 @@ class BearsBiometryAnimalHandling extends Model
 		'unknown_hunter_finder' => 'boolean',
 		'hunting_management_area_id' => 'int',
 		'hunter_finder_country_id' => 'int',
-		'sample_taken' => 'int',
-		'hair_sample_taken' => 'int',
-		'dna_sample_taken' => 'int',
 		'tooth_type_list_id' => 'int',
 		'data_entered_by_user_id' => 'int',
 		'animal_id' => 'int',
@@ -116,7 +106,6 @@ class BearsBiometryAnimalHandling extends Model
 		'conflict_animal_removal_list_id' => 'int',
 		'photos_collected' => 'boolean',
 		'jaw_photos_collected' => 'boolean',
-		'liver_samples_collected' => 'boolean'
 	];
 
 	protected $fillable = [
@@ -127,11 +116,10 @@ class BearsBiometryAnimalHandling extends Model
 		'licence_number',
 		'project_name',
 		'receiving_country',
-		'telementry_uid',
+		'telemetry_uid',
 		'biometry_loss_reason_list_id',
 		'biometry_loss_reason_description',
 		'animal_handling_date',
-		'date_and_time_of_biometry_measurements',
 		'place_of_removal',
 		'place_type_list_id',
 		'place_type_list_details',
@@ -146,11 +134,6 @@ class BearsBiometryAnimalHandling extends Model
 		'hunter_finder_name_and_surname',
 		'hunter_finder_country_id',
 		'witness_accompanying_person_name_and_surname',
-		'sample_taken',
-		'hair_sample_taken',
-		'hair_sample_taken_details',
-		'dna_sample_taken',
-		'dna_sample_taken_details',
 		'tooth_type_list_id',
 		'taxidermist_name_and_surname',
 		'data_entered_by_user_id',
@@ -164,7 +147,6 @@ class BearsBiometryAnimalHandling extends Model
 		'removal_annual_uid',
 		'photos_collected',
 		'jaw_photos_collected',
-		'liver_samples_collected',
 		'measurer_name_and_surname',
 		'hunting_ground_representative',
 	];

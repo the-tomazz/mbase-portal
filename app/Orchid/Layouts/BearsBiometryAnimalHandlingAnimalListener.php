@@ -34,7 +34,8 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 		'bearsBiometryAnimalHandling.animal_name',
 		'bearsBiometryAnimalHandling.animal_species_list_id',
 		'bearsBiometryAnimalHandling.animal_sex_list_id',
-		'bearsBiometryAnimalHandling.animal_description'
+		'bearsBiometryAnimalHandling.animal_description',
+		'bearsBiometryAnimalHandling.telemetry_uid'
 	];
 
     /**
@@ -119,20 +120,31 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 				Input::make('bearsBiometryAnimalHandling.animal_description')
 					->title('Note')
 					->disabled($existingAnimalSelected),
+
+				Input::make('bearsBiometryAnimalHandling.telemetry_uid')
+					->title(__('Ear-tag number or radio-collar (telemetry) identification'))
+					->help(__('Please describe animal-borne markings (ear-tags, collar, microchips, etc.)'))
+					->canSee($isAlive)
+
 			])->title(__('Animal')),
 
 			Layout::rows([
 				Input::make('bearsBiometryAnimalHandling.animal_handling_date')
 					->required()
 					->type('datetime-local')
-					->title(__('Date and time of removal / handling')),
+					->title(__('Date and time of handling')),
 
-				// Date and time of biometry measurements start
-				Input::make('bearsBiometryAnimalHandling.date_and_time_of_biometry_measurements')
+				Input::make('bearsBiometryAnimalHandling.animal_died_at')
+					->title('Date and time of death')
 					->type('datetime-local')
-					->title(__('Date and time of biometry measurements')),
+					->canSee(!$isAlive)
+					->readonly($existingAnimalSelected),
 
-			])->title(__('Date and time'))
+			])->title(__('Date and time')),
+
+
+				// ->value('2011-08-19T13:45:00')
+				// ->horizontal(),
 		];
     }
 }

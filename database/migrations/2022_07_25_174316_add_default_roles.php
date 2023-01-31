@@ -31,7 +31,7 @@ return new class extends Migration
 			[
 				'slug' => 'MBASE2LRegisteredUser',
 				'name' => 'MBASE2L Registered User',
-				'permissions' => '{"mbase2l.super_admin": "0", "mbase2l.admin": "0", "platform.index": "0", "platform.systems.roles": "0", "platform.systems.users": "0", "mbase2l.registered_user": "1", "platform.systems.attachment": "0"}',
+				'permissions' => '{"mbase2l.super_admin": "0", "mbase2l.admin": "0", "platform.index": "1", "platform.systems.roles": "0", "platform.systems.users": "0", "mbase2l.registered_user": "1", "platform.systems.attachment": "0"}',
 				'created_at' => '2022-07-25 17:40:29',
 				'updated_at' => '2022-07-25 17:40:29'
 			]

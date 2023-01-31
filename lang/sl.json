@@ -14,11 +14,11 @@
 
 	"Number and the year of removal in hunting administrative area": "Številka in leto odvzema v lovsko-upravljavskem območju",
 	"Please insert number and the year of removal in hunting administrative area": "Prosimo vnesite številko in leto odvzema v lovsko-upravljavskem območju",
-	"Type of removal / handling": "Način odvzema / rokovanja",
-	"Please select the type of removal / handling": "Izberite način odvzema / rokovanja",
+	"Type of handling": "Način rokovanja",
+	"Please select the type of handling": "Izberite način rokovanja",
 	"Ear-tag number or radio-collar (telemetry) identification": "Številka ušesne značke ali identifikacija ovratnice",
 	"Please describe animal-borne markings (ear-tags, collar, microchips, etc.)": "Opišite označbe na živali (ušesne značke, ovratnice, mikročip ipd.)",
-	"Date and time of removal / handling": "Datum in ura umika / rokovanja",
+	"Date and time of handling": "Datum in ura rokovanja",
 	"Geo location / Local name": "Lokalno ime",
 	"Please insert geographical location / local name": "Prosim vnesite lokalno ime",
 	"Witness/Accompanying person name and surname": "Ime in priimek spremljevalca",
@@ -125,6 +125,7 @@
 	"Physical condition, parasites, injuries, markings, other observations (ear tags, signs of crossbreeding with a dog, etc.) and notes": "Telesna kondicija, zajedavci, poškodbe, označbe, druga opažanja (ušesne značke, znaki križanja s psom…) in opombe",
 	"Please insert physical condition, parasites, injuries, markings, other observations (ear tags, signs of crossbreeding with a dog, etc.) and notes": "Prosimo, vnesite telesno kondicijo, zajedavce, poškodbe, označbe, druga opažanja (ušesne značke, znaki križanja s psom…) in opombe",
 
+	"Date and time of animal handling": "Datum in ura rokovanja",
 	"Date and time of biometry measurements": "Datum in ura biometričnih meritev",
 	"All files": "Naloži datoteke (fotografije, pdf datoteke…)",
 
@@ -165,7 +166,7 @@
 
 	"Location": "Lokacija",
 	"Hunting-management area (LUO)": "Lovsko-upravljavsko območje",
-	"Hunting ground": "Lovsko Območje",
+	"Hunting ground": "Lovišče",
 
 	"Unknown Hunter/Finder": "Neznan uplenitelj / najditelj",
 	"Hunter/Finder name and surname": "Ime in priimek uplenitelja / najditelja",
@@ -209,7 +210,7 @@
 
 	"Home": "Osnovna stran",
 
-	"Teats Usage": "Obrabljenost seskov",
+	"Teats usage": "Obrabljenost seskov",
 
 	"Spatial Unit Filter Elements": "Elementi prostorskih filtrov",
 	"Spatial Unit Filter Types": "Tipi prostorskih filtrov",
@@ -394,8 +395,8 @@
 	"Please input the sample code": "Prosimo, vnesite kodo vzorca",
 	"Sample type": "Tip vzorca",
 	"Please input the sample type": "Prosimo, vnesite tip vzorca",
-	"Sample comment": "Podrobnosti vzorčenja",
-	"Please input the sample comment": "Prosimo, vnesite podrobnosti vzorčenja",
+	"Sample comment": "Podrobnosti vzorca",
+	"Please input the sample comment": "Prosimo, natančno opišite odvzeti vzorec",
 
 	"Please select the country": "Prosimo, izberite državo",
 
@@ -407,8 +408,13 @@
 	"No attachments found": "Ni zabeleženih prilog",
 	"With biometry data": "Vsebuje biometrične podatke",
 	"Biometry data missing": "Brez biometričnih podatkov",
+	"Add biometry data": "Dodaj biometrične podatke",
+	"No biometry data found": "Brez biometričnih podatkov",
 
 	"You have successfully updated Animal data.": "Uspešno ste uredili podatke o živali",
 	"Page size": "Število zapisov",
-	"All": "Vse"
+	"All": "Vse",
+
+	"Date and time": "Datum in čas",
+	"Link": "Povezava"
 }

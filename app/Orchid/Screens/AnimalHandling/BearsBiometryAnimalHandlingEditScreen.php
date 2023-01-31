@@ -175,27 +175,8 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 				'animal_name'      			=> $triggers['animal_name'] ?? null,
 				'animal_species_list_id'	=> $triggers['animal_species_list_id'] ?? null,
 				'animal_sex_list_id'		=> $triggers['animal_sex_list_id'] ?? null,
-				'animal_description'		=> $triggers['animal_description'] ?? null
-			]),
-		];
-	}
-
-	public function asyncUpdateAnimalHandlingHairSampleTakenListenerData($triggers)
-	{
-		return [
-			'bearsBiometryAnimalHandling' => new Repository([
-				'hair_sample_taken'      => $triggers['hair_sample_taken'],
-				'hair_sample_taken_details' => $triggers['hair_sample_taken_details'] ?? null,
-			]),
-		];
-	}
-
-	public function asyncUpdateAnimalHandlingDNASampleTakenListenerData($triggers)
-	{
-		return [
-			'bearsBiometryAnimalHandling' => new Repository([
-				'dna_sample_taken'      => $triggers['dna_sample_taken'],
-				'dna_sample_taken_details' => $triggers['dna_sample_taken_details'] ?? null,
+				'animal_description'		=> $triggers['animal_description'] ?? null,
+				'telemetry_uid'				=> $triggers['telemetry_uid'] ?? null
 			]),
 		];
 	}
@@ -442,15 +423,6 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 			]),
 
 			BearsBiometryAnimalHandlingHunterFinderSwitchListener::class,
-
-			Layout::rows([
-				Input::make('bearsBiometryAnimalHandling.telemetry_uid')
-					->title(__('Ear-tag number or radio-collar (telemetry) identification'))
-					->help(__('Please describe animal-borne markings (ear-tags, collar, microchips, etc.)')),
-
-				// ->value('2011-08-19T13:45:00')
-				// ->horizontal(),
-			]),
 		];
 
 		$biometryAnimalHandlingSamplesListeners = [
@@ -464,18 +436,12 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 		*/
 
 		$postBiometryAnimalHandlingSampleListeners = [
-			// SAMPLES TYPE SECTION END
-
-			AnimalHandlingSamplesLayout::class,
-
-			BearsBiometryAnimalHandlingHairSampleTakenListener::class,
-			BearsBiometryAnimalHandlingDNASampleTakenListener::class,
-
 			// SAMPLES TYPE SECTION START
 			Layout::rows([
-				Switcher::make('bearsBiometryAnimalHandling.liver_samples_collected')
+				/* Switcher::make('bearsBiometryAnimalHandling.liver_samples_collected')
 					->sendTrueOrFalse()
 					->title(__('Liver samples collected')),
+				*/
 
 				Select::make('bearsBiometryAnimalHandling.tooth_type_list_id')
 					->fromQuery(ToothTypeList::where('status', '=', BaseList::STR_ACTIVE), 'name')
@@ -484,6 +450,12 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 					->empty(__('<Select>'))
 					->required(),
 			]),
+
+			// SAMPLES TYPE SECTION END
+			AnimalHandlingSamplesLayout::class,
+
+			// BearsBiometryAnimalHandlingHairSampleTakenListener::class,
+			// BearsBiometryAnimalHandlingDNASampleTakenListener::class,
 
 			Layout::rows([
 				Input::make('bearsBiometryAnimalHandling.measurer_name_and_surname')
@@ -566,7 +538,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 				'species_list_id' => $request->get('bearsBiometryAnimalHandling')['animal_species_list_id'],
 				'sex_list_id' => $request->get('bearsBiometryAnimalHandling')['animal_sex_list_id'],
 				'description' => $request->get('bearsBiometryAnimalHandling')['animal_description'],
-				'died_at' => now()
+				'died_at' => $request->get('bearsBiometryAnimalHandling')['animal_died_at'] ?? null
 			]);
 
 			$animal->save();

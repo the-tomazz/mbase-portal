@@ -74,13 +74,13 @@ class BearsBiometryAnimalHandlingSamplesListener extends Listener
 						->empty(__('<Select>'))
 						->required()
 						->title(__('Sample type'))
-						->maxlength(20)
 						->help(__('Please input the sample type'))
 						->canSee($canSee),
 
 					Input::make('bearsBiometryAnimalHandling.sample_comment_' . $sampleNumber)
 						->title(__('Sample comment'))
-						->maxlength(20)
+						->maxlength(255)
+						->required()
 						->help(__('Please input the sample comment'))
 						->canSee($canSee),
 				])->canSee($previousCanSee);

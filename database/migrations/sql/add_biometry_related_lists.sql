@@ -522,9 +522,9 @@ INSERT INTO
 VALUES
 	(
 	 	'22',
-		'FVM Zagreb_lynx licence',
+		'Faculty of Veterinary Medicine Zagreb_lynx licence',
 		'',
-		'{"en":"FVM Zagreb_lynx licence","sl":"Licenca FVM Zagreb - Risi"}',
+		'{"en":"Faculty of Veterinary Medicine Zagreb_lynx licence","sl":"Licenca FVM Zagreb - Risi","sl":"Licenca Veterinarske fakultete Zagreb (ris)"}',
 		'{"en":"This data belongs to the Faculty of Veterinary Medicine, University of Zagreb, Croatia and can not be used or reproduced in any case without written consent of Faculty of Veterinary Medicine, University of Zagreb. For its Terms of Use please contact Faculty of Veterinary Medicine, University of Zagreb Heinzelova 55, 10 0000 Zagreb, Croatia. Phone number +385 1 2390 156, e-mail: lifelynx.hr@gmail.com."}'
 	);
 
@@ -533,9 +533,9 @@ INSERT INTO
 VALUES
 	(
 	 	'19',
-		'FVM Zagreb and UL BF Dept Biology LJ licence',
+		'FVM Zagreb and UL BF Dept Biology Ljubljana licence',
 		'',
-		'{"en":"FVM Zagreb and UL BF Dept Biology LJ licence","sl":""}',
+		'{"en":"FVM Zagreb and UL BF Dept Biology Ljubljana licence","sl":"Licenca Veterinarske fakultete Zagreb in BF Oddelka za biologijo Ljubljana"}',
 		'{"en":"This data belongs to Faculty of Veterinary Medicine, Zagreb, Croatia and to University of Ljubljana, Biotechnical Faculty, Department of Biology, Ljubljana, Slovenia. Data can not be used or reproduced in any case without written consent of its owners. For its Terms of Use please contact: - (Tomaž Skrbinšek) Department of Biology, Biotechnical Faculty, University of Ljubljana, Večna pot 111, Sl-1000 Ljubljana. Phone number +386 1 320 3345, e-mail: raziskovanje.medvedov@gmail.com or - (Josip Kusak) Faculty of Veterinary Medicine, Heinzelova 55, 10 000 Zagreb, Croatia. Phone number +385 1 23 90 158, e-mail: josip.kusak@gmail.com."}'
 	);
 
@@ -546,7 +546,7 @@ VALUES
 	 	'12',
 		'PAT-Forest and Wildlife Service licence',
 		'',
-		'{"en":"PAT-Forest and Wildlife Service licence","sl":""}',
+		'{"en":"PAT-Forest and Wildlife Service licence","sl":"Licenca Avtonomne province Trento, Službe za gozdove in prosto živeče živali"}',
 		'{"en":"This data belongs to Provincia Autonoma di Trento - Forest and Wildlife Service, Italy, and can not be used or reproduced in any case without written consent of the data owner. For its Terms of Use please contact Provincia Autonoma di Trento, Forest and Wildlife Service, G.B. Trener 3, I-38123 Trento, Italy. Phone number +39 0461 49 59 43; e-mail: serv.foreste@pec.provincia.tn.it. "}'
 	);
 
@@ -555,9 +555,9 @@ INSERT INTO
 VALUES
 	(
 	 	'14',
-		'FVM Zagreb_bear licence',
+		'Faculty of Veterinary Medicine Zagreb_bear licence',
 		'',
-		'{"en":"FVM Zagreb_bear licence","sl":""}',
+		'{"en":"Faculty of Veterinary Medicine Zagreb_bear licence","sl":"Licenca Veterinarske fakultete Zagreb (medved)"}',
 		'{"en":"This data belongs to Faculty of Veterinary Medicine, Zagreb, Croatia, and can not be used or reproduced in any case without written consent of Faculty of Veterinary Medicine. For its Terms of Use please contact Faculty of Veterinary Medicine, Heinzelova 55, 10 000 Zagreb, Croatia. Phone number +385 1 23 90 158, e-mail: slaven.reljic@gmail.com. "}'
 	);
 
@@ -566,9 +566,9 @@ INSERT INTO
 VALUES
 	(
 		'15',
-		'FIWI licence',
+		'FIWI Vienna licence',
 		'',
-		'{"en":"FIWI licence","sl":""}',
+		'{"en":"FIWI Vienna licence","sl":"Licenca Inštituta za ekologijo prosto živečih živali Dunaj"}',
 		'{"en":"This data belongs to Research Institute of Wildlife Ecology (Department of Interdisciplinary Life Sciences), University of Veterinary Medicine Vienna, Austria, and can not be used or reproduced in any case without written consent of the data owner. For its Terms of Use please contact dr. Jörg Rauer or dr. Felix Knauer (Conservation medicine unit), Research Institute of Wildlife Ecology, University of Veterinary Medicine Vienna, Savoyenstraße 1, A-1160 Wien; e-mail: felix.knauer@vetmeduni.ac.at or Georg.Rauer@vetmeduni.ac.at"}'
 	);
 
@@ -577,9 +577,9 @@ INSERT INTO
 VALUES
 	(
 		'16',
-		'UL BF Dept Forestry_bear licence',
+		'UL BF Dept Forestry Ljubljana_bear licence',
 		'',
-		'{"en":"UL BF Dept Forestry_bear licence","sl":""}',
+		'{"en":"UL BF Dept Forestry Ljubljana_bear licence","sl":"Licenca BF Oddelka za gozdarstvo Ljubljana (medved)"}',
 		'{"en":"This data belongs to University of Ljubljana, Biotechnical Faculty, Department of Forestry and Renewable resources, Ljubljana, Slovenia, and can not be used or reproduced in any case without written consent of data owner. For its Terms of Use please contact Department of Forestry and Renewable resources, Večna pot 83, Sl-1000 Ljubljana. E-mail: klemen.jerina@bf.uni-lj.si."}'
 	);
 
@@ -588,9 +588,9 @@ INSERT INTO
 VALUES
 	(
 		'23',
-		'UL BF Dept Biology_telem licence',
+		'UL BF Dept Biology Ljubljana_telem licence',
 		'',
-		'{"en":"UL BF Dept Biology_telem licence","sl":""}',
+		'{"en":"UL BF Dept Biology Ljubljana_telem licence","sl":"Licenca BF Oddelka za biologijo Ljubljana (telemetrija)"}',
 		'{"en":"This data belongs to University of Ljubljana, Biotechnical Faculty, Department of Biology, Ljubljana, Slovenia, and can not be used or reproduced in any case without written consent of its owner. For its Terms of Use please contact Department of Biology, Biotechnical Faculty (University of Ljubljana), Večna pot 111,  Sl-1000 Ljubljana. Phone number +386 1 320 3345, e-mail: hubert.potocnik@bf.uni-lj.si or hubert.potocnik@gmail.com (Hubert Potočnik). "}'
 	);
 
@@ -601,8 +601,8 @@ VALUES
 		'11',
 		'Slovenia Forest Service licence',
 		'',
-		'{"en":"Slovenia Forest Service licence","sl":""}',
-		'{"en":"This data belongs to Slovenia Forest Service, Slovenia, and can not be used or reproduced in any case without written consent of Slovenia Forest Service. For its Terms of Use please contact Slovenia Forest Service, Večna pot 2, Sl-1000 Ljubljana. Phone number +386 1 470 00 50, +386 1 470 00 82, e-mail: dinalpbear@gmail.com, medvedidev@gmail.com."}'
+		'{"en":"Slovenia Forest Service licence","sl":"Licenca Zavoda za gozdove Slovenije"}',
+		'{"en":"This data belongs to Slovenia Forest Service, Slovenia, and can not be used or reproduced in any case without written consent of Slovenia Forest Service. For its Terms of Use please contact Slovenia Forest Service, Večna pot 2, Sl-1000 Ljubljana. Phone number +386 1 470 00 50, +386 1 470 00 86, e-mail: dinalpbear@gmail.com, medvedidev@gmail.com.","sl":"Lastnik teh podatkov je Zavod za gozdove Slovenije. Brez pridobljenega pisnega dovoljenja je prepovedano kakorkoli uporabljati ali posredovati podatke. Za nadaljnje pogoje uporabe lahko kontaktirate Zavod za gozdove Slovenije, Večna pot 2, 1000 Ljubljana. Telefonski številki 01 470 00 50 ali 01 470 00 86, e-mail: dinalpbear@gmail.com, medvedidev@gmail.com."}'
 	);
 
 INSERT INTO
@@ -610,9 +610,9 @@ INSERT INTO
 VALUES
 	(
 		'20',
-		'SFS and UL BF Dept Biology licence',
+		'SFS and UL BF Dept Biology Ljubljana licence',
 		'',
-		'{"en":"SFS and UL BF Dept Biology licence","sl":""}',
+		'{"en":"SFS and UL BF Dept Biology Ljubljana licence","sl":"Licenca ZGS in BF Oddelka za biologijo Ljubljana"}',
 		'{"en":"This data belongs to Slovenia Forest Service, Slovenia, and to University of Ljubljana, Biotechnical Faculty, Department of Biology, Ljubljana, Slovenia. Data can not be used or reproduced in any case without written consent of data owners. For its Terms of Use please contact - (Matej Bartol) Slovenia Forest Service, Večna pot 2, Sl-1000 Ljubljana. Phone number +386 1 470 00 50, +386 1 470 00 82, e-mail: dinalpbear@gmail.com, medvedidev@gmail.com or - (Tomaž Skrbinšek) Department of Biology, Biotechnical Faculty (University of Ljubljana), Večna pot 111, Sl-1000 Ljubljana. Phone number +386 1 320 33 45, e-mail: raziskovanje.medvedov@gmail.com. "}'
 	);
 
@@ -621,9 +621,9 @@ INSERT INTO
 VALUES
 	(
 		'21',
-		'UL BF Dept Forestry_lynx licence',
+		'UL BF Dept Forestry Ljubljana_lynx licence',
 		'',
-		'{"en":"UL BF Dept Forestry_lynx licence","sl":""}',
+		'{"en":"UL BF Dept Forestry Ljubljana_lynx licence","sl":"Licenca BF Oddelka za biologijo Ljubljana (gen lab)"}',
 		'{"en":"This data belongs to Department for Forestry, Biotechnical Faculty, University of Ljubljana, Slovenia, and can not be used or reproduced in any case without written consent from data owner. For its Terms of Use please contact Dr. Miha Krofel, Dept. for forestry, Biotechnical Faculty, University of Ljubljana, Večna pot 83, Sl-1000 Ljubljana. Phone number + 386 1 3203 509, e-mail: miha.krofel@bf.uni-lj.si. "}'
 	);
 
@@ -632,9 +632,9 @@ INSERT INTO
 VALUES
 	(
 		'17',
-		'UL BF Dept Biology_lab licence',
+		'UL BF Dept Biology Ljubljana_lab licence',
 		'',
-		'{"en":"UL BF Dept Biology_lab licence","sl":""}',
+		'{"en":"UL BF Dept Biology Ljubljana_lab licence","sl":""}',
 		'{"en":"This data belongs to University of Ljubljana, Biotechnical Faculty, Department of biology, Ljubljana, Slovenia, and can not be used or reproduced in any case without written consent of its owner. For its Terms of Use please contact Department of biology, Biotechnical Faculty (University of Ljubljana), Večna pot 111, Sl-1000 Ljubljana. Phone number +386 1 320 3345, e-mail: raziskovanje.medvedov@gmail.com. "}'
 	);
 
@@ -657,7 +657,7 @@ VALUES
 		'Progetto Lince Italia - CUFAA licence',
 		'',
 		'{"en":"Progetto Lince Italia - CUFAA licence"}',
-		'{"en":"This data belongs to Progetto Lince Italia and CUFAA, Italy, and cannot be used or reproduced in any case without a written consent of Progetto Lince Italia. For the Terms of Use please contact Progetto Lince Italia, Via Roma 43, 33018 Tarvisio, e-mail: info@progettolinceitalia.it. "}'
+		'{"en":"This data belongs to Progetto Lince Italia and CUFAA, Italy, and cannot be used or reproduced in any case without a written consent of Progetto Lince Italia. For the Terms of Use please contact Progetto Lince Italia, Via Roma 43, 33018 Tarvisio, e-mail: info@progettolinceitalia.it."}'
 	);
 
 INSERT INTO
@@ -691,8 +691,8 @@ VALUES
 		1,
 		'sample_type',
 		'Blood',
-		'{"en":"Blood","sl":"Kri","default":"Blood"}',
-		'{"hr":"","en":"","de":"","it":"","sl":"","default":""}'
+		'{"en":"Muscle","sl":"Mišičnina","default":"Muscle"}',
+		'{"hr":"","en":"red muscles, tongue, diaphragm...","de":"","it":"","sl":"prečnoprogaste mišice, jezik, trebušna prepona...","default":""}'
 	);
 
 INSERT INTO
@@ -701,8 +701,8 @@ VALUES
 	(
 		2,
 		'sample_type',
-		'Bone',
-		'{"en":"Bone","sl":"Kost","default":"Bone"}',
+		'Claw',
+		'{"en":"Claw","sl":"Krempelj","default":"Claw"}',
 		'{"hr":"","en":"","de":"","it":"","sl":"","default":""}'
 	);
 
@@ -712,8 +712,8 @@ VALUES
 	(
 		3,
 		'sample_type',
-		'Decomposing tissue',
-		'{"en":"Decomposing tissue","sl":"Tkivo - razpadajoče","default":"Decomposing tissue"}',
+		'Tooth',
+		'{"en":"Tooth","sl":"Zob","default":"Tooth"}',
 		'{"hr":"","en":"","de":"","it":"","sl":"","default":""}'
 	);
 
@@ -723,9 +723,9 @@ VALUES
 	(
 		4,
 		'sample_type',
-		'Feces',
-		'{"en":"Feces","sl":"Iztrebek","default":"Feces"}',
-		'{"hr":"","en":"Samples collected from scats","de":"","it":"","sl":"","default":""}'
+		'Blood',
+		'{"en":"Blood","sl":"Kri","default":"Blood"}',
+		'{"hr":"","en":"","de":"","it":"","sl":"","default":""}'
 	);
 
 INSERT INTO
@@ -745,9 +745,9 @@ VALUES
 	(
 		6,
 		'sample_type',
-		'Saliva - direct',
-		'{"en":"Saliva - direct","sl":"Slina - neposredno","default":"Saliva - direct"}',
-		'{"hr":"","en":"mucosa on the gums, mouth","de":"","it":"","sl":"sluznica z dlesni, ust","default":""}'
+		'Other tissue',
+		'{"en":"Other tissue","sl":"Druga tkiva","default":"Other tissue"}',
+		'{"hr":"","en":"bone, spleen, liver, lung...","de":"","it":"","sl":"kost, vranica, jetra, pljuča...","default":""}'
 	);
 
 INSERT INTO
@@ -756,9 +756,9 @@ VALUES
 	(
 		7,
 		'sample_type',
-		'Saliva from the object',
-		'{"en":"Saliva from the object","sl":"Slina s predmeta","default":"Saliva from the object"}',
-		'{"hr":"","en":"from prey remains, bite wounds on prey, bite marks from feeding items","de":"","it":"","sl":"z ugriznih ran na plenu, z ugriznih površin na hrani","default":""}'
+		'Decomposing tissue',
+		'{"en":"Decomposing tissue","sl":"Razpadajoče tkivo","default":"Decomposing tissue"}',
+		'{"hr":"","en":"taken from teh decomposing carcass","de":"","it":"","sl":"Razpadajoče tkivo","default":""}'
 	);
 
 INSERT INTO
@@ -767,9 +767,9 @@ VALUES
 	(
 		8,
 		'sample_type',
-		'Tissue',
-		'{"en":"Tissue","sl":"Tkivo","default":"Tissue"}',
-		'{"hr":"","en":"","de":"","it":"","sl":"","default":""}'
+		'Saliva from the mucosa',
+		'{"en":"Saliva from the mucosa","sl":"Slina s sluznice","default":"Saliva from the mucosa"}',
+		'{"hr":"","en":"mucosa on the gums, mouth...","de":"","it":"","sl":"sluznica z dlesni, ust...","default":""}'
 	);
 
 INSERT INTO
@@ -778,9 +778,9 @@ VALUES
 	(
 		9,
 		'sample_type',
-		'Tooth',
-		'{"en":"Tooth","sl":"Zob","default":"Tooth"}',
-		'{"hr":"","en":"","de":"","it":"","sl":"","default":""}'
+		'Saliva from the object',
+		'{"en":"Saliva from the object","sl":"Slina s predmeta","default":"Saliva from the object"}',
+		'{"hr":"","en":"from prey remains, bite wounds on prey, bite marks from feeding items","de":"","it":"","sl":"slina z ugriznih ran na plenu, z ugriznih površin na hrani...","default":""}'
 	);
 
 INSERT INTO
@@ -788,6 +788,17 @@ INSERT INTO
 VALUES
 	(
 		10,
+		'sample_type',
+		'Feces',
+		'{"en":"Feces","sl":"Iztrebek","default":"Feces"}',
+		'{"hr":"","en":"samples collected from scats","de":"","it":"","sl":"","default":""}'
+	);
+
+INSERT INTO
+	laravel.sample_type_list (id, title, value, name, description)
+VALUES
+	(
+		11,
 		'sample_type',
 		'Urine',
 		'{"en":"Urine","sl":"Urin","default":"Urine"}',

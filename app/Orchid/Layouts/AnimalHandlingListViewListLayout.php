@@ -36,7 +36,7 @@ class AnimalHandlingListViewListLayout extends Table
 	protected function columns(): iterable
 	{
 		return [
-			TD::make('id', __('ID'))
+			TD::make('id', __('Animal handling ID'))
 				->render(function (AnimalHandlingListView $animalHandlingListView) {
 					return Link::make($animalHandlingListView->id)
 						->route('platform.animalHandling.view', [ $animalHandlingListView ]);
@@ -77,10 +77,11 @@ class AnimalHandlingListViewListLayout extends Table
 							->orderBy('name->' . App::getLocale(), 'asc'),
 						'name'
 					)
-					->empty(__('<Select>')))
+					->empty(__('<Select>'))
+				)
 					->filterValue(function ($species_list_id) {
 							return SpeciesList::find($species_list_id)->name;
-				}),
+					}),
 
 			TD::make('sex_list_id', __("Sex"))
 				->render(function (AnimalHandlingListView $animalHandlingListView) {
@@ -109,10 +110,11 @@ class AnimalHandlingListViewListLayout extends Table
 						Animal::STR_ALIVE => __('Alive'),
 						Animal::STR_DEAD => __('Dead'),
 					])
-						->empty(__('<Select>')))
+					->empty(__('<Select>'))
+				)
 						->filterValue(function ($status) {
 							return $status == Animal::STR_ALIVE ? __('Alive') : __('Dead');
-					}),
+						}),
 
 			TD::make('animal_status_on_handling', __('Status on handling'))
 				->render(function (AnimalHandlingListView $animalHandlingListView) {
@@ -125,7 +127,8 @@ class AnimalHandlingListViewListLayout extends Table
 					Select::make()->options([
 						Animal::STR_ALIVE => __('Alive'),
 						Animal::STR_DEAD => __('Dead'),
-					])->empty(__('<Select>')))
+					])->empty(__('<Select>'))
+				)
 					->filterValue(function ($status) {
 						return $status == Animal::STR_ALIVE ? __('Alive') : __('Dead');
 					}),
@@ -142,7 +145,7 @@ class AnimalHandlingListViewListLayout extends Table
 						? Link::make(__('Exists'))
 							->route('platform.biometryData.view', [ $animalHandlingListView->bears_biometry_data_id ])
 						: Link::make(__('Missing'))
-							->route('platform.biometryData.create', [ $animalHandlingListView ]);
+							->route('platform.biometryData.edit', [ $animalHandlingListView ]);
 				})
 				->sort()
 				->filter(
@@ -150,7 +153,8 @@ class AnimalHandlingListViewListLayout extends Table
 						AnimalHandlingListView::STR_EXISTS => __('Exists'),
 						AnimalHandlingListView::STR_MISSING => __('Missing'),
 					])
-					->empty(__('<Select>')))
+					->empty(__('<Select>'))
+				)
 					->filterValue(function ($status) {
 						return $status == AnimalHandlingListView::STR_EXISTS ? __('Exists') : __('Missing');
 					}),

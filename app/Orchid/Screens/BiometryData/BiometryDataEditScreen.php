@@ -44,7 +44,6 @@ class BiometryDataEditScreen extends Screen
 		}
 
 		$bearsBiometryData['bears_biometry_animal_handling_animal_handling_date'] = $bearsBiometryAnimalHandling->animal_handling_date;
-		$bearsBiometryData['bears_biometry_animal_handling_date_and_time_of_biometry_measurements'] = $bearsBiometryAnimalHandling->date_and_time_of_biometry_measurements;
 		$bearsBiometryData['bears_biometry_animal_handling_place_of_removal'] = $bearsBiometryAnimalHandling->place_of_removal;
 		$bearsBiometryData['bears_biometry_animal_handling_animal_id'] = $bearsBiometryAnimalHandling->animal->id;
 		$bearsBiometryData['bears_biometry_animal_handling_animal_name'] = $bearsBiometryAnimalHandling->animal->name;
@@ -77,7 +76,7 @@ class BiometryDataEditScreen extends Screen
 	public function commandBar(): iterable
 	{
 		return [
-			Button::make(__('Create biometry data'))
+			Button::make(__('Edit biometry data'))
 				->icon('pencil')
 				->method('createBiometryData')
 				->canSee(!$this->bearsBiometryData->exists),
@@ -385,7 +384,7 @@ class BiometryDataEditScreen extends Screen
 			])->title(__('Other')),
 
 			Layout::rows([
-				Button::make(__('Create biometry data'))
+				Button::make(__('Edit biometry data'))
 					->icon('pencil')
 					->method('createBiometryData')
 					->canSee(!$this->bearsBiometryData->exists),
@@ -406,7 +405,7 @@ class BiometryDataEditScreen extends Screen
 				->title(__('Remove Animal handling'))
 				->size(Modal::SIZE_LG)
 				->applyButton(__('Remove'))
-    			->closeButton(__('Close')),
+				->closeButton(__('Close')),
 		];
 	}
 
@@ -422,7 +421,7 @@ class BiometryDataEditScreen extends Screen
 		$requestBearsBiometryData = $request->get('bearsBiometryData');
 
 		foreach ($requestBearsBiometryData as $key => $data) {
-			if ( $key != 'updated_at' && $key != 'created_at' ) {
+			if ($key != 'updated_at' && $key != 'created_at') {
 				$requestBearsBiometryData[$key] = intVal(str_replace('_', '', $data));
 			}
 		}
@@ -456,7 +455,7 @@ class BiometryDataEditScreen extends Screen
 		$requestBearsBiometryData = $request->get('bearsBiometryData');
 
 		foreach ($requestBearsBiometryData as $key => $data) {
-			if ( $key != 'updated_at' && $key != 'created_at' ) {
+			if ($key != 'updated_at' && $key != 'created_at') {
 				$requestBearsBiometryData[$key] = intVal(str_replace('_', '', $data));
 			}
 		}

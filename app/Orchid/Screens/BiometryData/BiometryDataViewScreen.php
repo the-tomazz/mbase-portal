@@ -36,24 +36,24 @@ class BiometryDataViewScreen extends Screen
 		];
 	}
 
-    /**
-     * Display header name.
-     *
-     * @return string|null
-     */
-    public function name(): ?string
-    {
-        return __('Biometry Data') . ' ID: ' . $this->bearsBiometryData->id;
-    }
+	/**
+	 * Display header name.
+	 *
+	 * @return string|null
+	 */
+	public function name(): ?string
+	{
+		return __('Biometry Data') . ' ID: ' . $this->bearsBiometryData->id;
+	}
 
-    /**
-     * Button commands.
-     *
-     * @return \Orchid\Screen\Action[]
-     */
-    public function commandBar(): iterable
-    {
-        return [
+	/**
+	 * Button commands.
+	 *
+	 * @return \Orchid\Screen\Action[]
+	 */
+	public function commandBar(): iterable
+	{
+		return [
 			Link::make(__('Update'))
 				->icon('pencil')
 				->route('platform.biometryData.edit', [ 'bearsBiometryAnimalHandling' => $this->bearsBiometryData->bears_biometry_animal_handling, 'bearsBiometryData' => $this->id ]),
@@ -63,15 +63,15 @@ class BiometryDataViewScreen extends Screen
 				->method('remove')
 				->icon('trash'),
 		];
-    }
+	}
 
-    /**
-     * Views.
-     *
-     * @return \Orchid\Screen\Layout[]|string[]
-     */
-    public function layout(): iterable
-    {
+	/**
+	 * Views.
+	 *
+	 * @return \Orchid\Screen\Layout[]|string[]
+	 */
+	public function layout(): iterable
+	{
 		$isFemale = $this->bearsBiometryData->sex_list_id == SexList::FEMALE_SEX_ID;
 		$isNeutral = $this->bearsBiometryData->sex_list_id == SexList::NEUTRAL_SEX_ID;
 
@@ -115,10 +115,7 @@ class BiometryDataViewScreen extends Screen
 						->route('platform.animalHandling.edit', [ $bearsBiometryData->bears_biometry_animal_handling->animal_id, $bearsBiometryData->bears_biometry_animal_handling_id ])
 						->icon('number-list');
 				}),
-			Sight::make('bears_biometry_animal_handling->date_and_time_of_biometry_measurements', __('Date and time of biometry measurements'))
-				->render(function ($bearsBiometryData) {
-					return $bearsBiometryData->bears_biometry_animal_handling->date_and_time_of_biometry_measurements;
-				}),
+
 			Sight::make('bears_biometry_animal_handling->place_of_removal', __('Geo location / Local name'))
 				->render(function ($bearsBiometryData) {
 					return $bearsBiometryData->bears_biometry_animal_handling->place_of_removal;
@@ -248,7 +245,7 @@ class BiometryDataViewScreen extends Screen
 				}),
 		];
 
-        return [
+		return [
 			Layout::legend('bearsBiometryData', $biometrySight),
 			Layout::legend('bearsBiometryData', $animalHandlingSight)->title(__('Animal handling') . ' ID: ' . $this->bearsBiometryData->bears_biometry_animal_handling->id),
 			Layout::legend('bearsBiometryData', $animalSight)->title(__('Animal') . ' ID: ' . $this->bearsBiometryData->bears_biometry_animal_handling->animal_id),
@@ -265,7 +262,7 @@ class BiometryDataViewScreen extends Screen
 				->applyButton(__('Remove'))
 				->closeButton(__('Close')),
 		];
-    }
+	}
 
 	/**
 	 * @param BearsBiometryData $bearsBiometryData

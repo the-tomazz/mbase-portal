@@ -6,7 +6,6 @@ use App\Models\AnimalHandlingListView;
 use App\Orchid\Layouts\AnimalHandlingListViewListLayout;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Orchid\Screen\Actions\DropDown;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Screen;
@@ -84,8 +83,6 @@ class AnimalHandlingListViewListScreen extends Screen
 		];
 	}
 
-
-
 	/**
 	 * Views.
 	 *
@@ -97,10 +94,5 @@ class AnimalHandlingListViewListScreen extends Screen
 			Layout::view('animalHandlingMapDisplay'),
 			AnimalHandlingListViewListLayout::class
 		];
-	}
-
-	public function action(): void
-	{
-		Toast::info('Hello, world! This is a toast message.');
 	}
 }

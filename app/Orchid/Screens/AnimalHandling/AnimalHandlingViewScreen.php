@@ -81,16 +81,19 @@ class AnimalHandlingViewScreen extends Screen
 			Sight::make('date_and_time_of_biometry_measurements', __('Date and time of biometry measurements'))
 				->render(function ($bearsBiometryAnimalHandling) {
 					return $this->bearsBiometryAnimalHandling->bearsBiometryData ?
-						Link::make($bearsBiometryAnimalHandling->date_and_time_of_biometry_measurements)
+						Link::make(__('View biometry data'))
 							->icon('number-list')
 							->route('platform.biometryData.view', [ 'bearsBiometryData' => $this->bearsBiometryAnimalHandling->bearsBiometryData ]) :
-						__('No biometry data found');
+						Link::make(__('Add biometry data'))
+							->icon('plus')
+							->route('platform.biometryData.edit', [ 'bearsBiometryAnimalHandling' => $this->bearsBiometryAnimalHandling ]);
 				}),
 
-			Sight::make('place_of_removal', __('Geo location / Local name'))
+			Sight::make('hunting_ground', __('Hunting ground'))
 				->render(function ($bearsBiometryAnimalHandling) {
-					return $bearsBiometryAnimalHandling->place_of_removal;
+					return $bearsBiometryAnimalHandling->hunting_ground;
 				}),
+
 
 			Sight::make('attachment', __('Attachments'))->render(function ($bearsBiometryAnimalHandling) {
 				$render = '';
@@ -105,7 +108,6 @@ class AnimalHandlingViewScreen extends Screen
 				} else {
 					return __('No attachments found');
 				}
-
 			}),
 		];
 

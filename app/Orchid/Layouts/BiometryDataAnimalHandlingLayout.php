@@ -32,8 +32,6 @@ class BiometryDataAnimalHandlingLayout extends Rows
 			Label::make('bearsBiometryData.bears_biometry_animal_handling_animal_handling_date')
 				->title(__('Animal handling date')),
 
-			Label::make('bearsBiometryData.bears_biometry_animal_handling_date_and_time_of_biometry_measurements')
-				->title(__('Date and time of biometry measurements')),
 		];
 	}
 }
