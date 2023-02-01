@@ -419,5 +419,7 @@
 	"Link": "Povezava",
 
 	"Gross body mass": "Bruto masa živali",
-	"NA": "NA"
+	"NA": "NA",
+
+	"Duplicated animal name.": "Podvojeno ime živali"
 }

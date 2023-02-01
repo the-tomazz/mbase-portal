@@ -8,6 +8,7 @@ use App\Models\SexList;
 use App\Models\SpeciesList;
 use Illuminate\Support\Facades\App;
 use Orchid\Screen\Actions\Button;
+use Orchid\Screen\Fields\DateTimer;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\Select;
 use Orchid\Screen\Layouts\Listener;
@@ -70,9 +71,10 @@ class AnimalEditListener extends Listener
 						Animal::STR_DEAD => __('Dead'),
 					]),
 
-				Input::make('animal.died_at')
+				DateTimer::make('animal.died_at')
 					->title('Date and time of death')
-					->type('datetime-local')
+					->format24hr()
+					->enableTime()
 					->canSee(!$isAlive),
 
 				Input::make('animal.name')

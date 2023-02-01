@@ -104,8 +104,10 @@ class AnimalDataEditScreen extends Screen
 			'animal.description' => 'string|max:255',
 		]);
 
-		if (Animal::where('name', '=', $request->get('animal')['name'])
-				->where('species_list_id', '=', $request->get('animal')['species_list_id'])->first()) {
+		$existingAnimal = Animal::where('name', '=', $request->get('animal')['name'])
+			->where('species_list_id', '=', $request->get('animal')['species_list_id'])->first();
+
+		if ($animal->exists && $existingAnimal && $animal->id != $existingAnimal->id) {
 			Alert::error(__('Duplicated animal name.') . ' ID: ' . $animal->id);
 			return redirect()->route('platform.animals.list');
 		}

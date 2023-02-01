@@ -8,6 +8,7 @@ use App\Models\SexList;
 use App\Models\SpeciesList;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Orchid\Screen\Fields\DateTimer;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\Select;
 use Orchid\Support\Facades\Layout;
@@ -129,14 +130,15 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 			])->title(__('Animal')),
 
 			Layout::rows([
-				Input::make('bearsBiometryAnimalHandling.animal_handling_date')
-					->required()
-					->type('datetime-local')
-					->title(__('Date and time of handling')),
+				DateTimer::make('bearsBiometryAnimalHandling.animal_handling_date')
+					->title('Date and time of handling')
+					->format24hr()
+					->enableTime(),
 
-				Input::make('bearsBiometryAnimalHandling.animal_died_at')
+				DateTimer::make('bearsBiometryAnimalHandling.animal_died_at')
 					->title('Date and time of death')
-					->type('datetime-local')
+					->format24hr()
+					->enableTime()
 					->canSee(!$isAlive)
 					->readonly($existingAnimalSelected),
 
