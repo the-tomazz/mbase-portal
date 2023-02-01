@@ -425,5 +425,7 @@
 
 	"EPSG:3912": "EPSG:3912 D48/GK jugoslovanski geodetski datum 1948, sistem dvorazsežnih kartezičnih koordinat – Gauß-Krügerjeva projekcija",
 	"EPSG:4326 (Map)": "EPSG:4326 (zemljevid) WGS84/φλ GPS geodetski datum WGS84, sistem dvorazsežnih geodetskih/elipsoidnih koordinat",
-	"EPSG:3794": "EPSG 3794 D96/TM slovenski geodetski datum 1996, sistem dvorazsežnih kartezičnih koordinat – prečna Mercatorjeva projekcija"
+	"EPSG:3794": "EPSG 3794 D96/TM slovenski geodetski datum 1996, sistem dvorazsežnih kartezičnih koordinat – prečna Mercatorjeva projekcija",
+
+	"Animal status on handling": "Status živali med rokovanjem"
 }

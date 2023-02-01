@@ -27,7 +27,7 @@
 							</x-dropdown-link>
 
 							<x-dropdown-link
-								:href="route('platform.animalHandling.list', ['filter[animal_status]' => Auth::user()?->default_animal_status])">
+								:href="route('platform.animalHandling.list', ['filter[animal_status]' => Auth::user()->defaultVisualisationAnimalStatus()])">
 								{{ __('Mortality and biometry') }}
 							</x-dropdown-link>
 
