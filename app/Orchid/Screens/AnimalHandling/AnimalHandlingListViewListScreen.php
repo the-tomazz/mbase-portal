@@ -20,7 +20,7 @@ class AnimalHandlingListViewListScreen extends Screen
 	 */
 	public function query(): iterable
 	{
-		$perPage = request()->input('per_page') ?? 5;
+		$perPage = request()->input('per_page') ?? 15;
 
 		return [
 			'animalHandlings' => AnimalHandlingListView::filters()->paginate($perPage)->withQueryString()
