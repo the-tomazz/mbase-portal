@@ -94,7 +94,6 @@ class AnimalHandlingListView extends Model
 		'spatial_unit_gid' => 'int',
 		'way_of_withdrawal_list_id' => 'int',
 		'conflict_animal_removal_list_id' => 'int',
-		'animal_name' => LocalizedJsonData::class,
 		'animal_died_at' => 'datetime',
 		'species_list_id' => 'int',
 		'sex_list_id' => 'int',
