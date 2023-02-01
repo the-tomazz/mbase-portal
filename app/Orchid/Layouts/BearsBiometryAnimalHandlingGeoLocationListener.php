@@ -64,7 +64,7 @@ class BearsBiometryAnimalHandlingGeoLocationListener extends Listener
 
 				Select::make('bearsBiometryAnimalHandling.projection_type')
 					->options([
-						BearsBiometryAnimalHandling::PT_MAP_LANG_LAT => __('Map / lang+lat'),
+						BearsBiometryAnimalHandling::PT_MAP_LANG_LAT => __('EPSG:4326 (Map)'),
 						BearsBiometryAnimalHandling::PT_3912 => __('EPSG:3912'),
 						BearsBiometryAnimalHandling::PT_3794 => __('EPSG:3794'),
 					])
