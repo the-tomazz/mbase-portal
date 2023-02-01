@@ -31,6 +31,7 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
     protected $targets = [
 		'bearsBiometryAnimalHandling.animal_id',
 		'bearsBiometryAnimalHandling.animal_status',
+		'bearsBiometryAnimalHandling.animal_handling_date',
 		'bearsBiometryAnimalHandling.animal_died_at',
 		'bearsBiometryAnimalHandling.animal_name',
 		'bearsBiometryAnimalHandling.animal_species_list_id',

@@ -171,6 +171,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 			'bearsBiometryAnimalHandling' 	=> new Repository([
 				'animal_id'      			=> $triggers['animal_id'] ?? null,
 				'animal_status'      		=> $triggers['animal_status'] ?? null,
+				'animal_handling_date'		=> $triggers['animal_handling_date'] ?? null,
 				'animal_died_at' 			=> $triggers['animal_died_at'] ?? null,
 				'animal_name'      			=> $triggers['animal_name'] ?? null,
 				'animal_species_list_id'	=> $triggers['animal_species_list_id'] ?? null,
