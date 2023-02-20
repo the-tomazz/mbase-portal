@@ -32,6 +32,10 @@ class BiometryDataEditScreen extends Screen
 	public $bearsBiometryAnimalHandling;
 	public $bearsBiometryData;
 
+	private const NUMERIC_MASKS = [
+		'age' => '99,99'
+	];
+
 	/**
 	 * Query data.
 	 *
@@ -39,9 +43,16 @@ class BiometryDataEditScreen extends Screen
 	 */
 	public function query(BearsBiometryAnimalHandling $bearsBiometryAnimalHandling, BearsBiometryData $bearsBiometryData): iterable
 	{
+	/*
 		if (!$bearsBiometryData->exists) {
 			$bearsBiometryData['bears_biometry_animal_handling_id'] = $bearsBiometryAnimalHandling->id;
-		}
+
+			foreach (array_keys(self::NUMERIC_MASKS) as $key => $format) {
+				$bearsBiometryData[$key] = str_replace('.', ',', sprintf('%' . strlen($format) . 'd', $bearsBiometryData[$key]));
+			}
+
+			dd($bearsBiometryData);
+		} */
 
 		$bearsBiometryData['bears_biometry_animal_handling_animal_handling_date'] = $bearsBiometryAnimalHandling->animal_handling_date;
 		$bearsBiometryData['bears_biometry_animal_handling_place_of_removal'] = $bearsBiometryAnimalHandling->place_of_removal;
@@ -121,7 +132,7 @@ class BiometryDataEditScreen extends Screen
 
 			Layout::rows([
 				Input::make('bearsBiometryData.age')
-						->mask('99')
+						// ->mask(self::NUMERIC_MASKS['age'])
 						->title(__('Visual age estimate'))
 						->help(__('Insert age estimate of the animal (0-25)')),
 			]),
@@ -409,6 +420,10 @@ class BiometryDataEditScreen extends Screen
 		];
 	}
 
+	private function clearInputData($data)
+	{
+	}
+
 	/**
 	 * @param BearsBiometryAnimalHandling $bearsBiometryAnimalHandling
 	 * @param BearsBiometryData $bearsBiometryData
@@ -453,6 +468,13 @@ class BiometryDataEditScreen extends Screen
 	public function updateBiometryData(BearsBiometryAnimalHandling $bearsBiometryAnimalHandling, BearsBiometryData $bearsBiometryData, Request $request)
 	{
 		$requestBearsBiometryData = $request->get('bearsBiometryData');
+		/* $requestBearsBiometryData['age'] = 3;
+		$request->merge(['bearsBiometryData' => $requestBearsBiometryData]); */
+		// dd($request->get('bearsBiometryData'));
+
+		$request->validate([
+			'bearsBiometryData.age' => 'numeric|max:25',
+		]);
 
 		foreach ($requestBearsBiometryData as $key => $data) {
 			if ($key != 'updated_at' && $key != 'created_at') {

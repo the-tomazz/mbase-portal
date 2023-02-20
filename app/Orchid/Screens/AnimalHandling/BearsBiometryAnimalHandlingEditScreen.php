@@ -17,11 +17,13 @@ use App\Orchid\Layouts\BearsBiometryAnimalHandlingGeoLocationListener;
 use App\Orchid\Layouts\BearsBiometryAnimalHandlingHairSampleTakenListener;
 use App\Orchid\Layouts\BearsBiometryAnimalHandlingHunterFinderSwitchListener;
 use App\Orchid\Layouts\BearsBiometryAnimalHandlingSamplesListener;
+use App\Orchid\Layouts\ToothSamplesListener;
 use App\Orchid\Layouts\WayOfRemovalListener;
 use Orchid\Support\Color;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Orchid\Support\Facades\Alert;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Actions\ModalToggle;
@@ -184,16 +186,30 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 
 	public function asyncUpdateAnimalHandlingWayOfRemovalListenerData($triggers)
 	{
+		if (!$triggers['number_of_removal_in_the_hunting_administrative_area'] ||
+			substr($triggers['number_of_removal_in_the_hunting_administrative_area'], 0, 3) == '___') {
+			$numberOfRemovalInTheHuntingAdministrativeArea = '___-' . ( $triggers['animal_handling_date'] ?? '2023' );
+		} else {
+			$numberOfRemovalInTheHuntingAdministrativeArea = $triggers['number_of_removal_in_the_hunting_administrative_area'];
+		}
+
+		// Log::debug(['test', $numberOfRemovalInTheHuntingAdministrativeArea]);
+
+		// $numberOfRemovalInTheHuntingAdministrativeArea = mt_rand(2,8) . ( $triggers['animal_died_at'] ?? null );
+
 		return [
 			'bearsBiometryAnimalHandling' => new Repository([
-				'way_of_withdrawal_list_id' => $triggers['way_of_withdrawal_list_id'],
-				'licence_number' => $triggers['licence_number'] ?? null,
-				'conflict_animal_removal_list_id' => $triggers['conflict_animal_removal_list_id'] ?? null,
-				'biometry_loss_reason_list_id' => $triggers['biometry_loss_reason_list_id'] ?? null,
-				'biometry_loss_reason_description' => $triggers['biometry_loss_reason_description'] ?? null,
-				'project_name' => $triggers['project_name'] ?? null,
-				'receiving_country' => $triggers['receiving_country'] ?? null,
-				'number_of_removal_in_the_hunting_administrative_area' => $triggers['number_of_removal_in_the_hunting_administrative_area']
+				'animal_status'      				=> $triggers['animal_status'] ?? null,
+				'animal_died_at'      				=> $triggers['animal_died_at'] ?? null,
+				'animal_handling_date'      		=> $triggers['animal_handling_date'] ?? null,
+				'way_of_withdrawal_list_id' 		=> $triggers['way_of_withdrawal_list_id'],
+				'licence_number' 					=> $triggers['licence_number'] ?? null,
+				'conflict_animal_removal_list_id' 	=> $triggers['conflict_animal_removal_list_id'] ?? null,
+				'biometry_loss_reason_list_id' 		=> $triggers['biometry_loss_reason_list_id'] ?? null,
+				'biometry_loss_reason_description' 	=> $triggers['biometry_loss_reason_description'] ?? null,
+				'project_name' 						=> $triggers['project_name'] ?? null,
+				'receiving_country' 				=> $triggers['receiving_country'] ?? null,
+				'number_of_removal_in_the_hunting_administrative_area' => $numberOfRemovalInTheHuntingAdministrativeArea // $triggers['number_of_removal_in_the_hunting_administrative_area'] ?? null
 			]),
 		];
 	}
@@ -396,6 +412,16 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 		];
 	}
 
+	public function asyncUpdateAnimalHandlingToothSamplesListenerData($triggers)
+	{
+		return [
+			'bearsBiometryAnimalHandling' => new Repository([
+				'tooth_type_list_id'			=> $triggers['tooth_type_list_id'],
+				'tooth_type_not_sampled_reason'	=> $triggers['tooth_type_not_sampled_reason'] ?? null,
+			]),
+		];
+	}
+
 	/**
 	 * Views.
 	 *
@@ -416,7 +442,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 
 			Layout::rows([
 				Select::make('bearsBiometryAnimalHandling.licence_list_id')
-					->fromQuery(LicenceList::where('status', '=', BaseList::STR_ACTIVE), 'name')
+					->fromQuery(LicenceList::where('status', '=', BaseList::STR_ACTIVE), 'title')
 					->title(__('Licence'))
 					->help(__('Please select the Licence'))
 					->empty(__('<Select>'))
@@ -437,22 +463,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 		*/
 
 		$postBiometryAnimalHandlingSampleListeners = [
-			// SAMPLES TYPE SECTION START
-			Layout::rows([
-				/* Switcher::make('bearsBiometryAnimalHandling.liver_samples_collected')
-					->sendTrueOrFalse()
-					->title(__('Liver samples collected')),
-				*/
-
-				Select::make('bearsBiometryAnimalHandling.tooth_type_list_id')
-					->fromQuery(ToothTypeList::where('status', '=', BaseList::STR_ACTIVE), 'name')
-					->title(__('Tooth Type'))
-					->help(__('Please select the Tooth Type'))
-					->empty(__('<Select>'))
-					->required(),
-			]),
-
-			// SAMPLES TYPE SECTION END
+			ToothSamplesListener::class,
 			AnimalHandlingSamplesLayout::class,
 
 			// BearsBiometryAnimalHandlingHairSampleTakenListener::class,

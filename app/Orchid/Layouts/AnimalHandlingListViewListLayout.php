@@ -8,6 +8,7 @@ use App\Models\Base\BaseList;
 use App\Models\PlaceTypeList;
 use App\Models\SexList;
 use App\Models\SpeciesList;
+use App\Models\WayOfWithdrawalList;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
 use Orchid\Screen\Actions\Link;
@@ -77,9 +78,27 @@ class AnimalHandlingListViewListLayout extends Table
 					])
 					->empty(__('<Select>'))
 				)
-						->filterValue(function ($status) {
-							return $status == Animal::STR_ALIVE ? __('Alive') : __('Dead');
-						}),
+				->filterValue(function ($status) {
+					return $status == Animal::STR_ALIVE ? __('Alive') : __('Dead');
+				}),
+
+			TD::make('way_of_withdrawal_list_id', __("Way of withdrawal"))
+				->render(function (AnimalHandlingListView $animalHandlingListView) {
+					return Link::make($animalHandlingListView->way_of_withdrawal_list->name)
+						->route('platform.animalHandling.view', [ $animalHandlingListView ]);
+				})
+				->sort()
+				->filter(
+					Select::make()->fromQuery(
+						WayOfWithdrawalList::where('status', '=', BaseList::STR_ACTIVE)
+							->orderBy('name->' . App::getLocale(), 'asc'),
+						'name'
+					)
+					->empty(__('<Select>'))
+				)
+				->filterValue(function ($way_of_withdrawal_list_id) {
+						return WayOfWithdrawalList::find($way_of_withdrawal_list_id)->name;
+				}),
 
 			TD::make('animal_died_at', __('Died at'))
 				->render(function ($model) {

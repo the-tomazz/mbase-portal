@@ -66,6 +66,10 @@ class AnimalListScreen extends Screen
 				->icon('save')
 				->route('app.export.csv.animals', request()->input()),
 
+			Link::make(__('Import from XLS'))
+				->icon('cloud-upload')
+				->href('/mbase2/batches/mortbiom'),
+
 			DropDown::make(__('Page size'))
 				->icon('options-vertical')
 				->list([

@@ -55,6 +55,7 @@ class BearsBiometryAnimalHandlingFactory extends Factory
 			'hunter_finder_country_id' => 1,
 			'witness_accompanying_person_name_and_surname' => fake()->name(),
 			'tooth_type_list_id' => ToothTypeList::all()->random()->id,
+			'tooth_type_not_sampled_reason' => Str::random(128),
 			'taxidermist_name_and_surname' => fake()->name(),
 			'data_entered_by_user_id' => User::all()->random()->id,
 			'animal_id' => Animal::all()->random()->id,

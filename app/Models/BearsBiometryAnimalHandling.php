@@ -135,6 +135,7 @@ class BearsBiometryAnimalHandling extends Model
 		'hunter_finder_country_id',
 		'witness_accompanying_person_name_and_surname',
 		'tooth_type_list_id',
+		'tooth_type_not_sampled_reason',
 		'taxidermist_name_and_surname',
 		'data_entered_by_user_id',
 		'data_input_timestamp',

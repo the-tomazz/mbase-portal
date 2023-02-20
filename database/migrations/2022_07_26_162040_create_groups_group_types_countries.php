@@ -41,7 +41,7 @@ return new class extends Migration
 		}
 
 		// add all module related roles belong to all the countries
-		for ($mbase2ModuleRoleId = 21; $mbase2ModuleRoleId < 63; $mbase2ModuleRoleId++) {
+		for ($mbase2ModuleRoleId = 21; $mbase2ModuleRoleId < 56; $mbase2ModuleRoleId++) {
 			for ($groupTypesCountryId=7; $groupTypesCountryId<13; $groupTypesCountryId++) {
 				DB::table('groups_group_types_countries')->insert(
 						[
@@ -61,7 +61,7 @@ return new class extends Migration
 		}
 
 		// add all mortality biometry specific roles belong to all the countries
-		for ($mortalityBiometry = 63; $mortalityBiometry < 65; $mortalityBiometry++) {
+		for ($mortalityBiometry = 56; $mortalityBiometry < 58; $mortalityBiometry++) {
 			for ($groupTypesCountryId=14; $groupTypesCountryId<20; $groupTypesCountryId++) {
 				DB::table('groups_group_types_countries')->insert(
 						[

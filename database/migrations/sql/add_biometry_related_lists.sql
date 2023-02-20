@@ -961,6 +961,17 @@ VALUES
 		'{"hr":"","en":"","de":"","it":"","sl":"","default":""}'
 	);
 
+INSERT INTO
+	laravel.tooth_type_list (id, title, value, name, description)
+VALUES
+	(
+		165,
+		'tooth_type',
+		'Not sampled',
+		'{"en":"Not sampled","sl":"Zob ni bil vzet","default":"Not sampled"}',
+		'{"hr":"","en":"","de":"","it":"","sl":"","default":""}'
+	);
+
 CREATE TABLE laravel.way_of_withdrawal_list (
 	id serial PRIMARY KEY,
 	title varchar(128),

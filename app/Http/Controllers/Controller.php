@@ -92,6 +92,7 @@ class Controller extends BaseController
 				$row[] = $biometricData->teats_wear_list ? $biometricData->teats_wear_list->name : '';
 				$row[] = $biometricData->tail_length;
 				$row[] = $biometricData->ear_length_without_hair;
+				$row[] = $biometricData->observations_and_notes;
 				$row[] = $biometricData->hair_tuft_length;
 				$row[] = $biometricData->hind_left_paw_length;
 				$row[] = $biometricData->hind_right_paw_length;
@@ -181,6 +182,7 @@ class Controller extends BaseController
 			__('Nipple use'),
 			__('Tail length without hair'),
 			__('Ear length without hair'),
+			__('Notes'),
 			__('Length of hair tuft (for lynx only)'),
 			__('Hind left paw length'),
 			__('Hind right paw length'),
@@ -290,6 +292,7 @@ class Controller extends BaseController
 				$row[] = $biometricData->teats_wear_list ? $biometricData->teats_wear_list->name : '';
 				$row[] = $biometricData->tail_length;
 				$row[] = $biometricData->ear_length_without_hair;
+				$row[] = $biometricData->observations_and_notes;
 				$row[] = $biometricData->hair_tuft_length;
 				$row[] = $biometricData->hind_left_paw_length;
 				$row[] = $biometricData->hind_right_paw_length;
@@ -377,6 +380,7 @@ class Controller extends BaseController
 			__('Nipple use'),
 			__('Tail length without hair'),
 			__('Ear length without hair'),
+			__('Notes'),
 			__('Length of hair tuft (for lynx only)'),
 			__('Hind left paw length'),
 			__('Hind right paw length'),

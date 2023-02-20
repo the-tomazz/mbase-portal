@@ -174,9 +174,9 @@ class BearsBiometryDataSexListListener extends Listener
 					Group::make([
 						Input::make('bearsBiometryData.hair_tuft_length')
 							->mask('99')
-							->title(__('Length of hair tuft (for lynx only)'))
+							->title(__('Length of hair tuft (for lynx only) (0-15 cm)'))
 							->required()
-							->help(__('Insert Length of hair tuft (for lynx only) (0-20 cm)')),
+							->help(__('Insert Length of hair tuft (for lynx only) (0-15 cm)')),
 
 						Select::make('bearsBiometryData.fur_pattern_in_lynx_list_id')
 							->fromQuery(FurPatternInLynxList::where('status', '=', BaseList::STR_ACTIVE), 'name')

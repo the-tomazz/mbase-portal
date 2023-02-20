@@ -102,6 +102,7 @@ class AnimalDataEditScreen extends Screen
 	{
 		$request->validate([
 			'animal.description' => 'string|max:255',
+			'animal.died_at' => 'required|date|before:now'
 		]);
 
 		$existingAnimal = Animal::where('name', '=', $request->get('animal')['name'])

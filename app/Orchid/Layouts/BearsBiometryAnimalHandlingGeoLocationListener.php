@@ -56,12 +56,6 @@ class BearsBiometryAnimalHandlingGeoLocationListener extends Listener
 
 		return [
 			Layout::rows([
-				Map::make('bearsBiometryAnimalHandling.geo_location')
-					->required()
-					->help(__(''))
-					->zoom(7)
-					->disabled(),
-
 				Select::make('bearsBiometryAnimalHandling.projection_type')
 					->options([
 						BearsBiometryAnimalHandling::PT_MAP_LANG_LAT => __('EPSG:4326 (Map)'),
@@ -69,6 +63,12 @@ class BearsBiometryAnimalHandlingGeoLocationListener extends Listener
 						BearsBiometryAnimalHandling::PT_3794 => __('EPSG:3794'),
 					])
 					->title('Projection type'),
+
+				Map::make('bearsBiometryAnimalHandling.geo_location')
+					->required()
+					->help(__(''))
+					->zoom(7)
+					->disabled(),
 
 				Group::make([
 					Input::make('bearsBiometryAnimalHandling.EPSG_3912_x')

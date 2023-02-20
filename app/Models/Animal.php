@@ -40,7 +40,6 @@ class Animal extends Model
 
 	protected $casts = [
 		'id' => 'int',
-		// 'name' => LocalizedJsonData::class,
 		'description' => LocalizedJsonData::class,
 		'died_at' => 'datetime',
 		'species_list_id' => 'int',
@@ -52,7 +51,8 @@ class Animal extends Model
 		'name',
 		'description',
 		'species_list_id',
-		'sex_list_id'
+		'sex_list_id',
+		'died_at'
 	];
 
 	protected $allowedFilters = [

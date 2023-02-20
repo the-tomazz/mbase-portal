@@ -133,6 +133,7 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 			Layout::rows([
 				DateTimer::make('bearsBiometryAnimalHandling.animal_handling_date')
 					->title('Date and time of handling')
+					->required()
 					->format24hr()
 					->enableTime(),
 

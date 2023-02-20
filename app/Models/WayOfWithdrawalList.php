@@ -37,6 +37,9 @@ class WayOfWithdrawalList extends BaseList
 	public const LIVE_CAPTURE = 136;
 	public const TRANSLOCATION_OUT_OF_POPULATION = 3661;
 
+	public const SHOWN_ON_ANIMAL_STATUS_ALIVE = [ self::LIVE_CAPTURE, self::TRANSLOCATION_OUT_OF_POPULATION ];
+	public const SHOWN_ON_ANIMAL_STATUS_DEAD = [ self::REGULAR_CULL, self::CONFLICT_ANIMAL_REMOVAL, self::LOSS ];
+
 	protected $table = 'way_of_withdrawal_list';
 
 	public function bearsBiometryAnimalHandling()

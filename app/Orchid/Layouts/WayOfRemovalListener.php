@@ -2,6 +2,7 @@
 
 namespace App\Orchid\Layouts;
 
+use App\Models\Animal;
 use App\Models\Base\BaseList;
 use App\Models\BiometryLossReasonList;
 use App\Models\ConflictAnimalRemovalList;
@@ -28,6 +29,9 @@ class WayOfRemovalListener extends Listener
      * @var string[]
      */
     protected $targets = [
+		'bearsBiometryAnimalHandling.animal_status',
+		'bearsBiometryAnimalHandling.animal_died_at',
+		'bearsBiometryAnimalHandling.animal_handling_date',
 		'bearsBiometryAnimalHandling.way_of_withdrawal_list_id',
 		'bearsBiometryAnimalHandling.licence_number',
 		'bearsBiometryAnimalHandling.conflict_animal_removal_list_id',
@@ -60,12 +64,18 @@ class WayOfRemovalListener extends Listener
 		$lossReasonOtherSelected = isset($this->query) ? $this->query->get('bearsBiometryAnimalHandling.biometry_loss_reason_list_id') == BiometryLossReasonList::OTHER : false;
 		$liveCaptureSelected = isset($this->query) ? $this->query->get('bearsBiometryAnimalHandling.way_of_withdrawal_list_id') == WayOfWithdrawalList::LIVE_CAPTURE : false;
 		$translocationOutOfPopulationSelected = isset($this->query) ? $this->query->get('bearsBiometryAnimalHandling.way_of_withdrawal_list_id') == WayOfWithdrawalList::TRANSLOCATION_OUT_OF_POPULATION : false;
+		$animalStatusAlive = isset($this->query) ? $this->query->get('bearsBiometryAnimalHandling.animal_status') == Animal::STR_ALIVE : false;
+		$animalStatusSubset = $animalStatusAlive ? WayOfWithdrawalList::SHOWN_ON_ANIMAL_STATUS_ALIVE : WayOfWithdrawalList::SHOWN_ON_ANIMAL_STATUS_DEAD;
 
         return [
 			Layout::rows([
 				Group::make([
 					Select::make('bearsBiometryAnimalHandling.way_of_withdrawal_list_id')
-						->fromQuery(WayOfWithdrawalList::where('status', '=', BaseList::STR_ACTIVE), 'name')
+						->fromQuery(
+							WayOfWithdrawalList::where('status', '=', BaseList::STR_ACTIVE)
+								->whereIn('id', $animalStatusSubset),
+							'name'
+						)
 						->title(__('Way of withdrawal'))
 						->required()
 						->empty(__('<Select>'))
@@ -73,6 +83,7 @@ class WayOfRemovalListener extends Listener
 
 					Input::make('bearsBiometryAnimalHandling.licence_number')
 						->title(__('Permit number'))
+						->required()
 						->help(__('Please enter the permit number'))
 						->canSee($regularCullSelected || $conflictAnimalRemovalSelected),
 
@@ -112,9 +123,10 @@ class WayOfRemovalListener extends Listener
 				]),
 
 				Input::make('bearsBiometryAnimalHandling.number_of_removal_in_the_hunting_administrative_area')
-					->mask('999999999999-9999')
+					->mask('999-9999')
 					->title(__('Number and the year of removal in hunting administrative area'))
-					->help(__('Please insert number and the year of removal in hunting administrative area')),
+					->help(__('Please insert number and the year of removal in hunting administrative area'))
+					->canSee(!$animalStatusAlive),
 			])
 		];
     }

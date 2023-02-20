@@ -70,12 +70,12 @@ return new class extends Migration
 			'editors' => 'data editors',
 			'consumers' => 'data consumers',
 			'readers' => 'data readers',
-			'deputies' => 'deputies',
-			'interventors' => 'interventors'
+			'curators' => 'data curators'
 		];
 
 		$data = [];
 		foreach ($modules as $moduleSlug => $moduleTitle) {
+
 			foreach ($perModuleRoles as $perModuleRoleSlug => $perModuleRoleTitle) {
 				$data[] = [
 					'slug' => 'mbase2-' . $moduleSlug . '-' . $perModuleRoleSlug,

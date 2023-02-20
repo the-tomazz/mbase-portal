@@ -5,6 +5,7 @@
 	"Animals": "Živali",
 	"New animal handling": "Novo rokovanje z živaljo",
 	"Export to XLS": "Izvoz v XLS",
+	"Import from XLS": "Uvoz iz XLS",
 	"Animal handling": "Rokovanje z živaljo",
 	"Edit animal handling": "Uredi rokovanje z živaljo",
 	"Animal Handling Create / Update": "Ustvarjanje novih / urejanje podatkov o upravljanju z živaljo",
@@ -13,18 +14,18 @@
 	"Remove": "Izbriši",
 
 	"Number and the year of removal in hunting administrative area": "Številka in leto odvzema v lovsko-upravljavskem območju",
-	"Please insert number and the year of removal in hunting administrative area": "Prosimo vnesite številko in leto odvzema v lovsko-upravljavskem območju",
+	"Please insert number and the year of removal in hunting administrative area": "Vnesite številko in leto odvzema v lovsko-upravljavskem območju.",
 	"Type of handling": "Način rokovanja",
-	"Please select the type of handling": "Izberite način rokovanja",
+	"Please select the type of handling": "Izberite način rokovanja.",
 	"Ear-tag number or radio-collar (telemetry) identification": "Številka ušesne značke ali identifikacija ovratnice",
-	"Please describe animal-borne markings (ear-tags, collar, microchips, etc.)": "Opišite označbe na živali (ušesne značke, ovratnice, mikročip ipd.)",
-	"Date and time of handling": "Datum in ura rokovanja",
+	"Please describe animal-borne markings (ear-tags, collar, microchips, etc.)": "Opišite označbe na živali (ušesne značke, ovratnice, mikročip ipd.).",
+	"Date and time of handling": "Datum in čas rokovanja z živaljo",
 	"Geo location / Local name": "Lokalno ime",
-	"Please insert geographical location / local name": "Prosim vnesite lokalno ime",
+	"Please insert geographical location / local name": "Vnesite lokalno ime.",
 	"Witness/Accompanying person name and surname": "Ime in priimek spremljevalca",
-	"Please insert the name and surname of the Witness/Accompanying person": "Prosimo, vnesite ime in priimek spremljevalca",
+	"Please insert the name and surname of the Witness/Accompanying person": "Vnesite ime in priimek spremljevalca.",
 	"Hair sample taken": "Vzorec dlake odvzet",
-	"Please note if hair sample has been collected": "Prosimo, označite, če je bil vzorec dlake odvzet",
+	"Please note if hair sample has been collected": "Označite, če je bil vzorec dlake odvzet.",
 	"Hair sampling details": "Katera dlaka vzeta",
 	"Please insert the hair sampling detail": "Prosimo, vnesite podrobnosti vzorca dlake",
 	"DNA sample taken": "Odvzem vzorca za analizo DNK",
@@ -32,6 +33,7 @@
 	"Please insert the DNA sampling details": "Prosimo, vnesite podrobnosti vzorca DNA",
 	"Please note if DNA sample has been collected": "Prosimo, označite, če je bil vzorec DNK odvzet",
 	"Tooth Type": "Zob za ugotavljanje starosti",
+	"Tooth not sampled reason": "Napišite, zakaj niste vzeli zoba",
 	"Please select the Tooth Type": "Prosimo, označite, kateri zob za analizo starosti odvzet?",
 	"Taxidermist name and surname": "Ime in priimek preparatorja",
 	"Please insert the name and surname of the taxidermist": "Prosimo, vnesite ime in priimek preparatorja",
@@ -74,8 +76,8 @@
 	"Insert Length of hair at the end of tail (0-60 cm)": "Prosimo, vnesite Dolžino dlak na koncu repa (0-60 cm)",
 	"Ear length without hair": "Dolžina ušesa brez dlak",
 	"Insert Ear length without hair (0-20 cm)": "Prosimo, vnesite Dolžino ušesa brez dlak (0-20 cm)",
-	"Length of hair tuft (for lynx only)": "Dolžina čopkov (samo v primeru risa)",
-	"Insert Length of hair tuft (for lynx only) (0-20 cm)": "Prosimo, vnesite Dolžina čopkov (samo v primeru risa)",
+	"Length of hair tuft (for lynx only) (0-15 cm)": "Dolžina čopkov (samo v primeru risa) (0-15 cm)",
+	"Insert Length of hair tuft (for lynx only) (0-15 cm)": "Prosimo, vnesite dolžina čopkov (samo v primeru risa) (0-15 cm)",
 
 	"Front left paw width": "Prednja leva šapa - širina",
 	"Insert Front left paw width (0-20 cm)": "Prosimo, vnesite širino prednje leve šape (0-20 cm)",
@@ -125,7 +127,7 @@
 	"Physical condition, parasites, injuries, markings, other observations (ear tags, signs of crossbreeding with a dog, etc.) and notes": "Telesna kondicija, zajedavci, poškodbe, označbe, druga opažanja (ušesne značke, znaki križanja s psom…) in opombe",
 	"Please insert physical condition, parasites, injuries, markings, other observations (ear tags, signs of crossbreeding with a dog, etc.) and notes": "Prosimo, vnesite telesno kondicijo, zajedavce, poškodbe, označbe, druga opažanja (ušesne značke, znaki križanja s psom…) in opombe",
 
-	"Date and time of animal handling": "Datum in ura rokovanja",
+	"Date and time of animal handling": "Datum in čas rokovanja z živaljo",
 	"Date and time of biometry measurements": "Datum in ura biometričnih meritev",
 	"All files": "Naloži datoteke (fotografije, pdf datoteke…)",
 
@@ -396,7 +398,7 @@
 	"Sample type": "Tip vzorca",
 	"Please input the sample type": "Prosimo, vnesite tip vzorca",
 	"Sample comment": "Podrobnosti vzorca",
-	"Please input the sample comment": "Prosimo, natančno opišite odvzeti vzorec",
+	"Please input the sample comment": "Natančno opišite, kateri organ je bil povzorčen",
 
 	"Please select the country": "Prosimo, izberite državo",
 
@@ -427,5 +429,15 @@
 	"EPSG:4326 (Map)": "EPSG:4326 (zemljevid) WGS84/φλ GPS geodetski datum WGS84, sistem dvorazsežnih geodetskih/elipsoidnih koordinat",
 	"EPSG:3794": "EPSG 3794 D96/TM slovenski geodetski datum 1996, sistem dvorazsežnih kartezičnih koordinat – prečna Mercatorjeva projekcija",
 
-	"Animal status on handling": "Status živali med rokovanjem"
+	"Animal status on handling": "Status živali med rokovanjem",
+
+	"Log in": "Prijava",
+	"Register": "Registracija",
+	"Please login or register.": "Potrebna je, da se prijavite, ali registrirate.",
+
+	"Insert Hind left paw width (0-25 cm)": "Vnesite dolžino zadnje leve šape (0-25 cm).",
+	"Insert gross mass of the animal (0-400 kg)": "Vnesite bruto maso živali (0-400 kg).",
+	"Insert net mass of the animal (0-400 kg)": "Vnesite neto maso živali (0-400 kg).",
+	"Please select lynx fur pattern": "Označite vzorec kožuha pri risu."
+
 }

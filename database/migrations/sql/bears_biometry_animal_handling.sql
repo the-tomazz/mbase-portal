@@ -28,6 +28,7 @@ CREATE TABLE laravel.bears_biometry_animal_handling (
 	hunter_finder_country_id INTEGER REFERENCES groups (id) ON DELETE RESTRICT,
 	witness_accompanying_person_name_and_surname character varying(255),
 	tooth_type_list_id INTEGER REFERENCES tooth_type_list (id) ON DELETE RESTRICT,
+	tooth_type_not_sampled_reason character varying(255),
 	taxidermist_name_and_surname character varying(255),
 	data_entered_by_user_id INTEGER REFERENCES users (id) ON DELETE RESTRICT,
 	animal_id INTEGER REFERENCES animal (id) ON DELETE RESTRICT,

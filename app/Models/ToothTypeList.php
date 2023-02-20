@@ -33,6 +33,8 @@ class ToothTypeList extends BaseList
 
 	protected $table = 'tooth_type_list';
 
+	public const TOOTH_NOT_SAMPLED = 165;
+
 	public function bearsBiometryData()
 	{
 		return $this->hasOne(BearsBiometryData::class);
