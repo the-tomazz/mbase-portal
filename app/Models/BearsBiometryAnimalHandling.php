@@ -82,6 +82,9 @@ class BearsBiometryAnimalHandling extends Model
 	public const PT_3912 = 2;
 	public const PT_3794 = 3;
 
+	public const CONFLICTEDNESS_UNKNOWN = 'unknown';
+	public const CONFLICTEDNESS_CONFLICTING = 'conflicting';
+
 	use AsSource, Filterable, Attachable;
 	use HasFactory;
 
@@ -149,7 +152,7 @@ class BearsBiometryAnimalHandling extends Model
 		'photos_collected',
 		'jaw_photos_collected',
 		'measurer_name_and_surname',
-		'hunting_ground_representative',
+		'hunting_ground_representative'
 	];
 
 	protected $allowedSorts = [

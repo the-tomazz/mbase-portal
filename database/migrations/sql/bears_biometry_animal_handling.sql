@@ -1,6 +1,6 @@
 CREATE TABLE laravel.bears_biometry_animal_handling (
 	id serial primary key,
-	animal_conflictedness integer,
+	animal_conflictedness varchar(16),
 	animal_conflictedness_details character varying(255),
 	number_of_removal_in_the_hunting_administrative_area character varying(255),
 	way_of_withdrawal_list_id INTEGER NOT NULL REFERENCES way_of_withdrawal_list (id) ON DELETE RESTRICT,

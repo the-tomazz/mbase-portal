@@ -30,8 +30,7 @@ class WayOfRemovalListener extends Listener
      */
     protected $targets = [
 		'bearsBiometryAnimalHandling.animal_status',
-		'bearsBiometryAnimalHandling.animal_died_at',
-		'bearsBiometryAnimalHandling.animal_handling_date',
+		'bearsBiometryAnimalHandling.animal_died_at_date',
 		'bearsBiometryAnimalHandling.way_of_withdrawal_list_id',
 		'bearsBiometryAnimalHandling.licence_number',
 		'bearsBiometryAnimalHandling.conflict_animal_removal_list_id',

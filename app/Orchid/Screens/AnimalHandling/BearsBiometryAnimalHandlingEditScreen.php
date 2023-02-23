@@ -19,6 +19,7 @@ use App\Orchid\Layouts\BearsBiometryAnimalHandlingHunterFinderSwitchListener;
 use App\Orchid\Layouts\BearsBiometryAnimalHandlingSamplesListener;
 use App\Orchid\Layouts\ToothSamplesListener;
 use App\Orchid\Layouts\WayOfRemovalListener;
+use DateTime;
 use Orchid\Support\Color;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -46,6 +47,8 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 	public $animal;
 	public $bearsBiometryAnimalHandling;
 
+	private $action;
+
 	/**
 	 * Query data.
 	 *
@@ -53,12 +56,35 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 	 */
 	public function query(Animal $animal, BearsBiometryAnimalHandling $bearsBiometryAnimalHandling): iterable
 	{
+		if ($animal->exists && $bearsBiometryAnimalHandling->exists) {
+			$this->action = 'edit';
+		} elseif ($animal->exists && !$bearsBiometryAnimalHandling->exists) {
+			$this->action = 'add';
+		} else { # if (!$this->animal->exists && !$this->bearsBiometryAnimalHandling->exists) {
+			$this->action = 'create';
+		}
+
 		if ($bearsBiometryAnimalHandling->exists) {
+			$bearsBiometryAnimalHandling['animal_handling_date_date'] = (
+				new DateTime($bearsBiometryAnimalHandling->animal_handling_date)
+			)->format('j.n.Y');
+
+			$bearsBiometryAnimalHandling['animal_handling_date_time'] = (
+				new DateTime($bearsBiometryAnimalHandling->animal_handling_date)
+			)->format('H:i');
+
 			$bearsBiometryAnimalHandling['geo_location'] = [
 				'lat' => $bearsBiometryAnimalHandling->lat,
 				'lng' => $bearsBiometryAnimalHandling->lng,
 			];
+
+			$bearsBiometryAnimalHandling['original_animal_id'] = $bearsBiometryAnimalHandling['animal_id'];
 		} else {
+			if ($animal->exists) { // we are creating a handling of a certain animal
+				// $bearsBiometryAnimalHandling->animal_id = $animal->id;
+				$bearsBiometryAnimalHandling['original_animal_id'] = $animal->id;
+			}
+
 			$bearsBiometryAnimalHandling['geo_location'] = [ // HACK, Stanko, this is for you :)
 				'lat' => 46.044705,
 				'lng' => 15.2424903,
@@ -70,25 +96,27 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 				$bearsBiometryAnimalHandling['licence_list_id'] = LicenceList::INT_ZGS_LICENCE;
 			}
 
-			if ($animal->exists) {
-				$bearsBiometryAnimalHandling->animal_id = $animal->id;
-			}
-
 			$bearsBiometryAnimalHandling['measurer_name_and_surname'] = Auth::user()->name;
 		}
 
-		// LOAD ANIMAL
+		// FIX ANIMAL DATA
 		if ($bearsBiometryAnimalHandling->animal_id) {
-			$bearsBiometryAnimalHandling['animal_status'] = $animal->status;
-			$bearsBiometryAnimalHandling['animal_died_at'] = $animal->died_at;
-			$bearsBiometryAnimalHandling['animal_name'] = $animal->name;
-			$bearsBiometryAnimalHandling['animal_species_list_id'] = $animal->species_list_id;
-			$bearsBiometryAnimalHandling['animal_sex_list_id'] = $animal->sex_list_id;
-			$bearsBiometryAnimalHandling['description'] = $animal->description;
+			$animal['died_at_date'] = (new DateTime($animal->died_at))->format('j.n.Y');
+			$animal['died_at_time'] = (new DateTime($animal->died_at))->format('H:i');
 		} else {
-			$bearsBiometryAnimalHandling['animal_status'] = Auth::user()->defaultVisualisationAnimalStatus();
-			$bearsBiometryAnimalHandling['animal_sex_list_id'] == SexList::FEMALE_SEX_ID;
+			$animal['status'] = Auth::user()->defaultVisualisationAnimalStatus();
+			$animal['sex_list_id'] = SexList::FEMALE_SEX_ID;
 		}
+
+		// COPY DATA FROM ANIMAL TO ANIMAL HANDLING
+		$bearsBiometryAnimalHandling['animal_status'] = $animal['status'] ?? null;
+		$bearsBiometryAnimalHandling['animal_name'] = $animal['name'] ?? null;
+		$bearsBiometryAnimalHandling['animal_species_list_id'] = $animal['species_list_id'] ?? null;
+		$bearsBiometryAnimalHandling['animal_sex_list_id'] = $animal['sex_list_id'] ?? null;
+		$bearsBiometryAnimalHandling['animal_died_at_date'] = $animal['died_at_date'] ?? null;
+		$bearsBiometryAnimalHandling['animal_died_at_time'] = $animal['died_at_time'] ?? null;
+		$bearsBiometryAnimalHandling['animal_id'] = $animal['id'] ?? null;
+		$bearsBiometryAnimalHandling['animal_description'] = $animal['description'] ?? null;
 
 		// LOAD SAMPLES
 		$sampleNumber = 1;
@@ -136,11 +164,11 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 		return [
 			Button::make(__('Save animal handling'))
 				->icon('check')
-				->method('createOrUpdateAndDoNotAddBiometryData'),
+				->method($this->action . 'AnimalHandlingAndDoNotAddBiometryData'),
 
 			Button::make(__('Save animal handling and add biometry data'))
 				->icon('check')
-				->method('createOrUpdateAndAddBiometryData')
+				->method($this->action . 'AnimalHandlingAndAddBiometryData')
 				->canSee(!$this->bearsBiometryAnimalHandling->exists),
 
 			ModalToggle::make('Remove')
@@ -167,51 +195,52 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 
 		if ($animalId) {
 			$triggers['animal_status'] = $triggers['animal_status'] ?? Auth::user()->defaultVisualisationAnimalStatus();
+
+			$animal = Animal::find($animalId);
+			$triggers['animal_species_list_id'] = $animal->species_list_id;
+			$triggers['animal_sex_list_id'] = $animal->animal_sex_list_id;
+			$triggers['animal_description'] = $animal->animal_description;
 		}
 
-		return [
-			'bearsBiometryAnimalHandling' 	=> new Repository([
-				'animal_id'      			=> $triggers['animal_id'] ?? null,
-				'animal_status'      		=> $triggers['animal_status'] ?? null,
-				'animal_handling_date'		=> $triggers['animal_handling_date'] ?? null,
-				'animal_died_at' 			=> $triggers['animal_died_at'] ?? null,
-				'animal_name'      			=> $triggers['animal_name'] ?? null,
-				'animal_species_list_id'	=> $triggers['animal_species_list_id'] ?? null,
-				'animal_sex_list_id'		=> $triggers['animal_sex_list_id'] ?? null,
-				'animal_description'		=> $triggers['animal_description'] ?? null,
-				'telemetry_uid'				=> $triggers['telemetry_uid'] ?? null
-			]),
-		];
-	}
-
-	public function asyncUpdateAnimalHandlingWayOfRemovalListenerData($triggers)
-	{
-		if (!$triggers['number_of_removal_in_the_hunting_administrative_area'] ||
+		if (!isset($triggers['number_of_removal_in_the_hunting_administrative_area']) ||
 			substr($triggers['number_of_removal_in_the_hunting_administrative_area'], 0, 3) == '___') {
-			$numberOfRemovalInTheHuntingAdministrativeArea = '___-' . ( $triggers['animal_handling_date'] ?? '2023' );
+			if (isset($triggers['animal_died_at_date'])) {
+				$parsedDate = date_parse_from_format("j.n.Y", $triggers['animal_died_at_date']);
+				$numberOfRemovalInTheHuntingAdministrativeArea = '___-' . $parsedDate['year'];
+			} else {
+				$numberOfRemovalInTheHuntingAdministrativeArea = '___-' . date("Y");
+			}
 		} else {
 			$numberOfRemovalInTheHuntingAdministrativeArea = $triggers['number_of_removal_in_the_hunting_administrative_area'];
 		}
 
-		// Log::debug(['test', $numberOfRemovalInTheHuntingAdministrativeArea]);
-
-		// $numberOfRemovalInTheHuntingAdministrativeArea = mt_rand(2,8) . ( $triggers['animal_died_at'] ?? null );
-
-		return [
+		$payload = [
 			'bearsBiometryAnimalHandling' => new Repository([
+				'original_animal_id' 				=> $triggers['original_animal_id'] ?? null,
+				'animal_id'      					=> $triggers['animal_id'] ?? null,
 				'animal_status'      				=> $triggers['animal_status'] ?? null,
-				'animal_died_at'      				=> $triggers['animal_died_at'] ?? null,
-				'animal_handling_date'      		=> $triggers['animal_handling_date'] ?? null,
-				'way_of_withdrawal_list_id' 		=> $triggers['way_of_withdrawal_list_id'],
-				'licence_number' 					=> $triggers['licence_number'] ?? null,
+				'animal_died_at_date' 				=> $triggers['animal_died_at_date'] ?? null,
+				'animal_died_at_time' 				=> $triggers['animal_died_at_time'] ?? null,
+				'animal_name'      					=> $triggers['animal_name'] ?? null,
+				'animal_species_list_id'			=> $triggers['animal_species_list_id'] ?? null,
+				'animal_sex_list_id'				=> $triggers['animal_sex_list_id'] ?? null,
+				'animal_description'				=> $triggers['animal_description'] ?? null,
+
+				'animal_handling_date_date'			=> $triggers['animal_handling_date_date'] ?? null,
+				'animal_handling_date_time'			=> $triggers['animal_handling_date_time'] ?? null,
+				'way_of_withdrawal_list_id' 		=> $triggers['way_of_withdrawal_list_id'] ?? null,
+				'licence_number'					=> $triggers['licence_number'] ?? null,
 				'conflict_animal_removal_list_id' 	=> $triggers['conflict_animal_removal_list_id'] ?? null,
 				'biometry_loss_reason_list_id' 		=> $triggers['biometry_loss_reason_list_id'] ?? null,
 				'biometry_loss_reason_description' 	=> $triggers['biometry_loss_reason_description'] ?? null,
-				'project_name' 						=> $triggers['project_name'] ?? null,
-				'receiving_country' 				=> $triggers['receiving_country'] ?? null,
-				'number_of_removal_in_the_hunting_administrative_area' => $numberOfRemovalInTheHuntingAdministrativeArea // $triggers['number_of_removal_in_the_hunting_administrative_area'] ?? null
+				'project_name'						=> $triggers['project_name'] ?? null,
+				'receiving_country'					=> $triggers['receiving_country'] ?? null,
+				'number_of_removal_in_the_hunting_administrative_area' => $numberOfRemovalInTheHuntingAdministrativeArea,
+				'telemetry_uid'						=> $triggers['telemetry_uid'] ?? null
 			]),
 		];
+
+		return $payload;
 	}
 
 	public function asyncUpdateAnimalHandlingGeoLocationListenerData($triggers)
@@ -340,43 +369,43 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 			}
 
 			return [
-				'bearsBiometryAnimalHandling' => [
-					'geo_location' => new Repository([
-						'lat' => $pointEPSG4326->y,
-						'lng' => $pointEPSG4326->x,
-					]),
-					'EPSG_3912_y' => $pointEPSG3912->y,
-					'EPSG_3912_x' => $pointEPSG3912->x,
-					'EPSG_3794_y' => $pointEPSG3794->y,
-					'EPSG_3794_x' => $pointEPSG3794->x,
-					'projection_type' => $triggers['projection_type'],
-					'hunting_management_area' => $LUO ?? '',
-					'hunting_ground' => $LOV ?? '',
-					'gid' => $gid,
-					'place_of_removal' => $triggers['place_of_removal'],
-					'place_type_list_id'      => $triggers['place_type_list_id'],
-					'place_type_list_details' => $triggers['place_type_list_details'] ?? null,
-				],
+			'bearsBiometryAnimalHandling' => [
+				'geo_location' => new Repository([
+					'lat' => $pointEPSG4326->y,
+					'lng' => $pointEPSG4326->x,
+				]),
+				'EPSG_3912_y' => $pointEPSG3912->y,
+				'EPSG_3912_x' => $pointEPSG3912->x,
+				'EPSG_3794_y' => $pointEPSG3794->y,
+				'EPSG_3794_x' => $pointEPSG3794->x,
+				'projection_type' => $triggers['projection_type'],
+				'hunting_management_area' => $LUO ?? '',
+				'hunting_ground' => $LOV ?? '',
+				'gid' => $gid,
+				'place_of_removal' => $triggers['place_of_removal'],
+				'place_type_list_id'      => $triggers['place_type_list_id'],
+				'place_type_list_details' => $triggers['place_type_list_details'] ?? null,
+			],
 			];
 		} else {
 			return [
-				'bearsBiometryAnimalHandling' => [
-					'geo_location' => new Repository([
-						'lat' => $pointEPSG4326->y,
-						'lng' => $pointEPSG4326->x,
-					]),
-					'EPSG_3912_y' => $pointEPSG3912->y,
-					'EPSG_3912_x' => $pointEPSG3912->x,
-					'EPSG_3794_y' => $pointEPSG3794->y,
-					'EPSG_3794_x' => $pointEPSG3794->x,
-					'projection_type' => $triggers['projection_type'],
-					'hunting_management_area' => 'N/A',
-					'hunting_ground' => 'N/A',
-					'gid' => null,
-					'place_of_removal' => $triggers['place_of_removal'],
-					'place_type_list_id'      => $triggers['place_type_list_id'],
-					'place_type_list_details' => $triggers['place_type_list_details'] ?? null,
-				],
+			'bearsBiometryAnimalHandling' => [
+				'geo_location' => new Repository([
+					'lat' => $pointEPSG4326->y,
+					'lng' => $pointEPSG4326->x,
+				]),
+				'EPSG_3912_y' => $pointEPSG3912->y,
+				'EPSG_3912_x' => $pointEPSG3912->x,
+				'EPSG_3794_y' => $pointEPSG3794->y,
+				'EPSG_3794_x' => $pointEPSG3794->x,
+				'projection_type' => $triggers['projection_type'],
+				'hunting_management_area' => 'N/A',
+				'hunting_ground' => 'N/A',
+				'gid' => null,
+				'place_of_removal' => $triggers['place_of_removal'],
+				'place_type_list_id'      => $triggers['place_type_list_id'],
+				'place_type_list_details' => $triggers['place_type_list_details'] ?? null,
+			],
 			];
 		}
 	}
@@ -399,16 +428,16 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 		$repositoryElements = [];
 		for ($sampleNumber = 1; $sampleNumber <= self::MAX_SAMPLE_NUMBER; $sampleNumber++) {
 			$repositoryElement = [
-				'sample_code_' . $sampleNumber	=> $triggers['sample_code_' . $sampleNumber] ?? null,
-				'sample_tissue_' . $sampleNumber => $triggers['sample_tissue_' . $sampleNumber] ?? null,
-				'sample_comment_' . $sampleNumber => $triggers['sample_comment_' . $sampleNumber] ?? null,
+			'sample_code_' . $sampleNumber	=> $triggers['sample_code_' . $sampleNumber] ?? null,
+			'sample_tissue_' . $sampleNumber => $triggers['sample_tissue_' . $sampleNumber] ?? null,
+			'sample_comment_' . $sampleNumber => $triggers['sample_comment_' . $sampleNumber] ?? null,
 			];
 
 			$repositoryElements = array_merge($repositoryElements, $repositoryElement);
 		}
 
 		return [
-			'bearsBiometryAnimalHandling' => new Repository($repositoryElements)
+		'bearsBiometryAnimalHandling' => new Repository($repositoryElements)
 		];
 	}
 
@@ -430,68 +459,65 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 	public function layout(): iterable
 	{
 		$preBiometryAnimalHandlingSampleListeners = [
-			Layout::columns([
-				BearsBiometryAnimalHandlingAnimalListener::class,
+		Layout::columns([
+			BearsBiometryAnimalHandlingAnimalListener::class,
 
-				BearsBiometryAnimalHandlingGeoLocationListener::class,
-			]),
+			BearsBiometryAnimalHandlingGeoLocationListener::class,
+		]),
 
-			WayOfRemovalListener::class,
+		// WayOfRemovalListener::class,
 
-			BearsBiometryAnimalHandlingAnimalConflictednessListener::class,
+		BearsBiometryAnimalHandlingAnimalConflictednessListener::class,
 
-			Layout::rows([
-				Select::make('bearsBiometryAnimalHandling.licence_list_id')
-					->fromQuery(LicenceList::where('status', '=', BaseList::STR_ACTIVE), 'title')
-					->title(__('Licence'))
-					->help(__('Please select the Licence'))
-					->empty(__('<Select>'))
-					->required(),
-			]),
+		Layout::rows([
+			Select::make('bearsBiometryAnimalHandling.licence_list_id')
+				->fromQuery(LicenceList::where('status', '=', BaseList::STR_ACTIVE), 'title')
+				->title(__('Licence'))
+				->help(__('Please select the Licence'))
+				->empty(__('<Select>'))
+				->required(),
+		]),
 
-			BearsBiometryAnimalHandlingHunterFinderSwitchListener::class,
+		BearsBiometryAnimalHandlingHunterFinderSwitchListener::class,
 		];
 
 		$biometryAnimalHandlingSamplesListeners = [
-			new BearsBiometryAnimalHandlingSamplesListener(self::MAX_SAMPLE_NUMBER)
+		new BearsBiometryAnimalHandlingSamplesListener(self::MAX_SAMPLE_NUMBER)
 		];
 
 		/*
 		for ($sampleNumber=1; $sampleNumber<=self::MAX_SAMPLE_NUMBER; $sampleNumber++) {
-			$biometryAnimalHandlingSamplesListeners[] = new BearsBiometryAnimalHandlingSamplesListener($sampleNumber);
+		$biometryAnimalHandlingSamplesListeners[] = new BearsBiometryAnimalHandlingSamplesListener($sampleNumber);
 		}
 		*/
 
 		$postBiometryAnimalHandlingSampleListeners = [
-			ToothSamplesListener::class,
-			AnimalHandlingSamplesLayout::class,
+		ToothSamplesListener::class,
+		AnimalHandlingSamplesLayout::class,
 
-			// BearsBiometryAnimalHandlingHairSampleTakenListener::class,
-			// BearsBiometryAnimalHandlingDNASampleTakenListener::class,
+		Layout::rows([
+			Input::make('bearsBiometryAnimalHandling.measurer_name_and_surname')
+				->title(__('Measurer name and surname')),
 
-			Layout::rows([
-				Input::make('bearsBiometryAnimalHandling.measurer_name_and_surname')
-					->title(__('Measurer name and surname')),
+			Input::make('bearsBiometryAnimalHandling.hunting_ground_representative')
+				->title(__('Hunting ground representative')),
+		]),
 
-				Input::make('bearsBiometryAnimalHandling.hunting_ground_representative')
-					->title(__('Hunting ground representative')),
-			]),
+		Layout::block([])
+			->commands(
+				[
+					Button::make(__('Save animal handling'))
+						->type(Color::DEFAULT())
+						->icon('check')
+						->method($this->action . 'AnimalHandlingAndDoNotAddBiometryData'),
 
-			Layout::block([])
-				->commands(
-					[
-						Button::make(__('Save animal handling'))
-							->type(Color::DEFAULT())
-							->icon('check')
-							->method('createOrUpdateAndDoNotAddBiometryData'),
-
-						Button::make(__('Save animal handling and add biometry data'))
-							->type(Color::DEFAULT())
-							->icon('check')
-							->method('createOrUpdateAndAddBiometryData')
-							->canSee($this->bearsBiometryAnimalHandling !== null && !$this->bearsBiometryAnimalHandling->exists)
-					]
-				),
+					Button::make(__('Save animal handling and add biometry data'))
+						->type(Color::DEFAULT())
+						->icon('check')
+						->method($this->action . 'AnimalHandlingAndAddBiometryData')
+						->canSee($this->bearsBiometryAnimalHandling !== null && !$this->bearsBiometryAnimalHandling->exists)
+				]
+			),
 
 			Layout::modal('modalRemove', [
 				Layout::rows([
@@ -504,6 +530,8 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 				->size(Modal::SIZE_LG)
 				->applyButton(__('Remove'))
 				->closeButton(__('Close')),
+
+			Layout::view('mapExtender'),
 		];
 
 		return array_merge(
@@ -520,13 +548,41 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 	 */
 	private function createOrUpdate(Animal $animal, BearsBiometryAnimalHandling $bearsBiometryAnimalHandling, Request $request)
 	{
+		$animalHandlingStructure = $request->get('bearsBiometryAnimalHandling');
+		$parsedDate = date_parse_from_format("j.n.Y", $animalHandlingStructure['animal_handling_date_date']);
+		$parsedTime = date_parse_from_format("H:i", $animalHandlingStructure['animal_handling_date_time']);
+
+		$phpDate = new DateTime($parsedDate['year'] . '-' . $parsedDate['month'] . '-' . $parsedDate['day'] . ' ' . $parsedTime['hour'] . ':' . $parsedTime['minute']);
+		$animalHandlingStructure['animal_handling_date'] = $phpDate;
+
+		$request->merge(['bearsBiometryAnimalHandling' => $animalHandlingStructure]);
+
+		$request->validate([
+			'bearsBiometryAnimalHandling.animal_handling_date' => 'required|date|before:now',
+		]);
+
+		if (isset($animalHandlingStructure['animal_died_at_date'])) {
+			$parsedDate = date_parse_from_format("j.n.Y", $animalHandlingStructure['animal_died_at_date']);
+			$parsedTime = date_parse_from_format("H:i", $animalHandlingStructure['animal_died_at_time']);
+
+			$phpDate = new DateTime($parsedDate['year'] . '-' . $parsedDate['month'] . '-' . $parsedDate['day'] . ' ' . $parsedTime['hour'] . ':' . $parsedTime['minute']);
+			$animalHandlingStructure['animal_died_at'] = $phpDate;
+
+			$request->merge(['bearsBiometryAnimalHandling' => $animalHandlingStructure]);
+
+			$request->validate([
+				'bearsBiometryAnimalHandling.animal_died_at' => 'required|date|before:now'
+			]);
+		}
+
+		if ($bearsBiometryAnimalHandling == null || !$bearsBiometryAnimalHandling->exists) {
+			// create new animal handling
+			$bearsBiometryAnimalHandling = new BearsBiometryAnimalHandling();
+		}
+
 		$bearsBiometryAnimalHandling->fill($request->get('bearsBiometryAnimalHandling'));
 
-		$bearsBiometryAnimalHandling['animal_conflictedness'] = intval($request->get('bearsBiometryAnimalHandling')['animal_conflictedness']);
-
-		$animalId = $request->get('bearsBiometryAnimalHandling')['animal_id'] ?? null;
-		if ($animalId) {
-			$animal = Animal::find($animalId);
+		if ($animal->exists) {
 			if ($animal->status == Animal::STR_DEAD) {
 				$animalStatus = Animal::STR_DEAD;
 			} else {
@@ -538,15 +594,13 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 
 		$bearsBiometryAnimalHandling['animal_status_on_handling'] = $animalStatus;
 
-		if (!$animalId) {
+		if (!$animal->exists && !isset($bearsBiometryAnimalHandling['animal_id'])) {
 			// create new animal
 			$animal = new Animal();
 
-			$isAlive = $animalStatus == Animal::STR_ALIVE;
-
 			$animal->fill([
 				'status' => $animalStatus,
-				'name' => $isAlive ? $request->get('bearsBiometryAnimalHandling')['animal_name'] : '',
+				'name' => $request->get('bearsBiometryAnimalHandling')['animal_name'] ?? '',
 				'species_list_id' => $request->get('bearsBiometryAnimalHandling')['animal_species_list_id'],
 				'sex_list_id' => $request->get('bearsBiometryAnimalHandling')['animal_sex_list_id'],
 				'description' => $request->get('bearsBiometryAnimalHandling')['animal_description'],
@@ -555,20 +609,32 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 
 			$animal->save();
 
-			if (!$isAlive) {
+			if (!isset($request->get('bearsBiometryAnimalHandling')['animal_name']) || $request->get('bearsBiometryAnimalHandling')['animal_name'] == '') {
 				$animal->fill(['name' => $animal->id]);
 				$animal->save();
 			}
 
 			$bearsBiometryAnimalHandling['animal_id'] = $animal->id;
 		} else {
-			$animal = Animal::find($animalId);
+			if (!$animal->exists) { // animal was selected later
+				$animal = Animal::find($bearsBiometryAnimalHandling['animal_id']);
+			} else { // animal was selected originaly, now only the reference needs to be set
+				$bearsBiometryAnimalHandling['animal_id'] = $animal->id;
+			}
+
+			if (isset($request->get('bearsBiometryAnimalHandling')['animal_name']) && $request->get('bearsBiometryAnimalHandling')['animal_name'] == '') {
+				$animal['name'] = $request->get('bearsBiometryAnimalHandling')['animal_name'];
+			}
+
 			$animal['status'] = $animalStatus;
+			$animal['died_at'] = $request->get('bearsBiometryAnimalHandling')['animal_died_at'] ?? null;
+
 			$animal->save();
 		}
 
 		$bearsBiometryAnimalHandling->lat = $request->get('bearsBiometryAnimalHandling')['geo_location']['lat'];
 		$bearsBiometryAnimalHandling->lng = $request->get('bearsBiometryAnimalHandling')['geo_location']['lng'];
+
 		$bearsBiometryAnimalHandling->save();
 
 		if ($bearsBiometryAnimalHandling->bearsBiometrySamples()) {
@@ -582,10 +648,10 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 
 			if ($sampleCode != '') {
 				$bearsBiometrySampleData = [
-					'bears_biometry_animal_handling_id' => $bearsBiometryAnimalHandling->id,
-					'sample_code' => $sampleCode,
-					'sample_tissue' => $request->get('bearsBiometryAnimalHandling')['sample_tissue_' . $sampleNumber],
-					'sample_comment' => $request->get('bearsBiometryAnimalHandling')['sample_comment_' . $sampleNumber],
+				'bears_biometry_animal_handling_id' => $bearsBiometryAnimalHandling->id,
+				'sample_code' => $sampleCode,
+				'sample_tissue' => $request->get('bearsBiometryAnimalHandling')['sample_tissue_' . $sampleNumber],
+				'sample_comment' => $request->get('bearsBiometryAnimalHandling')['sample_comment_' . $sampleNumber],
 				];
 
 				$bearsBiometrySample->fill($bearsBiometrySampleData)->save();
@@ -596,7 +662,9 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 			$request->input('bearsBiometryAnimalHandling.attachment', [])
 		);
 
-		Alert::info(__('You have successfully created or updated an Animal Handling form.') . ' ID: ' . $bearsBiometryAnimalHandling->id . ' ' . __('Name') . ': ' . $animal->name);
+		Alert::info(__('You have successfully created or updated an Animal Handling.') . ' ' . __('Animal handling') . ' ID: ' . $bearsBiometryAnimalHandling->id . ' ' . __('Animal') . ' ID: ' . $animal->id . ' ' . __('Name') . ': ' . $animal->name);
+
+		return $bearsBiometryAnimalHandling;
 	}
 
 	/**
@@ -613,6 +681,21 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 		return redirect()->route('platform.animalHandling.list', ['filter[animal_status]' => Auth::user()->defaultVisualisationAnimalStatus()]);
 	}
 
+	public function createAnimalHandlingAndDoNotAddBiometryData(Request $request)
+	{
+		return $this->createOrUpdateAndDoNotAddBiometryData(new Animal(), new BearsBiometryAnimalHandling(), $request);
+	}
+
+	public function addAnimalHandlingAndDoNotAddBiometryData(Animal $animal, Request $request)
+	{
+		return $this->createOrUpdateAndDoNotAddBiometryData($animal, new BearsBiometryAnimalHandling(), $request);
+	}
+
+	public function editAnimalHandlingAndDoNotAddBiometryData(Animal $animal, BearsBiometryAnimalHandling $bearsBiometryAnimalHandling, Request $request)
+	{
+		return $this->createOrUpdateAndDoNotAddBiometryData($animal, $bearsBiometryAnimalHandling, $request);
+	}
+
 	/**
 	 * @param Animal    					$animal
 	 * @param BearsBiometryAnimalHandling	$bearsBiometryAnimalHandling
@@ -622,10 +705,26 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 	 */
 	public function createOrUpdateAndAddBiometryData(Animal $animal, BearsBiometryAnimalHandling $bearsBiometryAnimalHandling, Request $request)
 	{
-		$this->createOrUpdate($animal, $bearsBiometryAnimalHandling, $request);
+		$bearsBiometryAnimalHandling = $this->createOrUpdate($animal, $bearsBiometryAnimalHandling, $request);
 
-		return redirect()->route('platform.biometryData.edit', $bearsBiometryAnimalHandling);
+		return redirect()->route('platform.biometryData.edit', [ $bearsBiometryAnimalHandling ]);
 	}
+
+	public function createAnimalHandlingAndAddBiometryData(Request $request)
+	{
+		return $this->createOrUpdateAndAddBiometryData(new Animal(), new BearsBiometryAnimalHandling(), $request);
+	}
+
+	public function addAnimalHandlingAndAddBiometryData(Animal $animal, Request $request)
+	{
+		return $this->createOrUpdateAndAddBiometryData($animal, new BearsBiometryAnimalHandling(), $request);
+	}
+
+	public function editAnimalHandlingAndAddBiometryData(Animal $animal, BearsBiometryAnimalHandling $bearsBiometryAnimalHandling, Request $request)
+	{
+		return $this->createOrUpdateAndAddBiometryData($animal, $bearsBiometryAnimalHandling, $request);
+	}
+
 
 	/**
 	 * @param Post $bearsBiometryAnimalHandling

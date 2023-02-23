@@ -27,7 +27,7 @@ class BearsBiometryAnimalHandlingFactory extends Factory
 	public function definition()
 	{
 		return [
-			'animal_conflictedness' => mt_rand(0, 1),
+			'animal_conflictedness' => mt_rand(0, 1) == 0 ? BearsBiometryAnimalHandling::CONFLICTEDNESS_UNKNOWN : BearsBiometryAnimalHandling::CONFLICTEDNESS_CONFLICTING,
 			'animal_conflictedness_details' => Str::random(10),
 			'number_of_removal_in_the_hunting_administrative_area' => Str::random(10),
 			'way_of_withdrawal_list_id' => WayOfWithdrawalList::All()->random()->id,

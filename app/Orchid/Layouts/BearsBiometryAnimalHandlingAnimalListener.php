@@ -4,11 +4,15 @@ namespace App\Orchid\Layouts;
 
 use App\Models\Animal;
 use App\Models\Base\BaseList;
+use App\Models\BiometryLossReasonList;
+use App\Models\ConflictAnimalRemovalList;
 use App\Models\SexList;
 use App\Models\SpeciesList;
+use App\Models\WayOfWithdrawalList;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Orchid\Screen\Fields\DateTimer;
+use Orchid\Screen\Fields\Group;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\Select;
 use Orchid\Support\Facades\Layout;
@@ -16,6 +20,8 @@ use Orchid\Screen\Layouts\Listener;
 
 class BearsBiometryAnimalHandlingAnimalListener extends Listener
 {
+	private const CHALLENGE_STR = '2351';
+
     /**
      * List of field names for which values will be joined with targets' upon trigger.
      *
@@ -29,14 +35,25 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
      * @var string[]
      */
     protected $targets = [
+		'bearsBiometryAnimalHandling.original_animal_id',
 		'bearsBiometryAnimalHandling.animal_id',
 		'bearsBiometryAnimalHandling.animal_status',
-		'bearsBiometryAnimalHandling.animal_handling_date',
-		'bearsBiometryAnimalHandling.animal_died_at',
+		'bearsBiometryAnimalHandling.animal_died_at_date',
+		'bearsBiometryAnimalHandling.animal_died_at_time',
 		'bearsBiometryAnimalHandling.animal_name',
 		'bearsBiometryAnimalHandling.animal_species_list_id',
 		'bearsBiometryAnimalHandling.animal_sex_list_id',
 		'bearsBiometryAnimalHandling.animal_description',
+		'bearsBiometryAnimalHandling.animal_handling_date_date',
+		'bearsBiometryAnimalHandling.animal_handling_date_time',
+		'bearsBiometryAnimalHandling.way_of_withdrawal_list_id',
+		'bearsBiometryAnimalHandling.licence_number',
+		'bearsBiometryAnimalHandling.conflict_animal_removal_list_id',
+		'bearsBiometryAnimalHandling.biometry_loss_reason_list_id',
+		'bearsBiometryAnimalHandling.biometry_loss_reason_description',
+		'bearsBiometryAnimalHandling.project_name',
+		'bearsBiometryAnimalHandling.receiving_country',
+		'bearsBiometryAnimalHandling.number_of_removal_in_the_hunting_administrative_area',
 		'bearsBiometryAnimalHandling.telemetry_uid'
 	];
 
@@ -56,9 +73,51 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
      */
     protected function layouts(): iterable
     {
-		if (isset($this->query)) {
-			$existingAnimalSelected = null !== $this->query->get('bearsBiometryAnimalHandling.animal_id') ? $this->query->get('bearsBiometryAnimalHandling.animal_id') : false;
-			$isAlive = null !== $this->query->get('bearsBiometryAnimalHandling.animal_status') ? $this->query->get('bearsBiometryAnimalHandling.animal_status') == Animal::STR_ALIVE : false;
+		if ($this->query) {
+			$animalIsKnown = $this->query->get('bearsBiometryAnimalHandling.original_animal_id') != null;
+			$animalIsSelected = $this->query->get('bearsBiometryAnimalHandling.animal_id') != null;
+
+			$animalIsAlive = $this->query->get('bearsBiometryAnimalHandling.animal_status') == Animal::STR_ALIVE;
+
+			$regularCullSelected = $this->query->get('bearsBiometryAnimalHandling.way_of_withdrawal_list_id') == WayOfWithdrawalList::REGULAR_CULL;
+			$conflictAnimalRemovalSelected = $this->query->get('bearsBiometryAnimalHandling.way_of_withdrawal_list_id') == WayOfWithdrawalList::CONFLICT_ANIMAL_REMOVAL;
+			$lossSelected = $this->query->get('bearsBiometryAnimalHandling.way_of_withdrawal_list_id') == WayOfWithdrawalList::LOSS;
+			$lossReasonOtherSelected = $this->query->get('bearsBiometryAnimalHandling.biometry_loss_reason_list_id') == BiometryLossReasonList::OTHER;
+			$liveCaptureSelected = $this->query->get('bearsBiometryAnimalHandling.way_of_withdrawal_list_id') == WayOfWithdrawalList::LIVE_CAPTURE;
+			$translocationOutOfPopulationSelected = $this->query->get('bearsBiometryAnimalHandling.way_of_withdrawal_list_id') == WayOfWithdrawalList::TRANSLOCATION_OUT_OF_POPULATION;
+		} else {
+			$animalIsKnown = false;
+			$animalIsSelected = false;
+
+			$animalIsAlive = false;
+
+			$regularCullSelected = false;
+			$conflictAnimalRemovalSelected = false;
+			$lossSelected = false;
+			$lossReasonOtherSelected = false;
+			$liveCaptureSelected = false;
+			$translocationOutOfPopulationSelected = false;
+		}
+
+		// dd(99, $this->query->get('animal'), $this->query->get('bearsBiometryAnimalHandling'));
+		/*
+			if (!is_null($this->query->get('bearsBiometryAnimalHandling'))) {
+				$existingAnimalSelected = true;
+				$animalId = $this->query->get('animal.id');
+			}
+
+			# if ( $this->query->get('bearsBiometryAnimalHandling.animal_id') != )
+
+			$existingAnimalSelected =
+				$this->query->get('bearsBiometryAnimalHandling.animal_id') != null
+			  		? $this->query->get('bearsBiometryAnimalHandling.animal_id')
+					: false;
+
+			$isAlive =
+				$this->query->get('bearsBiometryAnimalHandling.animal_status') != null
+					? $this->query->get('bearsBiometryAnimalHandling.animal_status') == Animal::STR_ALIVE
+					: false;
+
 			$animalIDAvailable = !is_null($this->query->get('bearsBiometryAnimalHandling.animal_id'));
 		} else {
 			$existingAnimalSelected = false;
@@ -69,15 +128,32 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 		if ($animalIDAvailable) {
 			$animalEntityId = $this->query->get('bearsBiometryAnimalHandling.animal_id');
 			$animalEntity = Animal::find($animalEntityId);
-			$animalInDatabaseIsAlive = $animalEntity->status == Animal::STR_ALIVE;
+			# $animalInDatabaseIsAlive = $animalEntity->status == Animal::STR_ALIVE;
 		}
 
-        return [
+		/* Way of withdrawal related variables */
+
+		$animalStatusSubset = $animalIsAlive ? WayOfWithdrawalList::SHOWN_ON_ANIMAL_STATUS_ALIVE : WayOfWithdrawalList::SHOWN_ON_ANIMAL_STATUS_DEAD;
+
+		$animalSelectQuery = $animalIsKnown
+			? Animal::whereRaw('true')
+			: Animal::where('status', '=', 'alive'); // we can rehandle only live animals
+
+		return [
 			Layout::rows([
-				Input::make('bearsBiometryAnimalHandling.animal_id')
-					->title('Animal ID')
-					->readonly()
-					->canSee($animalIDAvailable),
+				Select::make('bearsBiometryAnimalHandling.original_animal_id')
+					->fromQuery($animalSelectQuery, 'name')
+					->title(__('Animal'))
+					->disabled($animalIsKnown)
+					->empty(__('<Unknown animal>'))
+					->canSee($animalIsKnown),
+
+				Select::make('bearsBiometryAnimalHandling.animal_id')
+					->fromQuery($animalSelectQuery, 'name')
+					->title(__('Animal'))
+					->help(__('Please select the ID of the individual, if the animal is known.'))
+					->empty(__('<Unknown animal>'))
+					->canSee(!$animalIsKnown),
 
 				Select::make('bearsBiometryAnimalHandling.animal_status')
 					->title('Status')
@@ -86,21 +162,13 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 					->options([
 						Animal::STR_ALIVE => __('Alive'),
 						Animal::STR_DEAD => __('Dead'),
-					])
-					->disabled($animalIDAvailable && !$animalInDatabaseIsAlive),
-
-				Select::make('bearsBiometryAnimalHandling.animal_id')
-					->fromQuery(Animal::where('status', '=', Animal::STR_ALIVE), 'name')
-					->title(__('Animal'))
-					->help(__('Please select the ID of the individual, if the animal is known.'))
-					->empty(__('<New animal>'))
-					->disabled(!$isAlive || $animalIDAvailable),
+					]),
 
 				Input::make('bearsBiometryAnimalHandling.animal_name')
 					->title('Name')
-					->required($isAlive)
-					->disabled($existingAnimalSelected)
-					->canSee($isAlive && !$existingAnimalSelected),
+					->required($animalIsAlive)
+					->help(__('Input animal name.'))
+					->canSee(!$animalIsKnown && !$animalIsSelected),
 
 				Select::make('bearsBiometryAnimalHandling.animal_species_list_id')
 					->fromQuery(SpeciesList::where('status', '=', BaseList::STR_ACTIVE), 'name')
@@ -108,7 +176,7 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 					->empty(__('<Select>'))
 					->title(__('Species'))
 					->help(__('Please select the species'))
-					->disabled($existingAnimalSelected),
+					->disabled($animalIsKnown || $animalIsSelected),
 
 				Select::make('bearsBiometryAnimalHandling.animal_sex_list_id')
 					->fromQuery(SexList::where('status', '=', BaseList::STR_ACTIVE), 'name')
@@ -117,38 +185,114 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 					->value(SexList::NEUTRAL_SEX_ID)
 					->title(__('Sex'))
 					->help(__('Please select the sex'))
-					->disabled($existingAnimalSelected),
+					->disabled($animalIsKnown || $animalIsSelected),
 
 				Input::make('bearsBiometryAnimalHandling.animal_description')
-					->title('Note')
-					->disabled($existingAnimalSelected),
-
-				Input::make('bearsBiometryAnimalHandling.telemetry_uid')
-					->title(__('Ear-tag number or radio-collar (telemetry) identification'))
-					->help(__('Please describe animal-borne markings (ear-tags, collar, microchips, etc.)'))
-					->canSee($isAlive)
+					->disabled($animalIsKnown || $animalIsSelected)
+					->title('Note'),
 
 			])->title(__('Animal')),
 
 			Layout::rows([
-				DateTimer::make('bearsBiometryAnimalHandling.animal_handling_date')
-					->title('Date and time of handling')
+				DateTimer::make('bearsBiometryAnimalHandling.animal_handling_date_date')
+					->title('Date of handling')
 					->required()
-					->format24hr()
+					->allowInput()
+					->format('d.m.Y'),
+
+				DateTimer::make('bearsBiometryAnimalHandling.animal_handling_date_time')
+					->title('Time of handling')
+					->required()
+					->allowInput()
+					->format('H:i')
+					->noCalendar()
 					->enableTime(),
 
-				DateTimer::make('bearsBiometryAnimalHandling.animal_died_at')
-					->title('Date and time of death')
-					->format24hr()
+				DateTimer::make('bearsBiometryAnimalHandling.animal_died_at_date')
+					->title('Date of death')
+					->canSee(!$animalIsAlive)
+					->allowInput()
+					->readonly($animalIsKnown)
+					->format('d.m.Y')
+					->required(),
+
+				DateTimer::make('bearsBiometryAnimalHandling.animal_died_at_time')
+					->title('Time of death')
+					->canSee(!$animalIsAlive)
+					->required()
+					->allowInput()
+					->format('H:i')
+					->noCalendar()
 					->enableTime()
-					->canSee(!$isAlive)
-					->readonly($existingAnimalSelected),
+					->readonly($animalIsKnown),
 
 			])->title(__('Date and time')),
 
+			Layout::rows([
+				Group::make([
+					Select::make('bearsBiometryAnimalHandling.way_of_withdrawal_list_id')
+						->fromQuery(
+							WayOfWithdrawalList::where('status', '=', BaseList::STR_ACTIVE)
+								->whereIn('id', $animalStatusSubset),
+							'name'
+						)
+						->title(__('Way of withdrawal'))
+						->required()
+						->empty(__('<Select>'))
+						->help(__('Select the way of withdrawal')),
 
-				// ->value('2011-08-19T13:45:00')
-				// ->horizontal(),
+					Input::make('bearsBiometryAnimalHandling.licence_number')
+						->title(__('Permit number'))
+						->required()
+						->help(__('Please enter the permit number'))
+						->canSee($regularCullSelected || $conflictAnimalRemovalSelected),
+
+					Select::make('bearsBiometryAnimalHandling.conflict_animal_removal_list_id')
+						->fromQuery(ConflictAnimalRemovalList::where('status', '=', BaseList::STR_ACTIVE), 'name')
+						->title(__('Type of conflict animal removal'))
+						->empty(__('<Select>'))
+						->required()
+						->help(__('Please select the type conflict animal removal'))
+						->canSee($conflictAnimalRemovalSelected),
+
+					Select::make('bearsBiometryAnimalHandling.biometry_loss_reason_list_id')
+						->fromQuery(BiometryLossReasonList::where('status', '=', BaseList::STR_ACTIVE), 'name')
+						->title(__('Loss reason'))
+						->empty(__('<Select>'))
+						->required()
+						->help(__('Please select the reason for death'))
+						->canSee($lossSelected),
+
+					Input::make('bearsBiometryAnimalHandling.biometry_loss_reason_description')
+						->title(__('Loss reason description'))
+						->help(__('Please insert the reason for death or describe circumstances'))
+						->required($lossReasonOtherSelected)
+						->canSee($lossSelected && $lossReasonOtherSelected),
+
+					Input::make('bearsBiometryAnimalHandling.project_name')
+						->title(__('Project title and description; Contact name'))
+						->help(__('Please insert the project name and description and provide a contact person'))
+						->required($liveCaptureSelected)
+						->canSee($liveCaptureSelected),
+
+					Input::make('bearsBiometryAnimalHandling.receiving_country')
+						->title(__('Receiving country and institutions'))
+						->help(__('Please define the receiving country and provide names of involved institutions (permits, transport etc.)'))
+						->required($translocationOutOfPopulationSelected)
+						->canSee($translocationOutOfPopulationSelected),
+				]),
+
+				Input::make('bearsBiometryAnimalHandling.number_of_removal_in_the_hunting_administrative_area')
+					->mask('999-9999')
+					->title(__('Number and the year of removal in hunting administrative area'))
+					->help(__('Please insert number and the year of removal in hunting administrative area'))
+					->canSee(!$animalIsAlive),
+
+				Input::make('bearsBiometryAnimalHandling.telemetry_uid')
+					->title(__('Ear-tag number or radio-collar (telemetry) identification'))
+					->help(__('Please describe animal-borne markings (ear-tags, collar, microchips, etc.)'))
+					->canSee($animalIsAlive)
+			]),
 		];
     }
 }

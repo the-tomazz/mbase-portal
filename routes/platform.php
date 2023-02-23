@@ -102,16 +102,24 @@ Route::screen('roles', RoleListScreen::class)
 			->push(__('Roles'), route('platform.systems.roles'));
 	});
 
-Route::screen('animalHandling/edit/{animal?}/{bearsBiometryAnimalHandling?}', BearsBiometryAnimalHandlingEditScreen::class)
+Route::screen('animalHandling/create', BearsBiometryAnimalHandlingEditScreen::class)
+	->name('platform.animalHandling.create');
+
+Route::screen('animalHandling/add/{animal}', BearsBiometryAnimalHandlingEditScreen::class)
+	->name('platform.animalHandling.add');
+
+Route::screen('animalHandling/edit/{animal?}/{bearsBiometryAnimalHandling}', BearsBiometryAnimalHandlingEditScreen::class)
 	->name('platform.animalHandling.edit');
 
 Route::screen('animalHandling/view/{bearsBiometryAnimalHandling}', AnimalHandlingViewScreen::class)
 	->name('platform.animalHandling.view');
+
 Route::screen('animalHandlings', AnimalHandlingListViewListScreen::class)
 	->name('platform.animalHandling.list');
 
 Route::screen('biometryData/edit/{bearsBiometryAnimalHandling}/{bearsBiometryData?}', BiometryDataEditScreen::class)
 	->name('platform.biometryData.edit');
+
 Route::screen('biometryData/view/{bearsBiometryData}', BiometryDataViewScreen::class)
 	->name('platform.biometryData.view');
 

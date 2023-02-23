@@ -4,6 +4,7 @@ namespace App\Orchid\Screens\Animal;
 
 use App\Models\Animal;
 use App\Orchid\Layouts\AnimalEditListener;
+use DateTime;
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Layout;
 use Illuminate\Http\Request;
@@ -27,6 +28,9 @@ class AnimalDataEditScreen extends Screen
 	 */
 	public function query(Animal $animal): iterable
 	{
+		$animal['died_at_date'] = (new DateTime($animal['died_at']))->format('j.n.Y');
+		$animal['died_at_time'] = (new DateTime($animal['died_at']))->format('H:i');
+
 		return [
 			'animal' => $animal
 		];
@@ -62,7 +66,8 @@ class AnimalDataEditScreen extends Screen
 			'animal' => new Repository([
 				'id'				=> $triggers['id'] ?? null,
 				'status'			=> $triggers['status'] ?? null,
-				'died_at'			=> $triggers['died_at'] ?? null,
+				'died_at_date'		=> $triggers['died_at_date'] ?? null,
+				'died_at_time'		=> $triggers['died_at_time'] ?? null,
 				'name'				=> $triggers['name'] ?? null,
 				'species_list_id'	=> $triggers['species_list_id'] ?? null,
 				'sex_list_id'		=> $triggers['sex_list_id'] ?? null,
@@ -100,6 +105,15 @@ class AnimalDataEditScreen extends Screen
 	 */
 	public function createOrUpdateAnimal(Animal $animal, Request $request)
 	{
+		$animalStructure = $request->get('animal');
+		$parsedDate = date_parse_from_format("j.n.Y", $animalStructure['died_at_date']);
+		$parsedTime = date_parse_from_format("H:i", $animalStructure['died_at_time']);
+
+		$phpDate = new DateTime($parsedDate['year'] . '-' . $parsedDate['month'] . '-' . $parsedDate['day'] . ' ' . $parsedTime['hour'] . ':' . $parsedTime['minute']);
+		$animalStructure['died_at'] = $phpDate;
+
+		$request->merge(['animal' => $animalStructure]);
+
 		$request->validate([
 			'animal.description' => 'string|max:255',
 			'animal.died_at' => 'required|date|before:now'
@@ -127,7 +141,7 @@ class AnimalDataEditScreen extends Screen
 
 		$animal->save();
 
-		Alert::info(__('You have successfully updated Animal data.') . ' ID: ' . $animal->id);
+		Alert::info(__('You have successfully updated Animal data.') . ' ID: ' . $animal->id . ' ' . __('Name') . ': ' . $animal->name);
 
 		return redirect()->route('platform.animals.list');
 	}

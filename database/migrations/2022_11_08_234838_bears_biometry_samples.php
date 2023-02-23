@@ -18,9 +18,9 @@ return new class extends Migration
 			function (Blueprint $table) {
 				$table->id();
 				$table->unsignedInteger('bears_biometry_animal_handling_id');
-				$table->string('sample_code');
-				$table->text('sample_tissue');
-				$table->text('sample_comment');
+				$table->string('sample_code')->nullable();
+				$table->text('sample_tissue')->nullable();
+				$table->text('sample_comment')->nullable();
 				$table->timestamps();
 
 				$table->foreign('bears_biometry_animal_handling_id')

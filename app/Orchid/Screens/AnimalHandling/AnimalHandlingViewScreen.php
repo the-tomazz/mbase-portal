@@ -128,6 +128,7 @@ class AnimalHandlingViewScreen extends Screen
 				->render(function ($bearsBiometryAnimalHandling) {
 					return $bearsBiometryAnimalHandling->animal->species_list->name;
 				}),
+
 			Sight::make('animal->status', __('Animal status'))
 				->render(function ($bearsBiometryAnimalHandling) {
 					return $bearsBiometryAnimalHandling->animal->renderStatus();

@@ -8,9 +8,9 @@
 	"Import from XLS": "Uvoz iz XLS",
 	"Animal handling": "Rokovanje z živaljo",
 	"Edit animal handling": "Uredi rokovanje z živaljo",
-	"Animal Handling Create / Update": "Ustvarjanje novih / urejanje podatkov o upravljanju z živaljo",
-	"Save animal handling": "Shrani podatke o upravljanju z živaljo",
-	"Save animal handling and add biometry data": "Shrani podatke o upravljanju z živaljo in dodaj biometrične podatke",
+	"Animal Handling Create / Update": "Ustvarjanje novih / urejanje podatkov o rokovanju z živaljo",
+	"Save animal handling": "Shrani podatke o rokovanju z živaljo",
+	"Save animal handling and add biometry data": "Shrani podatke o rokovanju z živaljo in dodaj biometrične podatke",
 	"Remove": "Izbriši",
 
 	"Number and the year of removal in hunting administrative area": "Številka in leto odvzema v lovsko-upravljavskem območju",
@@ -20,6 +20,8 @@
 	"Ear-tag number or radio-collar (telemetry) identification": "Številka ušesne značke ali identifikacija ovratnice",
 	"Please describe animal-borne markings (ear-tags, collar, microchips, etc.)": "Opišite označbe na živali (ušesne značke, ovratnice, mikročip ipd.).",
 	"Date and time of handling": "Datum in čas rokovanja z živaljo",
+	"Date of handling": "Datum rokovanja z živaljo",
+	"Time of handling": "Čas rokovanja z živaljo",
 	"Geo location / Local name": "Lokalno ime",
 	"Please insert geographical location / local name": "Vnesite lokalno ime.",
 	"Witness/Accompanying person name and surname": "Ime in priimek spremljevalca",
@@ -137,6 +139,7 @@
 	"You have successfully deleted Biometry Data": "Uspešno ste izbrisali biometrične podatke",
 
 	"Date and time of death": "Datum in čas smrti",
+	"Date time of death": "Čas smrti",
 	"Name": "Ime",
 	"Name and surname": "Ime in priimek",
 	"Note": "Opomba",
@@ -158,13 +161,16 @@
 	"Last edit": "Urejeno",
 	"Description": "Opis",
 	"Date of death": "Datum smrti",
+	"Time of death": "Čas smrti",
 	"Created at": "Ustvarjeno",
 	"Updated at": "Zadnja sprememba",
 
-	"Please select the ID of the individual, if the animal is known.": "Prosimo, vnesite ID živali v primeru, da je živa neznana",
+	"Please select the ID of the individual, if the animal is named.": "Če smo z živaljo predhodno že rokovali, potem izberite ime te živali s spustnega seznama. Če žival še ni bila predhodno odlovljena (in poimenovana), pustite polje na vrednosti “Nepoimenovana žival.”",
 	"<New animal>": "<Neznana žival>",
-	"Please select the species": "Prosimo, izberite vrsto živali",
-	"Please select the sex": "Prosimo, izberite spol",
+	"<Unnamed animal>": "<Žival ni še bila poimenovana>",
+	"Input animal name.": "Živali lahko dodelite ime.",
+	"Please select the species": "Izberite živalsko vrsto.",
+	"Please select the sex": "Izberite spol živali.",
 
 	"Location": "Lokacija",
 	"Hunting-management area (LUO)": "Lovsko-upravljavsko območje",
@@ -328,7 +334,7 @@
 	"A Role defines a set of tasks a user assigned the role is allowed to perform.": "Vloga definira nabor nalog, ki jih lahko izvaja uporabnik, ki mu je dodeljena vloga.",
 	"Name role": "Naštej vloge",
 	"Specify which groups this account should belong to": "Določite, katerim skupinam naj pripada ta račun",
-	"You have successfully created or updated an Animal Handling form.": "Uspešno ste posodobili ali ustvarili obrazec za rokovanje z živaljo.",
+	"You have successfully created or updated an Animal Handling.": "Uspešno ste posodobili ali ustvarili obrazec za rokovanje z živaljo.",
 	"Edit User": "Uredi uporabnika",
 
 	"Ears": "Ušesa",
@@ -378,9 +384,10 @@
 	"Lynx fur pattern": "Vzorec kožuha pri risu",
 	"Animal conflictedness": "Konfliktnost živali",
 	"Unknown": "Neznano",
-	"Animal conflictedness details": "Opis konfliktnosti",
+	"Unknown animal": "Neznana žival",
+	"Description of conflictedness": "Opis konfliktnosti",
 	"Conflicting": "Konfliktna žival",
-	"Please insert animal conflictedness details": "Prosimo vnesite opis konfliktnosti",
+	"Specify, why you think that this precise individual was the one that created conflicts.": "Prosimo vnesite opis konfliktnosti",
 
 	"Measurer name and surname": "Meritve opravil (ime in priimek)",
 	"Hunting ground representative": "Predstavnik lovišča (ime in priimek)",
@@ -438,6 +445,8 @@
 	"Insert Hind left paw width (0-25 cm)": "Vnesite dolžino zadnje leve šape (0-25 cm).",
 	"Insert gross mass of the animal (0-400 kg)": "Vnesite bruto maso živali (0-400 kg).",
 	"Insert net mass of the animal (0-400 kg)": "Vnesite neto maso živali (0-400 kg).",
-	"Please select lynx fur pattern": "Označite vzorec kožuha pri risu."
+	"Please select lynx fur pattern": "Označite vzorec kožuha pri risu.",
 
+	"Once the account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.": "Ko je račun izbrisan, bodo vsi njegovi viri in podatki trajno izbrisani. Preden izbrišete svoj račun, prenesite vse podatke ali informacije, ki jih želite obdržati.",
+	"Named animal": "Poimenovana žival"
 }

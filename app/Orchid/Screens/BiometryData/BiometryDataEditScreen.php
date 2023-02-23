@@ -43,7 +43,7 @@ class BiometryDataEditScreen extends Screen
 	 */
 	public function query(BearsBiometryAnimalHandling $bearsBiometryAnimalHandling, BearsBiometryData $bearsBiometryData): iterable
 	{
-	/*
+		/*
 		if (!$bearsBiometryData->exists) {
 			$bearsBiometryData['bears_biometry_animal_handling_id'] = $bearsBiometryAnimalHandling->id;
 
@@ -53,6 +53,8 @@ class BiometryDataEditScreen extends Screen
 
 			dd($bearsBiometryData);
 		} */
+
+
 
 		$bearsBiometryData['bears_biometry_animal_handling_animal_handling_date'] = $bearsBiometryAnimalHandling->animal_handling_date;
 		$bearsBiometryData['bears_biometry_animal_handling_place_of_removal'] = $bearsBiometryAnimalHandling->place_of_removal;
@@ -449,11 +451,13 @@ class BiometryDataEditScreen extends Screen
 		$animal->sex_list_id = $sex_list_id;
 		$animal->save();
 
+		$bearsBiometryAnimalHandling->touch();
+
 		$bearsBiometryData = new BearsBiometryData();
 		$bearsBiometryData->bears_biometry_animal_handling_id = $bearsBiometryAnimalHandling->id;
 		$bearsBiometryData->fill($requestBearsBiometryData)->save();
 
-		Alert::info(__('You have successfully created Biometry Data') . ' ID: ' . $bearsBiometryAnimalHandling->id . ', ' . $bearsBiometryData->id);
+		Alert::info(__('You have successfully created Biometry Data') . ' ID: ' . $bearsBiometryData->id . ' ' . __('Animal handling') . ' ID: ' . $bearsBiometryData->bears_biometry_animal_handling_id . ' ' . __('Animal') . ' ID: ' . $animal->id . ' ' . __('Name') . ': ' . $animal->name);
 
 		return redirect()->route('platform.animalHandling.list');
 	}
@@ -490,9 +494,11 @@ class BiometryDataEditScreen extends Screen
 		$animal->sex_list_id = $sex_list_id;
 		$animal->save();
 
+		$bearsBiometryAnimalHandling->touch();
+
 		$bearsBiometryData->fill($requestBearsBiometryData)->save();
 
-		Alert::info(__('You have successfully updated Biometry Data') . ' ID: ' . $bearsBiometryAnimalHandling->id . ', ' . $bearsBiometryData->id);
+		Alert::info(__('You have successfully updated Biometry Data') . ' ID: ' . $bearsBiometryData->id . ' ' . __('Animal handling') . ' ID: ' . $bearsBiometryData->bears_biometry_animal_handling_id . ' ' . __('Animal') . ' ID: ' . $animal->id . ' ' . __('Name') . ': ' . $animal->name);
 
 		return redirect()->route('platform.animalHandling.list');
 	}

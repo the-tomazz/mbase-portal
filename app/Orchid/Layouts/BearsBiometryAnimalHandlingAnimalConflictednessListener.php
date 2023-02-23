@@ -3,12 +3,12 @@
 namespace App\Orchid\Layouts;
 
 use App\Models\Base\BaseList;
+use App\Models\BearsBiometryAnimalHandling;
 use App\Models\PlaceTypeList;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\Select;
-use Orchid\Screen\Fields\Switcher;
 use Orchid\Screen\Layouts\Listener;
 use Orchid\Support\Facades\Layout;
 
@@ -40,7 +40,9 @@ class BearsBiometryAnimalHandlingAnimalConflictednessListener extends Listener
 	 */
 	protected function layouts(): iterable
 	{
-		$canSee = isset($this->query) ? $this->query->get('bearsBiometryAnimalHandling.animal_conflictedness') == 1  : false;
+		$canSee = isset($this->query)
+			? $this->query->get('bearsBiometryAnimalHandling.animal_conflictedness') == BearsBiometryAnimalHandling::CONFLICTEDNESS_CONFLICTING
+			: false;
 
 		return [
 			Layout::rows([
@@ -49,13 +51,14 @@ class BearsBiometryAnimalHandlingAnimalConflictednessListener extends Listener
 					->empty(__('<Select>'))
 					->required()
 					->options([
-						'false' => __('Unknown'),
-						1 => __('Conflicting'),
+						BearsBiometryAnimalHandling::CONFLICTEDNESS_UNKNOWN => __('Unknown'),
+						BearsBiometryAnimalHandling::CONFLICTEDNESS_CONFLICTING => __('Conflicting'),
 					]),
 
 				Input::make('bearsBiometryAnimalHandling.animal_conflictedness_details')
-					->title(__('Animal conflictedness details'))
-					->help(__('Please insert animal conflictedness details'))
+					->title(__('Description of conflictedness'))
+					->help(__('Specify, why you think that this precise individual was the one that created conflicts.'))
+					->required()
 					->canSee($canSee),
 			]),
 		];

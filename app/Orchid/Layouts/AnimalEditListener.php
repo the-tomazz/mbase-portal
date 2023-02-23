@@ -16,47 +16,48 @@ use Orchid\Support\Facades\Layout;
 
 class AnimalEditListener extends Listener
 {
-    /**
-     * List of field names for which values will be joined with targets' upon trigger.
-     *
-     * @var string[]
-     */
-    protected $extraVars = [];
+	/**
+	 * List of field names for which values will be joined with targets' upon trigger.
+	 *
+	 * @var string[]
+	 */
+	protected $extraVars = [];
 
-    /**
-     * List of field names for which values will be listened.
-     *
-     * @var string[]
-     */
-    protected $targets = [
+	/**
+	 * List of field names for which values will be listened.
+	 *
+	 * @var string[]
+	 */
+	protected $targets = [
 		'animal.id',
 		'animal.status',
-		'animal.died_at',
+		'animal.died_at_date',
+		'animal.died_at_time',
 		'animal.name',
 		'animal.species_list_id',
 		'animal.sex_list_id',
 		'animal.description'
 	];
 
-    /**
-     * What screen method should be called
-     * as a source for an asynchronous request.
-     *
-     * The name of the method must
-     * begin with the prefix "async"
-     *
-     * @var string
-     */
-    protected $asyncMethod = 'asyncUpdateAnimalListenerData';
+	/**
+	 * What screen method should be called
+	 * as a source for an asynchronous request.
+	 *
+	 * The name of the method must
+	 * begin with the prefix "async"
+	 *
+	 * @var string
+	 */
+	protected $asyncMethod = 'asyncUpdateAnimalListenerData';
 
-    /**
-     * @return Layout[]
-     */
-    protected function layouts(): iterable
-    {
+	/**
+	 * @return Layout[]
+	 */
+	protected function layouts(): iterable
+	{
 		$isAlive = null !== $this->query->get('animal.status') ? $this->query->get('animal.status') == Animal::STR_ALIVE : false;
 
-        return [
+		return [
 			Layout::rows([
 				Input::make('animal.id')
 					->title(__('Animal ID'))
@@ -71,14 +72,25 @@ class AnimalEditListener extends Listener
 						Animal::STR_DEAD => __('Dead'),
 					]),
 
-				DateTimer::make('animal.died_at')
-					->title('Date and time of death')
-					->format24hr()
+				DateTimer::make('animal.died_at_date')
+					->title('Date of death')
+					->required()
+					->allowInput()
+					->format('d.m.Y')
+					->canSee(!$isAlive),
+
+				DateTimer::make('animal.died_at_time')
+					->title('Time of death')
+					->required()
 					->enableTime()
+					->allowInput()
+					->format('H:i')
+					->noCalendar()
 					->canSee(!$isAlive),
 
 				Input::make('animal.name')
-					->title('Name'),
+					->title('Name')
+					->help(__('Input animal name.')),
 
 				Select::make('animal.species_list_id')
 					->fromQuery(
@@ -104,7 +116,7 @@ class AnimalEditListener extends Listener
 
 				Input::make('animal.description')
 					->title('Note'),
-            ])
+			])
 		];
-    }
+	}
 }

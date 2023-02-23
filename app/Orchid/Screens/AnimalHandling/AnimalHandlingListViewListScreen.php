@@ -56,7 +56,7 @@ class AnimalHandlingListViewListScreen extends Screen
 		return [
 			Link::make(__('New animal handling'))
 				->icon('pencil')
-				->route('platform.animalHandling.edit'),
+				->route('platform.animalHandling.create'),
 
 			Link::make(__('Animals'))
 				->icon('list')

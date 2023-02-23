@@ -112,7 +112,7 @@ class BiometryDataViewScreen extends Screen
 			Sight::make('bears_biometry_animal_handling->animal_handling_date', __('Animal handling date'))
 				->render(function ($bearsBiometryData) {
 					return Link::make($bearsBiometryData->bears_biometry_animal_handling->animal_handling_date)
-						->route('platform.animalHandling.edit', [ $bearsBiometryData->bears_biometry_animal_handling->animal_id, $bearsBiometryData->bears_biometry_animal_handling_id ])
+						->route('platform.animalHandling.edit', [ $bearsBiometryData->bears_biometry_animal_handling_id ])
 						->icon('number-list');
 				}),
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Orchid\Screens\User;
 
+use App\Models\BearsBiometryAnimalHandling;
 use App\Models\GroupType;
 use App\Orchid\Layouts\Role\RolePermissionLayout;
 use App\Orchid\Layouts\User\UserEditLayout;
@@ -99,23 +100,29 @@ class UserEditScreen extends Screen
 	 */
 	public function commandBar(): iterable
 	{
-		return [
-			Button::make(__('Impersonate user'))
-				->icon('login')
-				->confirm(__('You can revert to your original state by logging out.'))
-				->method('loginAs')
-				->canSee($this->user->exists && \request()->user()->id !== $this->user->id),
-
-			Button::make(__('Remove'))
-				->icon('trash')
-				->confirm(__('Once the account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.'))
-				->method('remove')
-				->canSee($this->user->exists),
-
-			Button::make(__('Save'))
-				->icon('check')
-				->method('save'),
-		];
+		return array_merge(
+			[
+				Button::make(__('Impersonate user'))
+					->icon('login')
+					->confirm(__('You can revert to your original state by logging out.'))
+					->method('loginAs')
+					->canSee($this->user->exists && \request()->user()->id !== $this->user->id),
+			],
+			BearsBiometryAnimalHandling::where('data_entered_by_user_id', '=', $this->user->id)->count() == 0 ?
+				[
+					Button::make(__('Remove'))
+						->icon('trash')
+						->confirm(__('Once the account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.'))
+						->method('remove')
+						->canSee($this->user->exists),
+				] :
+				[],
+			[
+				Button::make(__('Save'))
+					->icon('check')
+					->method('save')
+			]
+		);
 	}
 
 	/**

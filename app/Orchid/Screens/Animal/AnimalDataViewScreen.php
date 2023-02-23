@@ -5,6 +5,8 @@ namespace App\Orchid\Screens\Animal;
 use App\Models\Animal;
 use App\Models\SexList;
 use App\Models\SpeciesList;
+use DateTime;
+use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Actions\ModalToggle;
 use Orchid\Screen\Fields\Label;
@@ -47,24 +49,25 @@ class AnimalDataViewScreen extends Screen
      */
     public function commandBar(): iterable
     {
-		if ($this->animal->bears_biometry_animal_handlings->count() == 0) {
-			return [
-				Link::make(__('Update'))
-					->icon('pencil')
-					->route('platform.animalData.edit', ['animal' => $this->animal]),
+		return array_merge(
+			[
+				Link::make(__('New animal handling'))
+						->icon('pencil')
+						->route('platform.animalHandling.add', [$this->animal]),
 
-				ModalToggle::make('Remove')
-					->modal('modalRemove')
-					->method('remove')
-					->icon('trash'),
-			];
-		} else {
-			return [
 				Link::make(__('Update'))
 					->icon('pencil')
 					->route('platform.animalData.edit', ['animal' => $this->animal]),
-			];
-		}
+			],
+			$this->animal->bears_biometry_animal_handlings->count()
+				? [
+					ModalToggle::make('Remove')
+						->modal('modalRemove')
+						->method('remove')
+						->icon('trash')
+				]
+				: []
+		);
     }
 
     /**
@@ -81,21 +84,32 @@ class AnimalDataViewScreen extends Screen
 				->render(function ($animal) {
 					return $animal->species_list->name;
 				}),
+
 			Sight::make('sex_list_id', __('Sex'))
 				->render(function ($animal) {
 					return $animal->sex_list->name;
 				}),
+
 			Sight::make('status', __('Status'))
 				->render(function ($animal) {
 					return $animal->renderStatus();
 				}),
 
-			Sight::make('died_at', __('Died at')),
+			Sight::make('died_at', __('Died at'))
+				->render(function ($animal) {
+					return (new DateTime($animal['died_at']))->format('m.d.Y H:i');
+				}),
 
 			Sight::make('description', __('Description')),
 
-			Sight::make('created_at', __('Created')),
-			Sight::make('updated_at', __('Updated')),
+			Sight::make('created_at', __('Created'))
+				->render(function ($animal) {
+					return (new DateTime($animal['created_at']))->format('m.d.Y H:i');
+				}),
+			Sight::make('updated_at', __('Updated'))
+				->render(function ($animal) {
+					return (new DateTime($animal['updated_at']))->format('m.d.Y H:i');
+				}),
 		];
 
 		if (count($this->animal->bearsBiometryAnimalHandlings()->get()) == 0) {
@@ -117,6 +131,15 @@ class AnimalDataViewScreen extends Screen
         return [
 			Layout::legend('animal', $animalSight),
 			Layout::legend('animal', $animalHandlingsSights)->title(__('Animal handlings')),
+
+			Layout::block([])
+				->commands(
+					[
+						Link::make(__('New animal handling'))
+							->icon('pencil')
+							->route('platform.animalHandling.add', [$this->animal])
+					]
+				),
 
 			Layout::modal('modalRemove', [
 				Layout::rows([
