@@ -384,7 +384,7 @@
 	"Lynx fur pattern": "Vzorec kožuha pri risu",
 	"Animal conflictedness": "Konfliktnost živali",
 	"Unknown": "Neznano",
-	"Unknown animal": "Neznana žival",
+	"<Unknown animal>": "<Neznana žival>",
 	"Description of conflictedness": "Opis konfliktnosti",
 	"Conflicting": "Konfliktna žival",
 	"Specify, why you think that this precise individual was the one that created conflicts.": "Prosimo vnesite opis konfliktnosti",
