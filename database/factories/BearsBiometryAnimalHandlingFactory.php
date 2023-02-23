@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Animal;
+use App\Models\BearsBiometryAnimalHandling;
 use App\Models\BiometryLossReasonList;
 use App\Models\PlaceTypeList;
 use App\Models\SpatialUnit;
