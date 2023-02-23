@@ -100,7 +100,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 		}
 
 		// FIX ANIMAL DATA
-		if ($bearsBiometryAnimalHandling->animal_id) {
+		if ($animal->exists || isset($bearsBiometryAnimalHandling['animal_id'])) {
 			$animal['died_at_date'] = (new DateTime($animal->died_at))->format('j.n.Y');
 			$animal['died_at_time'] = (new DateTime($animal->died_at))->format('H:i');
 		} else {
