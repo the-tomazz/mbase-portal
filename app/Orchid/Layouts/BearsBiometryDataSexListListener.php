@@ -76,13 +76,11 @@ class BearsBiometryDataSexListListener extends Listener
 			// Sexual characteristics start
 			Group::make([
 				Input::make('bearsBiometryData.baculum_length')
-					->mask('99')
 					->title(__('Length of os penis (penis bone - baculum)'))
 					->help(__('Insert Length of os penis (penis bone - baculum) of the animal (0-20 cm)'))
 					->canSee(!$isFemale && !$isNeutral),
 
 				Input::make('bearsBiometryData.nipple_length')
-					->mask('99')
 					->title(__('Nipple length'))
 					->help(__('Insert Nipple length (0-15 cm)'))
 					->canSee($isFemale && !$isNeutral),
@@ -109,25 +107,21 @@ class BearsBiometryDataSexListListener extends Listener
 						// Hind right paw start
 						Group::make([
 							Input::make('bearsBiometryData.testicals_left_length')
-								->mask('99')
 								->title(__('Left testicle length'))
 								->required()
 								->help(__('Left testicle length (0-10 cm)')),
 
 							Input::make('bearsBiometryData.testicals_left_width')
-								->mask('99')
 								->title(__('Left testicle width'))
 								->required()
 								->help(__('Left testicle width (0-10 cm)')),
 
 							Input::make('bearsBiometryData.testicals_right_length')
-								->mask('99')
 								->title(__('Right testicle length'))
 								->required()
 								->help(__('Right testicle length (0-10 cm)')),
 
 							Input::make('bearsBiometryData.testicals_right_width')
-								->mask('99')
 								->title(__('Right testicle width'))
 								->required()
 								->help(__('Right testicle width (0-10 cm)')),
@@ -173,7 +167,6 @@ class BearsBiometryDataSexListListener extends Listener
 				$additionalSpeciesRelatedInputs = [
 					Group::make([
 						Input::make('bearsBiometryData.hair_tuft_length')
-							->mask('99')
 							->title(__('Length of hair tuft (for lynx only) (0-15 cm)'))
 							->required()
 							->help(__('Insert Length of hair tuft (for lynx only) (0-15 cm)')),

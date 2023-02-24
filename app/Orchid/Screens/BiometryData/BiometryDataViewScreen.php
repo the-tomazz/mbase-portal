@@ -112,7 +112,7 @@ class BiometryDataViewScreen extends Screen
 			Sight::make('bears_biometry_animal_handling->animal_handling_date', __('Animal handling date'))
 				->render(function ($bearsBiometryData) {
 					return Link::make($bearsBiometryData->bears_biometry_animal_handling->animal_handling_date)
-						->route('platform.animalHandling.edit', [ $bearsBiometryData->bears_biometry_animal_handling_id ])
+						->route('platform.animalHandling.edit', [ $bearsBiometryData->bears_biometry_animal_handling->animal, $bearsBiometryData->bears_biometry_animal_handling ])
 						->icon('number-list');
 				}),
 
@@ -215,14 +215,8 @@ class BiometryDataViewScreen extends Screen
 			Sight::make('testicals_right_width', __('Right testicle width')),
 
 			Sight::make('', __('Number of premolars')),
-			Sight::make('number_of_premolars_in_the_upper_jaw', __('Number of premolars in the Upper jaw (left + right)'))
-				->render(function ($bearsBiometryData) {
-					return BearsBiometryData::PREMOLARS_VALUES[$bearsBiometryData->number_of_premolars_in_the_upper_jaw];
-				}),
-			Sight::make('number_of_premolars_in_the_lower_jaw', __('Number of premolars in the Lower jaw (left + right)'))
-				->render(function ($bearsBiometryData) {
-					return BearsBiometryData::PREMOLARS_VALUES[$bearsBiometryData->number_of_premolars_in_the_lower_jaw];
-				}),
+			Sight::make('number_of_premolars_in_the_upper_jaw', __('Number of premolars in the Upper jaw (left + right)')),
+			Sight::make('number_of_premolars_in_the_lower_jaw', __('Number of premolars in the Lower jaw (left + right)')),
 
 			Sight::make('', __('Other observations')),
 			Sight::make('incisors_wear_list_id', __('Incisors (front teeth) wear'))

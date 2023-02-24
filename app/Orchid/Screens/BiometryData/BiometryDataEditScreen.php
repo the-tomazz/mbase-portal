@@ -32,8 +32,41 @@ class BiometryDataEditScreen extends Screen
 	public $bearsBiometryAnimalHandling;
 	public $bearsBiometryData;
 
-	private const NUMERIC_MASKS = [
-		'age' => '99,99'
+	private const FIELD_VALIDATIONS = [
+		'age' => 'numeric|min:0|max:25',
+		'baculum_length' => 'numeric|min:0|max:20',
+		'nipple_length' => 'numeric|min:0|max:15',
+		'testicals_left_length' => 'numeric|min:0|max:10',
+		'testicals_left_width' => 'numeric|min:0|max:10',
+		'testicals_right_length' => 'numeric|min:0|max:10',
+		'testicals_right_width' => 'numeric|min:0|max:10',
+		'hair_tuft_length' => 'numeric|min:0|max:15',
+		'masa_bruto' => 'numeric|min:0|max:400',
+		'masa_neto' => 'numeric|min:0|max:400',
+		'body_length' => 'numeric|min:0|max:300',
+		'tail_length' => 'numeric|min:0|max:60',
+		'shoulder_height' => 'numeric|min:0|max:150',
+		'head_circumference' => 'numeric|min:0|max:150',
+		'neck_circumference' => 'numeric|min:0|max:150',
+		'thorax_circumference' => 'numeric|min:0|max:150',
+		'abdomen_circumference' => 'numeric|min:0|max:150',
+		'upper_left_canines_length' => 'numeric|min:0|max:6',
+		'lower_left_canines_length' => 'numeric|min:0|max:5',
+		'upper_right_canines_length' => 'numeric|min:0|max:6',
+		'lower_right_canines_length' => 'numeric|min:0|max:5',
+		'distance_between_upper_canines' => 'numeric|min:0|max:7',
+		'distance_between_lower_canines' => 'numeric|min:0|max:7',
+		'number_of_premolars_in_the_upper_jaw' => 'numeric|min:0|max:9',
+		'number_of_premolars_in_the_lower_jaw' => 'numeric|min:0|max:9',
+		'front_left_paw_length' => 'numeric|min:0|max:25',
+		'front_left_paw_width' => 'numeric|min:0|max:20',
+		'front_right_paw_length' => 'numeric|min:0|max:25',
+		'front_right_paw_width' => 'numeric|min:0|max:20',
+		'hind_left_paw_length' => 'numeric|min:0|max:25',
+		'hind_left_paw_width' => 'numeric|min:0|max:20',
+		'hind_right_paw_length' => 'numeric|min:0|max:25',
+		'hind_right_paw_width' => 'numeric|min:0|max:20',
+		'ear_length_without_hair' => 'numeric|min:0|max:20'
 	];
 
 	/**
@@ -43,18 +76,9 @@ class BiometryDataEditScreen extends Screen
 	 */
 	public function query(BearsBiometryAnimalHandling $bearsBiometryAnimalHandling, BearsBiometryData $bearsBiometryData): iterable
 	{
-		/*
 		if (!$bearsBiometryData->exists) {
 			$bearsBiometryData['bears_biometry_animal_handling_id'] = $bearsBiometryAnimalHandling->id;
-
-			foreach (array_keys(self::NUMERIC_MASKS) as $key => $format) {
-				$bearsBiometryData[$key] = str_replace('.', ',', sprintf('%' . strlen($format) . 'd', $bearsBiometryData[$key]));
-			}
-
-			dd($bearsBiometryData);
-		} */
-
-
+		}
 
 		$bearsBiometryData['bears_biometry_animal_handling_animal_handling_date'] = $bearsBiometryAnimalHandling->animal_handling_date;
 		$bearsBiometryData['bears_biometry_animal_handling_place_of_removal'] = $bearsBiometryAnimalHandling->place_of_removal;
@@ -121,11 +145,6 @@ class BiometryDataEditScreen extends Screen
 	 */
 	public function layout(): iterable
 	{
-		$premolarsOptions = [];
-		foreach (BearsBiometryData::PREMOLARS_VALUES as $premolar_value) {
-			$premolarsOptions[$premolar_value] = $premolar_value;
-		}
-
 		return [
 			Layout::columns([
 				(new BiometryDataAnimalLayout)->title(__('Animal')),
@@ -134,7 +153,6 @@ class BiometryDataEditScreen extends Screen
 
 			Layout::rows([
 				Input::make('bearsBiometryData.age')
-						// ->mask(self::NUMERIC_MASKS['age'])
 						->title(__('Visual age estimate'))
 						->help(__('Insert age estimate of the animal (0-25)')),
 			]),
@@ -145,13 +163,11 @@ class BiometryDataEditScreen extends Screen
 			Layout::rows([
 				Group::make([
 					Input::make('bearsBiometryData.masa_bruto')
-						->mask('999')
 						->title(__('Gross'))
 						->required()
 						->help(__('Insert gross mass of the animal (0-400 kg)')),
 
 					Input::make('bearsBiometryData.masa_neto')
-						->mask('999')
 						->title(__('Net'))
 						->required()
 						->help(__('Insert net mass of the animal (0-400 kg)')),
@@ -164,19 +180,16 @@ class BiometryDataEditScreen extends Screen
 			Layout::rows([
 				Group::make([
 					Input::make('bearsBiometryData.body_length')
-						->mask('999')
 						->title(__('Body length'))
 						->required()
 						->help(__('Insert Body length of the animal (0-300 cm)')),
 
 					Input::make('bearsBiometryData.tail_length')
-						->mask('99')
 						->title(__('Tail length without hair'))
 						->required()
 						->help(__('Insert Tail length without hair (0-60 cm)')),
 
 					Input::make('bearsBiometryData.shoulder_height')
-						->mask('999')
 						->title(__('Shoulder height'))
 						->required()
 						->help(__('Insert Shoulder height of the animal (0-150 cm)')),
@@ -184,25 +197,21 @@ class BiometryDataEditScreen extends Screen
 
 				Group::make([
 					Input::make('bearsBiometryData.head_circumference')
-						->mask('999')
 						->title(__('Head circumference'))
 						->required()
 						->help(__('Insert Head circumference of the animal (0-150 cm)')),
 
 					Input::make('bearsBiometryData.neck_circumference')
-						->mask('999')
 						->title(__('Neck circumference'))
 						->required()
 						->help(__('Insert Neck circumference of the animal (0-150 cm)')),
 
 					Input::make('bearsBiometryData.thorax_circumference')
-						->mask('999')
 						->title(__('Thorax circumference'))
 						->required()
 						->help(__('Insert Thorax circumference of the animal (0-150 cm)')),
 
 					Input::make('bearsBiometryData.abdomen_circumference')
-						->mask('999')
 						->title(__('Abdomen circumference'))
 						->required()
 						->help(__('Insert Abdomen circumference of the animal (0-150 cm)')),
@@ -225,13 +234,11 @@ class BiometryDataEditScreen extends Screen
 				// Length of left canines start
 				Group::make([
 					Input::make('bearsBiometryData.upper_left_canines_length')
-						->mask('99')
 						->title(__('Upper'))
 						->required()
 						->help(__('Insert Length of Upper left canines (0-6 cm)')),
 
 					Input::make('bearsBiometryData.lower_left_canines_length')
-						->mask('99')
 						->title(__('Lower'))
 						->required()
 						->help(__('Insert Length of Lower left canines (0-5 cm)')),
@@ -244,13 +251,11 @@ class BiometryDataEditScreen extends Screen
 				// Length of right canines start
 				Group::make([
 					Input::make('bearsBiometryData.upper_right_canines_length')
-						->mask('99')
 						->title(__('Upper'))
 						->required()
 						->help(__('Insert Length of Upper right canines (0-6 cm)')),
 
 					Input::make('bearsBiometryData.lower_right_canines_length')
-						->mask('99')
 						->title(__('Lower'))
 						->required()
 						->help(__('Insert Length of Lower right canines (0-5 cm)')),
@@ -263,13 +268,11 @@ class BiometryDataEditScreen extends Screen
 				// Length of right canines start
 				Group::make([
 					Input::make('bearsBiometryData.distance_between_upper_canines')
-							->mask('99')
 							->title(__('Upper'))
 							->required()
 							->help(__('Insert Distance between upper canines (0-7 cm)')),
 
 					Input::make('bearsBiometryData.distance_between_lower_canines')
-						->mask('99')
 						->title(__('Lower'))
 						->required()
 						->help(__('Insert Distance between lower canines (0-7 cm)')),
@@ -280,7 +283,7 @@ class BiometryDataEditScreen extends Screen
 
 				// Number of premolars start
 				Group::make([
-					Select::make('bearsBiometryData.number_of_premolars_in_the_upper_jaw')
+					/* Select::make('bearsBiometryData.number_of_premolars_in_the_upper_jaw')
 						->options($premolarsOptions)
 						->title(__('Upper jaw (left + right)'))
 						->required()
@@ -293,7 +296,17 @@ class BiometryDataEditScreen extends Screen
 						->required()
 						->empty(__('<Select>'))
 						->help(__('Please insert Number of premolars in the Lower jaw (left + right)')),
+					*/
 
+					Input::make('bearsBiometryData.number_of_premolars_in_the_upper_jaw')
+						->title(__('Upper jaw (left + right)'))
+						->required()
+						->help(__('Please insert Number of premolars in the Upper jaw (left + right) (0-9)')),
+
+					Input::make('bearsBiometryData.number_of_premolars_in_the_lower_jaw')
+						->title(__('Lower jaw (left + right)'))
+						->required()
+						->help(__('Please insert Number of premolars in the Lower jaw (left + right) (0-9)')),
 				])->autoWidth(),
 				// Number of premolars end
 			])->title(__('Jaw')),
@@ -307,13 +320,11 @@ class BiometryDataEditScreen extends Screen
 				// Front left paw start
 				Group::make([
 					Input::make('bearsBiometryData.front_left_paw_length')
-						->mask('99')
 						->required()
 						->title(__('Length'))
 						->help(__('Insert Front left paw length (0-25 cm)')),
 
 					Input::make('bearsBiometryData.front_left_paw_width')
-						->mask('99')
 						->title(__('Width'))
 						->required()
 						->help(__('Insert Front left paw width (0-20 cm)')),
@@ -326,13 +337,11 @@ class BiometryDataEditScreen extends Screen
 				// Front right paw start
 				Group::make([
 					Input::make('bearsBiometryData.front_right_paw_length')
-						->mask('99')
 						->title(__('Length'))
 						->required()
 						->help(__('Insert Front right paw length (0-25 cm)')),
 
 					Input::make('bearsBiometryData.front_right_paw_width')
-						->mask('99')
 						->required()
 						->title(__('Width'))
 						->help(__('Insert Front right paw width (0-20 cm)')),
@@ -345,13 +354,11 @@ class BiometryDataEditScreen extends Screen
 				// Hind left paw start
 				Group::make([
 					Input::make('bearsBiometryData.hind_left_paw_length')
-						->mask('99')
 						->title(__('Length'))
 						->required()
 						->help(__('Insert Hind left paw width (0-25 cm)')),
 
 					Input::make('bearsBiometryData.hind_left_paw_width')
-						->mask('99')
 						->title(__('Width'))
 						->required()
 						->help(__('Insert Hind left paw width (0-20 cm)')),
@@ -364,13 +371,11 @@ class BiometryDataEditScreen extends Screen
 				// Hind right paw start
 				Group::make([
 					Input::make('bearsBiometryData.hind_right_paw_length')
-						->mask('99')
 						->title(__('Length'))
 						->required()
 						->help(__('Insert Hind right paw length (0-25 cm)')),
 
 					Input::make('bearsBiometryData.hind_right_paw_width')
-						->mask('99')
 						->title(__('Width'))
 						->required()
 						->help(__('Insert Hind right paw width (0-20 cm)')),
@@ -383,7 +388,6 @@ class BiometryDataEditScreen extends Screen
 			Layout::rows([
 				// Physical condition, illness, injuries, other observations, notes
 				Input::make('bearsBiometryData.ear_length_without_hair')
-					->mask('99')
 					->title(__('Ear length without hair'))
 					->required()
 					->help(__('Insert Ear length without hair (0-20 cm)')),
@@ -422,9 +426,7 @@ class BiometryDataEditScreen extends Screen
 		];
 	}
 
-	private function clearInputData($data)
-	{
-	}
+
 
 	/**
 	 * @param BearsBiometryAnimalHandling $bearsBiometryAnimalHandling
@@ -436,12 +438,18 @@ class BiometryDataEditScreen extends Screen
 	public function createBiometryData(BearsBiometryAnimalHandling $bearsBiometryAnimalHandling, Request $request)
 	{
 		$requestBearsBiometryData = $request->get('bearsBiometryData');
-
-		foreach ($requestBearsBiometryData as $key => $data) {
-			if ($key != 'updated_at' && $key != 'created_at') {
-				$requestBearsBiometryData[$key] = intVal(str_replace('_', '', $data));
+		$validations = [];
+		foreach (self::FIELD_VALIDATIONS as $key => $validation) {
+			if (isset($requestBearsBiometryData[$key])) {
+				$requestBearsBiometryData[$key] = str_replace(",", ".", $requestBearsBiometryData[$key]);
 			}
-		}
+			$validations['bearsBiometryData.' . $key] = $validation;
+		};
+
+		$request->merge(['bearsBiometryData' => $requestBearsBiometryData]);
+		dd([$request->get('bearsBiometryData'), $requestBearsBiometryData, $validations]);
+
+		$request->validate($validations);
 
 		$sex_list_id = $requestBearsBiometryData['bears_biometry_animal_handling_animal_sex_list_id'];
 
@@ -472,19 +480,17 @@ class BiometryDataEditScreen extends Screen
 	public function updateBiometryData(BearsBiometryAnimalHandling $bearsBiometryAnimalHandling, BearsBiometryData $bearsBiometryData, Request $request)
 	{
 		$requestBearsBiometryData = $request->get('bearsBiometryData');
-		/* $requestBearsBiometryData['age'] = 3;
-		$request->merge(['bearsBiometryData' => $requestBearsBiometryData]); */
-		// dd($request->get('bearsBiometryData'));
-
-		$request->validate([
-			'bearsBiometryData.age' => 'numeric|max:25',
-		]);
-
-		foreach ($requestBearsBiometryData as $key => $data) {
-			if ($key != 'updated_at' && $key != 'created_at') {
-				$requestBearsBiometryData[$key] = intVal(str_replace('_', '', $data));
+		$validations = [];
+		foreach (self::FIELD_VALIDATIONS as $key => $validation) {
+			if (isset($requestBearsBiometryData[$key])) {
+				$requestBearsBiometryData[$key] = str_replace(",", ".", $requestBearsBiometryData[$key]);
 			}
-		}
+			$validations['bearsBiometryData.' . $key] = $validation;
+		};
+
+		$request->merge(['bearsBiometryData' => $requestBearsBiometryData]);
+
+		$request->validate($validations);
 
 		$sex_list_id = $requestBearsBiometryData['bears_biometry_animal_handling_animal_sex_list_id'];
 

@@ -88,8 +88,6 @@ class BearsBiometryData extends Model
 	use AsSource, Filterable;
 	use HasFactory;
 
-	public const PREMOLARS_VALUES = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ];
-
 	protected $table = 'bears_biometry_data';
 
 	protected $casts = [
@@ -123,10 +121,10 @@ class BearsBiometryData extends Model
 		'lower_left_canines_length' => 'float',
 		'upper_right_canines_length' => 'float',
 		'lower_right_canines_length' => 'float',
-		'number_of_premolars_in_the_upper_jaw' => 'float',
-		'number_of_premolars_in_the_lower_jaw' => 'float',
 		'distance_between_upper_canines' => 'float',
 		'distance_between_lower_canines' => 'float',
+		'number_of_premolars_in_the_upper_jaw' => 'int',
+		'number_of_premolars_in_the_lower_jaw' => 'int',
 		'testicals_left_length' => 'float',
 		'testicals_left_width' => 'float',
 		'testicals_right_length' => 'float',
@@ -168,14 +166,14 @@ class BearsBiometryData extends Model
 		'lower_left_canines_length',
 		'upper_right_canines_length',
 		'lower_right_canines_length',
+		'distance_between_upper_canines',
+		'distance_between_lower_canines',
 		'number_of_premolars_in_the_upper_jaw',
 		'number_of_premolars_in_the_lower_jaw',
-		'distance_between_upper_canines' => 'float',
-		'distance_between_lower_canines' => 'float',
-		'testicals_left_length' => 'float',
-		'testicals_left_width' => 'float',
-		'testicals_right_length' => 'float',
-		'testicals_right_width' => 'float',
+		'testicals_left_length',
+		'testicals_left_width',
+		'testicals_right_length',
+		'testicals_right_width',
 		'incisors_wear_list_id',
 		'color_list_id',
 		'collar_list_id',

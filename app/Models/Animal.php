@@ -57,7 +57,6 @@ class Animal extends Model
 
 	protected $allowedFilters = [
 		'status',
-		'status',
 		'name',
 		'description',
 		'died_at',

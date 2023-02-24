@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Orchid\Screen\Actions\DropDown;
 use Orchid\Screen\Actions\Link;
+use Orchid\Screen\Fields\DateTimer;
+use Orchid\Screen\Fields\Group;
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Layout;
 
@@ -20,8 +22,13 @@ class AnimalListScreen extends Screen
 	 */
 	public function query(): iterable
 	{
+		$from = request()->input('died_at_from') ?? '1970-01-01';
+		$to = request()->input('died_at_to') ?? '2970-01-01';
+
 		return [
 			'animals' => Animal::filters()
+				->whereDate('died_at', '<', $to)
+				->whereDate('died_at', '>', $from)
 				->defaultSort('name')
 				->paginate()
 		];
@@ -96,6 +103,21 @@ class AnimalListScreen extends Screen
 	{
 		return [
 			Layout::view('animalMapDisplay'),
+			Layout::view('dateToFilter'),
+			Layout::rows([
+				Group::make([
+					DateTimer::make('died_at_from')
+						->title(__('Died at earliest'))
+						->allowInput()
+						->format('d.m.Y'),
+					DateTimer::make('died_at_to')
+						->title(__('Died at latest'))
+						->allowInput()
+						->format('d.m.Y'),
+					Link::make(__('Filter'))
+						->class('died_at_filter_link')
+				])
+			]),
 			AnimalListLayout::class
 		];
 	}
