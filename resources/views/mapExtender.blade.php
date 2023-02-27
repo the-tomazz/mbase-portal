@@ -3,10 +3,6 @@
 	function extendMap() {
 		var map = window.application.getControllerForElementAndIdentifier(document.querySelector('[data-controller="map"]'), "map").leafletMap;
 
-		/* L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-		}).addTo(map); */
-
 		baseMaps = {
 			"OpenStreetMap": L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 				attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -31,8 +27,42 @@
 
 	document.addEventListener("turbo:load", () => {
 		console.log("Setting up map extensions");
-		extendMap();
+
+		(async () => {
+			let sleepTime = 100;
+			while (!checkIfMapIsSetup()) {
+				console.log("Map not setup yet, waiting " + sleepTime + "ms");
+				await sleep(sleepTime * 1.5);
+			}
+
+			console.log("Map is setup, extending");
+			extendMap();
+		})();
+
 	})
+
+	function checkIfMapIsSetup() {
+		if (!window.application) {
+			console.log("window.application not set");
+			return false;
+		}
+
+		if (window.application.getControllerForElementAndIdentifier(document.querySelector('[data-controller="map"]'), "map") == null) {
+			console.log("getController returned null");
+			return false;
+		}
+
+		if (window.application.getControllerForElementAndIdentifier(document.querySelector('[data-controller="map"]'), "map").leafletMap == null) {
+			console.log("leafletMap not set");
+			return false;
+		}
+
+		return true;
+	}
+
+	function sleep(ms) {
+		return new Promise(resolve => setTimeout(resolve, ms));
+	}
 </script>
 
 @endpush
