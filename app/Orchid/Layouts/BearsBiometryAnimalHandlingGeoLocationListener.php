@@ -55,6 +55,7 @@ class BearsBiometryAnimalHandlingGeoLocationListener extends Listener
 		$canSeePlaceTypeListDetails = isset($this->query) ? $this->query->get('bearsBiometryAnimalHandling.place_type_list_id') == PlaceTypeList::OTHER_ID : false;
 
 		return [
+			Layout::view('mapExtenderAdditionalTrigger'),
 			Layout::rows([
 				Select::make('bearsBiometryAnimalHandling.projection_type')
 					->options([

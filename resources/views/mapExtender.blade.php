@@ -23,23 +23,37 @@
 		};
 
 		L.control.layers(baseMaps, overlays).addTo(map);
+
+
 	}
 
-	document.addEventListener("turbo:load", () => {
+	const debounce = (callback, time) => {
+		let timeout;
+
+		return (argument) => {
+			clearTimeout(timeout);
+			timeout = setTimeout(() => callback(argument), time);
+		};
+	};
+
+	const debouncedExtendMap = debounce(extendMap, 1000);
+
+	function startExtendMap() {
 		console.log("Setting up map extensions");
 
 		(async () => {
 			let sleepTime = 100;
 			while (!checkIfMapIsSetup()) {
 				console.log("Map not setup yet, waiting " + sleepTime + "ms");
-				await sleep(sleepTime * 1.5);
+				await sleep(sleepTime);
+				sleepTime *= 1.5;
 			}
 
 			console.log("Map is setup, extending");
-			extendMap();
-		})();
 
-	})
+			debouncedExtendMap();
+		})();
+	}
 
 	function checkIfMapIsSetup() {
 		if (!window.application) {
@@ -63,6 +77,9 @@
 	function sleep(ms) {
 		return new Promise(resolve => setTimeout(resolve, ms));
 	}
+
+
+
 </script>
 
 @endpush
