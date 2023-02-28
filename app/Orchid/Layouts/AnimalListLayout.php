@@ -3,8 +3,11 @@
 namespace App\Orchid\Layouts;
 
 use App\Models\Animal;
+use App\Models\AnimalListView;
+use App\Models\Base\BaseList;
 use App\Models\SexList;
 use App\Models\SpeciesList;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Fields\Input;
@@ -33,14 +36,14 @@ class AnimalListLayout extends Table
     {
         return [
 			TD::make('id', __('Animal ID'))
-				->render(function (Animal $animal) {
+				->render(function (AnimalListView $animal) {
 					return Link::make($animal->id)
 					->route('platform.animalData.view', $animal);
 				})
 				->sort(),
 
 			TD::make('name', __('Name'))
-				->render(function (Animal $animal) {
+				->render(function (AnimalListView $animal) {
 					return Link::make($animal->name)
 					->route('platform.animalData.view', $animal);
 				})
@@ -48,7 +51,7 @@ class AnimalListLayout extends Table
 				->filter(Input::make()),
 
 			TD::make('status', __('Status'))
-				->render(function (Animal $animal) {
+				->render(function (AnimalListView $animal) {
 					return $animal->renderStatus();
 				})
 				->sort()
@@ -59,7 +62,7 @@ class AnimalListLayout extends Table
 					])
 					->empty(__('<Select>')))
 					->filterValue(function ($status) {
-						return $status == Animal::STR_ALIVE ? __('Alive') : __('Dead');
+						return $status == AnimalListView::STR_ALIVE ? __('Alive') : __('Dead');
 					}),
 
 			TD::make('died_at', __('Date of death'))
@@ -68,22 +71,26 @@ class AnimalListLayout extends Table
 				})
 				->sort(),
 
-			TD::make('species_list_id', __('Species'))
-				->render(function (Animal $animal) {
-					return Link::make($animal->species_list->name)
-					->route('platform.animalData.view', $animal);
+			TD::make('species_list_name', __("Species"))
+				->render(function (AnimalListView $animal) {
+					return Link::make($animal->species_list_name)
+						->route('platform.animalData.view', [ $animal->id ]);
 				})
 				->sort()
 				->filter(
-					Select::make()
-						->fromModel(SpeciesList::class, 'name')
-						->empty(__('<Select>')))
-						->filterValue(function ($species_list_id) {
-								return SpeciesList::find($species_list_id)->name;
-				}),
+					Select::make()->fromQuery(
+						SpeciesList::where('status', '=', BaseList::STR_ACTIVE)
+							->orderBy('name->' . App::getLocale(), 'asc'),
+						'name', 'name'
+					)
+					->empty(__('<Select>'))
+				)
+					->filterValue(function ($species_list_name) {
+							return $species_list_name;
+					}),
 
 			TD::make('hunting_management_area', __('Hunting-management area (LUO)'))
-				->render(function (Animal $animal) {
+				->render(function (AnimalListView $animal) {
 					$animalHandlingsRender = '';
 					foreach ($animal->bearsBiometryAnimalHandlings()->get() as $animalHandling) {
 						$animalHandlingRender = Link::make($animalHandling->hunting_management_area)
@@ -99,7 +106,7 @@ class AnimalListLayout extends Table
 				}),
 
 			TD::make('hunting_ground', __('Hunting ground'))
-				->render(function (Animal $animal) {
+				->render(function (AnimalListView $animal) {
 					$animalHandlingsRender = '';
 					foreach ($animal->bearsBiometryAnimalHandlings()->get() as $animalHandling) {
 						$animalHandlingRender = Link::make($animalHandling->hunting_ground)
@@ -114,21 +121,25 @@ class AnimalListLayout extends Table
 					return $animalHandlingsRender;
 				}),
 
-			TD::make('sex_list_id', __('Sex'))
-				->render(function (Animal $animal) {
-					return Link::make($animal->sex_list->name)
-					->route('platform.animalData.view', $animal);
+			TD::make('sex_list_name->' . App::getLocale(), __("Sex"))
+				->render(function (AnimalListView $animal) {
+					return Link::make($animal->sex_list_name)
+						->route('platform.animalData.view', [ $animal->id ]);
 				})
 				->sort()
 				->filter(
-					Select::make()->fromModel(SexList::class, 'name')
-					->empty(__('<Select>')))
-					->filterValue(function ($sex_list_id) {
-						return SexList::find($sex_list_id)->name;
-					}),
+					Select::make()->fromQuery(
+						SexList::where('status', '=', BaseList::STR_ACTIVE)
+							->orderBy('name->' . App::getLocale(), 'asc'),
+						'name', 'name'
+					)->empty(__('<Select>'))
+				)
+				->filterValue(function ($sex_list_name) {
+					return $sex_list_name;
+				}),
 
 			TD::make('animal_handling', __('Animal handling date'))
-				->render(function (Animal $animal) {
+				->render(function (AnimalListView $animal) {
 					$animalHandlingsRender = '';
 					foreach ($animal->bearsBiometryAnimalHandlings()->get() as $animalHandling) {
 						$animalHandlingRender = Link::make($animalHandling->animal_handling_date->toDateString())
@@ -144,7 +155,7 @@ class AnimalListLayout extends Table
 				}),
 
 			TD::make('animal_status_on_handling', __('Animal status on handling'))
-				->render(function (Animal $animal) {
+				->render(function (AnimalListView $animal) {
 					$animalHandlingsRender = '';
 					foreach ($animal->bearsBiometryAnimalHandlings()->get() as $animalHandling) {
 						$animalHandlingRender = Link::make($animal->statusString())
@@ -160,7 +171,7 @@ class AnimalListLayout extends Table
 				}),
 
 			TD::make('age', __('Visual age estimate'))
-				->render(function (Animal $animal) {
+				->render(function (AnimalListView $animal) {
 					$animalHandlingsRender = '';
 					foreach ($animal->bearsBiometryAnimalHandlings()->get() as $animalHandling) {
 						if ($animalHandling->bearsBiometryData) {
@@ -168,7 +179,7 @@ class AnimalListLayout extends Table
 								->route('platform.biometryData.view', [ $animalHandling->bearsBiometryData ]);
 						} else {
 							$animalHandlingRender = Link::make(__('NA'))
-								->route('platform.biometryData.edit', [ $animalHandling ]);
+								->route('platform.biometryData.add', [ $animalHandling ]);
 						}
 
 						if ($animalHandlingsRender == '') {
@@ -181,7 +192,7 @@ class AnimalListLayout extends Table
 				}),
 
 			TD::make('masa_bruto', __('Gross body mass'))
-				->render(function (Animal $animal) {
+				->render(function (AnimalListView $animal) {
 					$animalHandlingsRender = '';
 					foreach ($animal->bearsBiometryAnimalHandlings()->get() as $animalHandling) {
 						if ($animalHandling->bearsBiometryData) {
@@ -189,7 +200,7 @@ class AnimalListLayout extends Table
 								->route('platform.biometryData.view', [ $animalHandling->bearsBiometryData ]);
 						} else {
 							$animalHandlingRender = Link::make(__('NA'))
-								->route('platform.biometryData.edit', [ $animalHandling ]);
+								->route('platform.biometryData.add', [ $animalHandling ]);
 						}
 
 						if ($animalHandlingsRender == '') {
@@ -201,15 +212,15 @@ class AnimalListLayout extends Table
 					return $animalHandlingsRender;
 				}),
 
-			TD::make('created_at', __('Created at'))
-				->render(function ($model) {
-					return $model->created_at->toDateString();
+			TD::make('created_at', __('Created'))
+				->render(function (AnimalListView $animal) {
+					return $animal->created_at->format('d.m.Y H:i');
 				})
 				->sort(),
 
-			TD::make('updated_at', __('Updated at'))
+			TD::make('updated_at', __('Last edit'))
 				->render(function ($model) {
-					return $model->updated_at->toDateString();
+					return $model->updated_at->format('d.m.Y H:i');
 				})
 				->sort(),
 		];

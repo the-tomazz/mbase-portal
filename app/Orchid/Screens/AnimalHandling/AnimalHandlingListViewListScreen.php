@@ -3,11 +3,14 @@
 namespace App\Orchid\Screens\AnimalHandling;
 
 use App\Models\AnimalHandlingListView;
+use App\Models\WayOfWithdrawalList;
 use App\Orchid\Layouts\AnimalHandlingListViewListLayout;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Orchid\Screen\Actions\DropDown;
 use Orchid\Screen\Actions\Link;
+use Orchid\Screen\Fields\DateTimer;
+use Orchid\Screen\Fields\Group;
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Layout;
 
@@ -20,10 +23,21 @@ class AnimalHandlingListViewListScreen extends Screen
 	 */
 	public function query(): iterable
 	{
+		$from = request()->input('animal_handling_date_from') ?? '1970-01-01';
+		$to = request()->input('animal_handling_date_to') ?? '2970-01-01';
+
 		$perPage = request()->input('per_page') ?? 15;
 
 		return [
-			'animalHandlings' => AnimalHandlingListView::filters()->paginate($perPage)->withQueryString()
+			'animalHandlings' => AnimalHandlingListView::filters()
+				->where(function ($query) use ($from, $to) {
+					$query->whereDate('animal_handling_date', '>=', $from);
+					$query->whereDate('animal_handling_date', '<=', $to);
+				})
+				->orWhereNull('animal_handling_date')
+				->paginate($perPage)
+				->withQueryString(),
+			'dateFilterVariable' => 'animal_handling_date'
 		];
 	}
 
@@ -96,6 +110,21 @@ class AnimalHandlingListViewListScreen extends Screen
 	{
 		return [
 			Layout::view('animalHandlingMapDisplay'),
+			Layout::view('dateToFilter'),
+			Layout::rows([
+				Group::make([
+					DateTimer::make('animal_handling_date_from')
+						->title(__('Handling date earliest'))
+						->allowInput()
+						->format('d.m.Y'),
+					DateTimer::make('animal_handling_date_to')
+						->title(__('Handling date latest'))
+						->allowInput()
+						->format('d.m.Y'),
+					Link::make(__('Filter'))
+						->class('animal_handling_date_filter_link')
+				])
+			]),
 			AnimalHandlingListViewListLayout::class
 		];
 	}

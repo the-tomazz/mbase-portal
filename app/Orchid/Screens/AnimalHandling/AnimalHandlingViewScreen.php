@@ -75,7 +75,7 @@ class AnimalHandlingViewScreen extends Screen
 		$animalHandlingSights = [
 			Sight::make('animal_handling_date', __('Date and time of animal handling'))
 				->render(function ($bearsBiometryAnimalHandling) {
-					return $bearsBiometryAnimalHandling->animal_handling_date;
+					return $bearsBiometryAnimalHandling->animal_handling_date->format('m.d.Y H:i');
 				}),
 
 			Sight::make('date_and_time_of_biometry_measurements', __('Date and time of biometry measurements'))
@@ -86,7 +86,7 @@ class AnimalHandlingViewScreen extends Screen
 							->route('platform.biometryData.view', [ 'bearsBiometryData' => $this->bearsBiometryAnimalHandling->bearsBiometryData ]) :
 						Link::make(__('Add biometry data'))
 							->icon('plus')
-							->route('platform.biometryData.edit', [ 'bearsBiometryAnimalHandling' => $this->bearsBiometryAnimalHandling ]);
+							->route('platform.biometryData.add', [ 'bearsBiometryAnimalHandling' => $this->bearsBiometryAnimalHandling ]);
 				}),
 
 			Sight::make('hunting_ground', __('Hunting ground'))
@@ -136,7 +136,9 @@ class AnimalHandlingViewScreen extends Screen
 
 			Sight::make('died_at', __('Died at'))
 				->render(function ($bearsBiometryAnimalHandling) {
-					return $bearsBiometryAnimalHandling->animal->died_at;
+					return $bearsBiometryAnimalHandling->animal->died_at
+						? $bearsBiometryAnimalHandling->animal->died_at->format('m.d.Y H:i')
+						: '';
 				}),
 
 			Sight::make('description', __('Description'))

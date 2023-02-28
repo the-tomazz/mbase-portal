@@ -46,7 +46,7 @@ class AnimalHandlingListViewListLayout extends Table
 
 			TD::make('animal_handling_date', __('Handling date'))
 				->render(function (AnimalHandlingListView $animalHandlingListView) {
-					return Link::make($animalHandlingListView->animal_handling_date->toDateString())
+					return Link::make($animalHandlingListView->animal_handling_date->format('d.m.Y'))
 						->route('platform.animalHandling.view', [ $animalHandlingListView ]);
 				})
 				->sort(),
@@ -82,9 +82,9 @@ class AnimalHandlingListViewListLayout extends Table
 					return $status == Animal::STR_ALIVE ? __('Alive') : __('Dead');
 				}),
 
-			TD::make('way_of_withdrawal_list_id', __("Way of withdrawal"))
+			TD::make('way_of_withdrawal_list_name->' . App::getLocale(), __("Way of withdrawal"))
 				->render(function (AnimalHandlingListView $animalHandlingListView) {
-					return Link::make($animalHandlingListView->way_of_withdrawal_list->name)
+					return Link::make($animalHandlingListView->way_of_withdrawal_list_name)
 						->route('platform.animalHandling.view', [ $animalHandlingListView ]);
 				})
 				->sort()
@@ -92,23 +92,23 @@ class AnimalHandlingListViewListLayout extends Table
 					Select::make()->fromQuery(
 						WayOfWithdrawalList::where('status', '=', BaseList::STR_ACTIVE)
 							->orderBy('name->' . App::getLocale(), 'asc'),
-						'name'
+						'name', 'name'
 					)
 					->empty(__('<Select>'))
 				)
-				->filterValue(function ($way_of_withdrawal_list_id) {
-						return WayOfWithdrawalList::find($way_of_withdrawal_list_id)->name;
+				->filterValue(function ($way_of_withdrawal_list_name) {
+					return $way_of_withdrawal_list_name;
 				}),
 
 			TD::make('animal_died_at', __('Died at'))
 				->render(function ($model) {
-					return $model->animal_died_at ? $model->animal_died_at->toDateString() : '';
+					return $model->animal_died_at ? $model->animal_died_at->format('d.m.Y') : '';
 				})
 				->sort(),
 
-			TD::make('species_list_id', __("Species"))
+			TD::make('species_list_name->' . App::getLocale(), __("Species"))
 				->render(function (AnimalHandlingListView $animalHandlingListView) {
-					return Link::make($animalHandlingListView->species_list->name)
+					return Link::make($animalHandlingListView->species_list_name)
 						->route('platform.animalData.view', [ $animalHandlingListView->animal_id ]);
 				})
 				->sort()
@@ -116,12 +116,12 @@ class AnimalHandlingListViewListLayout extends Table
 					Select::make()->fromQuery(
 						SpeciesList::where('status', '=', BaseList::STR_ACTIVE)
 							->orderBy('name->' . App::getLocale(), 'asc'),
-						'name'
+						'name', 'name'
 					)
 					->empty(__('<Select>'))
 				)
-					->filterValue(function ($species_list_id) {
-							return SpeciesList::find($species_list_id)->name;
+					->filterValue(function ($species_list_name) {
+							return $species_list_name;
 					}),
 
 			TD::make('hunting_management_area', __('Hunting-management area (LUO)'))
@@ -138,9 +138,9 @@ class AnimalHandlingListViewListLayout extends Table
 				})
 				->sort(),
 
-			TD::make('sex_list_id', __("Sex"))
+			TD::make('sex_list_name->' . App::getLocale(), __("Sex"))
 				->render(function (AnimalHandlingListView $animalHandlingListView) {
-					return Link::make($animalHandlingListView->sex_list->name)
+					return Link::make($animalHandlingListView->sex_list_name)
 						->route('platform.animalData.view', [ $animalHandlingListView->animal_id ]);
 				})
 				->sort()
@@ -148,13 +148,31 @@ class AnimalHandlingListViewListLayout extends Table
 					Select::make()->fromQuery(
 						SexList::where('status', '=', BaseList::STR_ACTIVE)
 							->orderBy('name->' . App::getLocale(), 'asc'),
-						'name'
+						'name', 'name'
 					)->empty(__('<Select>'))
 				)
-				->filterValue(function ($sex_list_id) {
-							return SexList::find($sex_list_id)->name;
+				->filterValue(function ($sex_list_name) {
+					return $sex_list_name;
 				}),
 
+
+			TD::make('species_list_name', __("Species"))
+				->render(function (AnimalHandlingListView $animalHandlingListView) {
+					return Link::make($animalHandlingListView->species_list_name)
+						->route('platform.animalData.view', [ $animalHandlingListView->animal_id ]);
+				})
+				->sort()
+				->filter(
+					Select::make()->fromQuery(
+						SpeciesList::where('status', '=', BaseList::STR_ACTIVE)
+							->orderBy('name->' . App::getLocale(), 'asc'),
+						'name', 'name'
+					)
+					->empty(__('<Select>'))
+				)
+					->filterValue(function ($species_list_name) {
+							return $species_list_name;
+					}),
 
 
 			TD::make('animal_status_on_handling', __('Status on handling'))
@@ -180,7 +198,7 @@ class AnimalHandlingListViewListLayout extends Table
 						? Link::make(__('Exists'))
 							->route('platform.biometryData.view', [ $animalHandlingListView->bears_biometry_data_id ])
 						: Link::make(__('NA'))
-							->route('platform.biometryData.edit', [ $animalHandlingListView ]);
+							->route('platform.biometryData.add', [ $animalHandlingListView ]);
 				})
 				->sort()
 				->filter(
@@ -196,13 +214,13 @@ class AnimalHandlingListViewListLayout extends Table
 
 			TD::make('created_at', __('Created'))
 				->render(function ($model) {
-					return $model->created_at->toDateString();
+					return $model->created_at->format('d.m.Y H:i');
 				})
 				->sort(),
 
 			TD::make('updated_at', __('Last edit'))
 				->render(function ($model) {
-					return $model->updated_at->toDateString();
+					return $model->updated_at->format('d.m.Y H:i');
 				})
 				->sort(),
 		];

@@ -78,9 +78,9 @@ class BearsBiometryAnimalHandling extends Model
 {
 	protected $table = 'bears_biometry_animal_handling';
 
-	public const PT_MAP_LANG_LAT = 1;
-	public const PT_3912 = 2;
-	public const PT_3794 = 3;
+	public const PT_3794 = 'PT_3794';
+	public const PT_3912 = 'PT_3912';
+	public const PT_4326 = 'PT_4326';
 
 	public const CONFLICTEDNESS_UNKNOWN = 'unknown';
 	public const CONFLICTEDNESS_CONFLICTING = 'conflicting';

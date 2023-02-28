@@ -312,8 +312,8 @@ VALUES
 	(
 		2,
 		'fur_pattern_in_lynx',
-		'Rosette',
-		'{"en":"Rosette","sl":"Rozetast","default":"Rosette"}',
+		'Rosettes',
+		'{"en":"Rosettes","sl":"Rozetast","default":"Rosettes"}',
 		'{"en":"","sl":"","default":""}'
 	);
 
@@ -323,8 +323,8 @@ VALUES
 	(
 		3,
 		'fur_pattern_in_lynx',
-		'No pattern',
-		'{"en":"No pattern","sl":"Brez vzorca","default":"No pattern"}',
+		'Without clear pattern',
+		'{"en":"Without clear pattern","sl":"Brez vzorca","default":"Without clear pattern"}',
 		'{"en":"","sl":"","default":""}'
 	);
 
@@ -671,8 +671,6 @@ VALUES
 		'{"en":"This data belongs to ACDB, Romania, and cannot be used or reproduced in any case without written consent of ACDB. For its Terms of Use please contact ACDB, Ion Creanga 12, Focsani 620083, Romania. Phone number +40 720 217546, +40 737 493179, e-mail: teodora.sin.g@gmail.com, andreagazzola@yahoo.it."}'
 	);
 
-UPDATE laravel.licence_list SET name = (concat('{"en":"', title, '", "sl":"', title, '"}'))::jsonb;
-
 CREATE TABLE laravel.sample_type_list (
 	id serial PRIMARY KEY,
 	title varchar(128),
@@ -692,7 +690,7 @@ VALUES
 		'sample_type',
 		'Blood',
 		'{"en":"Muscle","sl":"Mišičnina","default":"Muscle"}',
-		'{"hr":"","en":"red muscles, tongue, diaphragm...","de":"","it":"","sl":"prečnoprogaste mišice, jezik, trebušna prepona...","default":""}'
+		'{"hr":"","en":"Red muscles, tongue, diaphragm...","de":"","it":"","sl":"Prečnoprogaste mišice, jezik, trebušna prepona...","default":""}'
 	);
 
 INSERT INTO
@@ -747,7 +745,7 @@ VALUES
 		'sample_type',
 		'Other tissue',
 		'{"en":"Other tissue","sl":"Druga tkiva","default":"Other tissue"}',
-		'{"hr":"","en":"bone, spleen, liver, lung...","de":"","it":"","sl":"kost, vranica, jetra, pljuča...","default":""}'
+		'{"hr":"","en":"Bone, spleen, liver, lung...","de":"","it":"","sl":"Kost, vranica, jetra, pljuča...","default":""}'
 	);
 
 INSERT INTO
@@ -758,7 +756,7 @@ VALUES
 		'sample_type',
 		'Decomposing tissue',
 		'{"en":"Decomposing tissue","sl":"Razpadajoče tkivo","default":"Decomposing tissue"}',
-		'{"hr":"","en":"taken from teh decomposing carcass","de":"","it":"","sl":"Razpadajoče tkivo","default":""}'
+		'{"hr":"","en":"Taken from teh decomposing carcass","de":"","it":"","sl":"Odvzeto z že razpadajočega kadavra","default":""}'
 	);
 
 INSERT INTO
@@ -769,7 +767,7 @@ VALUES
 		'sample_type',
 		'Saliva from the mucosa',
 		'{"en":"Saliva from the mucosa","sl":"Slina s sluznice","default":"Saliva from the mucosa"}',
-		'{"hr":"","en":"mucosa on the gums, mouth...","de":"","it":"","sl":"sluznica z dlesni, ust...","default":""}'
+		'{"hr":"","en":"Mucosa on the gums, mouth...","de":"","it":"","sl":"Sluznica z dlesni, ust...","default":""}'
 	);
 
 INSERT INTO
@@ -780,7 +778,7 @@ VALUES
 		'sample_type',
 		'Saliva from the object',
 		'{"en":"Saliva from the object","sl":"Slina s predmeta","default":"Saliva from the object"}',
-		'{"hr":"","en":"from prey remains, bite wounds on prey, bite marks from feeding items","de":"","it":"","sl":"slina z ugriznih ran na plenu, z ugriznih površin na hrani...","default":""}'
+		'{"hr":"","en":"From prey remains, bite wounds on prey, bite marks from feeding items","de":"","it":"","sl":"Slina z ugriznih ran na plenu, z ugriznih površin na hrani...","default":""}'
 	);
 
 INSERT INTO
@@ -791,7 +789,7 @@ VALUES
 		'sample_type',
 		'Feces',
 		'{"en":"Feces","sl":"Iztrebek","default":"Feces"}',
-		'{"hr":"","en":"samples collected from scats","de":"","it":"","sl":"","default":""}'
+		'{"hr":"","en":"Samples collected from scats","de":"","it":"","sl":"","default":""}'
 	);
 
 INSERT INTO
@@ -824,7 +822,7 @@ VALUES
 		'teats_wear',
 		'Lactation',
 		'{"en":"Lactation","sl":"Laktacija (mlečnost)","default":"Lactation"}',
-		'{"hr":"","en":"","de":"","it":"","sl":"","default":""}'
+		'{"hr":"","en":"","de":"","it":"","sl":"Seski so sveže obsesani, t.j. v laktaciji","default":""}'
 	);
 
 INSERT INTO
@@ -846,7 +844,7 @@ VALUES
 		'teats_wear',
 		'Medium',
 		'{"en":"Medium","sl":"Srednja","default":"Medium"}',
-		'{"hr":"","en":"","sl":"","default":""}'
+		'{"hr":"","en":"","sl":"Žival ni več v laktaciji, je pa pred nedavnim (nekaj tedni, meseci) še bila in so seski še povečani","default":""}'
 	);
 
 INSERT INTO
@@ -857,7 +855,7 @@ VALUES
 		'teats_wear',
 		'No usage',
 		'{"en":"No usage","sl":"Močna","default":"Ni uporabe"}',
-		'{"en":"","sl":"","default":""}'
+		'{"hr":"","en":"","sl":"Živali (običajno mlajše), ki niso bile še nikoli udeležene v reprodukciji","default":""}'
 	);
 
 
@@ -1003,7 +1001,7 @@ VALUES
 		134,
 		'way_of_withdrawal',
 		'Conflict animal removal',
-		'{"hr":"Interventni odstrel","en":"Conflict animal removal","sl":"Odstrel konfliktnega osebka","default":"Conflict animal removal"}',
+		'{"hr":"Interventni odstrel","en":"Conflict animal removal","sl":"Odvzem konfliktnega osebka","default":"Conflict animal removal"}',
 		'{"hr":"","en":"","de":"","it":"","sl":"","default":""}'
 	);
 

@@ -181,8 +181,8 @@ class Controller extends BaseController
 			__('Thorax circumference'),
 			__('Abdomen circumference'),
 			__('Length of os penis (penis bone - baculum)'),
-			__('Nipple length'),
-			__('Nipple use'),
+			__('Teats length'),
+			__('Teats use'),
 			__('Tail length without hair'),
 			__('Ear length without hair'),
 			__('Notes'),
@@ -213,7 +213,7 @@ class Controller extends BaseController
 			__('Incisors (front teeth) wear'),
 			__('Color'),
 			__("Light neck stripe 'collar'"),
-			__('Lynx fur pattern'),
+			__('Lynx coat pattern'),
 			__('Date and time of data_input') /*, 'depot', 'status' */
 		]);
 
@@ -277,9 +277,13 @@ class Controller extends BaseController
 			$row[] = $animal->description;
 			$row[] = '';
 
+			$animalHandlingCount = BearsBiometryAnimalHandling::where('animal_id', $animal->id)->orderBy('animal_handling_date')->get()->count();
 			$animalHandling = BearsBiometryAnimalHandling::where('animal_id', $animal->id)->orderBy('animal_handling_date')->first();
+
 			if ($animalHandling != null) {
 				$row[] = $animalHandling->id;
+				$row[] = $animalHandlingCount;
+				$row[] = $animalHandling->animal_handling_date;
 				$row[] = $animalHandling->way_of_withdrawal_list ? $animalHandling->way_of_withdrawal_list->name : '';
 				$row[] = $animalHandling->animal_conflictedness;
 				$row[] = $animalHandling->animal_conflictedness_details;
@@ -292,7 +296,6 @@ class Controller extends BaseController
 				$row[] = $animalHandling->telemetry_uid;
 				$row[] = $animalHandling->biometry_loss_reason_list ? $animalHandling->biometry_loss_reason_list->name : '';
 				$row[] = $animalHandling->biometry_loss_reason_description;
-				$row[] = $animalHandling->animal_handling_date;
 				$row[] = $animalHandling->place_of_removal;
 				$row[] = $animalHandling->place_type_list ? $animalHandling->place_type_list->name : '';
 				$row[] = $animalHandling->place_type_list_details;
@@ -372,7 +375,10 @@ class Controller extends BaseController
 			__('Name'),
 			__('Description'), ' ',
 
+
 			__('Animal handling ID'),
+			__('# of animal handlings'),
+			__('Date and time of handling'),
 			__('Way of withdrawal'),
 			__('Animal conflictedness'),
 			__('Description of conflictedness'),
@@ -385,7 +391,6 @@ class Controller extends BaseController
 			__('Ear-tag number or radio-collar (telemetry) identification'),
 			__('Loss reason'),
 			__('Loss reason description'),
-			__('Date and time of handling'),
 			__('Geo location / Local name'),
 			__('Place of removal type'),
 			__('Other place of removal type'),
@@ -413,8 +418,8 @@ class Controller extends BaseController
 			__('Thorax circumference'),
 			__('Abdomen circumference'),
 			__('Length of os penis (penis bone - baculum)'),
-			__('Nipple length'),
-			__('Nipple use'),
+			__('Teats length'),
+			__('Teats use'),
 			__('Tail length without hair'),
 			__('Ear length without hair'),
 			__('Notes'),
@@ -445,7 +450,7 @@ class Controller extends BaseController
 			__('Incisors (front teeth) wear'),
 			__('Color'),
 			__("Light neck stripe 'collar'"),
-			__('Lynx fur pattern'),
+			__('Lynx coat pattern'),
 			__('Date and time of data_input') /*, 'depot', 'status' */
 		]);
 

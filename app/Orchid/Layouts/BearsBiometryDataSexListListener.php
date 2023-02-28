@@ -81,15 +81,15 @@ class BearsBiometryDataSexListListener extends Listener
 					->canSee(!$isFemale && !$isNeutral),
 
 				Input::make('bearsBiometryData.nipple_length')
-					->title(__('Nipple length'))
-					->help(__('Insert Nipple length (0-15 cm)'))
+					->title(__('Teats length'))
+					->help(__('Insert Teats length (0-15 cm)'))
 					->canSee($isFemale && !$isNeutral),
 
 				Select::make('bearsBiometryData.teats_wear_list_id')
 					->fromQuery(TeatsWearList::where('status', '=', BaseList::STR_ACTIVE), 'name')
-					->title(__('Nipple use'))
+					->title(__('Teats use'))
 					->required()
-					->help(__('Select nipple use'))
+					->help(__('Select Teats use'))
 					->canSee($isFemale && !$isNeutral)
 					->empty(__('<Select>')),
 			])->autoWidth(),
@@ -102,7 +102,7 @@ class BearsBiometryDataSexListListener extends Listener
 			case SpeciesList::WOLF_ID:
 				if (!$isFemale && !$isNeutral) {
 					$additionalSpeciesRelatedInputs = [
-						Label::make('')->title(__('Testicals')),
+						Label::make('')->title(__('Testicles')),
 
 						// Hind right paw start
 						Group::make([
@@ -173,10 +173,10 @@ class BearsBiometryDataSexListListener extends Listener
 
 						Select::make('bearsBiometryData.fur_pattern_in_lynx_list_id')
 							->fromQuery(FurPatternInLynxList::where('status', '=', BaseList::STR_ACTIVE), 'name')
-							->title(__("Lynx fur pattern"))
+							->title(__("Lynx coat pattern"))
 							->required()
 							->empty(__('<Select>'))
-							->help(__("Please select lynx fur pattern")),
+							->help(__("Please select lynx coat pattern")),
 
 
 					])->autoWidth(),
@@ -189,7 +189,7 @@ class BearsBiometryDataSexListListener extends Listener
 		return [
 			Layout::rows(
 				$layoutRows
-			)->title(__('Species and sex related characteristics')),
+			)->title(__('Species- and sex-related characteristics')),
 		];
 	}
 }

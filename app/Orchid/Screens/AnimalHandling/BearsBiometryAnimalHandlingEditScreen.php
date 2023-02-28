@@ -67,18 +67,20 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 		if ($bearsBiometryAnimalHandling->exists) {
 			$bearsBiometryAnimalHandling['animal_handling_date_date'] = (
 				new DateTime($bearsBiometryAnimalHandling->animal_handling_date)
-			)->format('j.n.Y');
+			)->format('d.m.Y');
 
 			$bearsBiometryAnimalHandling['animal_handling_date_time'] = (
 				new DateTime($bearsBiometryAnimalHandling->animal_handling_date)
 			)->format('H:i');
 
-			$bearsBiometryAnimalHandling['geo_location'] = [
-				'lat' => $bearsBiometryAnimalHandling->lat,
-				'lng' => $bearsBiometryAnimalHandling->lng,
+			$bearsBiometryAnimalHandling['original_animal_id'] = $bearsBiometryAnimalHandling['animal_id'];
+
+			$bearsBiometryAnimalHandling['geo_location'] = [ // HACK, Stanko, this is for you :)
+				'lat' => $bearsBiometryAnimalHandling['lat'],
+				'lng' => $bearsBiometryAnimalHandling['lng'],
 			];
 
-			$bearsBiometryAnimalHandling['original_animal_id'] = $bearsBiometryAnimalHandling['animal_id'];
+
 		} else {
 			if ($animal->exists) { // we are creating a handling of a certain animal
 				// $bearsBiometryAnimalHandling->animal_id = $animal->id;
@@ -90,8 +92,6 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 				'lng' => 15.2424903,
 			];
 
-			$bearsBiometryAnimalHandling['projection_type'] = BearsBiometryAnimalHandling::PT_MAP_LANG_LAT;
-
 			if (Auth::user()->defaultVisualisationAnimalStatus() == Animal::STR_DEAD) {
 				$bearsBiometryAnimalHandling['licence_list_id'] = LicenceList::INT_ZGS_LICENCE;
 			}
@@ -99,9 +99,33 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 			$bearsBiometryAnimalHandling['measurer_name_and_surname'] = Auth::user()->name;
 		}
 
+		$bearsBiometryAnimalHandling['geo_input_method'] = 'manual';
+		$bearsBiometryAnimalHandling['projection_type'] = BearsBiometryAnimalHandling::PT_3912;
+
+		$proj4 = new Proj4php();
+		$proj4->addDef("EPSG:3912", '+proj=tmerc +lat_0=0 +lon_0=15 +k=0.9999 +x_0=500000 +y_0=-5000000 +ellps=bessel +towgs84=409.545,72.164,486.872,3.085957,5.469110,-11.020289,17.919665 +units=m +no_defs');
+		$proj4->addDef("EPSG:3794", '+proj=tmerc +lat_0=0 +lon_0=15 +k=0.9999 +x_0=500000 +y_0=-5000000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs');
+
+		$projEPSG4326 = new Proj('EPSG:4326', $proj4);
+		$projEPSG3912 = new Proj('EPSG:3912', $proj4);
+		$projEPSG3794 = new Proj('EPSG:3794', $proj4);
+
+		$pointEPSG4326 = new Point($bearsBiometryAnimalHandling['geo_location']['lng'], $bearsBiometryAnimalHandling['geo_location']['lat'], $projEPSG4326);
+		$sourcePoint = clone $pointEPSG4326;
+		$pointEPSG3912 = $proj4->transform($projEPSG3912, $sourcePoint);
+		$sourcePoint = clone $pointEPSG4326;
+		$pointEPSG3794 = $proj4->transform($projEPSG3794, $sourcePoint);
+
+		$bearsBiometryAnimalHandling['EPSG_3912_x'] = $pointEPSG3912->x;
+		$bearsBiometryAnimalHandling['EPSG_3912_y'] = $pointEPSG3912->y;
+		$bearsBiometryAnimalHandling['EPSG_3794_x'] = $pointEPSG3794->x;
+		$bearsBiometryAnimalHandling['EPSG_3794_y'] = $pointEPSG3794->y;
+		$bearsBiometryAnimalHandling['EPSG_4326_x'] = $pointEPSG4326->x;
+		$bearsBiometryAnimalHandling['EPSG_4326_y'] = $pointEPSG4326->y;
+
 		// FIX ANIMAL DATA
 		if ($animal->exists || isset($bearsBiometryAnimalHandling['animal_id'])) {
-			$animal['died_at_date'] = (new DateTime($animal->died_at))->format('j.n.Y');
+			$animal['died_at_date'] = (new DateTime($animal->died_at))->format('d.m.Y');
 			$animal['died_at_time'] = (new DateTime($animal->died_at))->format('H:i');
 		} else {
 			$animal['status'] = Auth::user()->defaultVisualisationAnimalStatus();
@@ -253,47 +277,41 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 		$projEPSG3912 = new Proj('EPSG:3912', $proj4);
 		$projEPSG3794 = new Proj('EPSG:3794', $proj4);
 
-		switch ($triggers['projection_type']) {
-			case BearsBiometryAnimalHandling::PT_MAP_LANG_LAT:
-				$pointEPSG4326 = new Point($triggers['geo_location']['lng'], $triggers['geo_location']['lat'], $projEPSG4326);
-				$sourcePoint = clone $pointEPSG4326;
-				$pointEPSG3912 = $proj4->transform($projEPSG3912, $sourcePoint);
-				$sourcePoint = clone $pointEPSG4326;
-				$pointEPSG3794 = $proj4->transform($projEPSG3794, $sourcePoint);
-
-				break;
-			case BearsBiometryAnimalHandling::PT_3912:
-				if (isset($triggers['EPSG_3912_x'])) {
+		if ($triggers['geo_input_method'] == 'map') {
+			$pointEPSG4326 = new Point($triggers['geo_location']['lng'], $triggers['geo_location']['lat'], $projEPSG4326);
+			$sourcePoint = clone $pointEPSG4326;
+			$pointEPSG3912 = $proj4->transform($projEPSG3912, $sourcePoint);
+			$sourcePoint = clone $pointEPSG4326;
+			$pointEPSG3794 = $proj4->transform($projEPSG3794, $sourcePoint);
+		} else {
+			switch ($triggers['projection_type']) {
+				case BearsBiometryAnimalHandling::PT_3912:
 					$pointEPSG3912 = new Point($triggers['EPSG_3912_x'], $triggers['EPSG_3912_y'], $projEPSG3912);
 					$sourcePoint = clone $pointEPSG3912;
 					$pointEPSG4326 = $proj4->transform($projEPSG4326, $sourcePoint);
-					$sourcePoint = clone $pointEPSG4326;
+					$sourcePoint = clone $pointEPSG3912;
 					$pointEPSG3794 = $proj4->transform($projEPSG3794, $sourcePoint);
-				} else {
-					$pointEPSG4326 = new Point($triggers['geo_location']['lng'], $triggers['geo_location']['lat'], $projEPSG4326);
+
+					break;
+
+				case BearsBiometryAnimalHandling::PT_4326:
+					$pointEPSG4326 = new Point($triggers['EPSG_4326_x'], $triggers['EPSG_4326_y'], $projEPSG4326);
 					$sourcePoint = clone $pointEPSG4326;
 					$pointEPSG3912 = $proj4->transform($projEPSG3912, $sourcePoint);
 					$sourcePoint = clone $pointEPSG4326;
 					$pointEPSG3794 = $proj4->transform($projEPSG3794, $sourcePoint);
-				}
 
-				break;
-			case BearsBiometryAnimalHandling::PT_3794:
-				if (isset($triggers['EPSG_3794_x'])) {
+					break;
+
+				case BearsBiometryAnimalHandling::PT_3794:
 					$pointEPSG3794 = new Point($triggers['EPSG_3794_x'], $triggers['EPSG_3794_y'], $projEPSG3794);
 					$sourcePoint = clone $pointEPSG3794;
 					$pointEPSG4326 = $proj4->transform($projEPSG4326, $sourcePoint);
-					$sourcePoint = clone $pointEPSG4326;
+					$sourcePoint = clone $pointEPSG3794;
 					$pointEPSG3912 = $proj4->transform($projEPSG3912, $sourcePoint);
-				} else {
-					$pointEPSG4326 = new Point($triggers['geo_location']['lng'], $triggers['geo_location']['lat'], $projEPSG4326);
-					$sourcePoint = clone $pointEPSG4326;
-					$pointEPSG3912 = $proj4->transform($projEPSG3912, $sourcePoint);
-					$sourcePoint = clone $pointEPSG4326;
-					$pointEPSG3794 = $proj4->transform($projEPSG3794, $sourcePoint);
-				}
 
-				break;
+					break;
+			}
 		}
 
 		$lat = $pointEPSG4326->y;
@@ -368,16 +386,18 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 				$LOV = json_decode($LOVResults[0]->name)->name;
 			}
 
-			return [
-			'bearsBiometryAnimalHandling' => [
+			$payload = [
+				'geo_input_method' => $triggers['geo_input_method'],
 				'geo_location' => new Repository([
-					'lat' => $pointEPSG4326->y,
 					'lng' => $pointEPSG4326->x,
+					'lat' => $pointEPSG4326->y,
 				]),
-				'EPSG_3912_y' => $pointEPSG3912->y,
 				'EPSG_3912_x' => $pointEPSG3912->x,
-				'EPSG_3794_y' => $pointEPSG3794->y,
+				'EPSG_3912_y' => $pointEPSG3912->y,
 				'EPSG_3794_x' => $pointEPSG3794->x,
+				'EPSG_3794_y' => $pointEPSG3794->y,
+				'EPSG_4326_x' => $pointEPSG4326->x,
+				'EPSG_4326_y' => $pointEPSG4326->y,
 				'projection_type' => $triggers['projection_type'],
 				'hunting_management_area' => $LUO ?? '',
 				'hunting_ground' => $LOV ?? '',
@@ -385,27 +405,35 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 				'place_of_removal' => $triggers['place_of_removal'],
 				'place_type_list_id'      => $triggers['place_type_list_id'],
 				'place_type_list_details' => $triggers['place_type_list_details'] ?? null,
-			],
+			];
+
+			return [
+				'bearsBiometryAnimalHandling' => $payload
 			];
 		} else {
-			return [
-			'bearsBiometryAnimalHandling' => [
+			$payload = [
+				'geo_input_method' => $triggers['geo_input_method'],
 				'geo_location' => new Repository([
 					'lat' => $pointEPSG4326->y,
 					'lng' => $pointEPSG4326->x,
 				]),
-				'EPSG_3912_y' => $pointEPSG3912->y,
 				'EPSG_3912_x' => $pointEPSG3912->x,
-				'EPSG_3794_y' => $pointEPSG3794->y,
+				'EPSG_3912_y' => $pointEPSG3912->y,
 				'EPSG_3794_x' => $pointEPSG3794->x,
+				'EPSG_3794_y' => $pointEPSG3794->y,
+				'EPSG_4326_x' => $pointEPSG4326->x,
+				'EPSG_4326_y' => $pointEPSG4326->y,
 				'projection_type' => $triggers['projection_type'],
 				'hunting_management_area' => 'N/A',
 				'hunting_ground' => 'N/A',
 				'gid' => null,
 				'place_of_removal' => $triggers['place_of_removal'],
 				'place_type_list_id'      => $triggers['place_type_list_id'],
-				'place_type_list_details' => $triggers['place_type_list_details'] ?? null,
-			],
+				'place_type_list_details' => $triggers['place_type_list_details'] ?? null
+			];
+
+			return [
+				'bearsBiometryAnimalHandling' => $payload
 			];
 		}
 	}
@@ -437,7 +465,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 		}
 
 		return [
-		'bearsBiometryAnimalHandling' => new Repository($repositoryElements)
+			'bearsBiometryAnimalHandling' => new Repository($repositoryElements)
 		];
 	}
 
@@ -459,65 +487,58 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 	public function layout(): iterable
 	{
 		$preBiometryAnimalHandlingSampleListeners = [
-		Layout::columns([
-			BearsBiometryAnimalHandlingAnimalListener::class,
+			Layout::columns([
+				BearsBiometryAnimalHandlingAnimalListener::class,
 
-			BearsBiometryAnimalHandlingGeoLocationListener::class,
-		]),
+				BearsBiometryAnimalHandlingGeoLocationListener::class,
+			]),
 
-		// WayOfRemovalListener::class,
+			BearsBiometryAnimalHandlingAnimalConflictednessListener::class,
 
-		BearsBiometryAnimalHandlingAnimalConflictednessListener::class,
+			Layout::rows([
+				Select::make('bearsBiometryAnimalHandling.licence_list_id')
+					->fromQuery(LicenceList::where('status', '=', BaseList::STR_ACTIVE), 'name')
+					->title(__('Licence'))
+					->help(__('Please select the Licence'))
+					->empty(__('<Select>'))
+					->required(),
+			]),
 
-		Layout::rows([
-			Select::make('bearsBiometryAnimalHandling.licence_list_id')
-				->fromQuery(LicenceList::where('status', '=', BaseList::STR_ACTIVE), 'title')
-				->title(__('Licence'))
-				->help(__('Please select the Licence'))
-				->empty(__('<Select>'))
-				->required(),
-		]),
+			BearsBiometryAnimalHandlingHunterFinderSwitchListener::class,
 
-		BearsBiometryAnimalHandlingHunterFinderSwitchListener::class,
+			ToothSamplesListener::class,
 		];
 
 		$biometryAnimalHandlingSamplesListeners = [
-		new BearsBiometryAnimalHandlingSamplesListener(self::MAX_SAMPLE_NUMBER)
+			new BearsBiometryAnimalHandlingSamplesListener(self::MAX_SAMPLE_NUMBER)
 		];
 
-		/*
-		for ($sampleNumber=1; $sampleNumber<=self::MAX_SAMPLE_NUMBER; $sampleNumber++) {
-		$biometryAnimalHandlingSamplesListeners[] = new BearsBiometryAnimalHandlingSamplesListener($sampleNumber);
-		}
-		*/
-
 		$postBiometryAnimalHandlingSampleListeners = [
-		ToothSamplesListener::class,
-		AnimalHandlingSamplesLayout::class,
+			AnimalHandlingSamplesLayout::class,
 
-		Layout::rows([
-			Input::make('bearsBiometryAnimalHandling.measurer_name_and_surname')
-				->title(__('Measurer name and surname')),
+			Layout::rows([
+				Input::make('bearsBiometryAnimalHandling.measurer_name_and_surname')
+					->title(__('Measurer name and surname')),
 
-			Input::make('bearsBiometryAnimalHandling.hunting_ground_representative')
-				->title(__('Hunting ground representative')),
-		]),
+				Input::make('bearsBiometryAnimalHandling.hunting_ground_representative')
+					->title(__('Hunting ground representative')),
+			]),
 
-		Layout::block([])
-			->commands(
-				[
-					Button::make(__('Save animal handling'))
-						->type(Color::DEFAULT())
-						->icon('check')
-						->method($this->action . 'AnimalHandlingAndDoNotAddBiometryData'),
+			Layout::block([])
+				->commands(
+					[
+						Button::make(__('Save animal handling'))
+							->type(Color::DEFAULT())
+							->icon('check')
+							->method($this->action . 'AnimalHandlingAndDoNotAddBiometryData'),
 
-					Button::make(__('Save animal handling and add biometry data'))
-						->type(Color::DEFAULT())
-						->icon('check')
-						->method($this->action . 'AnimalHandlingAndAddBiometryData')
-						->canSee($this->bearsBiometryAnimalHandling !== null && !$this->bearsBiometryAnimalHandling->exists)
-				]
-			),
+						Button::make(__('Save animal handling and add biometry data'))
+							->type(Color::DEFAULT())
+							->icon('check')
+							->method($this->action . 'AnimalHandlingAndAddBiometryData')
+							->canSee($this->bearsBiometryAnimalHandling !== null && !$this->bearsBiometryAnimalHandling->exists)
+					]
+				),
 
 			Layout::modal('modalRemove', [
 				Layout::rows([
@@ -632,8 +653,8 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 			$animal->save();
 		}
 
-		$bearsBiometryAnimalHandling->lat = $request->get('bearsBiometryAnimalHandling')['geo_location']['lat'];
-		$bearsBiometryAnimalHandling->lng = $request->get('bearsBiometryAnimalHandling')['geo_location']['lng'];
+		$bearsBiometryAnimalHandling->lat = $request->get('bearsBiometryAnimalHandling')['EPSG_4326_y'];
+		$bearsBiometryAnimalHandling->lng = $request->get('bearsBiometryAnimalHandling')['EPSG_4326_x'];
 
 		$bearsBiometryAnimalHandling->save();
 
@@ -707,7 +728,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 	{
 		$bearsBiometryAnimalHandling = $this->createOrUpdate($animal, $bearsBiometryAnimalHandling, $request);
 
-		return redirect()->route('platform.biometryData.edit', [ $bearsBiometryAnimalHandling ]);
+		return redirect()->route('platform.biometryData.add', [ $bearsBiometryAnimalHandling ]);
 	}
 
 	public function createAnimalHandlingAndAddBiometryData(Request $request)

@@ -148,7 +148,7 @@ class PlatformProvider extends OrchidServiceProvider
 					->icon('list')
 					->href('/admin/crud/list/collar-lists');
 
-				$menu[] = Menu::make('Lynx fur pattern')
+				$menu[] = Menu::make('Lynx coat pattern')
 					->icon('list')
 					->href('/admin/crud/list/fur-pattern-in-lynx-lists');
 

@@ -74,6 +74,7 @@ class AnimalEditListener extends Listener
 
 				DateTimer::make('animal.died_at_date')
 					->title('Date of death')
+					->available([['from' => '01.01.1970', 'to' => date('d.m.Y')]])
 					->required()
 					->allowInput()
 					->format('d.m.Y')

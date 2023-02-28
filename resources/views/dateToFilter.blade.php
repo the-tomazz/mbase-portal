@@ -1,7 +1,7 @@
 @push('head')
 <script>
 	function filterByDate() {
-		var dateFieldPrefix = "died_at";
+		var dateFieldPrefix = '{{$dateFilterVariable}}'; // "died_at";
 
 		var btn = document.getElementsByClassName(dateFieldPrefix + '_filter_link')[0];
 
@@ -19,7 +19,6 @@
 			}
 
 			urlParameterFromPosition = finalUrl.indexOf(dateFieldPrefix + '_from');
-debugger;
 			if (fromFieldValue != "") {
 				let from = fromFieldValue.substring(6,10) + "-" + fromFieldValue.substring(3,5) + "-" + fromFieldValue.substring(0,2);
 

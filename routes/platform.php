@@ -108,7 +108,7 @@ Route::screen('animalHandling/create', BearsBiometryAnimalHandlingEditScreen::cl
 Route::screen('animalHandling/add/{animal}', BearsBiometryAnimalHandlingEditScreen::class)
 	->name('platform.animalHandling.add');
 
-Route::screen('animalHandling/edit/{animal?}/{bearsBiometryAnimalHandling}', BearsBiometryAnimalHandlingEditScreen::class)
+Route::screen('animalHandling/edit/{animal}/{bearsBiometryAnimalHandling}', BearsBiometryAnimalHandlingEditScreen::class)
 	->name('platform.animalHandling.edit');
 
 Route::screen('animalHandling/view/{bearsBiometryAnimalHandling}', AnimalHandlingViewScreen::class)
@@ -117,7 +117,11 @@ Route::screen('animalHandling/view/{bearsBiometryAnimalHandling}', AnimalHandlin
 Route::screen('animalHandlings', AnimalHandlingListViewListScreen::class)
 	->name('platform.animalHandling.list');
 
-Route::screen('biometryData/edit/{bearsBiometryAnimalHandling}/{bearsBiometryData?}', BiometryDataEditScreen::class)
+
+Route::screen('biometryData/add/{bearsBiometryAnimalHandling}', BiometryDataEditScreen::class)
+	->name('platform.biometryData.add');
+
+Route::screen('biometryData/edit/{bearsBiometryAnimalHandling}/{bearsBiometryData}', BiometryDataEditScreen::class)
 	->name('platform.biometryData.edit');
 
 Route::screen('biometryData/view/{bearsBiometryData}', BiometryDataViewScreen::class)
@@ -126,7 +130,9 @@ Route::screen('biometryData/view/{bearsBiometryData}', BiometryDataViewScreen::c
 
 Route::screen('animalData/edit/{animal?}', AnimalDataEditScreen::class)
 	->name('platform.animalData.edit');
+
 Route::screen('animalData/view/{animal}', AnimalDataViewScreen::class)
 	->name('platform.animalData.view');
-Route::screen('animals', AnimalListScreen::class)
+
+	Route::screen('animals', AnimalListScreen::class)
 	->name('platform.animals.list');

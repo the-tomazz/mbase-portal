@@ -3,6 +3,7 @@
 namespace App\Orchid\Screens\Animal;
 
 use App\Models\Animal;
+use App\Models\AnimalListView;
 use App\Orchid\Layouts\AnimalListLayout;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -26,11 +27,15 @@ class AnimalListScreen extends Screen
 		$to = request()->input('died_at_to') ?? '2970-01-01';
 
 		return [
-			'animals' => Animal::filters()
-				->whereDate('died_at', '<', $to)
-				->whereDate('died_at', '>', $from)
+			'animals' => AnimalListView::filters()
+				->where(function ($query) use ($from, $to) {
+					$query->whereDate('died_at', '>=', $from);
+					$query->whereDate('died_at', '<=', $to);
+				})
+				->orWhereNull('died_at')
 				->defaultSort('name')
-				->paginate()
+				->paginate(),
+			'dateFilterVariable' => 'died_at'
 		];
 	}
 

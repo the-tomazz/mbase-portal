@@ -20,9 +20,7 @@ use Orchid\Screen\Layouts\Listener;
 
 class BearsBiometryAnimalHandlingAnimalListener extends Listener
 {
-	private const CHALLENGE_STR = '2351';
-
-    /**
+	/**
      * List of field names for which values will be joined with targets' upon trigger.
      *
      * @var string[]
@@ -99,40 +97,6 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 			$translocationOutOfPopulationSelected = false;
 		}
 
-		// dd(99, $this->query->get('animal'), $this->query->get('bearsBiometryAnimalHandling'));
-		/*
-			if (!is_null($this->query->get('bearsBiometryAnimalHandling'))) {
-				$existingAnimalSelected = true;
-				$animalId = $this->query->get('animal.id');
-			}
-
-			# if ( $this->query->get('bearsBiometryAnimalHandling.animal_id') != )
-
-			$existingAnimalSelected =
-				$this->query->get('bearsBiometryAnimalHandling.animal_id') != null
-			  		? $this->query->get('bearsBiometryAnimalHandling.animal_id')
-					: false;
-
-			$isAlive =
-				$this->query->get('bearsBiometryAnimalHandling.animal_status') != null
-					? $this->query->get('bearsBiometryAnimalHandling.animal_status') == Animal::STR_ALIVE
-					: false;
-
-			$animalIDAvailable = !is_null($this->query->get('bearsBiometryAnimalHandling.animal_id'));
-		} else {
-			$existingAnimalSelected = false;
-			$isAlive = Auth::user()->defaultVisualisationAnimalStatus() == Animal::STR_ALIVE;
-			$animalIDAvailable = false;
-		}
-
-		if ($animalIDAvailable) {
-			$animalEntityId = $this->query->get('bearsBiometryAnimalHandling.animal_id');
-			$animalEntity = Animal::find($animalEntityId);
-			# $animalInDatabaseIsAlive = $animalEntity->status == Animal::STR_ALIVE;
-		}
-
-		/* Way of withdrawal related variables */
-
 		$animalStatusSubset = $animalIsAlive ? WayOfWithdrawalList::SHOWN_ON_ANIMAL_STATUS_ALIVE : WayOfWithdrawalList::SHOWN_ON_ANIMAL_STATUS_DEAD;
 
 		$animalSelectQuery = $animalIsKnown
@@ -151,7 +115,10 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 				Select::make('bearsBiometryAnimalHandling.animal_id')
 					->fromQuery($animalSelectQuery, 'name')
 					->title(__('Animal'))
-					->help(__('Please select the ID of the individual, if the animal is known.'))
+					->help($animalIsAlive
+						? __('Please select the ID of the individual, if the animal is known.')
+						: __('If the individual hasn’t been caught before, leave the value “Unknown animal” and an automatic identification number will be assigned to this animal. If the individual has been previously handled and marked already, then choose its name from the drop-down list.')
+					)
 					->empty(__('<Unknown animal>'))
 					->canSee(!$animalIsKnown),
 
@@ -167,7 +134,10 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 				Input::make('bearsBiometryAnimalHandling.animal_name')
 					->title('Name')
 					->required($animalIsAlive)
-					->help(__('Input animal name.'))
+					->help($animalIsAlive
+						? __('Assign a new name to the animal.')
+						: __('In case this animal is known for other reasons, like monitoring, you can assign it a name.')
+					)
 					->canSee(!$animalIsKnown && !$animalIsSelected),
 
 				Select::make('bearsBiometryAnimalHandling.animal_species_list_id')
@@ -194,38 +164,41 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 			])->title(__('Animal')),
 
 			Layout::rows([
-				DateTimer::make('bearsBiometryAnimalHandling.animal_handling_date_date')
-					->title('Date of handling')
-					->required()
-					->allowInput()
-					->format('d.m.Y'),
+				Group::make([
+					DateTimer::make('bearsBiometryAnimalHandling.animal_handling_date_date')
+						->title('Date of handling')
+						->required()
+						->allowInput()
+						->format('d.m.Y')
+						->available([['from' => '01.01.1970', 'to' => date('d.m.Y')]]),
 
-				DateTimer::make('bearsBiometryAnimalHandling.animal_handling_date_time')
-					->title('Time of handling')
-					->required()
-					->allowInput()
-					->format('H:i')
-					->noCalendar()
-					->enableTime(),
+					DateTimer::make('bearsBiometryAnimalHandling.animal_handling_date_time')
+						->title('Time of handling')
+						->required()
+						->allowInput()
+						->format('H:i')
+						->noCalendar()
+						->enableTime(),
+				]),
 
-				DateTimer::make('bearsBiometryAnimalHandling.animal_died_at_date')
-					->title('Date of death')
-					->canSee(!$animalIsAlive)
-					->allowInput()
-					->readonly($animalIsKnown)
-					->format('d.m.Y')
-					->required(),
+				Group::make([
+					DateTimer::make('bearsBiometryAnimalHandling.animal_died_at_date')
+						->title('Date of death')
+						->canSee(!$animalIsAlive)
+						->allowInput()
+						->disabled($animalIsKnown)
+						->available([['from' => '01.01.1970', 'to' => date('d.m.Y')]])
+						->format('d.m.Y'),
 
-				DateTimer::make('bearsBiometryAnimalHandling.animal_died_at_time')
-					->title('Time of death')
-					->canSee(!$animalIsAlive)
-					->required()
-					->allowInput()
-					->format('H:i')
-					->noCalendar()
-					->enableTime()
-					->readonly($animalIsKnown),
-
+					DateTimer::make('bearsBiometryAnimalHandling.animal_died_at_time')
+						->title('Time of death')
+						->canSee(!$animalIsAlive)
+						->allowInput()
+						->format('H:i')
+						->noCalendar()
+						->enableTime()
+						->disabled($animalIsKnown),
+				]),
 			])->title(__('Date and time')),
 
 			Layout::rows([

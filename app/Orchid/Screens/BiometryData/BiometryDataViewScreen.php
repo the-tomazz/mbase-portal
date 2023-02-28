@@ -150,8 +150,8 @@ class BiometryDataViewScreen extends Screen
 
 		if ($isFemale && !$isNeutral) {
 			$animalHandlingSight = array_merge($animalHandlingSight, [
-				Sight::make('nipple_length', __('Nipple length')),
-				Sight::make('teats_wear_list_id', __('Nipple use'))
+				Sight::make('nipple_length', __('Teats length')),
+				Sight::make('teats_wear_list_id', __('Teats use'))
 					->render(function ($bearsBiometryData) {
 						return TeatsWearList::find($bearsBiometryData->teats_wear_list_id)->name;
 					}),
@@ -233,7 +233,7 @@ class BiometryDataViewScreen extends Screen
 					return isset($bearsBiometryData->collar_list) ? $bearsBiometryData->collar_list->name : '-';
 				}),
 
-			Sight::make('fur_pattern_in_lynx_list_id', __("Lynx fur pattern"))
+			Sight::make('fur_pattern_in_lynx_list_id', __("Lynx coat pattern"))
 				->render(function ($bearsBiometryData) {
 					return isset($bearsBiometryData->fur_pattern_in_lynx_list) ? $bearsBiometryData->fur_pattern_in_lynx_list->name : '-';
 				}),

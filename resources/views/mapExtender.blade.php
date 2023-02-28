@@ -1,6 +1,9 @@
 @push('head')
 <script>
 	function extendMap() {
+		document.getElementById('marker__latitude').disabled = true;
+		document.getElementById('marker__longitude').disabled = true;
+
 		var map = window.application.getControllerForElementAndIdentifier(document.querySelector('[data-controller="map"]'), "map").leafletMap;
 
 		baseMaps = {

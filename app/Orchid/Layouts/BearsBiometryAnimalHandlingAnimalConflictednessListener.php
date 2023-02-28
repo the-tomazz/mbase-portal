@@ -7,6 +7,7 @@ use App\Models\BearsBiometryAnimalHandling;
 use App\Models\PlaceTypeList;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
+use Orchid\Screen\Fields\Group;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\Select;
 use Orchid\Screen\Layouts\Listener;
@@ -46,7 +47,8 @@ class BearsBiometryAnimalHandlingAnimalConflictednessListener extends Listener
 
 		return [
 			Layout::rows([
-				Select::make('bearsBiometryAnimalHandling.animal_conflictedness')
+				Group::make([
+					Select::make('bearsBiometryAnimalHandling.animal_conflictedness')
 					->title(__('Animal conflictedness'))
 					->empty(__('<Select>'))
 					->required()
@@ -60,6 +62,7 @@ class BearsBiometryAnimalHandlingAnimalConflictednessListener extends Listener
 					->help(__('Specify, why you think that this precise individual was the one that created conflicts.'))
 					->required()
 					->canSee($canSee),
+				])
 			]),
 		];
 	}

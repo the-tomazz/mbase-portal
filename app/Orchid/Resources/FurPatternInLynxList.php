@@ -22,7 +22,7 @@ class FurPatternInLynxList extends BaseList
 	 */
 	public static function label(): string
 	{
-		return __('Lynx fur pattern');
+		return __('Lynx coat pattern');
 	}
 
 	/**
@@ -32,7 +32,7 @@ class FurPatternInLynxList extends BaseList
 	 */
 	public static function singularLabel(): string
 	{
-		return __('Lynx fur pattern');
+		return __('Lynx coat pattern');
 	}
 }
 
