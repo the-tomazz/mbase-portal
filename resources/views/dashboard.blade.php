@@ -17,16 +17,16 @@
 			<div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
 				@auth
 				<div class="p-6 bg-white border-b border-gray-200">
-					<p>Locale is: {{ app()->getLocale() }}</p>
+					<p>{{ __('Locale is:') . ' ' . app()->getLocale() }}</p>
 				</div>
 				<div class="p-6 bg-white border-b border-gray-200">
-					<p>{{__('Data query')}}:</p>
+					<p>{{ __('Data query') }}:</p>
 					<div id="mbaselaravel"></div>
 				</div>
 				@else
 				<div class="p-6 bg-white border-b border-gray-200">
 					<p>{{ __('Please login or register.') }}</p>
-					<p>Locale is: {{ app()->getLocale() }}</p>
+					<p>{{ __('Locale is:') . ' ' .  app()->getLocale() }}</p>
 				</div>
 				@endauth
 			</div>
