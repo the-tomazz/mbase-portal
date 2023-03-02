@@ -14,6 +14,7 @@ class User extends Authenticatable
 	 */
 	protected $fillable = [
 		'name',
+		'username',
 		'email',
 		'username',
 		'password',
@@ -50,6 +51,7 @@ class User extends Authenticatable
 	protected $allowedFilters = [
 		'id',
 		'name',
+		'username',
 		'email',
 		'username',
 		'permissions',
@@ -63,6 +65,7 @@ class User extends Authenticatable
 	protected $allowedSorts = [
 		'id',
 		'name',
+		'username',
 		'email',
 		'username',
 		'updated_at',
