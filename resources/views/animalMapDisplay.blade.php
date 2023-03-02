@@ -72,7 +72,7 @@ That should be it.
 			"OpenStreetMap": L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 				attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 			}),
-			"DOF": L.tileLayer.wms("http://prostor4.gov.si:80/ows2-m-pub/wms?", {
+			"GURS": L.tileLayer.wms("http://prostor4.gov.si:80/ows2-m-pub/wms?", {
 				layers:"SI.GURS.ZPDZ:DOF050",
 				attribution: '<a href="http://www.e-prostor.gov.si/dostop-do-podatkov/dostop-do-podatkov/#c501">Geodetska uprava Republike Slovenije</a>'
 			})

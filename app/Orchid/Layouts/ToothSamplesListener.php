@@ -54,18 +54,20 @@ class ToothSamplesListener extends Listener
 
         return [
 			Layout::rows([
-				Select::make('bearsBiometryAnimalHandling.tooth_type_list_id')
+				Group::make([
+					Select::make('bearsBiometryAnimalHandling.tooth_type_list_id')
 					->fromQuery(ToothTypeList::where('status', '=', BaseList::STR_ACTIVE), 'name')
 					->title(__('Tooth Type'))
 					->help(__('Please select the Tooth Type'))
 					->empty(__('<Select>'))
 					->required(),
 
-				Input::make('bearsBiometryAnimalHandling.tooth_type_not_sampled_reason')
-					->title(__('Tooth not sampled reason'))
-					->required()
-					// ->help(__('Please enter the permit number'))
-					->canSee($toothNotSampled),
+					Input::make('bearsBiometryAnimalHandling.tooth_type_not_sampled_reason')
+						->title(__('Tooth not sampled reason'))
+						->required()
+						// ->help(__('Please enter the permit number'))
+						->canSee($toothNotSampled),
+				])
 			])
 		];
     }

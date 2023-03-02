@@ -116,7 +116,7 @@ class BiometryDataEditScreen extends Screen
 	public function commandBar(): iterable
 	{
 		return [
-			Button::make($this->action . __('Save biometry data'))
+			Button::make(__('Save biometry data'))
 				->icon('pencil')
 				->method('createOrUpdateBiometryData')
 		];

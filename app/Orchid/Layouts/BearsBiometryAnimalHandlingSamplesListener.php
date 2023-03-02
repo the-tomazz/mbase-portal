@@ -5,6 +5,7 @@ namespace App\Orchid\Layouts;
 use App\Models\Base\BaseList;
 use App\Models\SampleTypeList;
 use Illuminate\Support\Facades\Log;
+use Orchid\Screen\Fields\Group;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\Select;
 use Orchid\Screen\Layouts\Listener;
@@ -63,7 +64,8 @@ class BearsBiometryAnimalHandlingSamplesListener extends Listener
 
 			$biometryAnimalHandlingSampleListenerLayout =
 				Layout::rows([
-					Input::make('bearsBiometryAnimalHandling.sample_code_' . $sampleNumber)
+					Group::make([
+						Input::make('bearsBiometryAnimalHandling.sample_code_' . $sampleNumber)
 						->title(__('Sample ' . $sampleNumber . ' code'))
 						->maxlength(10)
 						->help(__('Please input the sample code'))
@@ -82,7 +84,10 @@ class BearsBiometryAnimalHandlingSamplesListener extends Listener
 						->maxlength(255)
 						->help(__('Please input the sample comment'))
 						->canSee($canSee),
-				])->canSee($previousCanSee);
+					])
+				])
+				->canSee($previousCanSee)
+				->title($sampleNumber==1 ? __('Samples') : '');
 
 			$previousCanSee = $canSee;
 

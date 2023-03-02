@@ -19,6 +19,7 @@ class CreateOrchidUsersTable extends Migration
 
 		DB::table('users')->insert([
 			'name' => 'admin',
+			'username' => 'admin',
 			'email' => 'admin@admin.com',
 			'password' => '$2y$10$OQmT6mhE2UoBx7Mn2e6rIeiqU1ySqXuHxmThEiT9zA7cqnGDn.czS',
 			'created_at' => '2022-07-21 16:52:26',
