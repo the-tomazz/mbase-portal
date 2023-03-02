@@ -192,6 +192,10 @@ class UserEditScreen extends Screen
 					'required',
 					Rule::unique(User::class, 'email')->ignore($user),
 				],
+				'user.username' => [
+					'required',
+					Rule::unique(User::class, 'username')->ignore($user),
+				],
 			]
 		);
 

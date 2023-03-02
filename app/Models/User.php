@@ -15,6 +15,7 @@ class User extends Authenticatable
 	protected $fillable = [
 		'name',
 		'email',
+		'username',
 		'password',
 		'country_id',
 		'permissions'
@@ -50,6 +51,7 @@ class User extends Authenticatable
 		'id',
 		'name',
 		'email',
+		'username',
 		'permissions',
 	];
 
@@ -62,6 +64,7 @@ class User extends Authenticatable
 		'id',
 		'name',
 		'email',
+		'username',
 		'updated_at',
 		'created_at',
 	];
@@ -106,7 +109,8 @@ class User extends Authenticatable
 		return false;
 	}
 
-	public function defaultVisualisationAnimalStatus() {
+	public function defaultVisualisationAnimalStatus()
+	{
 		if ($this->groups()->where('slug', 'mortbiom-default-visualisation-animal-status-alive')->count()) {
 			return Animal::STR_ALIVE;
 		}
