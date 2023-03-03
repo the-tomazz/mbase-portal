@@ -120,7 +120,8 @@
     "Forbidden": "Onemogočeno",
     "Forgot your password?": "Pozabljeno geslo?",
     "Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.": "Pozabljeno geslo? Ni problema. Vnesite svoj elektronski naslov in vam pošljemo povezavo za ponastavitev gesla.",
-    "Front left paw": "Prednja leva šapa",
+    "Forgot your password? No problem. Just let us know your username or email address and we will email you a password reset link that will allow you to choose a new one.": "Pozabljeno geslo? Ni problema. Vnesite svoje uporabniško ime, ali elektronski naslov in vam pošljemo povezavo za ponastavitev gesla.",
+	"Front left paw": "Prednja leva šapa",
     "Front left paw length": "Prednja leva šapa - dolžina",
     "Front left paw width": "Prednja leva šapa - širina",
     "Front right paw": "Prednja desna šapa",
@@ -297,7 +298,7 @@
     "Please insert the other place of removal type": "Prosimo, opišite kraj odvzema",
     "Please insert the project name and description and provide a contact person": "Vpišite ime in opis projekta ter navedite kontaktno osebo",
     "Please insert the reason for death or describe circumstances": "Vpišite vzrok smrti oziroma opišite stanje",
-    "Please login or register.": "Potrebna je, da se prijavite, ali registrirate.",
+    "Welcome to the MBase, international ˝Monitoring Database˝. Please log-in or register in the upper-right corner.": "Dobrodošli na mednarodnem portalu MBase ˝Monitoring Database˝. Za ogled podatkov se registrirajte ali prijavite (desno zgoraj).",
     "Please note if DNA sample has been collected": "Označite, če je bil vzorec DNK odvzet.",
     "Please note if hair sample has been collected": "Označite, če je bil vzorec dlake odvzet.",
     "Please select lynx coat pattern": "Označite vzorec kožuha pri risu.",
@@ -445,7 +446,7 @@
 	"Edit biometry data":"Uredi biometrične podatke",
 	"Please select an item in the list": "Prosimo izberite element iz seznama",
 
-	"Locale is:": "Trenutni jezik:",
+	"Language:": "Trenutni jezik:",
 	"Displayed records": "Prikazani zapisi",
 
 	"Biometry Data": "Biometrični podatki",

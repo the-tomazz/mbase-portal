@@ -17,7 +17,7 @@
 			<div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
 				@auth
 				<div class="p-6 bg-white border-b border-gray-200">
-					<p>{{ __('Locale is:') . ' ' . app()->getLocale() }}</p>
+					<p>{{ __('Language:') . ' ' . app()->getLocale() }}</p>
 				</div>
 				<div class="p-6 bg-white border-b border-gray-200">
 					<p>{{ __('Data query') }}:</p>
@@ -25,8 +25,8 @@
 				</div>
 				@else
 				<div class="p-6 bg-white border-b border-gray-200">
-					<p>{{ __('Please login or register.') }}</p>
-					<p>{{ __('Locale is:') . ' ' .  app()->getLocale() }}</p>
+					<p>{{ __('Welcome to the MBase, international ˝Monitoring Database˝. Please log-in or register in the upper-right corner.') }}</p>
+					<p>{{ __('Language:') . ' ' .  app()->getLocale() }}</p>
 				</div>
 				@endauth
 			</div>
