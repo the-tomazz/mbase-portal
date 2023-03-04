@@ -19,7 +19,8 @@
 		"orchid/crud": "^3.7",
 		"orchid/platform": "^13.0",
 		"phpoffice/phpspreadsheet": "^1.27",
-		"proj4php/proj4php": "^2.0"
+		"proj4php/proj4php": "^2.0",
+		"rvxlab/hcaptcha": "^5.1"
 	},
 	"require-dev": {
 		"fakerphp/faker": "^1.9.1",

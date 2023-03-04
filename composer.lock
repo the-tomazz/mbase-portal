@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "485fe6f9c5aefaf53b62ff67ff950de9",
+    "content-hash": "fb083f61bd0d587cf1f1a3d3902761e6",
     "packages": [
         {
             "name": "bosnadev/database",
@@ -4462,6 +4462,82 @@
                 }
             ],
             "time": "2022-11-05T23:03:38+00:00"
+        },
+        {
+            "name": "rvxlab/hcaptcha",
+            "version": "5.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/RVxLab/hcaptcha.git",
+                "reference": "f4af5c0e814e526841be91d481db74e24e31b21d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/RVxLab/hcaptcha/zipball/f4af5c0e814e526841be91d481db74e24e31b21d",
+                "reference": "f4af5c0e814e526841be91d481db74e24e31b21d",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "guzzlehttp/guzzle": "^7.4",
+                "illuminate/support": "^8.28 || ^9.0 || ^10.0",
+                "php": "^7.4 || ^8.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.6",
+                "nunomaduro/collision": "^5.10 || ^6.0 || ^7.0",
+                "nunomaduro/larastan": "^1.0 || ^2.0",
+                "orchestra/testbench": "^6.24 || ^7.0 || ^8.0",
+                "phpstan/extension-installer": "^1.1",
+                "phpstan/phpstan-phpunit": "^1.0",
+                "phpunit/phpunit": "^9.5.23 || ^10.0",
+                "roave/security-advisories": "dev-latest",
+                "spatie/phpunit-snapshot-assertions": "^4.2 || ^5.0"
+            },
+            "suggest": {
+                "laravelcollective/html": "Allows rendering the HCaptcha widget using the Form facade"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "HCaptcha": "Scyllaly\\HCaptcha\\Facades\\HCaptcha"
+                    },
+                    "providers": [
+                        "Scyllaly\\HCaptcha\\Providers\\HCaptchaServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Scyllaly\\HCaptcha\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "scyllaly",
+                    "email": "scyllaly@github.com"
+                },
+                {
+                    "name": "RVxLab",
+                    "email": "richard@rvx.works"
+                }
+            ],
+            "description": "hCaptcha for Laravel",
+            "keywords": [
+                "captcha",
+                "hcaptcha",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/RVxLab/hcaptcha/issues",
+                "source": "https://github.com/RVxLab/hcaptcha/tree/5.1.0"
+            },
+            "time": "2023-02-05T21:01:21+00:00"
         },
         {
             "name": "symfony/console",
