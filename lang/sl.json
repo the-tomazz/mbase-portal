@@ -457,5 +457,11 @@
 	"Manual": "Ročno",
 
 	"Samples": "Vzorci",
-	"Email or Username": "E-pošta ali uporabniško ime"
+	"Email or Username": "E-pošta ali uporabniško ime",
+	"Genetic samples": "Genetski vzorci",
+	"Camera Trapping": "Sistematični foto monitoring",
+	"Signs Of Presence": "Znaki prisotnosti",
+	"Counting": "Štetje",
+	"Damages": "Škode",
+	"Interventions": "Intervencije"
 }
