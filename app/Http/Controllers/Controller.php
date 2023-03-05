@@ -85,6 +85,7 @@ class Controller extends BaseController
 				$row[] = $biometricData->masa_bruto;
 				$row[] = $biometricData->masa_neto;
 				$row[] = $biometricData->body_length;
+				$row[] = $biometricData->abdominal_length;
 				$row[] = $biometricData->shoulder_height;
 				$row[] = $biometricData->head_circumference;
 				$row[] = $biometricData->neck_circumference;
@@ -175,6 +176,7 @@ class Controller extends BaseController
 			__('Body mass') . ' ' . __('Gross'),
 			__('Body mass') . ' ' . __('Net'),
 			__('Body length'),
+			__('Abdominal length'),
 			__('Shoulder height'),
 			__('Head circumference'),
 			__('Neck circumference'),
@@ -412,6 +414,7 @@ class Controller extends BaseController
 			__('Body mass') . ' ' . __('Gross'),
 			__('Body mass') . ' ' . __('Net'),
 			__('Body length'),
+			__('Abdominal length'),
 			__('Shoulder height'),
 			__('Head circumference'),
 			__('Neck circumference'),

@@ -1044,16 +1044,12 @@ CREATE TABLE laravel.animal (
 	sex_list_id INTEGER NOT NULL REFERENCES sex_list (id) ON DELETE RESTRICT,
 	status varchar(16),
 	title varchar(128),
-	value text,
 	name varchar(128),
 	description jsonb,
 	created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 	updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 	died_at TIMESTAMPTZ DEFAULT NOW()
 );
-
-ALTER TABLE
-	laravel.animal DROP COLUMN value;
 
 ALTER TABLE
 	laravel.biometry_loss_reason_list DROP COLUMN value;

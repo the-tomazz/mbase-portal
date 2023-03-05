@@ -120,12 +120,21 @@ class BearsBiometryAnimalHandlingGeoLocationListener extends Listener
 					->help(__(''))
 					->zoom(7),
 
-				Input::make('bearsBiometryAnimalHandling.hunting_management_area')
-					->required()
-					->title(__('Hunting-management area (LUO)')),
+				Group::make([
+					Input::make('bearsBiometryAnimalHandling.hunting_management_area')
+						->required()
+						->readonly()
+						->title(__('Hunting-management area (LUO)')),
+
+					Input::make('bearsBiometryAnimalHandling.hunting_management_area_id')
+						->required()
+						->readonly()
+						->title(__('Hunting-management area (LUO) ID')),
+				]),
 
 				Input::make('bearsBiometryAnimalHandling.hunting_ground')
 					->required()
+					->readonly()
 					->title(__('Hunting ground')),
 
 				Input::make('bearsBiometryAnimalHandling.place_of_removal')

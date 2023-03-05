@@ -23,6 +23,7 @@ return new class extends Migration
 				$table->float('masa_bruto')->nullable();
 				$table->float('masa_neto')->nullable();
 				$table->float('body_length')->nullable();
+				$table->float('abdominal_length')->nullable();
 				$table->float('shoulder_height')->nullable();
 				$table->float('head_circumference')->nullable();
 				$table->float('neck_circumference')->nullable();

@@ -98,6 +98,7 @@ class BearsBiometryData extends Model
 		'masa_bruto' => 'float',
 		'masa_neto' => 'float',
 		'body_length' => 'float',
+		'abdominal_length' => 'float',
 		'shoulder_height' => 'float',
 		'head_circumference' => 'float',
 		'neck_circumference' => 'float',

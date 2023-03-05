@@ -17,19 +17,20 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class BearsBiometryDataFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
-    public function definition()
-    {
-        return [
+	/**
+	 * Define the model's default state.
+	 *
+	 * @return array<string, mixed>
+	 */
+	public function definition()
+	{
+		return [
 			# 'bears_biometry_animal_handling_id' => BearsBiometryData::all()->random()->id,
 			'age' => random_int(1, 8),
 			'masa_bruto' => random_int(1, 8),
 			'masa_neto' => random_int(1, 8),
 			'body_length' => random_int(1, 8),
+			'abdominal_length' => random_int(1, 8),
 			'shoulder_height' => random_int(1, 8),
 			'head_circumference' => random_int(1, 8),
 			'neck_circumference' => random_int(1, 8),
@@ -68,6 +69,6 @@ class BearsBiometryDataFactory extends Factory
 			'observations_and_notes' => random_int(1, 8),
 			'depot' => random_int(1, 8),
 			'status' => random_int(1, 8)
-        ];
-    }
+		];
+	}
 }

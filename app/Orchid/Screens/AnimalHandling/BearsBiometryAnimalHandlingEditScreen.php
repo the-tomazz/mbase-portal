@@ -379,7 +379,11 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 			', [$gid, '__-LOV']);
 
 			if (count($LUOResults) > 0) {
+				Log::debug([$LUOResults]);
 				$LUO = json_decode($LUOResults[0]->name)->name;
+				$LUO_id = $LUOResults[0]->spatial_unit_filter_element_id;
+
+				Log::debug([$LUO, $LUO_id]);
 			}
 
 			if (count($LOVResults) > 0) {
@@ -400,6 +404,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 				'EPSG_4326_y' => $pointEPSG4326->y,
 				'projection_type' => $triggers['projection_type'],
 				'hunting_management_area' => $LUO ?? '',
+				'hunting_management_area_id' => $LUO_id ?? null,
 				'hunting_ground' => $LOV ?? '',
 				'gid' => $gid,
 				'place_of_removal' => $triggers['place_of_removal'],
@@ -425,6 +430,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 				'EPSG_4326_y' => $pointEPSG4326->y,
 				'projection_type' => $triggers['projection_type'],
 				'hunting_management_area' => 'N/A',
+				'hunting_management_area_id' => $LUO_id ?? null,
 				'hunting_ground' => 'N/A',
 				'gid' => null,
 				'place_of_removal' => $triggers['place_of_removal'],

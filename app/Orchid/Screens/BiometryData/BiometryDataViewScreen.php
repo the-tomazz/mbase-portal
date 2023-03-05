@@ -165,6 +165,7 @@ class BiometryDataViewScreen extends Screen
 
 			Sight::make('', __('Length sizes (In cm with mm accuracy)')),
 			Sight::make('body_length', __('Body length')),
+			Sight::make('abdominal_length', __('Abdominal length')),
 			Sight::make('shoulder_height', __('Shoulder height')),
 
 			Sight::make('', __('Circumferences')),
