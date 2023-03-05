@@ -33,7 +33,7 @@
 							</x-dropdown-link>
 							@endif
 
-							@if(Auth::user() && Auth::user()->isInGroup('mbase2', 'gensam2'))
+							@if(Auth::user() && Auth::user()->isInGroup('mbase2', 'gensam'))
 							<x-dropdown-link href="/mbase2/modules/gensam">
 								{{ __('Genetic samples') }}
 							</x-dropdown-link>
