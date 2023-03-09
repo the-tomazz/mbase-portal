@@ -106,17 +106,41 @@ class AnimalDataEditScreen extends Screen
 	public function createOrUpdateAnimal(Animal $animal, Request $request)
 	{
 		$animalStructure = $request->get('animal');
-		$parsedDate = date_parse_from_format("j.n.Y", $animalStructure['died_at_date']);
-		$parsedTime = date_parse_from_format("H:i", $animalStructure['died_at_time']);
 
-		$phpDate = new DateTime($parsedDate['year'] . '-' . $parsedDate['month'] . '-' . $parsedDate['day'] . ' ' . $parsedTime['hour'] . ':' . $parsedTime['minute']);
-		$animalStructure['died_at'] = $phpDate;
+		if (isset($animalStructure['died_at_date'])) {
+			$parsedDate = date_parse_from_format("j.n.Y", $animalStructure['died_at_date']);
 
-		$request->merge(['animal' => $animalStructure]);
+			if (isset($animalStructure['died_at_time'])) {
+				$parsedTime = date_parse_from_format("H:i", $animalStructure['died_at_time']);
+			} else {
+				$parsedTime = date_parse_from_format("H:i", '00:00');
+			}
+
+			$phpDate = new DateTime($parsedDate['year'] . '-' . $parsedDate['month'] . '-' . $parsedDate['day'] . ' ' . $parsedTime['hour'] . ':' . $parsedTime['minute']);
+			$animalStructure['died_at'] = $phpDate;
+		}
+
+		if (isset($animalStructure['died_at_date'])) {
+			$parsedDate = date_parse_from_format("j.n.Y", $animalStructure['died_at_date']);
+
+			if (isset($animalStructure['died_at_time'])) {
+				$parsedTime = date_parse_from_format("H:i", $animalStructure['died_at_time']);
+			} else {
+				$parsedTime = date_parse_from_format("H:i", '00:00');
+			}
+
+			$phpDate = new DateTime($parsedDate['year'] . '-' . $parsedDate['month'] . '-' . $parsedDate['day'] . ' ' . $parsedTime['hour'] . ':' . $parsedTime['minute']);
+			$animalStructure['animal_died_at'] = $phpDate;
+
+			$request->merge(['animal' => $animalStructure]);
+
+			$request->validate([
+				'animal.animal_died_at' => 'date|before:now'
+			]);
+		}
 
 		$request->validate([
-			'animal.description' => 'string|max:255',
-			'animal.died_at' => 'required|date|before:now'
+			'animal.description' => 'string|max:255'
 		]);
 
 		$existingAnimal = Animal::where('name', '=', $request->get('animal')['name'])

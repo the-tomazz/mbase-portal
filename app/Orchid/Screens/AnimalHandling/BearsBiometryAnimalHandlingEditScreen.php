@@ -79,8 +79,6 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 				'lat' => $bearsBiometryAnimalHandling['lat'],
 				'lng' => $bearsBiometryAnimalHandling['lng'],
 			];
-
-
 		} else {
 			if ($animal->exists) { // we are creating a handling of a certain animal
 				// $bearsBiometryAnimalHandling->animal_id = $animal->id;
@@ -379,11 +377,8 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 			', [$gid, '__-LOV']);
 
 			if (count($LUOResults) > 0) {
-				Log::debug([$LUOResults]);
 				$LUO = json_decode($LUOResults[0]->name)->name;
 				$LUO_id = $LUOResults[0]->spatial_unit_filter_element_id;
-
-				Log::debug([$LUO, $LUO_id]);
 			}
 
 			if (count($LOVResults) > 0) {
@@ -590,7 +585,12 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 
 		if (isset($animalHandlingStructure['animal_died_at_date'])) {
 			$parsedDate = date_parse_from_format("j.n.Y", $animalHandlingStructure['animal_died_at_date']);
-			$parsedTime = date_parse_from_format("H:i", $animalHandlingStructure['animal_died_at_time']);
+
+			if (isset($animalHandlingStructure['animal_died_at_time'])) {
+				$parsedTime = date_parse_from_format("H:i", $animalHandlingStructure['animal_died_at_time']);
+			} else {
+				$parsedTime = date_parse_from_format("H:i", '00:00');
+			}
 
 			$phpDate = new DateTime($parsedDate['year'] . '-' . $parsedDate['month'] . '-' . $parsedDate['day'] . ' ' . $parsedTime['hour'] . ':' . $parsedTime['minute']);
 			$animalHandlingStructure['animal_died_at'] = $phpDate;
@@ -598,7 +598,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 			$request->merge(['bearsBiometryAnimalHandling' => $animalHandlingStructure]);
 
 			$request->validate([
-				'bearsBiometryAnimalHandling.animal_died_at' => 'required|date|before:now'
+				'bearsBiometryAnimalHandling.animal_died_at' => 'date|before:now'
 			]);
 		}
 
@@ -675,10 +675,10 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 
 			if ($sampleCode != '') {
 				$bearsBiometrySampleData = [
-				'bears_biometry_animal_handling_id' => $bearsBiometryAnimalHandling->id,
-				'sample_code' => $sampleCode,
-				'sample_tissue' => $request->get('bearsBiometryAnimalHandling')['sample_tissue_' . $sampleNumber],
-				'sample_comment' => $request->get('bearsBiometryAnimalHandling')['sample_comment_' . $sampleNumber],
+					'bears_biometry_animal_handling_id' => $bearsBiometryAnimalHandling->id,
+					'sample_code' => $sampleCode,
+					'sample_tissue' => $request->get('bearsBiometryAnimalHandling')['sample_tissue_' . $sampleNumber],
+					'sample_comment' => $request->get('bearsBiometryAnimalHandling')['sample_comment_' . $sampleNumber],
 				];
 
 				$bearsBiometrySample->fill($bearsBiometrySampleData)->save();

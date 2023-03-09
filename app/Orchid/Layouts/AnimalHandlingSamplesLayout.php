@@ -39,7 +39,8 @@ class AnimalHandlingSamplesLayout extends Rows
 
 			// images start
 			Upload::make('bearsBiometryAnimalHandling.attachment')
-				->title(__('All files')),
+				->title(__('All files'))
+				->maxFileSize(100) // Size in MB ,
 			// images end
 		];
     }

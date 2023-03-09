@@ -252,7 +252,6 @@ class Controller extends BaseController
 		$reader->setSheetIndex(0);
 
 		/* Load a CSV file and save as a XLS */
-
 		$spreadsheet = $reader->load('../../uploads/test.csv');
 		$writer = new Xlsx($spreadsheet);
 		$writer->save('test.xlsx');
