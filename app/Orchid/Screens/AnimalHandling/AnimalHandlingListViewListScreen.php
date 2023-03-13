@@ -33,11 +33,12 @@ class AnimalHandlingListViewListScreen extends Screen
 				->where(function ($query) use ($from, $to) {
 					$query->whereDate('animal_handling_date', '>=', $from);
 					$query->whereDate('animal_handling_date', '<=', $to);
+					$query->orWhereNull('animal_handling_date');
 				})
-				->orWhereNull('animal_handling_date')
 				->paginate($perPage)
 				->withQueryString(),
-			'dateFilterVariable' => 'animal_handling_date'
+			'dateFilterVariable' => 'animal_handling_date',
+			'dateFilterVariable2' => ''
 		];
 	}
 
@@ -111,6 +112,7 @@ class AnimalHandlingListViewListScreen extends Screen
 		return [
 			Layout::view('animalHandlingMapDisplay'),
 			Layout::view('dateToFilter'),
+
 			Layout::rows([
 				Group::make([
 					DateTimer::make('animal_handling_date_from')
@@ -121,8 +123,9 @@ class AnimalHandlingListViewListScreen extends Screen
 						->title(__('Handling date latest'))
 						->allowInput()
 						->format('d.m.Y'),
+
 					Link::make(__('Filter'))
-						->class('animal_handling_date_filter_link')
+						->class('filter_link')
 				])
 			]),
 			AnimalHandlingListViewListLayout::class

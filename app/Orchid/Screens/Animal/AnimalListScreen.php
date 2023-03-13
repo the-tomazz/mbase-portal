@@ -7,6 +7,7 @@ use App\Models\AnimalListView;
 use App\Orchid\Layouts\AnimalListLayout;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Orchid\Screen\Actions\DropDown;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Fields\DateTimer;
@@ -31,11 +32,18 @@ class AnimalListScreen extends Screen
 				->where(function ($query) use ($from, $to) {
 					$query->whereDate('died_at', '>=', $from);
 					$query->whereDate('died_at', '<=', $to);
+					$query->orWhereNull('died_at');
 				})
-				->orWhereNull('died_at')
 				->defaultSort('name')
-				->paginate(),
-			'dateFilterVariable' => 'died_at'
+				->paginate()
+				->withQueryString(),
+			'dateFilterVariable' => 'died_at',
+			'dateFilterVariable2' => 'animal_handling_date',
+			/* 'diedAtFrom' => request()->input('died_at_from') ?? '',
+			'diedAtTo' => request()->input('died_at_to') ?? '',
+			'animalHandlingFrom' => request()->input('animal_handling_from') ?? '',
+			'animalHandlingTo' => request()->input('animal_handling_to') ?? ''
+			*/
 		];
 	}
 
@@ -109,8 +117,18 @@ class AnimalListScreen extends Screen
 		return [
 			Layout::view('animalMapDisplay'),
 			Layout::view('dateToFilter'),
+
 			Layout::rows([
 				Group::make([
+					DateTimer::make('animal_handling_date_from')
+						->title(__('Handling date earliest'))
+						->allowInput()
+						->format('d.m.Y'),
+					DateTimer::make('animal_handling_date_to')
+						->title(__('Handling date latest'))
+						->allowInput()
+						->format('d.m.Y'),
+
 					DateTimer::make('died_at_from')
 						->title(__('Died at earliest'))
 						->allowInput()
@@ -119,10 +137,12 @@ class AnimalListScreen extends Screen
 						->title(__('Died at latest'))
 						->allowInput()
 						->format('d.m.Y'),
+
 					Link::make(__('Filter'))
-						->class('died_at_filter_link')
+						->class('filter_link')
 				])
 			]),
+
 			AnimalListLayout::class
 		];
 	}

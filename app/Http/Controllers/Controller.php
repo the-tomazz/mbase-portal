@@ -32,7 +32,16 @@ class Controller extends BaseController
 
 	public function exportAnimalHandlings()
 	{
-		$data = AnimalHandlingListView::filters()->get();
+		$from = request()->input('animal_handling_date_from') ?? '1970-01-01';
+		$to = request()->input('animal_handling_date_to') ?? '2970-01-01';
+
+		$data = AnimalHandlingListView::filters()
+			->where(function ($query) use ($from, $to) {
+				$query->whereDate('animal_handling_date', '>=', $from);
+				$query->whereDate('animal_handling_date', '<=', $to);
+				$query->orWhereNull('animal_handling_date');
+			})->get();
+
 		// $payload = $data->map->only(['id', 'licence_number'])->values();
 		foreach ($data as $animalHandlingListElement) {
 			$row = [];
@@ -47,6 +56,7 @@ class Controller extends BaseController
 			$row[] = '';
 
 			$animalHandling = BearsBiometryAnimalHandling::find($animalHandlingListElement->id);
+
 			$row[] = $animalHandling->id;
 			$row[] = $animal->way_of_withdrawal_list ? $animal->way_of_withdrawal_list->name : '';
 			$row[] = $animalHandling->animal_conflictedness;
@@ -259,7 +269,19 @@ class Controller extends BaseController
 
 	public function exportAnimals()
 	{
-		$data = Animal::filters()->get();
+		$animalHandlingDateFrom = request()->input('animal_handling_date_from') ?? '1970-01-01';
+		$animalHandlingDateTo = request()->input('animal_handling_date_to') ?? '2970-01-01';
+
+		$from = request()->input('died_at_from') ?? '1970-01-01';
+		$to = request()->input('died_at_to') ?? '2970-01-01';
+
+		$data = Animal::filters()
+			->where(function ($query) use ($from, $to) {
+				$query->whereDate('died_at', '>=', $from);
+				$query->whereDate('died_at', '<=', $to);
+				$query->orWhereNull('died_at');
+			})->get();
+
 		// $payload = $data->map->only(['id', 'licence_number'])->values();
 		foreach ($data as $animal) {
 			$row = [];
@@ -272,8 +294,23 @@ class Controller extends BaseController
 			$row[] = $animal->description;
 			$row[] = '';
 
-			$animalHandlingCount = BearsBiometryAnimalHandling::where('animal_id', $animal->id)->orderBy('animal_handling_date')->get()->count();
-			$animalHandling = BearsBiometryAnimalHandling::where('animal_id', $animal->id)->orderBy('animal_handling_date')->first();
+			$animalHandlingCount = $animal->bearsBiometryAnimalHandlings()
+				->where(function ($query) use ($animalHandlingDateFrom, $animalHandlingDateTo) {
+					$query->whereDate('animal_handling_date', '>=', $animalHandlingDateFrom);
+					$query->whereDate('animal_handling_date', '<=', $animalHandlingDateTo);
+				})
+				->where('animal_id', $animal->id)
+				->get()
+				->count();
+
+			$animalHandling = $animal->bearsBiometryAnimalHandlings()
+				->where(function ($query) use ($animalHandlingDateFrom, $animalHandlingDateTo) {
+					$query->whereDate('animal_handling_date', '>=', $animalHandlingDateFrom);
+					$query->whereDate('animal_handling_date', '<=', $animalHandlingDateTo);
+				})
+				->where('animal_id', $animal->id)
+				->orderBy('animal_handling_date')
+				->first();
 
 			if ($animalHandling != null) {
 				$row[] = $animalHandling->id;
