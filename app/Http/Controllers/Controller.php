@@ -14,6 +14,7 @@ use League\Csv\Writer;
 
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Log;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use SplTempFileObject;
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -228,38 +229,31 @@ class Controller extends BaseController
 		// set the HTTP headers Writer::output can
 		// directly set them for you
 		// The file is downloadable
-		$csv->output('exportAnimals.csv');
-		die;
-
-		// The PDOStatement Object implements the Traversable Interface
-		// that's why Writer::insertAll can directly insert
-		// the data into the CSV
-		$csv->insertAll($payload);
-
-		// Because you are providing the filename you don't have to
-		// set the HTTP headers Writer::output can
-		// directly set them for you
-		// The file is downloadable
 		$csvString = $csv->toString();
 
 		$spreadsheet = new Spreadsheet();
 		$reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
 
 		/* Set CSV parsing options */
-
 		$reader->setDelimiter(',');
 		$reader->setEnclosure('"');
 		$reader->setSheetIndex(0);
 
 		/* Load a CSV file and save as a XLS */
-		$spreadsheet = $reader->load('../../uploads/test.csv');
-		$writer = new Xlsx($spreadsheet);
-		$writer->save('test.xlsx');
+		// $spreadsheet = $reader->load('../../uploads/test.csv');
+		$spreadsheet = $reader->loadSpreadsheetFromString($csvString);
+		$filename = 'Animal handlings ' . date("d.m.Y-Hi");
+
+		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+		header('Content-Disposition: attachment;filename="'.$filename.'.xlsx"');
+		header('Cache-Control: max-age=0');
+
+		$writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+		$writer->save('php://output');
 
 		$spreadsheet->disconnectWorksheets();
 		unset($spreadsheet);
 
-		output('exportAnimalHandlings.csv');
 		die;
 	}
 
@@ -465,7 +459,31 @@ class Controller extends BaseController
 		// set the HTTP headers Writer::output can
 		// directly set them for you
 		// The file is downloadable
-		$csv->output('exportAnimals.csv');
+		$csvString = $csv->toString();
+
+		$spreadsheet = new Spreadsheet();
+		$reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
+
+		/* Set CSV parsing options */
+		$reader->setDelimiter(',');
+		$reader->setEnclosure('"');
+		$reader->setSheetIndex(0);
+
+		/* Load a CSV file and save as a XLS */
+		// $spreadsheet = $reader->load('../../uploads/test.csv');
+		$spreadsheet = $reader->loadSpreadsheetFromString($csvString);
+		$filename = 'Animals ' . date("d.m.Y-Hi");
+
+		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+		header('Content-Disposition: attachment;filename="'.$filename.'.xlsx"');
+		header('Cache-Control: max-age=0');
+
+		$writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+		$writer->save('php://output');
+
+		$spreadsheet->disconnectWorksheets();
+		unset($spreadsheet);
+
 		die;
 	}
 }
