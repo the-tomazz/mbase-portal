@@ -58,7 +58,7 @@ class Controller extends BaseController
 			$animalHandling = BearsBiometryAnimalHandling::find($animalHandlingListElement->id);
 
 			$row[] = $animalHandling->id;
-			$row[] = $animal->way_of_withdrawal_list ? $animal->way_of_withdrawal_list->name : '';
+			$row[] = $animalHandling->way_of_withdrawal_list ? $animalHandling->way_of_withdrawal_list->name : '';
 			$row[] = $animalHandling->animal_conflictedness;
 			$row[] = $animalHandling->animal_conflictedness_details;
 			$row[] = $animalHandling->number_of_removal_in_the_hunting_administrative_area;
@@ -159,7 +159,7 @@ class Controller extends BaseController
 			__('Number and the year of removal in hunting administrative area'),
 			__('Type of conflict animal removal'),
 			__('Licence'),
-			__('Licence number'),
+			__('Permit number'),
 			__('Project name'),
 			__('Receiving country and institutions'),
 			__('Ear-tag number or radio-collar (telemetry) identification'),
@@ -317,6 +317,7 @@ class Controller extends BaseController
 				$row[] = $animalHandlingCount;
 				$row[] = $animalHandling->animal_handling_date;
 				$row[] = $animalHandling->way_of_withdrawal_list ? $animalHandling->way_of_withdrawal_list->name : '';
+				dd($animalHandling->way_of_withdrawal_list);
 				$row[] = $animalHandling->animal_conflictedness;
 				$row[] = $animalHandling->animal_conflictedness_details;
 				$row[] = $animalHandling->number_of_removal_in_the_hunting_administrative_area;
@@ -417,7 +418,7 @@ class Controller extends BaseController
 			__('Number and the year of removal in hunting administrative area'),
 			__('Type of conflict animal removal'),
 			__('Licence'),
-			__('Licence number'),
+			__('Permit number'),
 			__('Project name'),
 			__('Receiving country and institutions'),
 			__('Ear-tag number or radio-collar (telemetry) identification'),
