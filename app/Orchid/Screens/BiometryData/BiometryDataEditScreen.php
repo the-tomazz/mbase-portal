@@ -118,7 +118,7 @@ class BiometryDataEditScreen extends Screen
 		return [
 			Button::make(__('Save biometry data'))
 				->icon('pencil')
-				->method('createOrUpdateBiometryData')
+				->method($this->action . 'BiometryData'),
 		];
 	}
 
