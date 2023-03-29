@@ -17,14 +17,14 @@ use Orchid\Support\Facades\Toast;
 
 class UserListScreen extends Screen
 {
-    /**
-     * Query data.
-     *
-     * @return array
-     */
-    public function query(): iterable
-    {
-		if(auth()->user()->country == null || auth()->user()->id == 1) {
+	/**
+	 * Query data.
+	 *
+	 * @return array
+	 */
+	public function query(): iterable
+	{
+		if (auth()->user()->hasAccess('mbase2l.super_admin')) {
 			return [
 				'users' => User::with('roles')
 					->filters()
@@ -42,106 +42,105 @@ class UserListScreen extends Screen
 				->defaultSort('id', 'desc')
 				->paginate(),
 		];
+	}
 
-    }
+	/**
+	 * Display header name.
+	 *
+	 * @return string|null
+	 */
+	public function name(): ?string
+	{
+		return 'User';
+	}
 
-    /**
-     * Display header name.
-     *
-     * @return string|null
-     */
-    public function name(): ?string
-    {
-        return 'User';
-    }
+	/**
+	 * Display header description.
+	 *
+	 * @return string|null
+	 */
+	public function description(): ?string
+	{
+		return 'All registered users';
+	}
 
-    /**
-     * Display header description.
-     *
-     * @return string|null
-     */
-    public function description(): ?string
-    {
-        return 'All registered users';
-    }
+	/**
+	 * @return iterable|null
+	 */
+	public function permission(): ?iterable
+	{
+		return [
+			'platform.systems.users',
+		];
+	}
 
-    /**
-     * @return iterable|null
-     */
-    public function permission(): ?iterable
-    {
-        return [
-            'platform.systems.users',
-        ];
-    }
+	/**
+	 * Button commands.
+	 *
+	 * @return \Orchid\Screen\Action[]
+	 */
+	public function commandBar(): iterable
+	{
+		return [
+			Link::make(__('Add'))
+				->icon('plus')
+				->route('platform.systems.users.create'),
+		];
+	}
 
-    /**
-     * Button commands.
-     *
-     * @return \Orchid\Screen\Action[]
-     */
-    public function commandBar(): iterable
-    {
-        return [
-            Link::make(__('Add'))
-                ->icon('plus')
-                ->route('platform.systems.users.create'),
-        ];
-    }
+	/**
+	 * Views.
+	 *
+	 * @return string[]|\Orchid\Screen\Layout[]
+	 */
+	public function layout(): iterable
+	{
+		return [
+			UserFiltersLayout::class,
+			UserListLayout::class,
 
-    /**
-     * Views.
-     *
-     * @return string[]|\Orchid\Screen\Layout[]
-     */
-    public function layout(): iterable
-    {
-        return [
-            UserFiltersLayout::class,
-            UserListLayout::class,
+			Layout::modal('asyncEditUserModal', UserEditLayout::class)
+				->async('asyncGetUser'),
+		];
+	}
 
-            Layout::modal('asyncEditUserModal', UserEditLayout::class)
-                ->async('asyncGetUser'),
-        ];
-    }
+	/**
+	 * @param User $user
+	 *
+	 * @return array
+	 */
+	public function asyncGetUser(User $user): iterable
+	{
+		return [
+			'user' => $user,
+		];
+	}
 
-    /**
-     * @param User $user
-     *
-     * @return array
-     */
-    public function asyncGetUser(User $user): iterable
-    {
-        return [
-            'user' => $user,
-        ];
-    }
+	/**
+	 * @param Request $request
+	 * @param User    $user
+	 */
+	public function saveUser(Request $request, User $user): void
+	{
+		$request->validate([
+			'user.email' => [
+				'required',
+				Rule::unique(User::class, 'email')->ignore($user),
+			],
+		]);
 
-    /**
-     * @param Request $request
-     * @param User    $user
-     */
-    public function saveUser(Request $request, User $user): void
-    {
-        $request->validate([
-            'user.email' => [
-                'required',
-                Rule::unique(User::class, 'email')->ignore($user),
-            ],
-        ]);
+		$user->fill($request->input('user'))->save();
 
-        $user->fill($request->input('user'))->save();
+		Toast::info(__('User was saved.'));
+	}
 
-        Toast::info(__('User was saved.'));
-    }
+	/**
+	 * @param Request $request
+	 */
+	public function remove(Request $request): void
+	{
+		User::findOrFail($request->get('id'))->delete();
 
-    /**
-     * @param Request $request
-     */
-    public function remove(Request $request): void
-    {
-        User::findOrFail($request->get('id'))->delete();
-
-        Toast::info(__('User was removed'));
-    }
+		Toast::info(__('User was removed'));
+	}
 }

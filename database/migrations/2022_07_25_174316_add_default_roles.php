@@ -16,22 +16,22 @@ return new class extends Migration
 		DB::table('roles')->insert([
 			[
 				'slug' => 'MBASE2LSuperAdmin',
-				'name' => 'MBASE2L Super Admin',
-				'permissions' => '{"mbase2l.super_admin": "1", "mbase2l.admin": "1", "platform.index": "1", "platform.systems.roles": "1", "platform.systems.users": "1", "mbase2l.registered_user": "1", "platform.systems.attachment": "0"}',
+				'name' => 'MBASE2L Global Admin',
+				'permissions' => '{"mbase2l.super_admin": "1", "mbase2l.admin": "1", "platform.index": "1", "platform.systems.roles": "1", "platform.systems.users": "1", "mbase2l.registered_user": "1", "platform.systems.attachment": "1"}',
 				'created_at' => '2022-07-25 17:40:29',
 				'updated_at' => '2022-07-25 17:40:29'
 			],
 			[
 				'slug' => 'MBASE2LAdmin',
-				'name' => 'MBASE2L Admin',
-				'permissions' => '{"mbase2l.super_admin": "0", "mbase2l.admin": "1", "platform.index": "1", "platform.systems.roles": "1", "platform.systems.users": "1", "mbase2l.registered_user": "1", "platform.systems.attachment": "0"}',
+				'name' => 'MBASE2L Local Admin',
+				'permissions' => '{"mbase2l.super_admin": "0", "mbase2l.admin": "1", "platform.index": "1", "platform.systems.roles": "1", "platform.systems.users": "1", "mbase2l.registered_user": "1", "platform.systems.attachment": "1"}',
 				'created_at' => '2022-07-25 17:40:29',
 				'updated_at' => '2022-07-25 17:40:29'
 			],
 			[
 				'slug' => 'MBASE2LRegisteredUser',
 				'name' => 'MBASE2L Registered User',
-				'permissions' => '{"mbase2l.super_admin": "0", "mbase2l.admin": "0", "platform.index": "1", "platform.systems.roles": "0", "platform.systems.users": "0", "mbase2l.registered_user": "1", "platform.systems.attachment": "0"}',
+				'permissions' => '{"mbase2l.super_admin": "0", "mbase2l.admin": "0", "platform.index": "1", "platform.systems.roles": "0", "platform.systems.users": "0", "mbase2l.registered_user": "1", "platform.systems.attachment": "1"}',
 				'created_at' => '2022-07-25 17:40:29',
 				'updated_at' => '2022-07-25 17:40:29'
 			]

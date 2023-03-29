@@ -20,48 +20,48 @@ use Orchid\Screen\TD;
 
 class UserListLayout extends Table
 {
-    /**
-     * @var string
-     */
-    public $target = 'users';
+	/**
+	 * @var string
+	 */
+	public $target = 'users';
 
-    /**
-     * @return TD[]
-     */
-    public function columns(): array
-    {
-        return [
-            TD::make('name', __('Name and surname'))
-                ->sort()
-                ->cantHide()
-                ->filter(Input::make())
-                ->render(function (User $user) {
-                    return new Persona($user->presenter());
-                }),
+	/**
+	 * @return TD[]
+	 */
+	public function columns(): array
+	{
+		return [
+			TD::make('name', __('Name and surname'))
+				->sort()
+				->cantHide()
+				->filter(Input::make())
+				->render(function (User $user) {
+					return new Persona($user->presenter());
+				}),
 
-            TD::make('email', __('Email'))
-                ->sort()
-                ->cantHide()
-                ->filter(Input::make())
-                ->render(function (User $user) {
-                    return ModalToggle::make($user->email)
-                        ->modal('asyncEditUserModal')
-                        ->modalTitle($user->presenter()->title())
-                        ->method('saveUser')
-                        ->asyncParameters([
-                            'user' => $user->id,
-                        ]);
-                }),
+			TD::make('email', __('Email'))
+				->sort()
+				->cantHide()
+				->filter(Input::make())
+				->render(function (User $user) {
+					return ModalToggle::make($user->email)
+						->modal('asyncEditUserModal')
+						->modalTitle($user->presenter()->title())
+						->method('saveUser')
+						->asyncParameters([
+							'user' => $user->id,
+						]);
+				}),
 
-            TD::make('updated_at', __('Last edit'))
-                ->sort()
-                ->render(function (User $user) {
-                    return $user->updated_at->toDateTimeString();
-                }),
+			TD::make('updated_at', __('Last edit'))
+				->sort()
+				->render(function (User $user) {
+					return $user->updated_at->toDateTimeString();
+				}),
 
 			TD::make('user_groups', __('User groups'))
-                ->sort()
-                ->render(function (User $user) {
+				->sort()
+				->render(function (User $user) {
 					$groups = '';
 					$length = 0;
 					foreach ($user->groups()->orderBy('group_type_id', 'desc')->get() as $group) {
@@ -78,7 +78,7 @@ class UserListLayout extends Table
 					}
 
 					return $groups;
-                }),
+				}),
 
 			TD::make('country', __('Country'))
 				->sort()
@@ -86,13 +86,13 @@ class UserListLayout extends Table
 					return $user->country_id != null ? Group::where('id', $user->country_id)->first()->name : null;
 				}),
 
-            TD::make(__('Actions'))
-                ->align(TD::ALIGN_CENTER)
-                ->width('100px')
-                ->render(function (User $user) {
-                    return DropDown::make()
-                        ->icon('options-vertical')
-                        ->list(
+			TD::make(__('Actions'))
+				->align(TD::ALIGN_CENTER)
+				->width('100px')
+				->render(function (User $user) {
+					return DropDown::make()
+						->icon('options-vertical')
+						->list(
 							array_merge(
 								[
 									Link::make(__('Edit'))
@@ -110,7 +110,7 @@ class UserListLayout extends Table
 									[]
 							)
 						);
-                }),
-        ];
-    }
+				}),
+		];
+	}
 }

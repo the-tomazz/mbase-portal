@@ -317,7 +317,6 @@ class Controller extends BaseController
 				$row[] = $animalHandlingCount;
 				$row[] = $animalHandling->animal_handling_date;
 				$row[] = $animalHandling->way_of_withdrawal_list ? $animalHandling->way_of_withdrawal_list->name : '';
-				dd($animalHandling->way_of_withdrawal_list);
 				$row[] = $animalHandling->animal_conflictedness;
 				$row[] = $animalHandling->animal_conflictedness_details;
 				$row[] = $animalHandling->number_of_removal_in_the_hunting_administrative_area;
