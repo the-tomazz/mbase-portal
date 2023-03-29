@@ -469,5 +469,7 @@
 	"Tail length": "Dolžina repa",
 
 	"No results found for your current filters": "Ni rezultatov za vaše trenutne filtre",
-	"Try adjusting your filter settings or removing it altogether to see more data": "Poskusite prilagoditi nastavitve filtra ali ga v celoti odstraniti, da boste videli več podatkov"
+	"Try adjusting your filter settings or removing it altogether to see more data": "Poskusite prilagoditi nastavitve filtra ali ga v celoti odstraniti, da boste videli več podatkov",
+
+	"Whoops! Something went wrong.": "Neuspešen zahtevek"
 }
