@@ -58,15 +58,15 @@ class BearsBiometryAnimalHandlingGeoLocationListener extends Listener
 		$selected4326 = isset($this->query) ? $this->query->get('bearsBiometryAnimalHandling.projection_type') == BearsBiometryAnimalHandling::PT_4326 : false;
 
 		$canSeePlaceTypeListDetails = isset($this->query) ? $this->query->get('bearsBiometryAnimalHandling.place_type_list_id') == PlaceTypeList::OTHER_ID : false;
-		$geoInputMethod = isset($this->query) ? $this->query->get('bearsBiometryAnimalHandling.geo_input_method') : 'manual';
+		$geoInputMethod = isset($this->query) ? $this->query->get('bearsBiometryAnimalHandling.geo_input_method') : 'map';
 
 		return [
 			Layout::view('mapExtenderAdditionalTrigger'),
 			Layout::rows([
 				Select::make('bearsBiometryAnimalHandling.geo_input_method')
 					->options([
-						'manual' => __('Manual'),
 						'map' =>__('Map'),
+						'manual' => __('Manual'),
 					])
 					->title('Input method type'),
 

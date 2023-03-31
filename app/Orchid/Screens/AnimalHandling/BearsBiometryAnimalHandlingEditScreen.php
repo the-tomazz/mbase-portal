@@ -97,7 +97,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 			$bearsBiometryAnimalHandling['measurer_name_and_surname'] = Auth::user()->name;
 		}
 
-		$bearsBiometryAnimalHandling['geo_input_method'] = 'manual';
+		$bearsBiometryAnimalHandling['geo_input_method'] = 'map';
 		$bearsBiometryAnimalHandling['projection_type'] = BearsBiometryAnimalHandling::PT_3912;
 
 		$proj4 = new Proj4php();

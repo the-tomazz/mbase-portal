@@ -97,7 +97,7 @@ class AnimalDataViewScreen extends Screen
 
 			Sight::make('died_at', __('Died at'))
 				->render(function ($animal) {
-					return (new DateTime($animal['died_at']))->format('m.d.Y H:i');
+					return $animal['died_at'] ? (new DateTime($animal['died_at']))->format('m.d.Y H:i') : '';
 				}),
 
 			Sight::make('description', __('Description')),
