@@ -239,7 +239,7 @@ class BiometryDataViewScreen extends Screen
 					return isset($bearsBiometryData->fur_pattern_in_lynx_list) ? $bearsBiometryData->fur_pattern_in_lynx_list->name : '-';
 				}),
 
-			Sight::make('bearsBiometryData.observations_and_notes', __('Physical condition, parasites, injuries, markings, other observations (ear tags, signs of crossbreeding with a dog, etc.) and notes'))
+			Sight::make('observations_and_notes', __('Physical condition, parasites, injuries, markings, other observations (ear tags, signs of crossbreeding with a dog, etc.) and notes'))
 		];
 
 		return [
