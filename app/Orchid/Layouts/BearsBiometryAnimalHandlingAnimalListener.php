@@ -256,7 +256,7 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 				]),
 
 				Input::make('bearsBiometryAnimalHandling.number_of_removal_in_the_hunting_administrative_area')
-					->mask('999-9999')
+					->mask('9[99]/9999')
 					->title(__('Number and the year of removal in hunting administrative area'))
 					->help(__('Please insert number and the year of removal in hunting administrative area'))
 					->canSee(!$animalIsAlive),
