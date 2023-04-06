@@ -48,7 +48,7 @@
     "Biometry data Create / Update": "Vnos novih / popravi biometrične podatke",
     "Biometry data missing": "Brez biometričnih podatkov",
     "Body length": "Dolžina trupa (hrbtna stran) (od konice smrčka do korena repa)",
-    "Abdomilan length": "Telesna dolžina - trebušna",
+    "Abdominal length": "Telesna dolžina - trebušna",
     "Body mass": "Telesna masa",
     "Body mass of the animal (In kilograms)": "Masa živali (v kilogramih)",
     "Body measurements": "Dolžine in obsegi",
@@ -254,6 +254,7 @@
     "Number and the year of removal in hunting administrative area": "Številka in leto odvzema v lovsko-upravljavskem območju",
     "Number of premolars": "Število predmeljakov",
     "Number of premolars in the Lower jaw (left + right)": "Število predmeljakov - Spodnja čeljust levo in desno",
+	"Number of premolars in the Upper jaw (left + right)": "Število predmeljakov - Zgornja čeljust levo in desno",
     "Object search": "Iskanje",
     "of": "od",
     "Once the account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.": "Ko je račun izbrisan, bodo vsi njegovi viri in podatki trajno izbrisani. Preden izbrišete svoj račun, prenesite vse podatke ali informacije, ki jih želite obdržati.",
@@ -471,5 +472,7 @@
 	"No results found for your current filters": "Ni rezultatov za vaše trenutne filtre",
 	"Try adjusting your filter settings or removing it altogether to see more data": "Poskusite prilagoditi nastavitve filtra ali ga v celoti odstraniti, da boste videli več podatkov",
 
-	"Whoops! Something went wrong.": "Neuspešen zahtevek"
+	"Whoops! Something went wrong.": "Neuspešen zahtevek",
+	"Length sizes (In cm with mm accuracy)": "Velikosti in dolžine (v cm z natančnostjo mm)",
+	"Circumferences": "Obsegi"
 }

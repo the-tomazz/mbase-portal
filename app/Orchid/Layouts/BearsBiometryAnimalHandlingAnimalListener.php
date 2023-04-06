@@ -152,7 +152,6 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 					->fromQuery(SexList::where('status', '=', BaseList::STR_ACTIVE), 'name')
 					->required()
 					->empty(__('<Select>'))
-					->value(SexList::NEUTRAL_SEX_ID)
 					->title(__('Sex'))
 					->help(__('Please select the sex'))
 					->disabled($animalIsKnown || $animalIsSelected),

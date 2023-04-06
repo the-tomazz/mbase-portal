@@ -127,7 +127,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 			$animal['died_at_time'] = (new DateTime($animal->died_at))->format('H:i');
 		} else {
 			$animal['status'] = Auth::user()->defaultVisualisationAnimalStatus();
-			$animal['sex_list_id'] = SexList::FEMALE_SEX_ID;
+			$animal['sex_list_id'] = null;
 		}
 
 		// COPY DATA FROM ANIMAL TO ANIMAL HANDLING
