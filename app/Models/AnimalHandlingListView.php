@@ -225,7 +225,7 @@ class AnimalHandlingListView extends Model
 
 	public function conflict_animal_removal_list()
 	{
-		return $this->belongsTo(AnimalRemovalList::class);
+		return $this->belongsTo(ConflictAnimalRemovalList::class);
 	}
 
 	public function SpatialUnit()
