@@ -70,9 +70,9 @@
 							</x-dropdown-link>
 							@endif
 
-							@if(Auth::user() && Auth::user()->isInGroup('mbase2', 'interventions'))
-							<x-dropdown-link href="/mbase2/modules/interventions">
-								{{ __('Interventions') }}
+							@if(Auth::user() && Auth::user()->isInGroup('mbase2', 'tlm'))
+							<x-dropdown-link href="/mbase2/modules/tlm">
+								{{ __('Telemetry') }}
 							</x-dropdown-link>
 							@endif
 						</x-slot>
