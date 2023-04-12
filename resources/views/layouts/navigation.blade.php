@@ -69,6 +69,12 @@
 								{{ __('Interventions') }}
 							</x-dropdown-link>
 							@endif
+
+							@if(Auth::user() && Auth::user()->isInGroup('mbase2', 'interventions'))
+							<x-dropdown-link href="/mbase2/modules/interventions">
+								{{ __('Interventions') }}
+							</x-dropdown-link>
+							@endif
 						</x-slot>
 					</x-dropdown>
 				</div>
