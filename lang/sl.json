@@ -474,5 +474,7 @@
 
 	"Whoops! Something went wrong.": "Neuspešen zahtevek",
 	"Length sizes (In cm with mm accuracy)": "Velikosti in dolžine (v cm z natančnostjo mm)",
-	"Circumferences": "Obsegi"
+	"Circumferences": "Obsegi",
+
+	"Telemetry": "Telemetrija"
 }
