@@ -48,34 +48,40 @@ class PlatformProvider extends OrchidServiceProvider
 				->href('/mbase2/modules/gensam');
 		}
 
-		if (Auth::user()->isInGroup('mbase2', 'gensam')) {
+		if (Auth::user()->isInGroup('mbase2', 'ct')) {
 			$menu[] = Menu::make('Camera Trapping')
 				->icon('list')
 				->href('/mbase2/modules/ct');
 		}
 
-		if (Auth::user()->isInGroup('mbase2', 'gensam')) {
+		if (Auth::user()->isInGroup('mbase2', 'sop')) {
 			$menu[] = Menu::make('Signs Of Presence')
 				->icon('list')
 				->href('/mbase2/modules/sop');
 		}
 
-		if (Auth::user()->isInGroup('mbase2', 'gensam')) {
+		if (Auth::user()->isInGroup('mbase2', 'cnt')) {
 			$menu[] = Menu::make('Counting')
 				->icon('list')
 				->href('/mbase2/modules/cnt');
 		}
 
-		if (Auth::user()->isInGroup('mbase2', 'gensam')) {
+		if (Auth::user()->isInGroup('mbase2', 'dmg')) {
 			$menu[] = Menu::make('Damages')
 				->icon('list')
 				->href('/mbase2/modules/dmg');
 		}
 
-		if (Auth::user()->isInGroup('mbase2', 'gensam')) {
+		if (Auth::user()->isInGroup('mbase2', 'interventions')) {
 			$menu[] = Menu::make('Interventions')
 				->icon('list')
 				->href('/mbase2/modules/interventions');
+		}
+
+		if (Auth::user()->isInGroup('mbase2', 'tlm')) {
+			$menu[] = Menu::make('Telemetry')
+				->icon('list')
+				->href('/mbase2/modules/tlm');
 		}
 
 		if (Auth::user()->hasRole('MBASE2LAdmin')) {
