@@ -49,23 +49,23 @@ class BiometryDataEditScreen extends Screen
 		'shoulder_height' => 'numeric|min:0|max:150',
 		'head_circumference' => 'numeric|min:0|max:150',
 		'neck_circumference' => 'numeric|min:0|max:150',
-		'thorax_circumference' => 'numeric|min:0|max:150',
+		'thorax_circumference' => 'numeric|min:0|max:170',
 		'abdomen_circumference' => 'numeric|min:0|max:150',
 		'upper_left_canines_length' => 'numeric|min:0|max:6',
 		'lower_left_canines_length' => 'numeric|min:0|max:5',
 		'upper_right_canines_length' => 'numeric|min:0|max:6',
 		'lower_right_canines_length' => 'numeric|min:0|max:5',
-		'distance_between_upper_canines' => 'numeric|min:0|max:7',
-		'distance_between_lower_canines' => 'numeric|min:0|max:7',
+		'distance_between_upper_canines' => 'numeric|min:0|max:9',
+		'distance_between_lower_canines' => 'numeric|min:0|max:9',
 		'number_of_premolars_in_the_upper_jaw' => 'numeric|min:0|max:9',
 		'number_of_premolars_in_the_lower_jaw' => 'numeric|min:0|max:9',
 		'front_left_paw_length' => 'numeric|min:0|max:25',
 		'front_left_paw_width' => 'numeric|min:0|max:20',
 		'front_right_paw_length' => 'numeric|min:0|max:25',
 		'front_right_paw_width' => 'numeric|min:0|max:20',
-		'hind_left_paw_length' => 'numeric|min:0|max:25',
+		'hind_left_paw_length' => 'numeric|min:0|max:30',
 		'hind_left_paw_width' => 'numeric|min:0|max:20',
-		'hind_right_paw_length' => 'numeric|min:0|max:25',
+		'hind_right_paw_length' => 'numeric|min:0|max:30',
 		'hind_right_paw_width' => 'numeric|min:0|max:20',
 		'ear_length_without_hair' => 'numeric|min:0|max:20'
 	];
@@ -206,7 +206,7 @@ class BiometryDataEditScreen extends Screen
 					Input::make('bearsBiometryData.thorax_circumference')
 						->title(__('Thorax circumference'))
 						->required()
-						->help(__('Insert Thorax circumference of the animal (0-150 cm)')),
+						->help(__('Insert Thorax circumference of the animal (0-170 cm)')),
 
 					Input::make('bearsBiometryData.abdomen_circumference')
 						->title(__('Abdomen circumference'))
@@ -267,12 +267,12 @@ class BiometryDataEditScreen extends Screen
 					Input::make('bearsBiometryData.distance_between_upper_canines')
 							->title(__('Upper'))
 							->required()
-							->help(__('Insert Distance between upper canines (0-7 cm)')),
+							->help(__('Insert Distance between upper canines (0-9 cm)')),
 
 					Input::make('bearsBiometryData.distance_between_lower_canines')
 						->title(__('Lower'))
 						->required()
-						->help(__('Insert Distance between lower canines (0-7 cm)')),
+						->help(__('Insert Distance between lower canines (0-9 cm)')),
 
 				])->autoWidth(),
 
@@ -353,7 +353,7 @@ class BiometryDataEditScreen extends Screen
 					Input::make('bearsBiometryData.hind_left_paw_length')
 						->title(__('Length'))
 						->required()
-						->help(__('Insert Hind left paw width (0-25 cm)')),
+						->help(__('Insert Hind left paw length (0-30 cm)')),
 
 					Input::make('bearsBiometryData.hind_left_paw_width')
 						->title(__('Width'))
@@ -370,7 +370,7 @@ class BiometryDataEditScreen extends Screen
 					Input::make('bearsBiometryData.hind_right_paw_length')
 						->title(__('Length'))
 						->required()
-						->help(__('Insert Hind right paw length (0-25 cm)')),
+						->help(__('Insert Hind right paw length (0-30 cm)')),
 
 					Input::make('bearsBiometryData.hind_right_paw_width')
 						->title(__('Width'))
@@ -466,6 +466,4 @@ class BiometryDataEditScreen extends Screen
 	{
 		return $this->createOrUpdateBiometryData($bearsBiometryAnimalHandling, $bearsBiometryData, $request);
 	}
-
-
 }

@@ -662,6 +662,8 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 		$bearsBiometryAnimalHandling->lat = $request->get('bearsBiometryAnimalHandling')['EPSG_4326_y'];
 		$bearsBiometryAnimalHandling->lng = $request->get('bearsBiometryAnimalHandling')['EPSG_4326_x'];
 
+		$bearsBiometryAnimalHandling->data_entered_by_user_id = Auth::user()->id;
+
 		$bearsBiometryAnimalHandling->save();
 
 		if ($bearsBiometryAnimalHandling->bearsBiometrySamples()) {
