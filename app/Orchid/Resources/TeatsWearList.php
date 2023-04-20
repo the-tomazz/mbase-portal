@@ -12,12 +12,12 @@ class TeatsWearList extends BaseList
 {
 	protected static $moduleList = ['mortbiom'];
 
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var string
-     */
-    public static $model = \App\Models\TeatsWearList::class;
+	/**
+	 * The model the resource corresponds to.
+	 *
+	 * @var string
+	 */
+	public static $model = \App\Models\TeatsWearList::class;
 
 	/**
 	 * Get the displayable label of the resource.
@@ -26,7 +26,7 @@ class TeatsWearList extends BaseList
 	 */
 	public static function label(): string
 	{
-		return __('Teats usage');
+		return __('Teats use');
 	}
 
 	/**

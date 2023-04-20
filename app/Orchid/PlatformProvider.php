@@ -170,7 +170,7 @@ class PlatformProvider extends OrchidServiceProvider
 					->icon('list')
 					->href('/admin/crud/list/place-type-lists');
 
-				$menu[] = Menu::make('Teats usage')
+				$menu[] = Menu::make('Teats use')
 					->icon('list')
 					->href('/admin/crud/list/teats-wear-lists');
 
