@@ -123,8 +123,8 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 
 		// FIX ANIMAL DATA
 		if ($animal->exists || isset($bearsBiometryAnimalHandling['animal_id'])) {
-			$animal['died_at_date'] = (new DateTime($animal->died_at))->format('d.m.Y');
-			$animal['died_at_time'] = (new DateTime($animal->died_at))->format('H:i');
+			$animal['died_at_date'] = $animal->died_at != null ? (new DateTime($animal->died_at))->format('d.m.Y') : null;
+			$animal['died_at_time'] = $animal->died_at != null ? (new DateTime($animal->died_at))->format('H:i') : null;
 		} else {
 			$animal['status'] = Auth::user()->defaultVisualisationAnimalStatus();
 			$animal['sex_list_id'] = null;
@@ -576,6 +576,8 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 
 		$phpDate = new DateTime($parsedDate['year'] . '-' . $parsedDate['month'] . '-' . $parsedDate['day'] . ' ' . $parsedTime['hour'] . ':' . $parsedTime['minute']);
 		$animalHandlingStructure['animal_handling_date'] = $phpDate;
+
+		$animalHandlingStructure['number_of_removal_in_the_hunting_administrative_area'] = str_replace("_","",$animalHandlingStructure['number_of_removal_in_the_hunting_administrative_area']);
 
 		$request->merge(['bearsBiometryAnimalHandling' => $animalHandlingStructure]);
 

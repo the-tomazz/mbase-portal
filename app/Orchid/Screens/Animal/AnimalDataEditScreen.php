@@ -28,8 +28,8 @@ class AnimalDataEditScreen extends Screen
 	 */
 	public function query(Animal $animal): iterable
 	{
-		$animal['died_at_date'] = (new DateTime($animal['died_at']))->format('j.n.Y');
-		$animal['died_at_time'] = (new DateTime($animal['died_at']))->format('H:i');
+		$animal['died_at_date'] = $animal['died_at'] != null ? (new DateTime($animal['died_at']))->format('j.n.Y') : null;
+		$animal['died_at_time'] = $animal['died_at'] != null ? (new DateTime($animal['died_at']))->format('H:i') : null;
 
 		return [
 			'animal' => $animal

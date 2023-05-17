@@ -75,7 +75,7 @@ class AnimalHandlingViewScreen extends Screen
 		$animalHandlingSights = [
 			Sight::make('animal_handling_date', __('Date and time of animal handling'))
 				->render(function ($bearsBiometryAnimalHandling) {
-					return $bearsBiometryAnimalHandling->animal_handling_date->format('m.d.Y H:i');
+					return $bearsBiometryAnimalHandling->animal_handling_date->format('d.m.Y H:i');
 				}),
 
 			Sight::make('date_and_time_of_biometry_measurements', __('Date and time of biometry measurements'))
@@ -137,7 +137,7 @@ class AnimalHandlingViewScreen extends Screen
 			Sight::make('died_at', __('Died at'))
 				->render(function ($bearsBiometryAnimalHandling) {
 					return $bearsBiometryAnimalHandling->animal->died_at
-						? $bearsBiometryAnimalHandling->animal->died_at->format('m.d.Y H:i')
+						? $bearsBiometryAnimalHandling->animal->died_at->format('d.m.Y H:i')
 						: '';
 				}),
 

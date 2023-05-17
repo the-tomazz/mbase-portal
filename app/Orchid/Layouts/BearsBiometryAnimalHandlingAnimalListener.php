@@ -185,7 +185,7 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 						->title('Date of death')
 						->canSee(!$animalIsAlive)
 						->allowInput()
-						->disabled($animalIsKnown)
+						->disabled(false && $animalIsKnown)
 						->available([['from' => '01.01.1970', 'to' => date('d.m.Y')]])
 						->format('d.m.Y'),
 
@@ -196,7 +196,7 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 						->format('H:i')
 						->noCalendar()
 						->enableTime()
-						->disabled($animalIsKnown),
+						->disabled(false && $animalIsKnown),
 				]),
 			])->title(__('Date and time')),
 
