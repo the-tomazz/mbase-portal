@@ -79,6 +79,16 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 				'lat' => $bearsBiometryAnimalHandling['lat'],
 				'lng' => $bearsBiometryAnimalHandling['lng'],
 			];
+
+			$splittedNumberOfRemovalInTheHuntingAdministrativeArea = explode(
+				'/',
+				$bearsBiometryAnimalHandling['number_of_removal_in_the_hunting_administrative_area']
+			);
+
+			if (count($splittedNumberOfRemovalInTheHuntingAdministrativeArea) > 1) {
+				$bearsBiometryAnimalHandling['n_number_of_removal_in_the_hunting_administrative_area'] = $splittedNumberOfRemovalInTheHuntingAdministrativeArea[0];
+				$bearsBiometryAnimalHandling['y_number_of_removal_in_the_hunting_administrative_area'] = $splittedNumberOfRemovalInTheHuntingAdministrativeArea[1];
+			}
 		} else {
 			if ($animal->exists) { // we are creating a handling of a certain animal
 				// $bearsBiometryAnimalHandling->animal_id = $animal->id;
@@ -224,16 +234,16 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 			$triggers['animal_description'] = $animal->animal_description;
 		}
 
-		if (!isset($triggers['number_of_removal_in_the_hunting_administrative_area']) ||
-			substr($triggers['number_of_removal_in_the_hunting_administrative_area'], 0, 3) == '___') {
+		if (!isset($triggers['y_number_of_removal_in_the_hunting_administrative_area']) ||
+			$triggers['y_number_of_removal_in_the_hunting_administrative_area'] == '___') {
 			if (isset($triggers['animal_died_at_date'])) {
 				$parsedDate = date_parse_from_format("j.n.Y", $triggers['animal_died_at_date']);
-				$numberOfRemovalInTheHuntingAdministrativeArea = '___-' . $parsedDate['year'];
+				$y_numberOfRemovalInTheHuntingAdministrativeArea = $parsedDate['year'];
 			} else {
-				$numberOfRemovalInTheHuntingAdministrativeArea = '___-' . date("Y");
+				$y_numberOfRemovalInTheHuntingAdministrativeArea = date("Y");
 			}
 		} else {
-			$numberOfRemovalInTheHuntingAdministrativeArea = $triggers['number_of_removal_in_the_hunting_administrative_area'];
+			$y_numberOfRemovalInTheHuntingAdministrativeArea = $triggers['y_number_of_removal_in_the_hunting_administrative_area'];
 		}
 
 		$payload = [
@@ -257,7 +267,8 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 				'biometry_loss_reason_description' 	=> $triggers['biometry_loss_reason_description'] ?? null,
 				'project_name'						=> $triggers['project_name'] ?? null,
 				'receiving_country'					=> $triggers['receiving_country'] ?? null,
-				'number_of_removal_in_the_hunting_administrative_area' => $numberOfRemovalInTheHuntingAdministrativeArea,
+				'n_number_of_removal_in_the_hunting_administrative_area' => $triggers['n_number_of_removal_in_the_hunting_administrative_area'],
+				'y_number_of_removal_in_the_hunting_administrative_area' => $y_numberOfRemovalInTheHuntingAdministrativeArea,
 				'telemetry_uid'						=> $triggers['telemetry_uid'] ?? null
 			]),
 		];
@@ -577,12 +588,16 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 		$phpDate = new DateTime($parsedDate['year'] . '-' . $parsedDate['month'] . '-' . $parsedDate['day'] . ' ' . $parsedTime['hour'] . ':' . $parsedTime['minute']);
 		$animalHandlingStructure['animal_handling_date'] = $phpDate;
 
-		$animalHandlingStructure['number_of_removal_in_the_hunting_administrative_area'] = str_replace("_","",$animalHandlingStructure['number_of_removal_in_the_hunting_administrative_area']);
+		$animalHandlingStructure['n_number_of_removal_in_the_hunting_administrative_area'] = str_replace("_", "", $animalHandlingStructure['n_number_of_removal_in_the_hunting_administrative_area']);
+		$animalHandlingStructure['y_number_of_removal_in_the_hunting_administrative_area'] = str_replace("_", "", $animalHandlingStructure['y_number_of_removal_in_the_hunting_administrative_area']);
+		$animalHandlingStructure['number_of_removal_in_the_hunting_administrative_area'] = $animalHandlingStructure['n_number_of_removal_in_the_hunting_administrative_area'] . '/' . $animalHandlingStructure['y_number_of_removal_in_the_hunting_administrative_area'];
 
 		$request->merge(['bearsBiometryAnimalHandling' => $animalHandlingStructure]);
 
 		$request->validate([
 			'bearsBiometryAnimalHandling.animal_handling_date' => 'required|date|before:now',
+			'bearsBiometryAnimalHandling.n_number_of_removal_in_the_hunting_administrative_area' => 'numeric|min:1|max:999',
+			'bearsBiometryAnimalHandling.y_number_of_removal_in_the_hunting_administrative_area' => 'numeric|min:2015|max:2040',
 		]);
 
 		if (isset($animalHandlingStructure['animal_died_at_date'])) {

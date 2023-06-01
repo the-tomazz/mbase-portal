@@ -30,7 +30,7 @@ class BearsBiometryAnimalHandlingFactory extends Factory
 		return [
 			'animal_conflictedness' => mt_rand(0, 1) == 0 ? BearsBiometryAnimalHandling::CONFLICTEDNESS_UNKNOWN : BearsBiometryAnimalHandling::CONFLICTEDNESS_CONFLICTING,
 			'animal_conflictedness_details' => Str::random(10),
-			'number_of_removal_in_the_hunting_administrative_area' => Str::random(10),
+			'number_of_removal_in_the_hunting_administrative_area' => Str::random(3) . '/' . Str::random(4),
 			'way_of_withdrawal_list_id' => WayOfWithdrawalList::All()->random()->id,
 			'conflict_animal_removal_list_id' => ConflictAnimalRemovalList::all()->random()->id,
 			'licence_list_id' => LicenceList::all()->random()->id,

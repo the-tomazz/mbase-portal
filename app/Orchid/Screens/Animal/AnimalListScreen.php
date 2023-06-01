@@ -27,6 +27,8 @@ class AnimalListScreen extends Screen
 		$from = request()->input('died_at_from') ?? '1970-01-01';
 		$to = request()->input('died_at_to') ?? '2970-01-01';
 
+		$perPage = request()->input('per_page') ?? 15;
+
 		return [
 			'animals' => AnimalListView::filters()
 				->where(function ($query) use ($from, $to) {
@@ -35,7 +37,7 @@ class AnimalListScreen extends Screen
 					$query->orWhereNull('died_at');
 				})
 				->defaultSort('name')
-				->paginate()
+				->paginate($perPage)
 				->withQueryString(),
 			'dateFilterVariable' => 'died_at',
 			'dateFilterVariable2' => 'animal_handling_date',

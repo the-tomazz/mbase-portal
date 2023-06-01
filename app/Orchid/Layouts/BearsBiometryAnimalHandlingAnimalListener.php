@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Log;
 use Orchid\Screen\Fields\DateTimer;
 use Orchid\Screen\Fields\Group;
 use Orchid\Screen\Fields\Input;
+use Orchid\Screen\Fields\Label;
 use Orchid\Screen\Fields\Select;
 use Orchid\Support\Facades\Layout;
 use Orchid\Screen\Layouts\Listener;
@@ -21,18 +22,18 @@ use Orchid\Screen\Layouts\Listener;
 class BearsBiometryAnimalHandlingAnimalListener extends Listener
 {
 	/**
-     * List of field names for which values will be joined with targets' upon trigger.
-     *
-     * @var string[]
-     */
-    protected $extraVars = [];
+	 * List of field names for which values will be joined with targets' upon trigger.
+	 *
+	 * @var string[]
+	 */
+	protected $extraVars = [];
 
-    /**
-     * List of field names for which values will be listened.
-     *
-     * @var string[]
-     */
-    protected $targets = [
+	/**
+	 * List of field names for which values will be listened.
+	 *
+	 * @var string[]
+	 */
+	protected $targets = [
 		'bearsBiometryAnimalHandling.original_animal_id',
 		'bearsBiometryAnimalHandling.animal_id',
 		'bearsBiometryAnimalHandling.animal_status',
@@ -51,26 +52,27 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 		'bearsBiometryAnimalHandling.biometry_loss_reason_description',
 		'bearsBiometryAnimalHandling.project_name',
 		'bearsBiometryAnimalHandling.receiving_country',
-		'bearsBiometryAnimalHandling.number_of_removal_in_the_hunting_administrative_area',
+		'bearsBiometryAnimalHandling.n_number_of_removal_in_the_hunting_administrative_area',
+		'bearsBiometryAnimalHandling.y_number_of_removal_in_the_hunting_administrative_area',
 		'bearsBiometryAnimalHandling.telemetry_uid'
 	];
 
-    /**
-     * What screen method should be called
-     * as a source for an asynchronous request.
-     *
-     * The name of the method must
-     * begin with the prefix "async"
-     *
-     * @var string
-     */
-    protected $asyncMethod = 'asyncUpdateAnimalHandlingAnimalListenerData';
+	/**
+	 * What screen method should be called
+	 * as a source for an asynchronous request.
+	 *
+	 * The name of the method must
+	 * begin with the prefix "async"
+	 *
+	 * @var string
+	 */
+	protected $asyncMethod = 'asyncUpdateAnimalHandlingAnimalListenerData';
 
-    /**
-     * @return Layout[]
-     */
-    protected function layouts(): iterable
-    {
+	/**
+	 * @return Layout[]
+	 */
+	protected function layouts(): iterable
+	{
 		if ($this->query) {
 			$animalIsKnown = $this->query->get('bearsBiometryAnimalHandling.original_animal_id') != null;
 			$animalIsSelected = $this->query->get('bearsBiometryAnimalHandling.animal_id') != null;
@@ -117,8 +119,7 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 					->title(__('Animal'))
 					->help($animalIsAlive
 						? __('Please select the ID of the individual, if the animal is known.')
-						: __('If the individual hasn’t been caught before, leave the value “Unknown animal” and an automatic identification number will be assigned to this animal. If the individual has been previously handled and marked already, then choose its name from the drop-down list.')
-					)
+						: __('If the individual hasn’t been caught before, leave the value “Unknown animal” and an automatic identification number will be assigned to this animal. If the individual has been previously handled and marked already, then choose its name from the drop-down list.'))
 					->empty(__('<Unknown animal>'))
 					->canSee(!$animalIsKnown),
 
@@ -136,8 +137,7 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 					->required($animalIsAlive)
 					->help($animalIsAlive
 						? __('Assign a new name to the animal.')
-						: __('In case this animal is known for other reasons, like monitoring, you can assign it a name.')
-					)
+						: __('In case this animal is known for other reasons, like monitoring, you can assign it a name.'))
 					->canSee(!$animalIsKnown && !$animalIsSelected),
 
 				Select::make('bearsBiometryAnimalHandling.animal_species_list_id')
@@ -254,11 +254,21 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 						->canSee($translocationOutOfPopulationSelected),
 				]),
 
-				Input::make('bearsBiometryAnimalHandling.number_of_removal_in_the_hunting_administrative_area')
-					->mask('9[99]/9999')
-					->title(__('Number and the year of removal in hunting administrative area'))
-					->help(__('Correct input form is 1/2023 or 11/2023 or 111/2023'))
-					->canSee(!$animalIsAlive),
+				Label::make('')
+				  ->title(__('Number and the year of removal in hunting administrative area')),
+
+				Group::make([
+					Input::make('bearsBiometryAnimalHandling.n_number_of_removal_in_the_hunting_administrative_area')
+						->mask('9[99]')
+						->help(__('Number of removal (1-999)'))
+						->canSee(!$animalIsAlive),
+
+					Input::make('bearsBiometryAnimalHandling.y_number_of_removal_in_the_hunting_administrative_area')
+						->mask('9999')
+						->help(__('Year of removal (2015-2099)'))
+						->canSee(!$animalIsAlive),
+
+				]),
 
 				Input::make('bearsBiometryAnimalHandling.telemetry_uid')
 					->title(__('Ear-tag number or radio-collar (telemetry) identification'))
@@ -266,5 +276,5 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 					->canSee($animalIsAlive)
 			]),
 		];
-    }
+	}
 }
