@@ -585,8 +585,8 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 		$parsedDate = date_parse_from_format("j.n.Y", $animalHandlingStructure['animal_handling_date_date']);
 		$parsedTime = date_parse_from_format("H:i", $animalHandlingStructure['animal_handling_date_time']);
 
-		$phpDate = new DateTime($parsedDate['year'] . '-' . $parsedDate['month'] . '-' . $parsedDate['day'] . ' ' . $parsedTime['hour'] . ':' . $parsedTime['minute']);
-		$animalHandlingStructure['animal_handling_date'] = $phpDate;
+		$phpAnimalHandlingDate = new DateTime($parsedDate['year'] . '-' . $parsedDate['month'] . '-' . $parsedDate['day'] . ' ' . $parsedTime['hour'] . ':' . $parsedTime['minute']);
+		$animalHandlingStructure['animal_handling_date'] = $phpAnimalHandlingDate;
 
 		$animalHandlingStructure['n_number_of_removal_in_the_hunting_administrative_area'] = str_replace("_", "", $animalHandlingStructure['n_number_of_removal_in_the_hunting_administrative_area']);
 		$animalHandlingStructure['y_number_of_removal_in_the_hunting_administrative_area'] = str_replace("_", "", $animalHandlingStructure['y_number_of_removal_in_the_hunting_administrative_area']);
@@ -615,7 +615,8 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 			$request->merge(['bearsBiometryAnimalHandling' => $animalHandlingStructure]);
 
 			$request->validate([
-				'bearsBiometryAnimalHandling.animal_died_at' => 'date|before:now'
+				'bearsBiometryAnimalHandling.animal_died_at' => 'date|before:now',
+				'bearsBiometryAnimalHandling.animal_died_at' => 'date|before:' . $phpAnimalHandlingDate->format('Y-m-d H:i')
 			]);
 		}
 
