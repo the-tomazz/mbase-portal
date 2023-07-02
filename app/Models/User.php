@@ -118,6 +118,10 @@ class User extends Authenticatable
 			return Animal::STR_ALIVE;
 		}
 
-		return Animal::STR_DEAD;
+		if ($this->groups()->where('slug', 'mortbiom-default-visualisation-animal-status-dead')->count()) {
+			return Animal::STR_DEAD;
+		}
+
+		return null;
 	}
 }

@@ -7,6 +7,7 @@ use App\Models\AnimalListView;
 use App\Models\Base\BaseList;
 use App\Models\SexList;
 use App\Models\SpeciesList;
+use App\Models\User;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
 use Orchid\Screen\Actions\Link;
@@ -173,6 +174,60 @@ class AnimalListLayout extends Table
 
 					foreach ($animalHandlings as $animalHandling) {
 						$animalHandlingRender = Link::make($animalHandling->animal_handling_date->	format('d.m.Y H:i'))
+							->route('platform.animalHandling.view', [ $animalHandling ]);
+
+						if ($animalHandlingsRender == '') {
+							$animalHandlingsRender .= $animalHandlingRender;
+						} else {
+							$animalHandlingsRender .= '<br>' . $animalHandlingRender;
+						}
+					}
+					return $animalHandlingsRender;
+				}),
+
+			TD::make('data_entered_by_user_id', __('User'))
+				->render(function (AnimalListView $animal) {
+					$from = request()->input('animal_handling_date_from') ?? '1970-01-01';
+					$to = request()->input('animal_handling_date_to') ?? '2970-01-01';
+
+					$animalHandlingsRender = '';
+					$animalHandlings = $animal->bearsBiometryAnimalHandlings()
+						->where(function ($query) use ($from, $to) {
+							$query->whereDate('animal_handling_date', '>=', $from);
+							$query->whereDate('animal_handling_date', '<=', $to);
+						})
+						->get();
+
+					foreach ($animalHandlings as $animalHandling) {
+						$animalHandlingRender = Link::make(User::find($animalHandling->data_entered_by_user_id)->name)
+							->route('platform.animalHandling.view', [ $animalHandling ]);
+
+
+						if ($animalHandlingsRender == '') {
+							$animalHandlingsRender .= $animalHandlingRender;
+						} else {
+							$animalHandlingsRender .= '<br>' . $animalHandlingRender;
+						}
+					}
+					return $animalHandlingsRender;
+				}),
+
+
+			TD::make('animal_status_on_handling', __('Animal status on handling'))
+				->render(function (AnimalListView $animal) {
+					$from = request()->input('animal_handling_date_from') ?? '1970-01-01';
+					$to = request()->input('animal_handling_date_to') ?? '2970-01-01';
+
+					$animalHandlingsRender = '';
+					$animalHandlings = $animal->bearsBiometryAnimalHandlings()
+						->where(function ($query) use ($from, $to) {
+							$query->whereDate('animal_handling_date', '>=', $from);
+							$query->whereDate('animal_handling_date', '<=', $to);
+						})
+						->get();
+
+					foreach ($animalHandlings as $animalHandling) {
+						$animalHandlingRender = Link::make($animal->statusString())
 							->route('platform.animalHandling.view', [ $animalHandling ]);
 
 						if ($animalHandlingsRender == '') {

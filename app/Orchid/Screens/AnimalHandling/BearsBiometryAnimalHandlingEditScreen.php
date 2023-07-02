@@ -267,7 +267,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 				'biometry_loss_reason_description' 	=> $triggers['biometry_loss_reason_description'] ?? null,
 				'project_name'						=> $triggers['project_name'] ?? null,
 				'receiving_country'					=> $triggers['receiving_country'] ?? null,
-				'n_number_of_removal_in_the_hunting_administrative_area' => $triggers['n_number_of_removal_in_the_hunting_administrative_area'],
+				'n_number_of_removal_in_the_hunting_administrative_area' => $triggers['n_number_of_removal_in_the_hunting_administrative_area'] ?? null,
 				'y_number_of_removal_in_the_hunting_administrative_area' => $y_numberOfRemovalInTheHuntingAdministrativeArea,
 				'telemetry_uid'						=> $triggers['telemetry_uid'] ?? null
 			]),

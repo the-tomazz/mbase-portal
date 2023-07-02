@@ -4,6 +4,9 @@ namespace App\Orchid\Screens\AnimalHandling;
 
 use App\Models\Animal;
 use App\Models\BearsBiometryAnimalHandling;
+use App\Models\BiometryLossReasonList;
+use App\Models\ConflictAnimalRemovalList;
+use App\Models\WayOfWithdrawalList;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Actions\ModalToggle;
 use Orchid\Screen\Fields\Label;
@@ -110,6 +113,60 @@ class AnimalHandlingViewScreen extends Screen
 				}
 			}),
 		];
+
+		$regularCullSelected = $this->bearsBiometryAnimalHandling->way_of_withdrawal_list_id == WayOfWithdrawalList::REGULAR_CULL;
+		$conflictAnimalRemovalSelected = $this->bearsBiometryAnimalHandling->way_of_withdrawal_list_id == WayOfWithdrawalList::CONFLICT_ANIMAL_REMOVAL;
+		$lossSelected = $this->bearsBiometryAnimalHandling->way_of_withdrawal_list_id == WayOfWithdrawalList::LOSS;
+		$lossReasonOtherSelected = $this->bearsBiometryAnimalHandling->biometry_loss_reason_list_id == BiometryLossReasonList::OTHER;
+		$liveCaptureSelected = $this->bearsBiometryAnimalHandling->way_of_withdrawal_list_id == WayOfWithdrawalList::LIVE_CAPTURE;
+		$translocationOutOfPopulationSelected = $this->bearsBiometryAnimalHandling->way_of_withdrawal_list_id == WayOfWithdrawalList::TRANSLOCATION_OUT_OF_POPULATION;
+
+		$animalHandlingSights[] = Sight::make('way_of_withdrawal_list_id', __('Way of withdrawal'))
+				->render(function ($bearsBiometryAnimalHandling) {
+					return WayOfWithdrawalList::find($bearsBiometryAnimalHandling->way_of_withdrawal_list_id)->name;
+				});
+
+		if ($regularCullSelected || $conflictAnimalRemovalSelected) {
+			$animalHandlingSights[] = Sight::make('licence_number', __('Permit number'))
+				->render(function ($bearsBiometryAnimalHandling) {
+					return $bearsBiometryAnimalHandling->licence_number;
+				});
+		}
+
+		if ($conflictAnimalRemovalSelected) {
+			$animalHandlingSights[] = Sight::make('conflict_animal_removal_list_id', __('Type of conflict animal removal'))
+				->render(function ($bearsBiometryAnimalHandling) {
+					return ConflictAnimalRemovalList::find($bearsBiometryAnimalHandling->conflict_animal_removal_list_id)->name;
+				});
+		}
+
+		if ($lossSelected) {
+			$animalHandlingSights[] = Sight::make('biometry_loss_reason_list_id', __('Loss reason'))
+				->render(function ($bearsBiometryAnimalHandling) {
+					return BiometryLossReasonList::find($bearsBiometryAnimalHandling->biometry_loss_reason_list_id)->name;
+				});
+		}
+
+		if ($lossSelected && $lossReasonOtherSelected) {
+			$animalHandlingSights[] = Sight::make('biometry_loss_reason_description', __('Loss reason'))
+				->render(function ($bearsBiometryAnimalHandling) {
+					return $bearsBiometryAnimalHandling->biometry_loss_reason_description;
+				});
+		}
+
+		if ($liveCaptureSelected) {
+			$animalHandlingSights[] = Sight::make('project_name', __('Project title and description; Contact name'))
+				->render(function ($bearsBiometryAnimalHandling) {
+					return $bearsBiometryAnimalHandling->project_name;
+				});
+		}
+
+		if ($translocationOutOfPopulationSelected) {
+			$animalHandlingSights[] = Sight::make('receiving_country', __('Receiving country and institutions'))
+				->render(function ($bearsBiometryAnimalHandling) {
+					return $bearsBiometryAnimalHandling->receiving_country;
+				});
+		}
 
 		$animalSights = [
 			Sight::make('animal->name', __('Animal name'))

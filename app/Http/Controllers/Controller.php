@@ -53,7 +53,6 @@ class Controller extends BaseController
 			$row[] = $animal->statusString();
 			$row[] = $animal->name;
 			$row[] = $animal->description;
-			$row[] = '';
 
 			$animalHandling = BearsBiometryAnimalHandling::find($animalHandlingListElement->id);
 
@@ -86,7 +85,6 @@ class Controller extends BaseController
 			$row[] = $animalHandling->spatial_unit_gid;
 			$row[] = $animalHandling->number_of_removal_in_the_hunting_administration_area;
 			$row[] = $animalHandling->animal_status_on_handling;
-			$row[] = '';
 
 			if ($animalHandlingListElement->bears_biometry_data_id != null) {
 				$bearsBiometryData = BearsBiometryData::find($animalHandlingListElement->bears_biometry_data_id);
@@ -148,7 +146,7 @@ class Controller extends BaseController
 			__('Sex'),
 			__('Status'),
 			__('Name'),
-			__('Description'), '',
+			__('Note'), '',
 
 			__('Animal handling ID'),
 			__('Way of withdrawal'),
@@ -290,7 +288,6 @@ class Controller extends BaseController
 			$row[] = $animal->statusString();
 			$row[] = $animal->name;
 			$row[] = $animal->description;
-			$row[] = '';
 
 			$animalHandlingCount = $animal->bearsBiometryAnimalHandlings()
 				->where(function ($query) use ($animalHandlingDateFrom, $animalHandlingDateTo) {
@@ -341,7 +338,6 @@ class Controller extends BaseController
 				$row[] = $animalHandling->spatial_unit_gid;
 				$row[] = $animalHandling->number_of_removal_in_the_hunting_administration_area;
 				$row[] = $animalHandling->animal_status_on_handling;
-				$row[] = '';
 
 				$bearsBiometryData = BearsBiometryData::where('bears_biometry_animal_handling_id', '=', $animalHandling->id)
 					->first();
@@ -404,8 +400,7 @@ class Controller extends BaseController
 			__('Sex'),
 			__('Status'),
 			__('Name'),
-			__('Description'), ' ',
-
+			__('Note'), ' ',
 
 			__('Animal handling ID'),
 			__('# of animal handlings'),

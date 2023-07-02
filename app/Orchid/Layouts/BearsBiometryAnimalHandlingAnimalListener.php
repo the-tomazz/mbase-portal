@@ -164,23 +164,6 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 
 			Layout::rows([
 				Group::make([
-					DateTimer::make('bearsBiometryAnimalHandling.animal_handling_date_date')
-						->title('Date of handling')
-						->required()
-						->allowInput()
-						->format('d.m.Y')
-						->available([['from' => '01.01.1970', 'to' => date('d.m.Y')]]),
-
-					DateTimer::make('bearsBiometryAnimalHandling.animal_handling_date_time')
-						->title('Time of handling')
-						->required()
-						->allowInput()
-						->format('H:i')
-						->noCalendar()
-						->enableTime(),
-				]),
-
-				Group::make([
 					DateTimer::make('bearsBiometryAnimalHandling.animal_died_at_date')
 						->title('Date of death')
 						->canSee(!$animalIsAlive)
@@ -197,6 +180,23 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 						->noCalendar()
 						->enableTime()
 						->disabled(false && $animalIsKnown),
+				]),
+
+				Group::make([
+					DateTimer::make('bearsBiometryAnimalHandling.animal_handling_date_date')
+						->title('Date of handling')
+						->required()
+						->allowInput()
+						->format('d.m.Y')
+						->available([['from' => '01.01.1970', 'to' => date('d.m.Y')]]),
+
+					DateTimer::make('bearsBiometryAnimalHandling.animal_handling_date_time')
+						->title('Time of handling')
+						->required()
+						->allowInput()
+						->format('H:i')
+						->noCalendar()
+						->enableTime(),
 				]),
 			])->title(__('Date and time')),
 
@@ -255,7 +255,8 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 				]),
 
 				Label::make('')
-				  ->title(__('Number and the year of removal in hunting administrative area')),
+				  ->title(__('Number and the year of removal in hunting administrative area'))
+				  ->canSee(!$animalIsAlive),
 
 				Group::make([
 					Input::make('bearsBiometryAnimalHandling.n_number_of_removal_in_the_hunting_administrative_area')
@@ -267,7 +268,6 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 						->mask('9999')
 						->help(__('Year of removal (2015-2099)'))
 						->canSee(!$animalIsAlive),
-
 				]),
 
 				Input::make('bearsBiometryAnimalHandling.telemetry_uid')

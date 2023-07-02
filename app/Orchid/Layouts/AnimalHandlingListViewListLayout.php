@@ -8,6 +8,7 @@ use App\Models\Base\BaseList;
 use App\Models\PlaceTypeList;
 use App\Models\SexList;
 use App\Models\SpeciesList;
+use App\Models\User;
 use App\Models\WayOfWithdrawalList;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
@@ -43,6 +44,13 @@ class AnimalHandlingListViewListLayout extends Table
 						->route('platform.animalHandling.view', [ $animalHandlingListView ]);
 				})
 				->sort(),
+
+			TD::make('data_entered_by_user_id', __('User'))
+				->render(function (AnimalHandlingListView $animalHandlingListView) {
+					return User::find($animalHandlingListView->data_entered_by_user_id)->name;
+				})
+				->sort(),
+
 
 			TD::make('animal_handling_date', __('Handling date'))
 				->render(function (AnimalHandlingListView $animalHandlingListView) {
@@ -82,6 +90,23 @@ class AnimalHandlingListViewListLayout extends Table
 					return $status == Animal::STR_ALIVE ? __('Alive') : __('Dead');
 				}),
 
+			TD::make('animal_status_on_handling', __('Status on handling'))
+				->render(function (AnimalHandlingListView $animalHandlingListView) {
+					return $animalHandlingListView->animal_status_on_handling == Animal::STR_ALIVE
+						? '<i class="text-success">●</i> ' . __('Alive')
+						: '<i class="text-danger">●</i> ' . __('Dead');
+				})
+				->sort()
+				->filter(
+					Select::make()->options([
+						Animal::STR_ALIVE => __('Alive'),
+						Animal::STR_DEAD => __('Dead'),
+					])->empty(__('<Select>'))
+				)
+				->filterValue(function ($status) {
+					return $status == Animal::STR_ALIVE ? __('Alive') : __('Dead');
+				}),
+
 			TD::make('way_of_withdrawal_list_name->' . App::getLocale(), __("Way of withdrawal"))
 				->render(function (AnimalHandlingListView $animalHandlingListView) {
 					return Link::make($animalHandlingListView->way_of_withdrawal_list_name)
@@ -92,7 +117,8 @@ class AnimalHandlingListViewListLayout extends Table
 					Select::make()->fromQuery(
 						WayOfWithdrawalList::where('status', '=', BaseList::STR_ACTIVE)
 							->orderBy('name->' . App::getLocale(), 'asc'),
-						'name', 'name'
+						'name',
+						'name'
 					)
 					->empty(__('<Select>'))
 				)
@@ -116,7 +142,8 @@ class AnimalHandlingListViewListLayout extends Table
 					Select::make()->fromQuery(
 						SpeciesList::where('status', '=', BaseList::STR_ACTIVE)
 							->orderBy('name->' . App::getLocale(), 'asc'),
-						'name', 'name'
+						'name',
+						'name'
 					)
 					->empty(__('<Select>'))
 				)
@@ -148,7 +175,8 @@ class AnimalHandlingListViewListLayout extends Table
 					Select::make()->fromQuery(
 						SexList::where('status', '=', BaseList::STR_ACTIVE)
 							->orderBy('name->' . App::getLocale(), 'asc'),
-						'name', 'name'
+						'name',
+						'name'
 					)->empty(__('<Select>'))
 				)
 				->filterValue(function ($sex_list_name) {
@@ -166,30 +194,13 @@ class AnimalHandlingListViewListLayout extends Table
 					Select::make()->fromQuery(
 						SpeciesList::where('status', '=', BaseList::STR_ACTIVE)
 							->orderBy('name->' . App::getLocale(), 'asc'),
-						'name', 'name'
+						'name',
+						'name'
 					)
 					->empty(__('<Select>'))
 				)
 					->filterValue(function ($species_list_name) {
 							return $species_list_name;
-					}),
-
-
-			TD::make('animal_status_on_handling', __('Status on handling'))
-				->render(function (AnimalHandlingListView $animalHandlingListView) {
-					return $animalHandlingListView->animal_status_on_handling == Animal::STR_ALIVE
-						? '<i class="text-success">●</i> ' . __('Alive')
-						: '<i class="text-danger">●</i> ' . __('Dead');
-				})
-				->sort()
-				->filter(
-					Select::make()->options([
-						Animal::STR_ALIVE => __('Alive'),
-						Animal::STR_DEAD => __('Dead'),
-					])->empty(__('<Select>'))
-				)
-					->filterValue(function ($status) {
-						return $status == Animal::STR_ALIVE ? __('Alive') : __('Dead');
 					}),
 
 			TD::make('bears_biometry_data_status', __('Biometry data'))

@@ -70,7 +70,7 @@ class AnimalHandlingListView extends Model
 	public const STR_EXISTS = 'exists';
 	public const STR_MISSING = 'missing';
 
-    protected $table = 'animal_handling_list_view';
+	protected $table = 'animal_handling_list_view';
 
 	use AsSource, Filterable;
 
@@ -107,8 +107,9 @@ class AnimalHandlingListView extends Model
 
 	protected $allowedSorts = [
 		'id',
+		'data_entered_by_user_id',
 		'animal_id',
-        'animal_status',
+		'animal_status',
 		'animal_status_on_handling',
 		'animal_name',
 		'way_of_withdrawal_list_name->sl',
@@ -133,11 +134,13 @@ class AnimalHandlingListView extends Model
 		'animal_handling_date',
 		'animal_died_at',
 		'place_of_removal',
-        'created_at',
-        'updated_at',
+		'hunting_management_area',
+		'hunting_ground',
+		'created_at',
+		'updated_at',
 		'bears_biometry_data_status',
 		'species_list'
-    ];
+	];
 
 	protected $allowedFilters = [
 		'animal_status',
@@ -219,7 +222,8 @@ class AnimalHandlingListView extends Model
 		return $this->belongsTo(Animal::class);
 	}
 
-	public function getIsAliveAttribute() {
+	public function getIsAliveAttribute()
+	{
 		return $this->animal->is_alive;
 	}
 
@@ -234,9 +238,9 @@ class AnimalHandlingListView extends Model
 	}
 
 	public function samples()
-    {
-        return $this->hasMany('App\Models\BearsBiometrySample');
-    }
+	{
+		return $this->hasMany('App\Models\BearsBiometrySample');
+	}
 
 	public function renderAnimalStatusOnHandling()
 	{

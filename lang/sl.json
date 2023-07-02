@@ -477,5 +477,8 @@
 	"Length sizes (In cm with mm accuracy)": "Velikosti in dolžine (v cm z natančnostjo mm)",
 	"Circumferences": "Obsegi",
 
-	"Telemetry": "Telemetrija"
+	"Telemetry": "Telemetrija",
+
+	"User": "Uporabnik",
+	"All registered users": "Vsi registrirani uporabniki"
 }
