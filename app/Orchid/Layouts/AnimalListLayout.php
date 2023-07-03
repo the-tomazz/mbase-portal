@@ -199,9 +199,11 @@ class AnimalListLayout extends Table
 						->get();
 
 					foreach ($animalHandlings as $animalHandling) {
-						$animalHandlingRender = Link::make(User::find($animalHandling->data_entered_by_user_id)->name)
-							->route('platform.animalHandling.view', [ $animalHandling ]);
+						$user = User::find($animalHandling->data_entered_by_user_id);
+						$name = $user ? $user->name : '';
 
+						$animalHandlingRender = Link::make($name)
+							->route('platform.animalHandling.view', [ $animalHandling ]);
 
 						if ($animalHandlingsRender == '') {
 							$animalHandlingsRender .= $animalHandlingRender;

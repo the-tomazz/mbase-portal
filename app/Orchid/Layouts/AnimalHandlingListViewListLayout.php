@@ -47,7 +47,8 @@ class AnimalHandlingListViewListLayout extends Table
 
 			TD::make('data_entered_by_user_id', __('User'))
 				->render(function (AnimalHandlingListView $animalHandlingListView) {
-					return User::find($animalHandlingListView->data_entered_by_user_id)->name;
+					$user = User::find($animalHandlingListView->data_entered_by_user_id);
+					return $user ? $user->name : '';
 				})
 				->sort(),
 
