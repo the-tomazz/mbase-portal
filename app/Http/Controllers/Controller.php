@@ -146,7 +146,7 @@ class Controller extends BaseController
 			__('Sex'),
 			__('Status'),
 			__('Name'),
-			__('Note'), '',
+			__('Note'),
 
 			__('Animal handling ID'),
 			__('Way of withdrawal'),
@@ -176,9 +176,9 @@ class Controller extends BaseController
 			__('Hunting ground'),
 			__('spatial_unit_gid'),
 			__('number_of_removal_in_the_hunting_administration_area'),
-			__('Status on handling'), '',
+			__('Status on handling'),
 
-			__('Biometry data'),
+			__('Biometry data ID'),
 			__('Visual age estimate'),
 			__('Body mass') . ' ' . __('Gross'),
 			__('Body mass') . ' ' . __('Net'),
@@ -431,9 +431,9 @@ class Controller extends BaseController
 			__('Hunting ground'),
 			__('spatial_unit_gid'),
 			__('number_of_removal_in_the_hunting_administration_area'),
-			__('Status on handling'), '',
+			__('Status on handling'),
 
-			__('Biometry data'),
+			__('Biometry data ID'),
 			__('Visual age estimate'),
 			__('Body mass') . ' ' . __('Gross'),
 			__('Body mass') . ' ' . __('Net'),

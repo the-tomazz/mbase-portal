@@ -509,7 +509,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 
 			Layout::rows([
 				Select::make('bearsBiometryAnimalHandling.licence_list_id')
-					->fromQuery(LicenceList::where('status', '=', BaseList::STR_ACTIVE), 'name')
+					->fromModel(LicenceList::where('status', '=', BaseList::STR_ACTIVE), 'name')
 					->title(__('Licence'))
 					->help(__('Please select the Licence'))
 					->empty(__('<Select>'))
