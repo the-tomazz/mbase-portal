@@ -32,7 +32,8 @@ return new class extends Migration
 		];
 
 		foreach ($dataLoad as $data) {
-			LicenceList::find($data['id'])->update([ 'description' => $data['description'] ]);
+			LicenceList::find($data['id'])
+				->update([ 'description' => $data['description'] ]);
 		}
 	}
 
