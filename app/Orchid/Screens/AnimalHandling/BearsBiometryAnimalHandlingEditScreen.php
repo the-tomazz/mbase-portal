@@ -588,8 +588,8 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 		$phpAnimalHandlingDate = new DateTime($parsedDate['year'] . '-' . $parsedDate['month'] . '-' . $parsedDate['day'] . ' ' . $parsedTime['hour'] . ':' . $parsedTime['minute']);
 		$animalHandlingStructure['animal_handling_date'] = $phpAnimalHandlingDate;
 
-		$animalHandlingStructure['n_number_of_removal_in_the_hunting_administrative_area'] = str_replace("_", "", $animalHandlingStructure['n_number_of_removal_in_the_hunting_administrative_area']);
-		$animalHandlingStructure['y_number_of_removal_in_the_hunting_administrative_area'] = str_replace("_", "", $animalHandlingStructure['y_number_of_removal_in_the_hunting_administrative_area']);
+		$animalHandlingStructure['n_number_of_removal_in_the_hunting_administrative_area'] = str_replace('_', '', $animalHandlingStructure['n_number_of_removal_in_the_hunting_administrative_area'] ?? '');
+		$animalHandlingStructure['y_number_of_removal_in_the_hunting_administrative_area'] = str_replace('_', '', $animalHandlingStructure['y_number_of_removal_in_the_hunting_administrative_area'] ?? '');
 		$animalHandlingStructure['number_of_removal_in_the_hunting_administrative_area'] = $animalHandlingStructure['n_number_of_removal_in_the_hunting_administrative_area'] . '/' . $animalHandlingStructure['y_number_of_removal_in_the_hunting_administrative_area'];
 
 		$request->merge(['bearsBiometryAnimalHandling' => $animalHandlingStructure]);
