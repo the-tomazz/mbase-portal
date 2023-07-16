@@ -35,7 +35,11 @@ That should be it.
 		position: {{'{'}}
 			lat: {{$animalHandling->lat}}, lng: {{$animalHandling->lng}}
 		{{'}'}},
-		title: '<b>{{__("Name")}}:</b> {{$animal->name}}<br><b>{{__("Handling date")}}:</b> {{(new DateTime($animalHandling->animal_handling_date))->format("d.m.Y H:i")}}<br><b>{{__("Type of conflict animal removal")}}:</b> {{$animalHandling->conflict_animal_removal_list == null ? "" : $animalHandling->conflict_animal_removal_list->name}}'
+		title:
+			'<b>{{__("ID")}}: </b>{{$animalHandling->animal_id}}</br>' +
+			'<b>{{__("Name")}}:</b> {{$animal->name}}<br>' +
+			'<b>{{__("Handling date")}}:</b> {{(new DateTime($animalHandling->animal_handling_date))->format("d.m.Y H:i")}}<br>' +
+			'<b>{{__("Type of conflict animal removal")}}: </b> {{$animalHandling->conflict_animal_removal_list == null ? "" : $animalHandling->conflict_animal_removal_list->name}}'
 	{{'}'}},
 @endforeach
 @endforeach
