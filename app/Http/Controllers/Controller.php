@@ -128,7 +128,7 @@ class Controller extends BaseController
 			$row[] = $isBiometryData ? $bearsBiometryData->number_of_premolars_in_the_lower_jaw : '';
 			$row[] = $isBiometryData ? $bearsBiometryData->distance_between_upper_canines : '';
 			$row[] = $isBiometryData ? $bearsBiometryData->distance_between_lower_canines : '';
-			$row[] = $animalHandling->tooth_type_list ? $animalHandling->tooth_type_list->name : '';
+			$row[] = $isAnimalHandling ? ( $animalHandling->tooth_type_list ? $animalHandling->tooth_type_list->name : '' ) : '';
 			$row[] = $isBiometryData ? $bearsBiometryData->testicals_left_length : '';
 			$row[] = $isBiometryData ? $bearsBiometryData->testicals_left_width : '';
 			$row[] = $isBiometryData ? $bearsBiometryData->testicals_right_length : '';
@@ -138,14 +138,14 @@ class Controller extends BaseController
 			$row[] = $isBiometryData ? ( $bearsBiometryData->collar_list ? $bearsBiometryData->collar_list->name : '' ) : '';
 			$row[] = $isBiometryData ? ( $bearsBiometryData->fur_pattern_in_lynx_list ? $bearsBiometryData->fur_pattern_in_lynx_list->name : '' ) : '';
 
-			$row[] = $animalHandling->licence_list ? $animalHandling->licence_list->name : '';
+			$row[] = $isAnimalHandling ? ( $animalHandling->licence_list ? $animalHandling->licence_list->name : '' ) : '';
 			$row[] = $animal->name;
-			$row[] = $animalHandling->project_name;
-			$row[] = $animalHandling->telemetry_uid;
-			$row[] = $animalHandling->receiving_country;
+			$row[] = $isAnimalHandling ? $animalHandling->project_name : '';
+			$row[] = $isAnimalHandling ? $animalHandling->telemetry_uid : '';
+			$row[] = $isAnimalHandling ? $animalHandling->receiving_country : '';
 
-			$row[] = $animalHandling->created_at->format('Y-m-d');
-			$row[] = $animalHandling->updated_at->format('Y-m-d');
+			$row[] = $isAnimalHandling ? $animalHandling->created_at->format('Y-m-d') : '';
+			$row[] = $isAnimalHandling ? $animalHandling->updated_at->format('Y-m-d') : '';
 
 			$payload[] = $row;
 		}
@@ -423,7 +423,7 @@ class Controller extends BaseController
 			$row[] = $isBiometryData ? $bearsBiometryData->number_of_premolars_in_the_lower_jaw : '';
 			$row[] = $isBiometryData ? $bearsBiometryData->distance_between_upper_canines : '';
 			$row[] = $isBiometryData ? $bearsBiometryData->distance_between_lower_canines : '';
-			$row[] = $animalHandling->tooth_type_list ? $animalHandling->tooth_type_list->name : '';
+			$row[] = $isAnimalHandling ? ( $animalHandling->tooth_type_list ? $animalHandling->tooth_type_list->name : '' ) : '';
 			$row[] = $isBiometryData ? $bearsBiometryData->testicals_left_length : '';
 			$row[] = $isBiometryData ? $bearsBiometryData->testicals_left_width : '';
 			$row[] = $isBiometryData ? $bearsBiometryData->testicals_right_length : '';
@@ -433,14 +433,14 @@ class Controller extends BaseController
 			$row[] = $isBiometryData ? ( $bearsBiometryData->collar_list ? $bearsBiometryData->collar_list->name : '' ) : '';
 			$row[] = $isBiometryData ? ( $bearsBiometryData->fur_pattern_in_lynx_list ? $bearsBiometryData->fur_pattern_in_lynx_list->name : '' ) : '';
 
-			$row[] = $animalHandling->licence_list ? $animalHandling->licence_list->name : '';
+			$row[] = $isAnimalHandling ? ( $animalHandling->licence_list ? $animalHandling->licence_list->name : '' ) : '';
 			$row[] = $animal->name;
-			$row[] = $animalHandling->project_name;
-			$row[] = $animalHandling->telemetry_uid;
-			$row[] = $animalHandling->receiving_country;
+			$row[] = $isAnimalHandling ? $animalHandling->project_name : '';
+			$row[] = $isAnimalHandling ? $animalHandling->telemetry_uid : '';
+			$row[] = $isAnimalHandling ? $animalHandling->receiving_country : '';
 
-			$row[] = $animalHandling->created_at->format('Y-m-d');
-			$row[] = $animalHandling->updated_at->format('Y-m-d');
+			$row[] = $isAnimalHandling ? $animalHandling->created_at->format('Y-m-d') : '';
+			$row[] = $isAnimalHandling ? $animalHandling->updated_at->format('Y-m-d') : '';
 
 			$payload[] = $row;
 		}
