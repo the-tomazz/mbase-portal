@@ -146,7 +146,7 @@ class PlatformProvider extends OrchidServiceProvider
 					->icon('list')
 					->href('/admin/crud/list/animal-withdrawal-lists');
 
-				$menu[] = Menu::make('Loss Reason')
+				$menu[] = Menu::make('Loss reason')
 					->icon('list')
 					->href('/admin/crud/list/biometry-loss-reason-lists');
 
@@ -166,7 +166,7 @@ class PlatformProvider extends OrchidServiceProvider
 					->icon('list')
 					->href('/admin/crud/list/incisors-wear-lists');
 
-				$menu[] = Menu::make('Place Of Removal')
+				$menu[] = Menu::make('Place of removal')
 					->icon('list')
 					->href('/admin/crud/list/place-type-lists');
 

@@ -52,7 +52,6 @@ class AnimalHandlingListViewListLayout extends Table
 				})
 				->sort(),
 
-
 			TD::make('animal_handling_date', __('Handling date'))
 				->render(function (AnimalHandlingListView $animalHandlingListView) {
 					return Link::make($animalHandlingListView->animal_handling_date->format('d.m.Y'))

@@ -234,4 +234,9 @@ class BearsBiometryAnimalHandling extends Model
 			'<i class="text-success">●</i> ' . __('Alive') :
 			'<i class="text-danger">●</i> ' . __('Dead');
 	}
+
+	public function statusOnHandlingString()
+	{
+		return $this->animal_status_on_handling == Animal::STR_ALIVE ? __('Alive') : __('Dead');
+	}
 }

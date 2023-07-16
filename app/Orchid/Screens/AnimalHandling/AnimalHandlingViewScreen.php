@@ -81,7 +81,7 @@ class AnimalHandlingViewScreen extends Screen
 					return $bearsBiometryAnimalHandling->animal_handling_date->format('d.m.Y H:i');
 				}),
 
-			Sight::make('date_and_time_of_biometry_measurements', __('Date and time of biometry measurements'))
+			Sight::make('biometric_data', __('Biometric data'))
 				->render(function ($bearsBiometryAnimalHandling) {
 					return $this->bearsBiometryAnimalHandling->bearsBiometryData ?
 						Link::make(__('View biometry data'))

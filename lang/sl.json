@@ -80,7 +80,6 @@
     "Date and time of animal handling": "Datum in čas rokovanja z živaljo",
     "Date and time of biometry measurements": "Datum in ura biometričnih meritev",
     "Date and time of death": "Datum in čas smrti",
-    "Date and time of handling": "Datum in čas rokovanja z živaljo",
     "Date of death": "Datum smrti",
     "Date of handling": "Datum rokovanja z živaljo",
     "Date time of death": "Čas smrti",
@@ -225,7 +224,6 @@
     "Login": "Prijava",
     "Logout": "Odjava",
     "Longitude": "Zemljepisna dolžina (GPS)",
-    "Loss Reason": "Vzrok izgube",
     "Loss reason": "Vzrok izgube",
     "Loss reason description": "Vzrok izgube",
     "Lower": "Spodaj",
@@ -273,7 +271,6 @@
     "Permit number": "Številka dovoljenja",
     "Photos collected": "Fotografije (obvezno fotografiraj risa in volka!)",
     "Physical condition, parasites, injuries, markings, other observations (ear tags, signs of crossbreeding with a dog, etc.) and notes": "Telesna kondicija, zajedavci, poškodbe, označbe, druga opažanja (ušesne značke, znaki križanja s psom…) in opombe",
-    "Place Of Removal": "Kraj odvzema",
     "Place of removal": "Kraj odvzema",
     "Place of removal type": "Kraj odvzema",
     "Please click the button below to verify your email address.": "S klikom na spodnjo povezavo potrdite vaš elektronski naslov.",
@@ -481,5 +478,7 @@
 	"Telemetry": "Telemetrija",
 
 	"User": "Uporabnik",
-	"All registered users": "Vsi registrirani uporabniki"
+	"All registered users": "Vsi registrirani uporabniki",
+
+	"Biometric data": "Biometrični podatki"
 }

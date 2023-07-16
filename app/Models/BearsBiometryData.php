@@ -180,7 +180,6 @@ class BearsBiometryData extends Model
 		'collar_list_id',
 		'fur_pattern_in_lynx_list_id',
 		'observations_and_notes',
-		'date_and_time_of_data_input',
 		'depot',
 		'status'
 	];

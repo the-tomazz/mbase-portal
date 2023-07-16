@@ -15,9 +15,11 @@ use League\Csv\Writer;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Log;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
 use SplTempFileObject;
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class Controller extends BaseController
@@ -47,92 +49,103 @@ class Controller extends BaseController
 			$row = [];
 			// export animal related columns - 'id', 'species_list_id', 'sex_list_id', 'status', 'title', 'name', 'description'
 			$animal = Animal::find($animalHandlingListElement->animal_id);
-			$row[] = $animal->id;
-			$row[] = $animal->species_list ? $animal->species_list->name : '';
-			$row[] = $animal->sex_list ? $animal->sex_list->name : '';
-			$row[] = $animal->statusString();
-			$row[] = $animal->name;
-			$row[] = $animal->description;
-
 			$animalHandling = BearsBiometryAnimalHandling::find($animalHandlingListElement->id);
+			$isAnimalHandling = $animalHandling != null;
+			$isBiometryData = $isAnimalHandling && $animalHandlingListElement->bears_biometry_data_id != null;
 
-			$row[] = $animalHandling->id;
-			$row[] = $animalHandling->way_of_withdrawal_list ? $animalHandling->way_of_withdrawal_list->name : '';
-			$row[] = $animalHandling->animal_conflictedness;
-			$row[] = $animalHandling->animal_conflictedness_details;
-			$row[] = $animalHandling->number_of_removal_in_the_hunting_administrative_area;
-			$row[] = $animalHandling->conflict_animal_removal_list ? $animalHandling->conflict_animal_removal_list->name : '';
-			$row[] = $animalHandling->licence_list ? $animalHandling->licence_list->name : '';
-			$row[] = $animalHandling->licence_number;
-			$row[] = $animalHandling->project_name;
-			$row[] = $animalHandling->receiving_country;
-			$row[] = $animalHandling->telemetry_uid;
-			$row[] = $animalHandling->biometry_loss_reason_list ? $animalHandling->biometry_loss_reason_list->name : '';
-			$row[] = $animalHandling->biometry_loss_reason_description;
-			$row[] = $animalHandling->animal_handling_date;
-			$row[] = $animalHandling->place_of_removal;
-			$row[] = $animalHandling->place_type_list ? $animalHandling->place_type_list->name : '';
-			$row[] = $animalHandling->place_type_list_details;
-			$row[] = $animalHandling->lat;
-			$row[] = $animalHandling->lng;
-			$row[] = $animalHandling->hunting_management_area;
-			$row[] = $animalHandling->hunter_finder_name_and_surname;
-			$row[] = $animalHandling->hunter_finder_country ? $animalHandling->hunter_finder_country->name : '';
-			$row[] = $animalHandling->witness_accompanying_person_name_and_surname;
-			$row[] = $animalHandling->tooth_type_list ? $animalHandling->tooth_type_list->name : '';
-			$row[] = $animalHandling->taxidermist_name_and_surname;
-			$row[] = $animalHandling->hunting_ground;
-			$row[] = $animalHandling->spatial_unit_gid;
-			$row[] = $animalHandling->number_of_removal_in_the_hunting_administration_area;
-			$row[] = $animalHandling->animal_status_on_handling;
-
-			if ($animalHandlingListElement->bears_biometry_data_id != null) {
+			if ($isBiometryData) {
 				$bearsBiometryData = BearsBiometryData::find($animalHandlingListElement->bears_biometry_data_id);
-
-				$row[] = $bearsBiometryData->id;
-				$row[] = $bearsBiometryData->age;
-				$row[] = $bearsBiometryData->masa_bruto;
-				$row[] = $bearsBiometryData->masa_neto;
-				$row[] = $bearsBiometryData->body_length;
-				$row[] = $bearsBiometryData->abdominal_length;
-				$row[] = $bearsBiometryData->shoulder_height;
-				$row[] = $bearsBiometryData->head_circumference;
-				$row[] = $bearsBiometryData->neck_circumference;
-				$row[] = $bearsBiometryData->thorax_circumference;
-				$row[] = $bearsBiometryData->abdomen_circumference;
-				$row[] = $bearsBiometryData->baculum_length;
-				$row[] = $bearsBiometryData->nipple_length;
-				$row[] = $bearsBiometryData->teats_wear_list ? $bearsBiometryData->teats_wear_list->name : '';
-				$row[] = $bearsBiometryData->tail_length;
-				$row[] = $bearsBiometryData->ear_length_without_hair;
-				$row[] = $bearsBiometryData->observations_and_notes;
-				$row[] = $bearsBiometryData->hair_tuft_length;
-				$row[] = $bearsBiometryData->hind_left_paw_length;
-				$row[] = $bearsBiometryData->hind_right_paw_length;
-				$row[] = $bearsBiometryData->front_right_paw_length;
-				$row[] = $bearsBiometryData->front_left_paw_length;
-				$row[] = $bearsBiometryData->hind_left_paw_width;
-				$row[] = $bearsBiometryData->hind_right_paw_width;
-				$row[] = $bearsBiometryData->front_left_paw_width;
-				$row[] = $bearsBiometryData->front_right_paw_width;
-				$row[] = $bearsBiometryData->upper_left_canines;
-				$row[] = $bearsBiometryData->upper_right_canines;
-				$row[] = $bearsBiometryData->number_of_premolars_in_the_upper_jaw;
-				$row[] = $bearsBiometryData->number_of_premolars_in_the_lower_jaw;
-				$row[] = $bearsBiometryData->upper_left_canines_length;
-				$row[] = $bearsBiometryData->lower_left_canines_length;
-				$row[] = $bearsBiometryData->upper_right_canines_length;
-				$row[] = $bearsBiometryData->lower_right_canines_length;
-				$row[] = $bearsBiometryData->testicals_left_length;
-				$row[] = $bearsBiometryData->testicals_left_width;
-				$row[] = $bearsBiometryData->testicals_right_length;
-				$row[] = $bearsBiometryData->testicals_right_width;
-				$row[] = $bearsBiometryData->incisors_wear_list ? $bearsBiometryData->incisors_wear_list->name : '';
-				$row[] = $bearsBiometryData->color_list ? $bearsBiometryData->color_list->name : '';
-				$row[] = $bearsBiometryData->collar_list ? $bearsBiometryData->collar_list->name : '';
-				$row[] = $bearsBiometryData->fur_pattern_in_lynx_list ? $bearsBiometryData->fur_pattern_in_lynx_list->name : '';
-				$row[] = $bearsBiometryData->date_and_time_of_data_input;
 			}
+
+			$row[] = $animal->id;
+			$row[] = $isAnimalHandling ? $animalHandling->id : '';
+			$row[] = $isAnimalHandling ? $animalHandling->animal_handling_date->format('Y-m-d') : '';
+			$row[] = $animal->species_list ? $animal->species_list->name : '';
+			$row[] = $isAnimalHandling ? $animalHandling->hunting_management_area : '';
+			$row[] = $isAnimalHandling ? $animalHandling->number_of_removal_in_the_hunting_administration_area : '';
+			$row[] = $isAnimalHandling ? $animalHandling->hunting_ground : '';
+			$row[] = $isAnimalHandling ? ( $animalHandling->way_of_withdrawal_list ? $animalHandling->way_of_withdrawal_list->name : '' ) : '';
+			$row[] = $isAnimalHandling ? ( $animalHandling->conflict_animal_removal_list ? $animalHandling->conflict_animal_removal_list->name : '' ) : '';
+			$row[] = $isAnimalHandling ? $animalHandling->animal_conflictedness : '';
+			$row[] = $isAnimalHandling ? $animalHandling->animal_conflictedness_details : '';
+			$row[] = $isAnimalHandling ? ( $animalHandling->biometry_loss_reason_list ? $animalHandling->biometry_loss_reason_list->name : '' ) : '';
+			$row[] = $isAnimalHandling ? $animalHandling->biometry_loss_reason_description : '';
+			$row[] = $isAnimalHandling ? $animalHandling->place_of_removal : '';
+			$row[] = $isAnimalHandling ? ( $animalHandling->place_type_list ? $animalHandling->place_type_list->name : '' ) : '';
+			$row[] = $isAnimalHandling ? $animalHandling->place_type_list_details : '';
+			$row[] = $isAnimalHandling ? $animalHandling->lat : '';
+			$row[] = $isAnimalHandling ? $animalHandling->lng : '';
+			$row[] = $animal->sex_list ? $animal->sex_list->name : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->age : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->masa_bruto : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->masa_neto : '';
+			if ($isAnimalHandling) {
+				$user = User::find($animalHandling->data_entered_by_user_id);
+				$row[] = $user ? $user->name : '';
+			}
+			$row[] = $isAnimalHandling ? $animalHandling->licence_number : '';
+			$row[] = $animal->description;
+			$row[] = $animal->died_at_date ? $animal->died_at_date->format('Y-m-d') . ' ' . $animal->died_at_time : '';
+			$row[] = $isAnimalHandling ? ( $animalHandling->hunter_finder_country ? $animalHandling->hunter_finder_country->name : '' ) : '';
+			$row[] = $isAnimalHandling ? $animalHandling->hunter_finder_name_and_surname : '';
+			$row[] = $isAnimalHandling ? $animalHandling->witness_accompanying_person_name_and_surname : '';
+			$row[] = $isAnimalHandling ? $animalHandling->taxidermist_name_and_surname : '';
+			$row[] = $animal->statusString();
+			$row[] = $isAnimalHandling ? $animalHandling->statusOnHandlingString() : '';
+
+			# $row[] = $animalHandling->spatial_unit_gid;
+
+			$row[] = $isBiometryData ? $bearsBiometryData->id : '';
+
+			$row[] = $isBiometryData ? $bearsBiometryData->body_length : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->shoulder_height : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->head_circumference : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->neck_circumference : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->thorax_circumference : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->abdomen_circumference : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->baculum_length : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->nipple_length : '';
+			$row[] = $isBiometryData ? ( $bearsBiometryData->teats_wear_list ? $bearsBiometryData->teats_wear_list->name : '' ) : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->tail_length : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->ear_length_without_hair : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->observations_and_notes : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->hair_tuft_length : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->hind_left_paw_length : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->hind_right_paw_length : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->front_right_paw_length : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->front_left_paw_length : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->hind_left_paw_width : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->hind_right_paw_width : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->front_left_paw_width : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->front_right_paw_width : '';
+			# $row[] = $isBiometryData ? $bearsBiometryData->upper_left_canines : '';
+			# $row[] = $isBiometryData ? $bearsBiometryData->upper_right_canines : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->upper_left_canines_length : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->lower_left_canines_length : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->upper_right_canines_length : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->lower_right_canines_length : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->number_of_premolars_in_the_upper_jaw : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->number_of_premolars_in_the_lower_jaw : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->distance_between_upper_canines : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->distance_between_lower_canines : '';
+			$row[] = $animalHandling->tooth_type_list ? $animalHandling->tooth_type_list->name : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->testicals_left_length : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->testicals_left_width : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->testicals_right_length : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->testicals_right_width : '';
+			$row[] = $isBiometryData ? ( $bearsBiometryData->incisors_wear_list ? $bearsBiometryData->incisors_wear_list->name : '' ) : '';
+			$row[] = $isBiometryData ? ( $bearsBiometryData->color_list ? $bearsBiometryData->color_list->name : '' ) : '';
+			$row[] = $isBiometryData ? ( $bearsBiometryData->collar_list ? $bearsBiometryData->collar_list->name : '' ) : '';
+			$row[] = $isBiometryData ? ( $bearsBiometryData->fur_pattern_in_lynx_list ? $bearsBiometryData->fur_pattern_in_lynx_list->name : '' ) : '';
+
+			$row[] = $animalHandling->licence_list ? $animalHandling->licence_list->name : '';
+			$row[] = $animal->name;
+			$row[] = $animalHandling->project_name;
+			$row[] = $animalHandling->telemetry_uid;
+			$row[] = $animalHandling->receiving_country;
+
+			$row[] = $animalHandling->created_at->format('Y-m-d');
+			$row[] = $animalHandling->updated_at->format('Y-m-d');
 
 			$payload[] = $row;
 		}
@@ -142,48 +155,43 @@ class Controller extends BaseController
 		// We insert the CSV header
 		$csv->insertOne([
 			__('Animal ID'),
-			__('Species'),
-			__('Sex'),
-			__('Status'),
-			__('Name'),
-			__('Note'),
-
 			__('Animal handling ID'),
+			__('Animal handling date'),
+			__('Species'),
+			__('Hunting-management area (LUO)'),
+			__('Number and the year of removal in hunting administrative area'),
+			__('Hunting ground'),
 			__('Way of withdrawal'),
+			__('Type of conflict animal removal'),
 			__('Animal conflictedness'),
 			__('Description of conflictedness'),
-			__('Number and the year of removal in hunting administrative area'),
-			__('Type of conflict animal removal'),
-			__('Licence'),
-			__('Permit number'),
-			__('Project name'),
-			__('Receiving country and institutions'),
-			__('Ear-tag number or radio-collar (telemetry) identification'),
 			__('Loss reason'),
 			__('Loss reason description'),
-			__('Date and time of handling'),
 			__('Geo location / Local name'),
 			__('Place of removal type'),
 			__('Other place of removal type'),
 			__('Latitude'),
 			__('Longitude'),
-			__('Hunting-management area (LUO)'),
-			__('Hunter/Finder name and surname'),
-			__('Country'),
-			__('Witness/Accompanying person name and surname'),
-			__('Tooth Type'),
-			__('Taxidermist name and surname'),
-			__('Hunting ground'),
-			__('spatial_unit_gid'),
-			__('number_of_removal_in_the_hunting_administration_area'),
-			__('Status on handling'),
-
-			__('Biometry data ID'),
+			__('Sex'),
 			__('Visual age estimate'),
 			__('Body mass') . ' ' . __('Gross'),
 			__('Body mass') . ' ' . __('Net'),
+			__('User'),
+			__('Permit number'),
+			__('Note'),
+			__('Date and time of death'),
+			__('Country'),
+			__('Hunter/Finder name and surname'),
+			__('Witness/Accompanying person name and surname'),
+			__('Taxidermist name and surname'),
+			__('Status on handling'),
+			__('Status'),
+
+			# __('spatial_unit_gid'),
+
+			__('Biometry data ID'),
 			__('Body length'),
-			__('Abdominal length'),
+			# __('Abdominal length'),
 			__('Shoulder height'),
 			__('Head circumference'),
 			__('Neck circumference'),
@@ -194,8 +202,8 @@ class Controller extends BaseController
 			__('Teats use'),
 			__('Tail length without hair'),
 			__('Ear length without hair'),
-			__('Notes'),
-			__('Length of hair tuft (for lynx only)'),
+			__('Physical condition, parasites, injuries, markings, other observations (ear tags, signs of crossbreeding with a dog, etc.) and notes'),
+			__('Length of hair tuft (for lynx only) (0-15 cm)'),
 			__('Hind left paw length'),
 			__('Hind right paw length'),
 			__('Front left paw length'),
@@ -214,6 +222,9 @@ class Controller extends BaseController
 			__('Number of premolars in the Lower jaw (left + right)'),
 			__('Distance between upper canines'),
 			__('Distance between lower canines'),
+
+			__('Tooth Type'),
+
 			__('Left testicle length'),
 			__('Left testicle width'),
 			__('Right testicle length'),
@@ -223,8 +234,16 @@ class Controller extends BaseController
 			__('Color'),
 			__("Light neck stripe 'collar'"),
 			__('Lynx coat pattern'),
-			__('Date and time of data_input') /*, 'depot', 'status' */
+
+			__('Licence'),
+			__('Name'),
+			__('Project name'),
+			__('Receiving country and institutions'),
+			__('Ear-tag number or radio-collar (telemetry) identification'),
+			__('Created at'), /*, 'depot', 'status' */
+			__('Updated at')
 		]);
+
 
 		// The PDOStatement Object implements the Traversable Interface
 		// that's why Writer::insertAll can directly insert
@@ -248,6 +267,29 @@ class Controller extends BaseController
 		/* Load a CSV file and save as a XLS */
 		// $spreadsheet = $reader->load('../../uploads/test.csv');
 		$spreadsheet = $reader->loadSpreadsheetFromString($csvString);
+
+		$worksheet = $spreadsheet->getSheet(0);
+
+		// Get current date and timestamp
+		// Convert to an Excel date/time
+
+		$columnsToBeFormattedAsDate = ['C', 'Z', 'BZ', 'BY'];
+		foreach ($columnsToBeFormattedAsDate as $column) {
+			$worksheet->getStyle($column . '1:' . $column . count($payload)+2)
+				->getNumberFormat()
+				->setFormatCode(
+					NumberFormat::FORMAT_DATE_DMYMINUS
+				);
+
+			foreach ($payload as $rowNumber => $row) {
+				$stringDate = $worksheet->getCell($column  . ($rowNumber + 2))->getValue();
+				$excelDateValue = Date::PHPToExcel($stringDate);
+				$worksheet->setCellValue($column . ($rowNumber + 2), $excelDateValue);
+			}
+		}
+		// Set cell A1 with the Formatted date/time value
+
+
 		$filename = 'Animal handlings ' . date("d.m.Y-Hi");
 
 		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
@@ -282,12 +324,6 @@ class Controller extends BaseController
 		foreach ($data as $animal) {
 			$row = [];
 			// export animal related columns - 'id', 'species_list_id', 'sex_list_id', 'status', 'title', 'name', 'description'
-			$row[] = $animal->id;
-			$row[] = $animal->species_list ? $animal->species_list->name : '';
-			$row[] = $animal->sex_list ? $animal->sex_list->name : '';
-			$row[] = $animal->statusString();
-			$row[] = $animal->name;
-			$row[] = $animal->description;
 
 			$animalHandlingCount = $animal->bearsBiometryAnimalHandlings()
 				->where(function ($query) use ($animalHandlingDateFrom, $animalHandlingDateTo) {
@@ -307,86 +343,104 @@ class Controller extends BaseController
 				->orderBy('animal_handling_date')
 				->first();
 
-			if ($animalHandling != null) {
-				$row[] = $animalHandling->id;
-				$row[] = $animalHandlingCount;
-				$row[] = $animalHandling->animal_handling_date;
-				$row[] = $animalHandling->way_of_withdrawal_list ? $animalHandling->way_of_withdrawal_list->name : '';
-				$row[] = $animalHandling->animal_conflictedness;
-				$row[] = $animalHandling->animal_conflictedness_details;
-				$row[] = $animalHandling->number_of_removal_in_the_hunting_administrative_area;
-				$row[] = $animalHandling->conflict_animal_removal_list ? $animalHandling->conflict_animal_removal_list->name : '';
-				$row[] = $animalHandling->licence_list ? $animalHandling->licence_list->name : '';
-				$row[] = $animalHandling->licence_number;
-				$row[] = $animalHandling->project_name;
-				$row[] = $animalHandling->receiving_country;
-				$row[] = $animalHandling->telemetry_uid;
-				$row[] = $animalHandling->biometry_loss_reason_list ? $animalHandling->biometry_loss_reason_list->name : '';
-				$row[] = $animalHandling->biometry_loss_reason_description;
-				$row[] = $animalHandling->place_of_removal;
-				$row[] = $animalHandling->place_type_list ? $animalHandling->place_type_list->name : '';
-				$row[] = $animalHandling->place_type_list_details;
-				$row[] = $animalHandling->lat;
-				$row[] = $animalHandling->lng;
-				$row[] = $animalHandling->hunting_management_area;
-				$row[] = $animalHandling->hunter_finder_name_and_surname;
-				$row[] = $animalHandling->hunter_finder_country ? $animalHandling->hunter_finder_country->name : '';
-				$row[] = $animalHandling->witness_accompanying_person_name_and_surname;
-				$row[] = $animalHandling->tooth_type_list ? $animalHandling->tooth_type_list->name : '';
-				$row[] = $animalHandling->taxidermist_name_and_surname;
-				$row[] = $animalHandling->hunting_ground;
-				$row[] = $animalHandling->spatial_unit_gid;
-				$row[] = $animalHandling->number_of_removal_in_the_hunting_administration_area;
-				$row[] = $animalHandling->animal_status_on_handling;
+			$isAnimalHandling = $animalHandling != null;
+			$isBiometryData = $isAnimalHandling && $animalHandling->bears_biometry_data_id != null;
 
-				$bearsBiometryData = BearsBiometryData::where('bears_biometry_animal_handling_id', '=', $animalHandling->id)
-					->first();
-
-				if ($bearsBiometryData) {
-					$row[] = $bearsBiometryData->id;
-					$row[] = $bearsBiometryData->age;
-					$row[] = $bearsBiometryData->masa_bruto;
-					$row[] = $bearsBiometryData->masa_neto;
-					$row[] = $bearsBiometryData->body_length;
-					$row[] = $bearsBiometryData->shoulder_height;
-					$row[] = $bearsBiometryData->head_circumference;
-					$row[] = $bearsBiometryData->neck_circumference;
-					$row[] = $bearsBiometryData->thorax_circumference;
-					$row[] = $bearsBiometryData->abdomen_circumference;
-					$row[] = $bearsBiometryData->baculum_length;
-					$row[] = $bearsBiometryData->nipple_length;
-					$row[] = $bearsBiometryData->teats_wear_list ? $bearsBiometryData->teats_wear_list->name : '';
-					$row[] = $bearsBiometryData->tail_length;
-					$row[] = $bearsBiometryData->ear_length_without_hair;
-					$row[] = $bearsBiometryData->observations_and_notes;
-					$row[] = $bearsBiometryData->hair_tuft_length;
-					$row[] = $bearsBiometryData->hind_left_paw_length;
-					$row[] = $bearsBiometryData->hind_right_paw_length;
-					$row[] = $bearsBiometryData->front_right_paw_length;
-					$row[] = $bearsBiometryData->front_left_paw_length;
-					$row[] = $bearsBiometryData->hind_left_paw_width;
-					$row[] = $bearsBiometryData->hind_right_paw_width;
-					$row[] = $bearsBiometryData->front_left_paw_width;
-					$row[] = $bearsBiometryData->front_right_paw_width;
-					$row[] = $bearsBiometryData->upper_left_canines;
-					$row[] = $bearsBiometryData->upper_right_canines;
-					$row[] = $bearsBiometryData->number_of_premolars_in_the_upper_jaw;
-					$row[] = $bearsBiometryData->number_of_premolars_in_the_lower_jaw;
-					$row[] = $bearsBiometryData->upper_left_canines_length;
-					$row[] = $bearsBiometryData->lower_left_canines_length;
-					$row[] = $bearsBiometryData->upper_right_canines_length;
-					$row[] = $bearsBiometryData->lower_right_canines_length;
-					$row[] = $bearsBiometryData->testicals_left_length;
-					$row[] = $bearsBiometryData->testicals_left_width;
-					$row[] = $bearsBiometryData->testicals_right_length;
-					$row[] = $bearsBiometryData->testicals_right_width;
-					$row[] = $bearsBiometryData->incisors_wear_list ? $bearsBiometryData->incisors_wear_list->name : '';
-					$row[] = $bearsBiometryData->color_list ? $bearsBiometryData->color_list->name : '';
-					$row[] = $bearsBiometryData->collar_list ? $bearsBiometryData->collar_list->name : '';
-					$row[] = $bearsBiometryData->fur_pattern_in_lynx_list ? $bearsBiometryData->fur_pattern_in_lynx_list->name : '';
-					$row[] = $bearsBiometryData->date_and_time_of_data_input;
-				}
+			if ($isBiometryData) {
+				$bearsBiometryData = BearsBiometryData::find($animalHandling->bears_biometry_data_id);
 			}
+
+			$row = [];
+			// export animal related columns - 'id', 'species_list_id', 'sex_list_id', 'status', 'title', 'name', 'description'
+			$row[] = $animal->id;
+			$row[] = $isAnimalHandling ? $animalHandling->id : '';
+			$row[] = $isAnimalHandling ? $animalHandling->animal_handling_date->format('Y-m-d') : '';
+			$row[] = $animal->species_list ? $animal->species_list->name : '';
+			$row[] = $isAnimalHandling ? $animalHandling->hunting_management_area : '';
+			$row[] = $isAnimalHandling ? $animalHandling->number_of_removal_in_the_hunting_administration_area : '';
+			$row[] = $isAnimalHandling ? $animalHandling->hunting_ground : '';
+			$row[] = $isAnimalHandling ? ( $animalHandling->way_of_withdrawal_list ? $animalHandling->way_of_withdrawal_list->name : '' ) : '';
+			$row[] = $isAnimalHandling ? ( $animalHandling->conflict_animal_removal_list ? $animalHandling->conflict_animal_removal_list->name : '' ) : '';
+			$row[] = $isAnimalHandling ? $animalHandling->animal_conflictedness : '';
+			$row[] = $isAnimalHandling ? $animalHandling->animal_conflictedness_details : '';
+			$row[] = $isAnimalHandling ? ( $animalHandling->biometry_loss_reason_list ? $animalHandling->biometry_loss_reason_list->name : '' ) : '';
+			$row[] = $isAnimalHandling ? $animalHandling->biometry_loss_reason_description : '';
+			$row[] = $isAnimalHandling ? $animalHandling->place_of_removal : '';
+			$row[] = $isAnimalHandling ? ( $animalHandling->place_type_list ? $animalHandling->place_type_list->name : '' ) : '';
+			$row[] = $isAnimalHandling ? $animalHandling->place_type_list_details : '';
+			$row[] = $isAnimalHandling ? $animalHandling->lat : '';
+			$row[] = $isAnimalHandling ? $animalHandling->lng : '';
+			$row[] = $animal->sex_list ? $animal->sex_list->name : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->age : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->masa_bruto : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->masa_neto : '';
+			if ($isAnimalHandling) {
+				$user = User::find($animalHandling->data_entered_by_user_id);
+				$row[] = $user ? $user->name : '';
+			}
+			$row[] = $isAnimalHandling ? $animalHandling->licence_number : '';
+			$row[] = $animal->description;
+			$row[] = $animal->died_at_date ? $animal->died_at_date->format('Y-m-d') . ' ' . $animal->died_at_time : '';
+			$row[] = $isAnimalHandling ? ( $animalHandling->hunter_finder_country ? $animalHandling->hunter_finder_country->name : '' ) : '';
+			$row[] = $isAnimalHandling ? $animalHandling->hunter_finder_name_and_surname : '';
+			$row[] = $isAnimalHandling ? $animalHandling->witness_accompanying_person_name_and_surname : '';
+			$row[] = $isAnimalHandling ? $animalHandling->taxidermist_name_and_surname : '';
+			$row[] = $animal->statusString();
+			$row[] = $isAnimalHandling ? $animalHandling->statusOnHandlingString() : '';
+
+			# $row[] = $animalHandling->spatial_unit_gid;
+
+			$row[] = $isBiometryData ? $bearsBiometryData->id : '';
+
+			$row[] = $isBiometryData ? $bearsBiometryData->body_length : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->shoulder_height : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->head_circumference : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->neck_circumference : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->thorax_circumference : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->abdomen_circumference : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->baculum_length : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->nipple_length : '';
+			$row[] = $isBiometryData ? ( $bearsBiometryData->teats_wear_list ? $bearsBiometryData->teats_wear_list->name : '' ) : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->tail_length : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->ear_length_without_hair : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->observations_and_notes : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->hair_tuft_length : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->hind_left_paw_length : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->hind_right_paw_length : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->front_right_paw_length : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->front_left_paw_length : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->hind_left_paw_width : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->hind_right_paw_width : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->front_left_paw_width : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->front_right_paw_width : '';
+			# $row[] = $isBiometryData ? $bearsBiometryData->upper_left_canines : '';
+			# $row[] = $isBiometryData ? $bearsBiometryData->upper_right_canines : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->upper_left_canines_length : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->lower_left_canines_length : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->upper_right_canines_length : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->lower_right_canines_length : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->number_of_premolars_in_the_upper_jaw : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->number_of_premolars_in_the_lower_jaw : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->distance_between_upper_canines : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->distance_between_lower_canines : '';
+			$row[] = $animalHandling->tooth_type_list ? $animalHandling->tooth_type_list->name : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->testicals_left_length : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->testicals_left_width : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->testicals_right_length : '';
+			$row[] = $isBiometryData ? $bearsBiometryData->testicals_right_width : '';
+			$row[] = $isBiometryData ? ( $bearsBiometryData->incisors_wear_list ? $bearsBiometryData->incisors_wear_list->name : '' ) : '';
+			$row[] = $isBiometryData ? ( $bearsBiometryData->color_list ? $bearsBiometryData->color_list->name : '' ) : '';
+			$row[] = $isBiometryData ? ( $bearsBiometryData->collar_list ? $bearsBiometryData->collar_list->name : '' ) : '';
+			$row[] = $isBiometryData ? ( $bearsBiometryData->fur_pattern_in_lynx_list ? $bearsBiometryData->fur_pattern_in_lynx_list->name : '' ) : '';
+
+			$row[] = $animalHandling->licence_list ? $animalHandling->licence_list->name : '';
+			$row[] = $animal->name;
+			$row[] = $animalHandling->project_name;
+			$row[] = $animalHandling->telemetry_uid;
+			$row[] = $animalHandling->receiving_country;
+
+			$row[] = $animalHandling->created_at->format('Y-m-d');
+			$row[] = $animalHandling->updated_at->format('Y-m-d');
 
 			$payload[] = $row;
 		}
@@ -396,25 +450,16 @@ class Controller extends BaseController
 		// We insert the CSV header
 		$csv->insertOne([
 			__('Animal ID'),
-			__('Species'),
-			__('Sex'),
-			__('Status'),
-			__('Name'),
-			__('Note'), ' ',
-
 			__('Animal handling ID'),
-			__('# of animal handlings'),
-			__('Date and time of handling'),
+			__('Animal handling date'),
+			__('Species'),
+			__('Hunting-management area (LUO)'),
+			__('Number and the year of removal in hunting administrative area'),
+			__('Hunting ground'),
 			__('Way of withdrawal'),
+			__('Type of conflict animal removal'),
 			__('Animal conflictedness'),
 			__('Description of conflictedness'),
-			__('Number and the year of removal in hunting administrative area'),
-			__('Type of conflict animal removal'),
-			__('Licence'),
-			__('Permit number'),
-			__('Project name'),
-			__('Receiving country and institutions'),
-			__('Ear-tag number or radio-collar (telemetry) identification'),
 			__('Loss reason'),
 			__('Loss reason description'),
 			__('Geo location / Local name'),
@@ -422,23 +467,26 @@ class Controller extends BaseController
 			__('Other place of removal type'),
 			__('Latitude'),
 			__('Longitude'),
-			__('Hunting-management area (LUO)'),
-			__('Hunter/Finder name and surname'),
-			__('Country'),
-			__('Witness/Accompanying person name and surname'),
-			__('Tooth Type'),
-			__('Taxidermist name and surname'),
-			__('Hunting ground'),
-			__('spatial_unit_gid'),
-			__('number_of_removal_in_the_hunting_administration_area'),
-			__('Status on handling'),
-
-			__('Biometry data ID'),
+			__('Sex'),
 			__('Visual age estimate'),
 			__('Body mass') . ' ' . __('Gross'),
 			__('Body mass') . ' ' . __('Net'),
+			__('User'),
+			__('Permit number'),
+			__('Note'),
+			__('Date and time of death'),
+			__('Country'),
+			__('Hunter/Finder name and surname'),
+			__('Witness/Accompanying person name and surname'),
+			__('Taxidermist name and surname'),
+			__('Status on handling'),
+			__('Status'),
+
+			# __('spatial_unit_gid'),
+
+			__('Biometry data ID'),
 			__('Body length'),
-			__('Abdominal length'),
+			# __('Abdominal length'),
 			__('Shoulder height'),
 			__('Head circumference'),
 			__('Neck circumference'),
@@ -449,8 +497,8 @@ class Controller extends BaseController
 			__('Teats use'),
 			__('Tail length without hair'),
 			__('Ear length without hair'),
-			__('Notes'),
-			__('Length of hair tuft (for lynx only)'),
+			__('Physical condition, parasites, injuries, markings, other observations (ear tags, signs of crossbreeding with a dog, etc.) and notes'),
+			__('Length of hair tuft (for lynx only) (0-15 cm)'),
 			__('Hind left paw length'),
 			__('Hind right paw length'),
 			__('Front left paw length'),
@@ -469,6 +517,9 @@ class Controller extends BaseController
 			__('Number of premolars in the Lower jaw (left + right)'),
 			__('Distance between upper canines'),
 			__('Distance between lower canines'),
+
+			__('Tooth Type'),
+
 			__('Left testicle length'),
 			__('Left testicle width'),
 			__('Right testicle length'),
@@ -478,7 +529,14 @@ class Controller extends BaseController
 			__('Color'),
 			__("Light neck stripe 'collar'"),
 			__('Lynx coat pattern'),
-			__('Date and time of data_input') /*, 'depot', 'status' */
+
+			__('Licence'),
+			__('Name'),
+			__('Project name'),
+			__('Receiving country and institutions'),
+			__('Ear-tag number or radio-collar (telemetry) identification'),
+			__('Created at'), /*, 'depot', 'status' */
+			__('Updated at')
 		]);
 
 		// The PDOStatement Object implements the Traversable Interface
