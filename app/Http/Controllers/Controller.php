@@ -85,7 +85,7 @@ class Controller extends BaseController
 			}
 			$row[] = $isAnimalHandling ? $animalHandling->licence_number : '';
 			$row[] = $animal->description;
-			$row[] = $animal->died_at_date ? $animal->died_at_date->format('Y-m-d') . ' ' . $animal->died_at_time : '';
+			$row[] = $animal->died_at ? $animal->died_at->format('Y-m-d') : '';
 			$row[] = $isAnimalHandling ? ( $animalHandling->hunter_finder_country ? $animalHandling->hunter_finder_country->name : '' ) : '';
 			$row[] = $isAnimalHandling ? $animalHandling->hunter_finder_name_and_surname : '';
 			$row[] = $isAnimalHandling ? $animalHandling->witness_accompanying_person_name_and_surname : '';
@@ -264,14 +264,9 @@ class Controller extends BaseController
 		$reader->setEnclosure('"');
 		$reader->setSheetIndex(0);
 
-		/* Load a CSV file and save as a XLS */
-		// $spreadsheet = $reader->load('../../uploads/test.csv');
 		$spreadsheet = $reader->loadSpreadsheetFromString($csvString);
 
 		$worksheet = $spreadsheet->getSheet(0);
-
-		// Get current date and timestamp
-		// Convert to an Excel date/time
 
 		$columnsToBeFormattedAsDate = ['C', 'Z', 'BZ', 'BY'];
 		foreach ($columnsToBeFormattedAsDate as $column) {
@@ -287,8 +282,6 @@ class Controller extends BaseController
 				$worksheet->setCellValue($column . ($rowNumber + 2), $excelDateValue);
 			}
 		}
-		// Set cell A1 with the Formatted date/time value
-
 
 		$filename = 'Animal handlings ' . date("d.m.Y-Hi");
 
@@ -380,7 +373,7 @@ class Controller extends BaseController
 			}
 			$row[] = $isAnimalHandling ? $animalHandling->licence_number : '';
 			$row[] = $animal->description;
-			$row[] = $animal->died_at_date ? $animal->died_at_date->format('Y-m-d') . ' ' . $animal->died_at_time : '';
+			$row[] = $animal->died_at ? $animal->died_at->format('Y-m-d') : '';
 			$row[] = $isAnimalHandling ? ( $animalHandling->hunter_finder_country ? $animalHandling->hunter_finder_country->name : '' ) : '';
 			$row[] = $isAnimalHandling ? $animalHandling->hunter_finder_name_and_surname : '';
 			$row[] = $isAnimalHandling ? $animalHandling->witness_accompanying_person_name_and_surname : '';
@@ -561,6 +554,24 @@ class Controller extends BaseController
 		/* Load a CSV file and save as a XLS */
 		// $spreadsheet = $reader->load('../../uploads/test.csv');
 		$spreadsheet = $reader->loadSpreadsheetFromString($csvString);
+
+		$worksheet = $spreadsheet->getSheet(0);
+
+		$columnsToBeFormattedAsDate = ['C', 'Z', 'BZ', 'BY'];
+		foreach ($columnsToBeFormattedAsDate as $column) {
+			$worksheet->getStyle($column . '1:' . $column . count($payload)+2)
+				->getNumberFormat()
+				->setFormatCode(
+					NumberFormat::FORMAT_DATE_DMYMINUS
+				);
+
+			foreach ($payload as $rowNumber => $row) {
+				$stringDate = $worksheet->getCell($column  . ($rowNumber + 2))->getValue();
+				$excelDateValue = Date::PHPToExcel($stringDate);
+				$worksheet->setCellValue($column . ($rowNumber + 2), $excelDateValue);
+			}
+		}
+
 		$filename = 'Animals ' . date("d.m.Y-Hi");
 
 		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
