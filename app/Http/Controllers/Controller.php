@@ -236,7 +236,7 @@ class Controller extends BaseController
 			__('Lynx coat pattern'),
 
 			__('Licence'),
-			__('Name'),
+			__('Animal name'),
 			__('Project name'),
 			__('Receiving country and institutions'),
 			__('Ear-tag number or radio-collar (telemetry) identification'),
@@ -524,7 +524,7 @@ class Controller extends BaseController
 			__('Lynx coat pattern'),
 
 			__('Licence'),
-			__('Name'),
+			__('Animal name'),
 			__('Project name'),
 			__('Receiving country and institutions'),
 			__('Ear-tag number or radio-collar (telemetry) identification'),

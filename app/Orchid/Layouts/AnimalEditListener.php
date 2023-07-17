@@ -90,7 +90,7 @@ class AnimalEditListener extends Listener
 					->canSee(!$isAlive),
 
 				Input::make('animal.name')
-					->title('Name')
+					->title('Animal name')
 					->help(__('Input animal name.')),
 
 				Select::make('animal.species_list_id')

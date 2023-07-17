@@ -165,7 +165,7 @@ class AnimalDataEditScreen extends Screen
 
 		$animal->save();
 
-		Alert::info(__('You have successfully updated Animal data.') . ' ID: ' . $animal->id . ' ' . __('Name') . ': ' . $animal->name);
+		Alert::info(__('You have successfully updated Animal data.') . ' ID: ' . $animal->id . ' ' . __('Animal name') . ': ' . $animal->name);
 
 		return redirect()->route('platform.animals.list');
 	}

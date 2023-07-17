@@ -452,7 +452,7 @@ class BiometryDataEditScreen extends Screen
 		$bearsBiometryData->bears_biometry_animal_handling_id = $bearsBiometryAnimalHandling->id;
 		$bearsBiometryData->save();
 
-		Alert::info(__('You have successfully updated Biometry Data') . ' ID: ' . $bearsBiometryData->id . ' ' . __('Animal handling') . ' ID: ' . $bearsBiometryData->bears_biometry_animal_handling_id . ' ' . __('Animal') . ' ID: ' . $animal->id . ' ' . __('Name') . ': ' . $animal->name);
+		Alert::info(__('You have successfully updated Biometry Data') . ' ID: ' . $bearsBiometryData->id . ' ' . __('Animal handling') . ' ID: ' . $bearsBiometryData->bears_biometry_animal_handling_id . ' ' . __('Animal') . ' ID: ' . $animal->id . ' ' . __('Animal name') . ': ' . $animal->name);
 
 		return redirect()->route('platform.animalHandling.list');
 	}

@@ -43,7 +43,7 @@ class AnimalListLayout extends Table
 				})
 				->sort(),
 
-			TD::make('name', __('Name'))
+			TD::make('name', __('Animal name'))
 				->render(function (AnimalListView $animal) {
 					return Link::make($animal->name)
 					->route('platform.animalData.view', $animal);

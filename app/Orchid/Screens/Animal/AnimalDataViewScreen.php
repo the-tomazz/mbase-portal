@@ -78,7 +78,7 @@ class AnimalDataViewScreen extends Screen
     public function layout(): iterable
     {
 		$animalSight = [
-			Sight::make('name', __('Name')),
+			Sight::make('name', __('Animal name')),
 
 			Sight::make('specie_list_id', __('Species'))
 				->render(function ($animal) {

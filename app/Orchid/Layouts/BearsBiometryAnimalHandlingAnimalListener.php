@@ -133,7 +133,7 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 					]),
 
 				Input::make('bearsBiometryAnimalHandling.animal_name')
-					->title('Name')
+					->title('Animal name')
 					->required($animalIsAlive)
 					->help($animalIsAlive
 						? __('Assign a new name to the animal.')

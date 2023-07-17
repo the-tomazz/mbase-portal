@@ -709,7 +709,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 			$request->input('bearsBiometryAnimalHandling.attachment', [])
 		);
 
-		Alert::info(__('You have successfully created or updated an Animal Handling.') . ' ' . __('Animal handling') . ' ID: ' . $bearsBiometryAnimalHandling->id . ' ' . __('Animal') . ' ID: ' . $animal->id . ' ' . __('Name') . ': ' . $animal->name);
+		Alert::info(__('You have successfully created or updated an Animal Handling.') . ' ' . __('Animal handling') . ' ID: ' . $bearsBiometryAnimalHandling->id . ' ' . __('Animal') . ' ID: ' . $animal->id . ' ' . __('Animal name') . ': ' . $animal->name);
 
 		return $bearsBiometryAnimalHandling;
 	}

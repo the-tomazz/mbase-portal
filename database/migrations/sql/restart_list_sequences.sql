@@ -1,0 +1,13 @@
+ALTER SEQUENCE laravel.biometry_loss_reason_list_id_seq RESTART 10000;
+ALTER SEQUENCE laravel.collar_list_id_seq RESTART 10000;
+ALTER SEQUENCE laravel.color_list_id_seq RESTART 10000;
+ALTER SEQUENCE laravel.conflict_animal_removal_list_id_seq RESTART 10000;
+ALTER SEQUENCE laravel.incisors_wear_list_id_seq RESTART 10000;
+ALTER SEQUENCE laravel.place_type_list_id_seq RESTART 10000;
+ALTER SEQUENCE laravel.sex_list_id_seq RESTART 10000;
+ALTER SEQUENCE laravel.species_list_id_seq RESTART 10000;
+ALTER SEQUENCE laravel.licence_list_id_seq RESTART 10000;
+ALTER SEQUENCE laravel.sample_type_list_id_seq RESTART 10000;
+ALTER SEQUENCE laravel.teats_wear_list_id_seq RESTART 10000;
+ALTER SEQUENCE laravel.tooth_type_list_id_seq RESTART 10000;
+ALTER SEQUENCE laravel.way_of_withdrawal_list_id_seq RESTART 10000;
