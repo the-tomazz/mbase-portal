@@ -94,7 +94,7 @@ class BearsBiometryData extends Model
 		'id' => 'int',
 		'bears_biometry_animal_handling_id' => 'int',
 		'sex_list_id' => 'int',
-		'age' => 'int',
+		'age' => 'float',
 		'masa_bruto' => 'float',
 		'masa_neto' => 'float',
 		'body_length' => 'float',
