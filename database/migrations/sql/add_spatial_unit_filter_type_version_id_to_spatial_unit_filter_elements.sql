@@ -1,0 +1,6 @@
+ALTER TABLE laravel.spatial_unit_filter_elements
+ADD COLUMN spatial_unit_filter_type_version_id INTEGER REFERENCES spatial_unit_filter_type_versions (id) ON DELETE RESTRICT;
+
+UPDATE laravel.spatial_unit_filter_elements SET spatial_unit_filter_type_version_id = spatial_unit_filter_type_id;
+
+ALTER TABLE laravel.spatial_unit_filter_elements DROP COLUMN spatial_unit_filter_type_id;
