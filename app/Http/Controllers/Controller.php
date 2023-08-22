@@ -93,8 +93,6 @@ class Controller extends BaseController
 			$row[] = $animal->statusString();
 			$row[] = $isAnimalHandling ? $animalHandling->statusOnHandlingString() : '';
 
-			# $row[] = $animalHandling->spatial_unit_gid;
-
 			$row[] = $isBiometryData ? $bearsBiometryData->id : '';
 
 			$row[] = $isBiometryData ? $bearsBiometryData->body_length : '';
@@ -186,8 +184,6 @@ class Controller extends BaseController
 			__('Taxidermist name and surname'),
 			__('Status on handling'),
 			__('Status'),
-
-			# __('spatial_unit_gid'),
 
 			__('Biometry data ID'),
 			__('Body length'),
@@ -381,8 +377,6 @@ class Controller extends BaseController
 			$row[] = $animal->statusString();
 			$row[] = $isAnimalHandling ? $animalHandling->statusOnHandlingString() : '';
 
-			# $row[] = $animalHandling->spatial_unit_gid;
-
 			$row[] = $isBiometryData ? $bearsBiometryData->id : '';
 
 			$row[] = $isBiometryData ? $bearsBiometryData->body_length : '';
@@ -474,8 +468,6 @@ class Controller extends BaseController
 			__('Taxidermist name and surname'),
 			__('Status on handling'),
 			__('Status'),
-
-			# __('spatial_unit_gid'),
 
 			__('Biometry data ID'),
 			__('Body length'),

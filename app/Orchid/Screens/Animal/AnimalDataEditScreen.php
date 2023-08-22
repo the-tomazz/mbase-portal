@@ -140,7 +140,7 @@ class AnimalDataEditScreen extends Screen
 		}
 
 		$request->validate([
-			'animal.description' => 'string|max:255'
+			'animal.description' => 'string|max:4096'
 		]);
 
 		$existingAnimal = Animal::where('name', '=', $request->get('animal')['name'])

@@ -14,7 +14,7 @@ INSERT INTO
 VALUES
 	(
 		1,
-		2,
+		1,
 		'Original setup',
 		'',
 		'01-01-1970',

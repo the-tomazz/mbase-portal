@@ -34,6 +34,11 @@ class SpatialUnitFilterType extends Model
 		'slug'
 	];
 
+	protected $allowedSorts = [
+		'id',
+		'slug'
+	];
+
 	public function spatial_unit_filter_type_country()
 	{
 		return $this->hasOne(SpatialUnitFilterTypeCountry::class);

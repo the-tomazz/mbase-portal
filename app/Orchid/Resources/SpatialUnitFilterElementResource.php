@@ -2,10 +2,16 @@
 
 namespace App\Orchid\Resources;
 
+use App\Models\SpatialUnitFilterElement;
+use App\Models\SpatialUnitFilterTypeVersion;
 use App\Orchid\Filters\SpatialUnitFilterElementAttributesFilter;
 use App\Orchid\Filters\SpatialUnitFilterElementFilter;
+use App\Orchid\Filters\SpatialUnitFilterTypeFilter;
 use Orchid\Crud\Resource;
 use Orchid\Screen\Fields\Input;
+use Orchid\Screen\Fields\Relation;
+use Orchid\Screen\Fields\Select;
+use Orchid\Screen\Layouts\Selection;
 use Orchid\Screen\Sight;
 use Orchid\Screen\TD;
 
@@ -36,12 +42,13 @@ class SpatialUnitFilterElementResource extends Resource
 	public function fields(): array
 	{
 		return [
-			Input::make('slug')
+			/* Input::make('slug')
 				->title('Slug'),
 			Input::make('name')
 				->title('Name'),
-			Input::make('spatial_unit_filter_type_id')
-				->title('Spatial unit filter type id')
+			Relation::make('spatial_unit_filter_type_version_id')
+				->fromModel(SpatialUnitFilterTypeVersion::class, 'title')
+				->title(__('Please select the spatial unit filter version')) */
 		];
 	}
 
@@ -58,13 +65,25 @@ class SpatialUnitFilterElementResource extends Resource
 	public function columns(): array
 	{
 		return [
-			TD::make('id'),
-			TD::make('slug', "Slug"),
-			TD::make('name', "Name"),
-			TD::make('spatial_unit_filter_type_id', "Spatial unit filter type id")
+			TD::make('id')->sort(),
+			TD::make('slug', "Slug")->sort()->filter(Input::make()),
+			TD::make('name', "Name")->sort()->filter(Input::make()),
+			TD::make('spatial_unit_filter_type_version_slug', "Version")
 				->render(function ($model) {
-					return $model->spatial_unit_filter_type->slug;
-				})
+					return $model->spatial_unit_filter_type_version->title;
+				})->sort(),
+			TD::make('spatial_unit_filter_type_version_valid_from', "Valid from")
+				->render(function ($model) {
+					return $model->spatial_unit_filter_type_version->valid_from->format('Y-m-d');
+				})->sort(),
+			TD::make('spatial_unit_filter_type_version_valid_to', "Valid from")
+				->render(function ($model) {
+					return $model->spatial_unit_filter_type_version->valid_to->format('Y-m-d');
+				})->sort(),
+			TD::make('spatial_unit_filter_type_id', "Filter type")
+				->render(function ($model) {
+					return $model->spatial_unit_filter_type_version->spatial_unit_filter_type->slug;
+				})->sort()
 		];
 	}
 
@@ -90,9 +109,6 @@ class SpatialUnitFilterElementResource extends Resource
 	 */
 	public function filters(): array
 	{
-		return [
-			SpatialUnitFilterElementFilter::class,
-			SpatialUnitFilterElementAttributesFilter::class
-		];
+		return [];
 	}
 }

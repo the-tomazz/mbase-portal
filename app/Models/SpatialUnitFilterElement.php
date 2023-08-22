@@ -31,27 +31,36 @@ class SpatialUnitFilterElement extends Model
 	protected $table = 'spatial_unit_filter_elements';
 	public $timestamps = false;
 
-	use AsSource, Filterable, Attachable;
+	use AsSource, Filterable;
 
 	protected $casts = [
+		'id' => 'int',
 		'spatial_unit_filter_type_id' => 'int',
 		'name' => LocalizedJsonData::class
 	];
 
 	protected $fillable = [
+		'id',
 		'slug',
 		'name',
-		'spatial_unit_filter_type_id'
+		'spatial_unit_filter_type_version_id'
 	];
 
 	protected $allowedFilters = [
+		'id',
 		'slug',
 		'name'
 	];
 
-	public function spatial_unit_filter_type()
+	protected $allowedSorts = [
+		'id',
+		'slug',
+		'name'
+    ];
+
+	public function spatial_unit_filter_type_version()
 	{
-		return $this->belongsTo(SpatialUnitFilterType::class);
+		return $this->belongsTo(SpatialUnitFilterTypeVersion::class);
 	}
 
 	public function spatial_units()

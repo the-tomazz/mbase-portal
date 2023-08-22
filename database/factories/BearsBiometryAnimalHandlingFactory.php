@@ -61,7 +61,6 @@ class BearsBiometryAnimalHandlingFactory extends Factory
 			'data_entered_by_user_id' => User::all()->random()->id,
 			'animal_id' => Animal::all()->random()->id,
 			'hunting_ground' => Str::random(10),
-			'spatial_unit_gid' => SpatialUnit::all()->random()->id,
 			'number_of_removal_in_the_hunting_administration_area' => Str::random(10),
 			'animal_status_on_handling' => mt_rand(0, 1) == 1 ? Animal::STR_ALIVE : Animal::STR_DEAD,
 			'photos_collected' => mt_rand(0, 1),

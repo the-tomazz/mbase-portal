@@ -8,6 +8,7 @@ use App\Models\Base\BaseList;
 use App\Models\SexList;
 use App\Models\SpeciesList;
 use App\Models\User;
+use App\Models\WayOfWithdrawalList;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
 use Orchid\Screen\Actions\Link;
@@ -39,17 +40,36 @@ class AnimalListLayout extends Table
 			TD::make('id', __('Animal ID'))
 				->render(function (AnimalListView $animal) {
 					return Link::make($animal->id)
-					->route('platform.animalData.view', $animal);
+						->route('platform.animalData.view', $animal);
 				})
-				->sort(),
+				->sort()
+				->filter(Input::make()),
 
 			TD::make('name', __('Animal name'))
 				->render(function (AnimalListView $animal) {
 					return Link::make($animal->name)
-					->route('platform.animalData.view', $animal);
+						->route('platform.animalData.view', $animal);
 				})
 				->sort()
 				->filter(Input::make()),
+
+			TD::make('species_list_name->' . App::getLocale(), __("Species"))
+				->render(function (AnimalListView $animal) {
+					return Link::make($animal->species_list_name)
+						->route('platform.animalData.view', $animal);
+				})
+				->sort()
+				->filter(
+					Select::make()->fromQuery(
+						SpeciesList::where('status', '=', BaseList::STR_ACTIVE)
+							->orderBy('name->' . App::getLocale(), 'asc'),
+						'name', 'name'
+					)
+					->empty(__('<Select>'))
+				)
+					->filterValue(function ($species_list_name) {
+							return $species_list_name;
+					}),
 
 			TD::make('status', __('Status'))
 				->render(function (AnimalListView $animal) {
@@ -67,85 +87,68 @@ class AnimalListLayout extends Table
 					}),
 
 			TD::make('died_at', __('Date of death'))
-				->render(function ($model) {
-					return $model->died_at ? $model->died_at->toDateString() : '';
+				->render(function (AnimalListView $animal) {
+					return $animal->died_at ? $animal->died_at->format('d.m.Y') : '';
 				})
 				->sort(),
 
-			TD::make('species_list_name', __("Species"))
+			TD::make('animal_handling_date', __('Animal handling date'))
 				->render(function (AnimalListView $animal) {
-					return Link::make($animal->species_list_name)
-						->route('platform.animalData.view', [ $animal->id ]);
+					if (!$animal->animal_handling_date) {
+						return;
+					}
+
+					return Link::make($animal->animal_handling_date->format('d.m.Y H:i'))
+						->route('platform.animalHandling.view', $animal->animal_handling_id);
+				})
+				->sort(),
+
+			TD::make('animal_handling_count', __('Animal handling count'))
+				->render(function (AnimalListView $animal) {
+					return Link::make($animal->animal_handling_count)
+						->route('platform.animalHandling.view', $animal->animal_handling_id);
+				})
+				->sort()
+				->filter(Input::make()),
+
+			TD::make('way_of_withdrawal_list_name->' . App::getLocale(), __("Way of withdrawal"))
+				->render(function (AnimalListView $animal) {
+					return Link::make($animal->way_of_withdrawal_list_name)
+						->route('platform.animalHandling.view', $animal->animal_handling_id);
 				})
 				->sort()
 				->filter(
 					Select::make()->fromQuery(
-						SpeciesList::where('status', '=', BaseList::STR_ACTIVE)
+						WayOfWithdrawalList::where('status', '=', BaseList::STR_ACTIVE)
 							->orderBy('name->' . App::getLocale(), 'asc'),
 						'name', 'name'
 					)
 					->empty(__('<Select>'))
 				)
-					->filterValue(function ($species_list_name) {
-							return $species_list_name;
-					}),
+				->filterValue(function ($way_of_withdrawal_list_name) {
+					return $way_of_withdrawal_list_name;
+				}),
 
 			TD::make('hunting_management_area', __('Hunting-management area (LUO)'))
 				->render(function (AnimalListView $animal) {
-					$from = request()->input('animal_handling_date_from') ?? '1970-01-01';
-					$to = request()->input('animal_handling_date_to') ?? '2970-01-01';
-
-					$animalHandlingsRender = '';
-					$animalHandlings = $animal->bearsBiometryAnimalHandlings()
-						->where(function ($query) use ($from, $to) {
-							$query->whereDate('animal_handling_date', '>=', $from);
-							$query->whereDate('animal_handling_date', '<=', $to);
-						})
-						->get();
-
-					foreach ($animalHandlings as $animalHandling) {
-						$animalHandlingRender = Link::make($animalHandling->hunting_management_area)
-							->route('platform.animalHandling.view', [ $animalHandling ]);
-
-						if ($animalHandlingsRender == '') {
-							$animalHandlingsRender .= $animalHandlingRender;
-						} else {
-							$animalHandlingsRender .= '<br>' . $animalHandlingRender;
-						}
-					}
-					return $animalHandlingsRender;
-				}),
+					return Link::make($animal->hunting_management_area)
+						->route('platform.animalHandling.view', $animal->animal_handling_id);
+				})
+				->sort()
+				->filter(Input::make()),
 
 			TD::make('hunting_ground', __('Hunting ground'))
 				->render(function (AnimalListView $animal) {
-					$from = request()->input('animal_handling_date_from') ?? '1970-01-01';
-					$to = request()->input('animal_handling_date_to') ?? '2970-01-01';
-
-					$animalHandlingsRender = '';
-					$animalHandlings = $animal->bearsBiometryAnimalHandlings()
-						->where(function ($query) use ($from, $to) {
-							$query->whereDate('animal_handling_date', '>=', $from);
-							$query->whereDate('animal_handling_date', '<=', $to);
-						})
-						->get();
-
-					foreach ($animalHandlings as $animalHandling) {
-						$animalHandlingRender = Link::make($animalHandling->hunting_ground)
-							->route('platform.animalHandling.view', [ $animalHandling ]);
-
-						if ($animalHandlingsRender == '') {
-							$animalHandlingsRender .= $animalHandlingRender;
-						} else {
-							$animalHandlingsRender .= '<br>' . $animalHandlingRender;
-						}
-					}
-					return $animalHandlingsRender;
-				}),
+					return Link::make($animal->hunting_ground)
+						->route('platform.animalHandling.view', $animal->animal_handling_id);
+				})
+				->sort()
+				->filter(Input::make()),
 
 			TD::make('sex_list_name->' . App::getLocale(), __("Sex"))
 				->render(function (AnimalListView $animal) {
 					return Link::make($animal->sex_list_name)
-						->route('platform.animalData.view', [ $animal->id ]);
+						->route('platform.animalData.view', $animal);
 				})
 				->sort()
 				->filter(
@@ -159,175 +162,29 @@ class AnimalListLayout extends Table
 					return $sex_list_name;
 				}),
 
-			TD::make('animal_handling', __('Animal handling date'))
-				->render(function (AnimalListView $animal) {
-					$from = request()->input('animal_handling_date_from') ?? '1970-01-01';
-					$to = request()->input('animal_handling_date_to') ?? '2970-01-01';
-
-					$animalHandlingsRender = '';
-					$animalHandlings = $animal->bearsBiometryAnimalHandlings()
-						->where(function ($query) use ($from, $to) {
-							$query->whereDate('animal_handling_date', '>=', $from);
-							$query->whereDate('animal_handling_date', '<=', $to);
-						})
-						->get();
-
-					foreach ($animalHandlings as $animalHandling) {
-						$animalHandlingRender = Link::make($animalHandling->animal_handling_date->	format('d.m.Y H:i'))
-							->route('platform.animalHandling.view', [ $animalHandling ]);
-
-						if ($animalHandlingsRender == '') {
-							$animalHandlingsRender .= $animalHandlingRender;
-						} else {
-							$animalHandlingsRender .= '<br>' . $animalHandlingRender;
-						}
-					}
-					return $animalHandlingsRender;
-				}),
-
-			TD::make('data_entered_by_user_id', __('User'))
-				->render(function (AnimalListView $animal) {
-					$from = request()->input('animal_handling_date_from') ?? '1970-01-01';
-					$to = request()->input('animal_handling_date_to') ?? '2970-01-01';
-
-					$animalHandlingsRender = '';
-					$animalHandlings = $animal->bearsBiometryAnimalHandlings()
-						->where(function ($query) use ($from, $to) {
-							$query->whereDate('animal_handling_date', '>=', $from);
-							$query->whereDate('animal_handling_date', '<=', $to);
-						})
-						->get();
-
-					foreach ($animalHandlings as $animalHandling) {
-						$user = User::find($animalHandling->data_entered_by_user_id);
-						$name = $user ? $user->name : '';
-
-						$animalHandlingRender = Link::make($name)
-							->route('platform.animalHandling.view', [ $animalHandling ]);
-
-						if ($animalHandlingsRender == '') {
-							$animalHandlingsRender .= $animalHandlingRender;
-						} else {
-							$animalHandlingsRender .= '<br>' . $animalHandlingRender;
-						}
-					}
-					return $animalHandlingsRender;
-				}),
-
-
-			TD::make('animal_status_on_handling', __('Animal status on handling'))
-				->render(function (AnimalListView $animal) {
-					$from = request()->input('animal_handling_date_from') ?? '1970-01-01';
-					$to = request()->input('animal_handling_date_to') ?? '2970-01-01';
-
-					$animalHandlingsRender = '';
-					$animalHandlings = $animal->bearsBiometryAnimalHandlings()
-						->where(function ($query) use ($from, $to) {
-							$query->whereDate('animal_handling_date', '>=', $from);
-							$query->whereDate('animal_handling_date', '<=', $to);
-						})
-						->get();
-
-					foreach ($animalHandlings as $animalHandling) {
-						$animalHandlingRender = Link::make($animal->statusString())
-							->route('platform.animalHandling.view', [ $animalHandling ]);
-
-						if ($animalHandlingsRender == '') {
-							$animalHandlingsRender .= $animalHandlingRender;
-						} else {
-							$animalHandlingsRender .= '<br>' . $animalHandlingRender;
-						}
-					}
-					return $animalHandlingsRender;
-				}),
-
-			TD::make('animal_status_on_handling', __('Animal status on handling'))
-				->render(function (AnimalListView $animal) {
-					$from = request()->input('animal_handling_date_from') ?? '1970-01-01';
-					$to = request()->input('animal_handling_date_to') ?? '2970-01-01';
-
-					$animalHandlingsRender = '';
-					$animalHandlings = $animal->bearsBiometryAnimalHandlings()
-						->where(function ($query) use ($from, $to) {
-							$query->whereDate('animal_handling_date', '>=', $from);
-							$query->whereDate('animal_handling_date', '<=', $to);
-						})
-						->get();
-
-					foreach ($animalHandlings as $animalHandling) {
-						$animalHandlingRender = Link::make($animal->statusString())
-							->route('platform.animalHandling.view', [ $animalHandling ]);
-
-						if ($animalHandlingsRender == '') {
-							$animalHandlingsRender .= $animalHandlingRender;
-						} else {
-							$animalHandlingsRender .= '<br>' . $animalHandlingRender;
-						}
-					}
-					return $animalHandlingsRender;
-				}),
-
 			TD::make('age', __('Visual age estimate'))
 				->render(function (AnimalListView $animal) {
-					$from = request()->input('animal_handling_date_from') ?? '1970-01-01';
-					$to = request()->input('animal_handling_date_to') ?? '2970-01-01';
-
-					$animalHandlingsRender = '';
-					$animalHandlings = $animal->bearsBiometryAnimalHandlings()
-						->where(function ($query) use ($from, $to) {
-							$query->whereDate('animal_handling_date', '>=', $from);
-							$query->whereDate('animal_handling_date', '<=', $to);
-						})
-						->get();
-
-					foreach ($animalHandlings as $animalHandling) {
-						if ($animalHandling->bearsBiometryData) {
-							$animalHandlingRender = Link::make($animalHandling->bearsBiometryData->age)
-								->route('platform.biometryData.view', [ $animalHandling->bearsBiometryData ]);
-						} else {
-							$animalHandlingRender = Link::make(__('NA'))
-								->route('platform.biometryData.add', [ $animalHandling ]);
-						}
-
-						if ($animalHandlingsRender == '') {
-							$animalHandlingsRender .= $animalHandlingRender;
-						} else {
-							$animalHandlingsRender .= '<br>' . $animalHandlingRender;
-						}
-					}
-					return $animalHandlingsRender;
-				}),
+					return Link::make($animal->age)
+						->route('platform.animalHandling.view', $animal->animal_handling_id);
+				})
+				->sort()
+				->filter(Input::make()),
 
 			TD::make('masa_bruto', __('Gross body mass'))
 				->render(function (AnimalListView $animal) {
-					$from = request()->input('animal_handling_date_from') ?? '1970-01-01';
-					$to = request()->input('animal_handling_date_to') ?? '2970-01-01';
+					return Link::make($animal->masa_bruto)
+						->route('platform.animalHandling.view', [ $animal->animal_handling_id ]);
+				})
+				->sort()
+				->filter(Input::make()),
 
-					$animalHandlingsRender = '';
-					$animalHandlings = $animal->bearsBiometryAnimalHandlings()
-						->where(function ($query) use ($from, $to) {
-							$query->whereDate('animal_handling_date', '>=', $from);
-							$query->whereDate('animal_handling_date', '<=', $to);
-						})
-						->get();
-
-					foreach ($animalHandlings as $animalHandling) {
-						if ($animalHandling->bearsBiometryData) {
-							$animalHandlingRender = Link::make($animalHandling->bearsBiometryData->masa_bruto)
-								->route('platform.biometryData.view', [ $animalHandling->bearsBiometryData ]);
-						} else {
-							$animalHandlingRender = Link::make(__('NA'))
-								->route('platform.biometryData.add', [ $animalHandling ]);
-						}
-
-						if ($animalHandlingsRender == '') {
-							$animalHandlingsRender .= $animalHandlingRender;
-						} else {
-							$animalHandlingsRender .= '<br>' . $animalHandlingRender;
-						}
-					}
-					return $animalHandlingsRender;
-				}),
+			TD::make('users_name', __('User'))
+				->render(function (AnimalListView $animal) {
+					return Link::make($animal->users_name)
+						->route('platform.animalData.view', $animal);
+				})
+				->sort()
+				->filter(Input::make()),
 
 			TD::make('created_at', __('Created'))
 				->render(function (AnimalListView $animal) {

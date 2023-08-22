@@ -480,5 +480,9 @@
 	"User": "Uporabnik",
 	"All registered users": "Vsi registrirani uporabniki",
 
-	"Biometric data": "Biometrični podatki"
+	"Biometric data": "Biometrični podatki",
+	"Spatial Unit Filter Type Versions": "Različice prostorsnih filtrov",
+	"Create Spatial Unit Filter Element": "Ustvari element prostorsega filtra",
+
+	"Animal handling count": "Število rokovanj"
 }

@@ -11,6 +11,7 @@ use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Fields\DateTimer;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\Select;
+use Orchid\Screen\Fields\TextArea;
 use Orchid\Screen\Layouts\Listener;
 use Orchid\Support\Facades\Layout;
 
@@ -115,8 +116,9 @@ class AnimalEditListener extends Listener
 					->required()
 					->help(__('Please select the sex')),
 
-				Input::make('animal.description')
-					->title('Note'),
+				TextArea::make('animal.description')
+					->title('Note')
+					->rows(10),
 			])
 		];
 	}

@@ -55,8 +55,8 @@ class SpatialUnitFilterTypeResource extends Resource
 	public function columns(): array
 	{
 		return [
-			TD::make('id'),
-			TD::make('slug', "Slug"),
+			TD::make('id')->sort()->filter(Input::make()),
+			TD::make('slug', "Slug")->sort()->sort()->filter(Input::make()),
 		];
 	}
 
@@ -80,9 +80,6 @@ class SpatialUnitFilterTypeResource extends Resource
 	 */
 	public function filters(): array
 	{
-		return [
-			SpatialUnitFilterTypeFilter::class,
-			SpatialUnitFilterTypeAttributesFilter::class
-		];
+		return [];
 	}
 }

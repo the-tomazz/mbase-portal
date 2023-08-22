@@ -106,9 +106,13 @@ class PlatformProvider extends OrchidServiceProvider
 				->href('/admin/crud/list/group-resources');
 
 			// SPATIAL UNIT FILTER TYPES AND ELEMENTS
+			$menu[] = Menu::make('Spatial Unit Filter Type Versions')
+				->icon('history')
+				->title('Spatial unit filter types and elements')
+				->href('/admin/crud/list/spatial-unit-filter-type-versions');
+
 			$menu[] = Menu::make('Spatial Unit Filter Types')
 				->icon('layers')
-				->title('Spatial unit filter types and elements')
 				->href('/admin/crud/list/spatial-unit-filter-type-resources');
 
 			$menu[] = Menu::make('Spatial Unit Filter Elements')

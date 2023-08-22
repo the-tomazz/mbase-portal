@@ -91,7 +91,6 @@ class AnimalHandlingListView extends Model
 		'tooth_type_list_id' => 'int',
 		'data_entered_by_user_id' => 'int',
 		'animal_id' => 'int',
-		'spatial_unit_gid' => 'int',
 		'way_of_withdrawal_list_id' => 'int',
 		'way_of_withdrawal_list_name' => LocalizedJsonData::class,
 		'species_list_name' => LocalizedJsonData::class,
@@ -99,6 +98,7 @@ class AnimalHandlingListView extends Model
 		'animal_died_at' => 'datetime',
 		'species_list_id' => 'int',
 		'sex_list_id' => 'int',
+		'attachment_count' => 'int'
 	];
 
 	protected $fillable = [
@@ -139,10 +139,16 @@ class AnimalHandlingListView extends Model
 		'created_at',
 		'updated_at',
 		'bears_biometry_data_status',
-		'species_list'
+		'species_list',
+		'number_of_removal_in_the_hunting_administrative_area',
+		'attachment_count',
+		'bears_biometry_data_age',
+		'bears_biometry_data_masa_bruto'
 	];
 
 	protected $allowedFilters = [
+		'id',
+		'animal_id',
 		'animal_status',
 		'animal_status_on_handling',
 		'animal_name',
@@ -169,7 +175,11 @@ class AnimalHandlingListView extends Model
 		'animal_description',
 		'place_of_removal',
 		'bears_biometry_data_status',
-		'species_list'
+		'species_list',
+		'number_of_removal_in_the_hunting_administrative_area',
+		'attachment_count',
+		'bears_biometry_data_age',
+		'bears_biometry_data_masa_bruto'
 	];
 
 	public function species_list()
