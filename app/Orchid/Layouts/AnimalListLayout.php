@@ -94,7 +94,7 @@ class AnimalListLayout extends Table
 
 			TD::make('animal_handling_date', __('Animal handling date'))
 				->render(function (AnimalListView $animal) {
-					if (!$animal->animal_handling_date) {
+					if (!$animal->animal_handling_date || !$animal->animal_handling_id) {
 						return;
 					}
 
@@ -105,6 +105,10 @@ class AnimalListLayout extends Table
 
 			TD::make('animal_handling_count', __('Animal handling count'))
 				->render(function (AnimalListView $animal) {
+					if (!$animal->animal_handling_id) {
+						return;
+					}
+
 					return Link::make($animal->animal_handling_count)
 						->route('platform.animalHandling.view', $animal->animal_handling_id);
 				})
@@ -113,6 +117,10 @@ class AnimalListLayout extends Table
 
 			TD::make('way_of_withdrawal_list_name->' . App::getLocale(), __("Way of withdrawal"))
 				->render(function (AnimalListView $animal) {
+					if (!$animal->animal_handling_id) {
+						return;
+					}
+
 					return Link::make($animal->way_of_withdrawal_list_name)
 						->route('platform.animalHandling.view', $animal->animal_handling_id);
 				})
@@ -131,16 +139,24 @@ class AnimalListLayout extends Table
 
 			TD::make('hunting_management_area', __('Hunting-management area (LUO)'))
 				->render(function (AnimalListView $animal) {
+					if (!$animal->animal_handling_id) {
+						return;
+					}
+
 					return Link::make($animal->hunting_management_area)
-						->route('platform.animalHandling.view', $animal->animal_handling_id);
+						->route('platform.animalHandling.view', $animal->animal_handling_id ?? '-');
 				})
 				->sort()
 				->filter(Input::make()),
 
 			TD::make('hunting_ground', __('Hunting ground'))
 				->render(function (AnimalListView $animal) {
+					if (!$animal->animal_handling_id) {
+						return;
+					}
+
 					return Link::make($animal->hunting_ground)
-						->route('platform.animalHandling.view', $animal->animal_handling_id);
+						->route('platform.animalHandling.view', $animal->animal_handling_id ?? '-');
 				})
 				->sort()
 				->filter(Input::make()),
@@ -164,16 +180,24 @@ class AnimalListLayout extends Table
 
 			TD::make('age', __('Visual age estimate'))
 				->render(function (AnimalListView $animal) {
+					if (!$animal->animal_handling_id) {
+						return;
+					}
+
 					return Link::make($animal->age)
-						->route('platform.animalHandling.view', $animal->animal_handling_id);
+						->route('platform.animalHandling.view', $animal->animal_handling_id ?? '-');
 				})
 				->sort()
 				->filter(Input::make()),
 
 			TD::make('masa_bruto', __('Gross body mass'))
 				->render(function (AnimalListView $animal) {
+					if (!$animal->animal_handling_id) {
+						return;
+					}
+
 					return Link::make($animal->masa_bruto)
-						->route('platform.animalHandling.view', [ $animal->animal_handling_id ]);
+						->route('platform.animalHandling.view', $animal->animal_handling_id ?? '-');
 				})
 				->sort()
 				->filter(Input::make()),

@@ -5,7 +5,10 @@ namespace App\Orchid\Layouts;
 use App\Models\Base\BaseList;
 use App\Models\BearsBiometryAnimalHandling;
 use App\Models\PlaceTypeList;
+use App\Models\SpatialUnitFilterType;
+use App\Models\SpatialUnitFilterTypeVersion;
 use Database\Factories\BearsBiometryAnimalHandlingFactory;
+use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Facades\Log;
 use Orchid\Screen\Fields\Group;
 use Orchid\Screen\Fields\Input;
@@ -34,7 +37,8 @@ class BearsBiometryAnimalHandlingGeoLocationListener extends Listener
 		'bearsBiometryAnimalHandling.place_of_removal',
 		'bearsBiometryAnimalHandling.place_type_list_id',
 		'bearsBiometryAnimalHandling.place_type_list_details',
-		'bearsBiometryAnimalHandling.geo_input_method'
+		'bearsBiometryAnimalHandling.geo_input_method',
+		'bearsBiometryAnimalHandling.animal_died_at_date'
 	];
 
 	/**

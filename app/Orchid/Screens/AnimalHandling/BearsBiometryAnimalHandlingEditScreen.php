@@ -278,6 +278,14 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 
 	public function asyncUpdateAnimalHandlingGeoLocationListenerData($triggers)
 	{
+		$parsedDate = $triggers['animal_died_at_date'] ?
+			date_parse_from_format(
+				"j.n.Y",
+				$triggers['animal_died_at_date']
+			) : date_create('now');
+
+		$USFormattedDate = $parsedDate->format('Y-m-d');
+
 		$proj4 = new Proj4php();
 		$proj4->addDef("EPSG:3912", '+proj=tmerc +lat_0=0 +lon_0=15 +k=0.9999 +x_0=500000 +y_0=-5000000 +ellps=bessel +towgs84=409.545,72.164,486.872,3.085957,5.469110,-11.020289,17.919665 +units=m +no_defs');
 		$proj4->addDef("EPSG:3794", '+proj=tmerc +lat_0=0 +lon_0=15 +k=0.9999 +x_0=500000 +y_0=-5000000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs');
@@ -344,8 +352,9 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 				)
 		', [$lng, $lat]);
 
-		if (count($results) > 0) {
-			$gid = $results[0]->gid;
+		$dataFoundFlag = false;
+		foreach ($results as $result) {
+			$gid = $result->gid;
 
 			$LUOResults = DB::select('
 				select
@@ -358,14 +367,22 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 				on
 					spatial_unit_filter_elements.id = spatial_unit_filter_element_id
 				join
+					spatial_unit_filter_type_versions
+				on
+					spatial_unit_filter_type_versions.id = spatial_unit_filter_elements.spatial_unit_filter_type_version_id
+				join
 					spatial_unit_filter_types
 				on
-					spatial_unit_filter_types.id = spatial_unit_filter_elements.spatial_unit_filter_type_id
+					spatial_unit_filter_types.id = spatial_unit_filter_type_versions.spatial_unit_filter_type_id
 				where
 					spatial_unit_gid = ?
 				and
 					spatial_unit_filter_types.slug like ?
-			', [$gid, '__-LUO']);
+				and
+				    spatial_unit_filter_type_versions.valid_from <= ?
+				and
+					spatial_unit_filter_type_versions.valid_to >= ?
+			', [$gid, '__-LUO', $USFormattedDate, $USFormattedDate]);
 
 			$LOVResults = DB::select('
 				select
@@ -378,14 +395,22 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 				on
 					spatial_unit_filter_elements.id = spatial_unit_filter_element_id
 				join
+					spatial_unit_filter_type_versions
+				on
+					spatial_unit_filter_type_versions.id = spatial_unit_filter_elements.spatial_unit_filter_type_version_id
+				join
 					spatial_unit_filter_types
 				on
-					spatial_unit_filter_types.id = spatial_unit_filter_elements.spatial_unit_filter_type_id
+					spatial_unit_filter_types.id = spatial_unit_filter_type_versions.spatial_unit_filter_type_id
 				where
 					spatial_unit_gid = ?
 				and
 					spatial_unit_filter_types.slug like ?
-			', [$gid, '__-LOV']);
+				and
+					spatial_unit_filter_type_versions.valid_from <= ?
+				and
+					spatial_unit_filter_type_versions.valid_to >= ?
+			', [$gid, '__-LOV', $USFormattedDate, $USFormattedDate]);
 
 			if (count($LUOResults) > 0) {
 				$LUO = json_decode($LUOResults[0]->name)->name;
@@ -396,6 +421,13 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 				$LOV = json_decode($LOVResults[0]->name)->name;
 			}
 
+			if (count($LOVResults) > 0 && count($LUOResults) > 0) {
+				$dataFoundFlag = true;
+				break;
+			}
+		}
+
+		if ($dataFoundFlag) {
 			$payload = [
 				'geo_input_method' => $triggers['geo_input_method'],
 				'geo_location' => new Repository([
@@ -416,10 +448,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 				'place_of_removal' => $triggers['place_of_removal'],
 				'place_type_list_id'      => $triggers['place_type_list_id'],
 				'place_type_list_details' => $triggers['place_type_list_details'] ?? null,
-			];
-
-			return [
-				'bearsBiometryAnimalHandling' => $payload
+				'animal_died_at_date' => $triggers['animal_died_at_date'] ?? null
 			];
 		} else {
 			$payload = [
@@ -441,13 +470,14 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 				'gid' => null,
 				'place_of_removal' => $triggers['place_of_removal'],
 				'place_type_list_id'      => $triggers['place_type_list_id'],
-				'place_type_list_details' => $triggers['place_type_list_details'] ?? null
-			];
-
-			return [
-				'bearsBiometryAnimalHandling' => $payload
+				'place_type_list_details' => $triggers['place_type_list_details'] ?? null,
+				'animal_died_at_date' => $triggers['animal_died_at_date'] ?? null
 			];
 		}
+
+		return [
+			'bearsBiometryAnimalHandling' => $payload
+		];
 	}
 
 	public function asyncUpdateAnimalHandlingHunterFinderSwitchListenerData($triggers)
