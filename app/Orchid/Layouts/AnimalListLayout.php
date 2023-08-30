@@ -19,24 +19,24 @@ use Orchid\Screen\TD;
 
 class AnimalListLayout extends Table
 {
-    /**
-     * Data source.
-     *
-     * The name of the key to fetch it from the query.
-     * The results of which will be elements of the table.
-     *
-     * @var string
-     */
-    protected $target = 'animals';
+	/**
+	 * Data source.
+	 *
+	 * The name of the key to fetch it from the query.
+	 * The results of which will be elements of the table.
+	 *
+	 * @var string
+	 */
+	protected $target = 'animals';
 
-    /**
-     * Get the table cells to be displayed.
-     *
-     * @return TD[]
-     */
-    protected function columns(): iterable
-    {
-        return [
+	/**
+	 * Get the table cells to be displayed.
+	 *
+	 * @return TD[]
+	 */
+	protected function columns(): iterable
+	{
+		return [
 			TD::make('id', __('Animal ID'))
 				->render(function (AnimalListView $animal) {
 					return Link::make($animal->id)
@@ -63,7 +63,8 @@ class AnimalListLayout extends Table
 					Select::make()->fromQuery(
 						SpeciesList::where('status', '=', BaseList::STR_ACTIVE)
 							->orderBy('name->' . App::getLocale(), 'asc'),
-						'name', 'name'
+						'name',
+						'name'
 					)
 					->empty(__('<Select>'))
 				)
@@ -81,7 +82,8 @@ class AnimalListLayout extends Table
 						Animal::STR_ALIVE => __('Alive'),
 						Animal::STR_DEAD => __('Dead'),
 					])
-					->empty(__('<Select>')))
+					->empty(__('<Select>'))
+				)
 					->filterValue(function ($status) {
 						return $status == AnimalListView::STR_ALIVE ? __('Alive') : __('Dead');
 					}),
@@ -98,7 +100,7 @@ class AnimalListLayout extends Table
 						return;
 					}
 
-					return Link::make($animal->animal_handling_date->format('d.m.Y H:i'))
+					return Link::make($animal->animal_handling_date->format('d.m.Y'))
 						->route('platform.animalHandling.view', $animal->animal_handling_id);
 				})
 				->sort(),
@@ -129,7 +131,8 @@ class AnimalListLayout extends Table
 					Select::make()->fromQuery(
 						WayOfWithdrawalList::where('status', '=', BaseList::STR_ACTIVE)
 							->orderBy('name->' . App::getLocale(), 'asc'),
-						'name', 'name'
+						'name',
+						'name'
 					)
 					->empty(__('<Select>'))
 				)
@@ -171,7 +174,8 @@ class AnimalListLayout extends Table
 					Select::make()->fromQuery(
 						SexList::where('status', '=', BaseList::STR_ACTIVE)
 							->orderBy('name->' . App::getLocale(), 'asc'),
-						'name', 'name'
+						'name',
+						'name'
 					)->empty(__('<Select>'))
 				)
 				->filterValue(function ($sex_list_name) {
@@ -222,7 +226,7 @@ class AnimalListLayout extends Table
 				})
 				->sort(),
 		];
-    }
+	}
 
 	/**
 	 * Get the number of models to return per page

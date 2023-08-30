@@ -6,6 +6,7 @@ use App\Models\Animal;
 use App\Models\BearsBiometryAnimalHandling;
 use App\Models\BiometryLossReasonList;
 use App\Models\ConflictAnimalRemovalList;
+use App\Models\User;
 use App\Models\WayOfWithdrawalList;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Actions\ModalToggle;
@@ -167,6 +168,12 @@ class AnimalHandlingViewScreen extends Screen
 					return $bearsBiometryAnimalHandling->receiving_country;
 				});
 		}
+
+		$animalHandlingSights[] = Sight::make('data_entered_by_user_id', __('User'))
+			->render(function ($bearsBiometryAnimalHandling) {
+				$user = User::find($bearsBiometryAnimalHandling->data_entered_by_user_id);
+				return $user->name;
+			});
 
 		$animalSights = [
 			Sight::make('animal->name', __('Animal name'))
