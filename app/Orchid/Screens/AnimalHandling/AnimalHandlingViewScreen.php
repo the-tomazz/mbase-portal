@@ -143,7 +143,7 @@ class AnimalHandlingViewScreen extends Screen
 		if ($lossSelected) {
 			$animalHandlingSights[] = Sight::make('biometry_loss_reason_list_id', __('Loss reason'))
 				->render(function ($bearsBiometryAnimalHandling) {
-					return BiometryLossReasonList::find($bearsBiometryAnimalHandling->biometry_loss_reason_list_id)->name;
+					return $bearsBiometryAnimalHandling->biometry_loss_reason_list_id ? BiometryLossReasonList::find($bearsBiometryAnimalHandling->biometry_loss_reason_list_id)->name : '';
 				});
 		}
 
