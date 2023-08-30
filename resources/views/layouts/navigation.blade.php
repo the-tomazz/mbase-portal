@@ -75,6 +75,12 @@
 								{{ __('Telemetry') }}
 							</x-dropdown-link>
 							@endif
+
+							@if(Auth::user() && Auth::user()->isInGroup('mbase2', 'howling'))
+							<x-dropdown-link href="/mbase2/batches/howling">
+								{{ __('Howling') }}
+							</x-dropdown-link>
+							@endif
 						</x-slot>
 					</x-dropdown>
 				</div>
