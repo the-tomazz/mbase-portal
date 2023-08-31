@@ -9,12 +9,12 @@ class ConflictAnimalRemovalList extends BaseList
 {
 	protected static $moduleList = ['mortbiom'];
 
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var string
-     */
-    public static $model = \App\Models\ConflictAnimalRemovalList::class;
+	/**
+	 * The model the resource corresponds to.
+	 *
+	 * @var string
+	 */
+	public static $model = \App\Models\ConflictAnimalRemovalList::class;
 
 	/**
 	 * Get the displayable label of the resource.
@@ -23,7 +23,7 @@ class ConflictAnimalRemovalList extends BaseList
 	 */
 	public static function label(): string
 	{
-		return __('Conflict animal removal');
+		return __('Legal cull');
 	}
 
 	/**
@@ -33,6 +33,6 @@ class ConflictAnimalRemovalList extends BaseList
 	 */
 	public static function singularLabel(): string
 	{
-		return __('Conflict animal removal');
+		return __('Legal cull');
 	}
 }

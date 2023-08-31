@@ -30,7 +30,7 @@ class PlatformProvider extends OrchidServiceProvider
 	public function registerMainMenu(): array
 	{
 		$menu = [
-			Menu::make('Home')
+			Menu::make(__('Home'))
 				->icon('home')
 				->title(__('Mbase2L'))
 				->href('/mbase2/map')
@@ -49,37 +49,43 @@ class PlatformProvider extends OrchidServiceProvider
 		}
 
 		if (Auth::user()->isInGroup('mbase2', 'ct')) {
-			$menu[] = Menu::make('Camera Trapping')
+			$menu[] = Menu::make(__('Camera Trapping'))
 				->icon('list')
 				->href('/mbase2/modules/ct');
 		}
 
 		if (Auth::user()->isInGroup('mbase2', 'sop')) {
-			$menu[] = Menu::make('Signs Of Presence')
+			$menu[] = Menu::make(__('Signs Of Presence'))
 				->icon('list')
 				->href('/mbase2/modules/sop');
 		}
 
 		if (Auth::user()->isInGroup('mbase2', 'cnt')) {
-			$menu[] = Menu::make('Counting')
+			$menu[] = Menu::make(__('Counting'))
 				->icon('list')
 				->href('/mbase2/modules/cnt');
 		}
 
 		if (Auth::user()->isInGroup('mbase2', 'dmg')) {
-			$menu[] = Menu::make('Damages')
+			$menu[] = Menu::make(__('Damages'))
 				->icon('list')
 				->href('/mbase2/modules/dmg');
 		}
 
 		if (Auth::user()->isInGroup('mbase2', 'interventions')) {
-			$menu[] = Menu::make('Interventions')
+			$menu[] = Menu::make(__('Interventions'))
 				->icon('list')
 				->href('/mbase2/modules/interventions');
 		}
 
 		if (Auth::user()->isInGroup('mbase2', 'tlm')) {
-			$menu[] = Menu::make('Telemetry')
+			$menu[] = Menu::make(__('Telemetry'))
+				->icon('list')
+				->href('/mbase2/modules/tlm');
+		}
+
+		if (Auth::user()->isInGroup('mbase2', 'howling')) {
+			$menu[] = Menu::make(__('Howling'))
 				->icon('list')
 				->href('/mbase2/modules/tlm');
 		}
@@ -141,7 +147,7 @@ class PlatformProvider extends OrchidServiceProvider
 
 			if (Auth::user()->isInGroup('mbase2', 'mortbiom', 'admin')) {
 				// MORTBIOM MODULE RELATED LISTS
-				$menu[] = Menu::make('Conflict Animal Removal')
+				$menu[] = Menu::make('Legal cull')
 					->title('Mortality and biometry lists')
 					->icon('list')
 					->href('/admin/crud/list/conflict-animal-removal-lists');

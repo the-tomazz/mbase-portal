@@ -135,7 +135,7 @@ class AnimalHandlingViewScreen extends Screen
 		}
 
 		if ($conflictAnimalRemovalSelected) {
-			$animalHandlingSights[] = Sight::make('conflict_animal_removal_list_id', __('Type of conflict animal removal'))
+			$animalHandlingSights[] = Sight::make('conflict_animal_removal_list_id', __('Type of legal cull'))
 				->render(function ($bearsBiometryAnimalHandling) {
 					return $bearsBiometryAnimalHandling->conflict_animal_removal_list_id ? ConflictAnimalRemovalList::find($bearsBiometryAnimalHandling->conflict_animal_removal_list_id)->name : '';
 				});

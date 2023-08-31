@@ -2669,12 +2669,12 @@
             "source": {
                 "type": "git",
                 "url": "https://gitlab.com/mbase2/source-code.git",
-                "reference": "c32eb268f9639780b342d5e0f06025c735d63b17"
+                "reference": "ba6a257828d52f30007f616584615d96019101f5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://gitlab.com/api/v4/projects/mbase2%2Fsource-code/repository/archive.zip?sha=c32eb268f9639780b342d5e0f06025c735d63b17",
-                "reference": "c32eb268f9639780b342d5e0f06025c735d63b17",
+                "url": "https://gitlab.com/api/v4/projects/mbase2%2Fsource-code/repository/archive.zip?sha=ba6a257828d52f30007f616584615d96019101f5",
+                "reference": "ba6a257828d52f30007f616584615d96019101f5",
                 "shasum": ""
             },
             "default-branch": true,
@@ -2698,7 +2698,7 @@
             "support": {
                 "source": "https://gitlab.com/mbase2/source-code/-/tree/master"
             },
-            "time": "2023-08-21T11:47:13+02:00"
+            "time": "2023-08-30T00:18:19+02:00"
         },
         {
             "name": "monolog/monolog",

@@ -221,10 +221,10 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 
 					Select::make('bearsBiometryAnimalHandling.conflict_animal_removal_list_id')
 						->fromQuery(ConflictAnimalRemovalList::where('status', '=', BaseList::STR_ACTIVE), 'name')
-						->title(__('Type of conflict animal removal'))
+						->title(__('Type of legal cull'))
 						->empty(__('<Select>'))
 						->required()
-						->help(__('Please select the type conflict animal removal'))
+						->help(__('Please select the type legal cull'))
 						->canSee($conflictAnimalRemovalSelected),
 
 					Select::make('bearsBiometryAnimalHandling.biometry_loss_reason_list_id')
