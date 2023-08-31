@@ -87,7 +87,7 @@ class PlatformProvider extends OrchidServiceProvider
 		if (Auth::user()->isInGroup('mbase2', 'howling')) {
 			$menu[] = Menu::make(__('Howling'))
 				->icon('list')
-				->href('/mbase2/modules/howling');
+				->href('/mbase2/batches/howling');
 		}
 
 		if (Auth::user()->hasRole('MBASE2LAdmin')) {
