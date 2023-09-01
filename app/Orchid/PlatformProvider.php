@@ -147,6 +147,10 @@ class PlatformProvider extends OrchidServiceProvider
 
 			if (Auth::user()->isInGroup('mbase2', 'mortbiom', 'admin')) {
 				// MORTBIOM MODULE RELATED LISTS
+				$menu[] = Menu::make('Loss reason')
+					->icon('list')
+					->href('/admin/crud/list/biometry-loss-reason-lists');
+
 				$menu[] = Menu::make('Legal cull')
 					->title('Mortality and biometry lists')
 					->icon('list')
@@ -155,10 +159,6 @@ class PlatformProvider extends OrchidServiceProvider
 				$menu[] = Menu::make('Type of removal')
 					->icon('list')
 					->href('/admin/crud/list/animal-withdrawal-lists');
-
-				$menu[] = Menu::make('Loss reason')
-					->icon('list')
-					->href('/admin/crud/list/biometry-loss-reason-lists');
 
 				$menu[] = Menu::make('Presence of bear collar')
 					->icon('list')
