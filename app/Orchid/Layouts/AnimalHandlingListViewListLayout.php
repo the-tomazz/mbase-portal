@@ -7,10 +7,13 @@ use App\Models\AnimalHandlingListView;
 use App\Models\Base\BaseList;
 use App\Models\PlaceTypeList;
 use App\Models\SexList;
+use App\Models\SpatialUnitFilterElement;
+use App\Models\SpatialUnitFilterType;
 use App\Models\SpeciesList;
 use App\Models\User;
 use App\Models\WayOfWithdrawalList;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Fields\Input;
@@ -37,6 +40,32 @@ class AnimalHandlingListViewListLayout extends Table
 	 */
 	protected function columns(): iterable
 	{
+		$huntingGroundFilterOptions = [];
+		$spatialFilterElements = SpatialUnitFilterElement::join('spatial_unit_filter_type_versions', 'spatial_unit_filter_type_versions.id', 'spatial_unit_filter_elements.spatial_unit_filter_type_version_id')
+			->join('spatial_unit_filter_types', 'spatial_unit_filter_types.id', 'spatial_unit_filter_type_versions.spatial_unit_filter_type_id')
+			->where('spatial_unit_filter_types.slug', 'like', '%-' . SpatialUnitFilterType::TYPE_HUNTING_GROUND)
+			->select('spatial_unit_filter_elements.id', 'spatial_unit_filter_elements.name', 'spatial_unit_filter_type_versions.title')
+            ->get();
+		foreach ($spatialFilterElements as $spatialFilterElement) {
+			$huntingGroundFilterOptions[$spatialFilterElement->name] = $spatialFilterElement->name;
+		}
+
+		$huntingManagementAreaFilterOptions = [];
+		$spatialFilterElements = SpatialUnitFilterElement::join('spatial_unit_filter_type_versions', 'spatial_unit_filter_type_versions.id', 'spatial_unit_filter_elements.spatial_unit_filter_type_version_id')
+			->join('spatial_unit_filter_types', 'spatial_unit_filter_types.id', 'spatial_unit_filter_type_versions.spatial_unit_filter_type_id')
+			->where('spatial_unit_filter_types.slug', 'like', '%-' . SpatialUnitFilterType::TYPE_HUNTING_MANAGEMENT_AREA)
+			->select('spatial_unit_filter_elements.id', 'spatial_unit_filter_elements.name', 'spatial_unit_filter_type_versions.title')
+            ->get();
+		foreach ($spatialFilterElements as $spatialFilterElement) {
+			$huntingManagementAreaFilterOptions[$spatialFilterElement->name] = $spatialFilterElement->name;
+		}
+
+		$userNames = [];
+		$users = User::all();
+		foreach ($users as $user) {
+			$userNames[$user->name] = $user->name;
+		}
+
 		return [
 			TD::make('id', __('Animal handling ID'))
 				->render(function (AnimalHandlingListView $animalHandlingListView) {
@@ -127,7 +156,9 @@ class AnimalHandlingListViewListLayout extends Table
 						->route('platform.animalHandling.view', [ $animalHandlingListView ]);
 				})
 				->sort()
-				->filter(Input::make()),
+				->filter(
+					Select::make()->options($huntingManagementAreaFilterOptions)->empty(__('<Select>'))
+				),
 
 			TD::make('number_of_removal_in_the_hunting_administrative_area', __("Number and the year of removal in hunting administrative area"))
 				->render(function (AnimalHandlingListView $animalHandlingListView) {
@@ -143,7 +174,9 @@ class AnimalHandlingListViewListLayout extends Table
 						->route('platform.animalHandling.view', [ $animalHandlingListView ]);
 				})
 				->sort()
-				->filter(Input::make()),
+				->filter(
+					Select::make()->options($huntingGroundFilterOptions)->empty(__('<Select>'))
+				),
 
 			TD::make('sex_list_name->' . App::getLocale(), __("Sex"))
 				->render(function (AnimalHandlingListView $animalHandlingListView) {
@@ -241,13 +274,15 @@ class AnimalHandlingListViewListLayout extends Table
 				->sort()
 				->filter(Input::make()),
 
-			TD::make('data_entered_by_user_id', __('User'))
+			TD::make('users_name', __('User'))
 				->render(function (AnimalHandlingListView $animalHandlingListView) {
-					$user = User::find($animalHandlingListView->data_entered_by_user_id);
-					return $user ? $user->name : '';
+					return Link::make($animalHandlingListView->users_name)
+						->route('platform.biometryData.view', $animalHandlingListView);
 				})
 				->sort()
-				->filter(Input::make()),
+				->filter(
+					Select::make()->options($userNames)->empty(__('<Select>'))
+				),
 
 			TD::make('created_at', __('Created'))
 				->render(function ($model) {

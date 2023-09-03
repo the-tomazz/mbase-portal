@@ -32,9 +32,9 @@
 			}
 
 			urlParameterFromPosition = finalUrl.indexOf(dateFieldPrefix + '_from');
+
 			if (fromFieldValue != "") {
 				let from = fromFieldValue.substring(6,10) + "-" + fromFieldValue.substring(3,5) + "-" + fromFieldValue.substring(0,2);
-
 
 				if (urlParameterFromPosition > -1) {
 					finalUrl = finalUrl.substr(0, urlParameterFromPosition + dateFieldPrefix.length + 6) + from + finalUrl.substr(urlParameterFromPosition + dateFieldPrefix.length + 16, 99999);
@@ -45,19 +45,23 @@
 				finalUrl = finalUrl.substr(0, urlParameterFromPosition - 1) + finalUrl.substr(urlParameterFromPosition + dateFieldPrefix.length + 16, 99999);
 			}
 
+			urlParameterToPosition = finalUrl.indexOf(dateFieldPrefix + '_to');
+
 			if (toFieldValue != "") {
 				let to = toFieldValue.substring(6,10) + "-" + toFieldValue.substring(3,5) + "-" + toFieldValue.substring(0,2);
-				urlParameterToPosition = finalUrl.indexOf(dateFieldPrefix + '_to');
 
 				if (urlParameterToPosition > -1) {
 					finalUrl = finalUrl.substr(0, urlParameterToPosition + dateFieldPrefix.length + 4) + to + finalUrl.substr(urlParameterToPosition + dateFieldPrefix.length + 14, 99999);
 				} else {
 					finalUrl = finalUrl + '&' + dateFieldPrefix + '_to=' + to;
 				}
+			} else if (urlParameterToPosition > -1) {
+				finalUrl = finalUrl.substr(0, urlParameterToPosition - 1) + finalUrl.substr(urlParameterToPosition + dateFieldPrefix.length + 14, 99999);
 			}
 
 			if (twoFieldPrefixes) {
 				urlParameterFromPosition2 = finalUrl.indexOf(dateFieldPrefix2 + '_from');
+
 				if (fromFieldValue2 != "") {
 					let from2 = fromFieldValue2.substring(6,10) + "-" + fromFieldValue2.substring(3,5) + "-" + fromFieldValue2.substring(0,2);
 
@@ -71,8 +75,11 @@
 					finalUrl = finalUrl.substr(0, urlParameterFromPosition2 - 1) + finalUrl.substr(urlParameterFromPosition2 + dateFieldPrefix2.length + 16, 99999);
 				}
 
+				urlParameterToPosition2 = finalUrl.indexOf(dateFieldPrefix2 + '_to');
+
 				if (toFieldValue2 != "") {
 					let to2 = toFieldValue2.substring(6,10) + "-" + toFieldValue2.substring(3,5) + "-" + toFieldValue2.substring(0,2);
+
 					urlParameterToPosition2 = finalUrl.indexOf(dateFieldPrefix2 + '_to');
 
 					if (urlParameterToPosition2 > -1) {
@@ -80,6 +87,8 @@
 					} else {
 						finalUrl = finalUrl + '&' + dateFieldPrefix2 + '_to=' + to2;
 					}
+				} else if (urlParameterToPosition2 > -1) {
+					finalUrl = finalUrl.substr(0, urlParameterToPosition2 - 1) + finalUrl.substr(urlParameterToPosition2 + dateFieldPrefix2.length + 14, 99999);
 				}
 			}
 

@@ -148,7 +148,7 @@ class BiometryDataViewScreen extends Screen
 			]);
 		}
 
-		if ($isFemale && !$isNeutral) {
+		if ($isFemale) {
 			$animalHandlingSight = array_merge($animalHandlingSight, [
 				Sight::make('nipple_length', __('Teats length')),
 				Sight::make('teats_wear_list_id', __('Teats use'))

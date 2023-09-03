@@ -93,6 +93,7 @@ class BearsBiometryAnimalHandling extends Model
 		'biometry_loss_reason_list_id' => 'int',
 		'animal_handling_date' => 'datetime',
 		'place_type_list_id' => 'int',
+		'licence_list_id' => 'int',
 		'lat' => 'float',
 		'lng' => 'float',
 		'zoom' => 'int',
@@ -181,12 +182,22 @@ class BearsBiometryAnimalHandling extends Model
 		return $this->belongsTo(PlaceTypeList::class);
 	}
 
+	public function licence_list()
+	{
+		return $this->belongsTo(LicenceList::class);
+	}
+
 	public function spatial_unit_filter_element()
 	{
 		return $this->belongsTo(SpatialUnitFilterElement::class, 'hunting_management_area_id');
 	}
 
 	public function group()
+	{
+		return $this->belongsTo(Group::class, 'hunter_finder_country_id');
+	}
+
+	public function hunter_finder_country()
 	{
 		return $this->belongsTo(Group::class, 'hunter_finder_country_id');
 	}

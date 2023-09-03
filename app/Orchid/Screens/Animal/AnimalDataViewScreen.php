@@ -59,7 +59,7 @@ class AnimalDataViewScreen extends Screen
 					->icon('pencil')
 					->route('platform.animalData.edit', ['animal' => $this->animal]),
 			],
-			$this->animal->bears_biometry_animal_handlings->count()
+			$this->animal->bears_biometry_animal_handlings->count() == 0
 				? [
 					ModalToggle::make('Remove')
 						->modal('modalRemove')

@@ -135,7 +135,6 @@ class Controller extends BaseController
 			$row[] = $isBiometryData ? ( $bearsBiometryData->color_list ? $bearsBiometryData->color_list->name : '' ) : '';
 			$row[] = $isBiometryData ? ( $bearsBiometryData->collar_list ? $bearsBiometryData->collar_list->name : '' ) : '';
 			$row[] = $isBiometryData ? ( $bearsBiometryData->fur_pattern_in_lynx_list ? $bearsBiometryData->fur_pattern_in_lynx_list->name : '' ) : '';
-
 			$row[] = $isAnimalHandling ? ( $animalHandling->licence_list ? $animalHandling->licence_list->name : '' ) : '';
 			$row[] = $animal->name;
 			$row[] = $isAnimalHandling ? $animalHandling->project_name : '';
@@ -178,7 +177,7 @@ class Controller extends BaseController
 			__('Permit number'),
 			__('Note'),
 			__('Date and time of death'),
-			__('Country'),
+			__('Hunter/Finder country'),
 			__('Hunter/Finder name and surname'),
 			__('Witness/Accompanying person name and surname'),
 			__('Taxidermist name and surname'),
@@ -419,7 +418,6 @@ class Controller extends BaseController
 			$row[] = $isBiometryData ? ( $bearsBiometryData->color_list ? $bearsBiometryData->color_list->name : '' ) : '';
 			$row[] = $isBiometryData ? ( $bearsBiometryData->collar_list ? $bearsBiometryData->collar_list->name : '' ) : '';
 			$row[] = $isBiometryData ? ( $bearsBiometryData->fur_pattern_in_lynx_list ? $bearsBiometryData->fur_pattern_in_lynx_list->name : '' ) : '';
-
 			$row[] = $isAnimalHandling ? ( $animalHandling->licence_list ? $animalHandling->licence_list->name : '' ) : '';
 			$row[] = $animal->name;
 			$row[] = $isAnimalHandling ? $animalHandling->project_name : '';
@@ -462,7 +460,7 @@ class Controller extends BaseController
 			__('Permit number'),
 			__('Note'),
 			__('Date and time of death'),
-			__('Country'),
+			__('Hunter/Finder country'),
 			__('Hunter/Finder name and surname'),
 			__('Witness/Accompanying person name and surname'),
 			__('Taxidermist name and surname'),

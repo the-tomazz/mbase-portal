@@ -11,6 +11,7 @@ use App\Models\SpeciesList;
 use App\Models\WayOfWithdrawalList;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Orchid\Screen\Fields\CheckBox;
 use Orchid\Screen\Fields\DateTimer;
 use Orchid\Screen\Fields\Group;
 use Orchid\Screen\Fields\Input;
@@ -34,6 +35,7 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 	 * @var string[]
 	 */
 	protected $targets = [
+		'bearsBiometryAnimalHandling.alive_or_known_animal',
 		'bearsBiometryAnimalHandling.original_animal_id',
 		'bearsBiometryAnimalHandling.animal_id',
 		'bearsBiometryAnimalHandling.animal_status',
@@ -80,11 +82,13 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 			$animalIsAlive = $this->query->get('bearsBiometryAnimalHandling.animal_status') == Animal::STR_ALIVE;
 
 			$regularCullSelected = $this->query->get('bearsBiometryAnimalHandling.way_of_withdrawal_list_id') == WayOfWithdrawalList::REGULAR_CULL;
-			$conflictAnimalRemovalSelected = $this->query->get('bearsBiometryAnimalHandling.way_of_withdrawal_list_id') == WayOfWithdrawalList::CONFLICT_ANIMAL_REMOVAL;
+			# $conflictAnimalRemovalSelected = $this->query->get('bearsBiometryAnimalHandling.way_of_withdrawal_list_id') == WayOfWithdrawalList::CONFLICT_ANIMAL_REMOVAL;
 			$lossSelected = $this->query->get('bearsBiometryAnimalHandling.way_of_withdrawal_list_id') == WayOfWithdrawalList::LOSS;
 			$lossReasonOtherSelected = $this->query->get('bearsBiometryAnimalHandling.biometry_loss_reason_list_id') == BiometryLossReasonList::OTHER;
 			$liveCaptureSelected = $this->query->get('bearsBiometryAnimalHandling.way_of_withdrawal_list_id') == WayOfWithdrawalList::LIVE_CAPTURE;
 			$translocationOutOfPopulationSelected = $this->query->get('bearsBiometryAnimalHandling.way_of_withdrawal_list_id') == WayOfWithdrawalList::TRANSLOCATION_OUT_OF_POPULATION;
+
+			# $animalIsKnownOrAlive = $animalIsKnown || $animalIsAlive;
 		} else {
 			$animalIsKnown = false;
 			$animalIsSelected = false;
@@ -92,11 +96,13 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 			$animalIsAlive = false;
 
 			$regularCullSelected = false;
-			$conflictAnimalRemovalSelected = false;
+			# $conflictAnimalRemovalSelected = false;
 			$lossSelected = false;
 			$lossReasonOtherSelected = false;
 			$liveCaptureSelected = false;
 			$translocationOutOfPopulationSelected = false;
+
+			# $animalIsKnownOrAlive = Auth::user()->defaultVisualisationAnimalStatus() == Animal::STR_ALIVE;
 		}
 
 		$animalStatusSubset = $animalIsAlive ? WayOfWithdrawalList::SHOWN_ON_ANIMAL_STATUS_ALIVE : WayOfWithdrawalList::SHOWN_ON_ANIMAL_STATUS_DEAD;
@@ -107,12 +113,17 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 
 		return [
 			Layout::rows([
+				/* CheckBox::make('bearsBiometryAnimalHandling.alive_or_known_animal')
+					->value($animalIsKnownOrAlive)
+					->placeholder(__('An alive or known animal'))
+					->sendTrueOrFalse(), */
+
 				Select::make('bearsBiometryAnimalHandling.original_animal_id')
 					->fromQuery($animalSelectQuery, 'name')
 					->title(__('Animal'))
 					->disabled($animalIsKnown)
 					->empty(__('<Unknown animal>'))
-					->canSee($animalIsKnown),
+					->canSee($animalIsKnown /* && $animalIsKnownOrAlive */),
 
 				Select::make('bearsBiometryAnimalHandling.animal_id')
 					->fromQuery($animalSelectQuery, 'name')
@@ -121,7 +132,7 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 						? __('Please select the ID of the individual, if the animal is known.')
 						: __('If the individual hasn’t been caught before, leave the value “Unknown animal” and an automatic identification number will be assigned to this animal. If the individual has been previously handled and marked already, then choose its name from the drop-down list.'))
 					->empty(__('<Unknown animal>'))
-					->canSee(!$animalIsKnown),
+					->canSee(!$animalIsKnown /* && !$animalIsKnownOrAlive */),
 
 				Select::make('bearsBiometryAnimalHandling.animal_status')
 					->title('Status')
@@ -217,7 +228,7 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 						->title(__('Permit number'))
 						->required()
 						->help(__('Please enter the permit number'))
-						->canSee($regularCullSelected || $conflictAnimalRemovalSelected),
+						->canSee($regularCullSelected /* || $conflictAnimalRemovalSelected */),
 
 					Select::make('bearsBiometryAnimalHandling.conflict_animal_removal_list_id')
 						->fromQuery(ConflictAnimalRemovalList::where('status', '=', BaseList::STR_ACTIVE), 'name')
@@ -225,7 +236,7 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 						->empty(__('<Select>'))
 						->required()
 						->help(__('Please select the type legal cull'))
-						->canSee($conflictAnimalRemovalSelected),
+						->canSee($regularCullSelected),
 
 					Select::make('bearsBiometryAnimalHandling.biometry_loss_reason_list_id')
 						->fromQuery(BiometryLossReasonList::where('status', '=', BaseList::STR_ACTIVE), 'name')

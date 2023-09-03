@@ -8,6 +8,7 @@ use App\Models\BearsBiometryAnimalHandling;
 use App\Models\BearsBiometrySample;
 use App\Models\LicenceList;
 use App\Models\SexList;
+use App\Models\SpatialUnitFilterType;
 use App\Models\ToothTypeList;
 use App\Orchid\Layouts\AnimalHandlingSamplesLayout;
 use App\Orchid\Layouts\BearsBiometryAnimalHandlingAnimalConflictednessListener;
@@ -232,6 +233,8 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 			$triggers['animal_species_list_id'] = $animal->species_list_id;
 			$triggers['animal_sex_list_id'] = $animal->animal_sex_list_id;
 			$triggers['animal_description'] = $animal->animal_description;
+		} else {
+			$triggers['alive_or_known_animal'] = $triggers['alive_or_known_animal'] ?? Auth::user()->defaultVisualisationAnimalStatus() == Animal::STR_ALIVE;
 		}
 
 		if (!isset($triggers['y_number_of_removal_in_the_hunting_administrative_area']) ||
@@ -248,6 +251,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 
 		$payload = [
 			'bearsBiometryAnimalHandling' => new Repository([
+				'alive_or_known_animal' 			=> $triggers['alive_or_known_animal'] ?? null,
 				'original_animal_id' 				=> $triggers['original_animal_id'] ?? null,
 				'animal_id'      					=> $triggers['animal_id'] ?? null,
 				'animal_status'      				=> $triggers['animal_status'] ?? null,
@@ -382,7 +386,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 				    spatial_unit_filter_type_versions.valid_from <= ?
 				and
 					spatial_unit_filter_type_versions.valid_to >= ?
-			', [$gid, '__-LUO', $USFormattedDate, $USFormattedDate]);
+			', [$gid, '__-' . SpatialUnitFilterType::TYPE_HUNTING_MANAGEMENT_AREA, $USFormattedDate, $USFormattedDate]);
 
 			$LOVResults = DB::select('
 				select
@@ -410,7 +414,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 					spatial_unit_filter_type_versions.valid_from <= ?
 				and
 					spatial_unit_filter_type_versions.valid_to >= ?
-			', [$gid, '__-LOV', $USFormattedDate, $USFormattedDate]);
+			', [$gid, '__-' . SpatialUnitFilterType::TYPE_HUNTING_GROUND, $USFormattedDate, $USFormattedDate]);
 
 			if (count($LUOResults) > 0) {
 				$LUO = json_decode($LUOResults[0]->name)->name;

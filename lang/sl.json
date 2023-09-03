@@ -47,7 +47,7 @@
     "Biometry data": "Biometrični podatki",
     "Biometry data Create / Update": "Vnos novih / popravi biometrične podatke",
     "Biometry data missing": "Brez biometričnih podatkov",
-    "Body length": "Dolžina trupa (hrbtna stran) (od konice smrčka do korena repa)",
+    "Body length": "Dolžina trupa (hrbtna stran) - BREZ REPA",
     "Abdominal length": "Telesna dolžina - trebušna",
     "Body mass": "Telesna masa",
     "Body mass of the animal (In kilograms)": "Masa živali (v kilogramih)",
@@ -72,7 +72,7 @@
     "Create Legal Cull Lists": "Dodaj odstrel z dovoljenjem",
     "Create User": "Ustvari uporabnika",
     "Created": "Ustvarjeno",
-    "Created at": "Ustvarjeno",
+    "Created at": "Datum vnosa",
     "Creating new biometry data": "Pripravi nove biometrične podatke",
     "Current Password": "Trenutno geslo",
     "Dashboard": "Nadzorna plošča",
@@ -148,6 +148,7 @@
     "Hind right paw width": "Zadnja desna šapa - širina",
     "Home": "Osnovna stran",
     "Hunter/Finder name and surname": "Ime in priimek uplenitelja / najditelja",
+	"Hunter/Finder country": "Država uplenitelja / najditelja",
     "Hunting ground": "Lovišče",
     "Hunting ground representative": "Predstavnik lovišča (ime in priimek)",
     "Hunting-management area (LUO)": "Lovsko-upravljavsko območje",
@@ -166,7 +167,7 @@
     "Input animal name.": "Živali lahko dodelite ime.",
     "Insert Abdomen circumference of the animal (0-150 cm)": "Prosimo, vnesite Obseg trebuha (0-150 cm)",
     "Insert age estimate of the animal (0-25)": "Vpišite oceno starosti osebka (0-25)",
-    "Insert Body length of the animal (0-300 cm)": "Prosimo, vnesite dolžina trupa (hrbtna stran) (0-300 cm)",
+    "Insert Body length of the animal (0-300 cm)": "Prosimo, vnesite hrbtno dolžino trupa BREZ REPA (0-300 cm)",
     "Insert Distance between lower canines (0-7 cm)": "Vnesite razmak med spodnjima podočnikoma (0-7 cm)",
     "Insert Distance between upper canines (0-7 cm)": "Vnesite razmak med zgornjima podočnikoma (0-7 cm)",
     "Insert Ear length without hair (0-20 cm)": "Vnesite dolžino uhlja brez dlak (0-20 cm)",
@@ -205,6 +206,7 @@
     "Length": "Dolžina",
     "Length of hair at the end of tail": "Dolžina dlak na koncu repa",
     "Length of hair tuft (for lynx only) (0-15 cm)": "Dolžina čopka na uhlju (0-15 cm)",
+	"Length of hair tuft (for lynx only)": "Dolžina čopka na uhlju - samo pri risu",
     "Length of left canines": "Dolžina levih podočnikov",
     "Length of Lower left canines": "Dolžina spodnjih levih podočnikov",
     "Length of Lower right canines": "Dolžina spodnjih desnih podočnikov",
@@ -486,5 +488,7 @@
 
 	"Animal handling count": "Število rokovanj",
 
-	"Howling": "Oglašanje"
+	"Howling": "Oglašanje",
+
+	"An alive or known animal": "Klikni v primeru žive ali poznane živali"
 }

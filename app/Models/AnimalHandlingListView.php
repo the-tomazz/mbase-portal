@@ -143,7 +143,8 @@ class AnimalHandlingListView extends Model
 		'number_of_removal_in_the_hunting_administrative_area',
 		'attachment_count',
 		'bears_biometry_data_age',
-		'bears_biometry_data_masa_bruto'
+		'bears_biometry_data_masa_bruto',
+		'users_name'
 	];
 
 	protected $allowedFilters = [
@@ -179,7 +180,10 @@ class AnimalHandlingListView extends Model
 		'number_of_removal_in_the_hunting_administrative_area',
 		'attachment_count',
 		'bears_biometry_data_age',
-		'bears_biometry_data_masa_bruto'
+		'bears_biometry_data_masa_bruto',
+		'hunting_management_area',
+		'hunting_ground',
+		'users_name'
 	];
 
 	public function species_list()
@@ -207,12 +211,22 @@ class AnimalHandlingListView extends Model
 		return $this->belongsTo(PlaceTypeList::class);
 	}
 
+	public function licence_list()
+	{
+		return $this->belongsTo(LicenceList::class);
+	}
+
 	public function spatial_unit_filter_element()
 	{
 		return $this->belongsTo(SpatialUnitFilterElement::class, 'hunting_management_area_id');
 	}
 
 	public function group()
+	{
+		return $this->belongsTo(Group::class, 'hunter_finder_country_id');
+	}
+
+	public function hunter_finder_country()
 	{
 		return $this->belongsTo(Group::class, 'hunter_finder_country_id');
 	}

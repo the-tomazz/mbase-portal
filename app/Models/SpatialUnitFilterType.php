@@ -28,6 +28,9 @@ class SpatialUnitFilterType extends Model
 	protected $table = 'spatial_unit_filter_types';
 	public $timestamps = false;
 
+	public const TYPE_HUNTING_GROUND = 'LOV';
+	public const TYPE_HUNTING_MANAGEMENT_AREA = 'LUO';
+
 	use AsSource, Filterable, Attachable;
 
 	protected $fillable = [
