@@ -235,7 +235,7 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 						->title(__('Type of legal cull'))
 						->empty(__('<Select>'))
 						->required()
-						->help(__('Please select the type legal cull'))
+						->help(__('Please select the type of legal cull'))
 						->canSee($regularCullSelected),
 
 					Select::make('bearsBiometryAnimalHandling.biometry_loss_reason_list_id')
