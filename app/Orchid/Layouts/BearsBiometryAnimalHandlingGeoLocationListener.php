@@ -38,7 +38,7 @@ class BearsBiometryAnimalHandlingGeoLocationListener extends Listener
 		'bearsBiometryAnimalHandling.place_type_list_id',
 		'bearsBiometryAnimalHandling.place_type_list_details',
 		'bearsBiometryAnimalHandling.geo_input_method',
-		'bearsBiometryAnimalHandling.animal_died_at_date'
+		'bearsBiometryAnimalHandling.animal_handling_date_date'
 	];
 
 	/**

@@ -282,13 +282,22 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 
 	public function asyncUpdateAnimalHandlingGeoLocationListenerData($triggers)
 	{
-		$parsedDate = $triggers['animal_died_at_date'] ?
-			date_parse_from_format(
-				"j.n.Y",
-				$triggers['animal_died_at_date']
-			) : date_create('now');
+		Log::debug($triggers);
 
-		$USFormattedDate = $parsedDate->format('Y-m-d');
+		if ($triggers['animal_handling_date_date']) {
+			$parsedDate = date_parse_from_format(
+				"j.n.Y",
+				$triggers['animal_handling_date_date']
+			);
+
+			if (!$parsedDate['year']) {
+				$USFormattedDate = $parsedDate['year'] . '-' . $parsedDate['month'] . '-' . $parsedDate['day'];
+			} else {
+				$USFormattedDate = date_create('now')->format('Y-m-d');
+			}
+		} else {
+			$USFormattedDate = date_create('now')->format('Y-m-d');
+		}
 
 		$proj4 = new Proj4php();
 		$proj4->addDef("EPSG:3912", '+proj=tmerc +lat_0=0 +lon_0=15 +k=0.9999 +x_0=500000 +y_0=-5000000 +ellps=bessel +towgs84=409.545,72.164,486.872,3.085957,5.469110,-11.020289,17.919665 +units=m +no_defs');
@@ -452,7 +461,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 				'place_of_removal' => $triggers['place_of_removal'],
 				'place_type_list_id'      => $triggers['place_type_list_id'],
 				'place_type_list_details' => $triggers['place_type_list_details'] ?? null,
-				'animal_died_at_date' => $triggers['animal_died_at_date'] ?? null
+				'animal_handling_date_date' => $triggers['animal_handling_date_date'] ?? null
 			];
 		} else {
 			$payload = [
@@ -475,7 +484,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 				'place_of_removal' => $triggers['place_of_removal'],
 				'place_type_list_id'      => $triggers['place_type_list_id'],
 				'place_type_list_details' => $triggers['place_type_list_details'] ?? null,
-				'animal_died_at_date' => $triggers['animal_died_at_date'] ?? null
+				'animal_handling_date_date' => $triggers['animal_handling_date_date'] ?? null
 			];
 		}
 
