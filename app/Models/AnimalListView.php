@@ -44,6 +44,10 @@ class AnimalListView extends Model
 		'sex_list_name' => LocalizedJsonData::class,
 		'way_of_withdrawal_list_id' => 'int',
 		'way_of_withdrawal_list_name' => LocalizedJsonData::class,
+		'conflict_animal_removal_list_id' => 'int',
+		'conflict_animal_removal_list_name' => LocalizedJsonData::class,
+		'biometry_loss_reason_list_id' => 'int',
+		'biometry_loss_reason_list_name' => LocalizedJsonData::class,
 		'bears_biometry_animal_handling_id' => 'int',
 		'bears_biometry_data_id' => 'int',
 		'animal_handling_count' => 'int',
@@ -87,6 +91,18 @@ class AnimalListView extends Model
 		'way_of_withdrawal_list_name->it',
 		'way_of_withdrawal_list_name->hu',
 		'way_of_withdrawal_list_name->hr',
+		'conflict_animal_removal_list_name->sl',
+		'conflict_animal_removal_list_name->en',
+		'conflict_animal_removal_list_name->de',
+		'conflict_animal_removal_list_name->it',
+		'conflict_animal_removal_list_name->hu',
+		'conflict_animal_removal_list_name->hr',
+		'biometry_loss_reason_list_name->sl',
+		'biometry_loss_reason_list_name->en',
+		'biometry_loss_reason_list_name->de',
+		'biometry_loss_reason_list_name->it',
+		'biometry_loss_reason_list_name->hu',
+		'biometry_loss_reason_list_name->hr',
 		'hunting_management_area',
 		'number_of_removal_in_the_hunting_administrative_area',
 		'hunting_ground',
@@ -126,6 +142,18 @@ class AnimalListView extends Model
 		'way_of_withdrawal_list_name->it',
 		'way_of_withdrawal_list_name->hu',
 		'way_of_withdrawal_list_name->hr',
+		'conflict_animal_removal_list_name->sl',
+		'conflict_animal_removal_list_name->en',
+		'conflict_animal_removal_list_name->de',
+		'conflict_animal_removal_list_name->it',
+		'conflict_animal_removal_list_name->hu',
+		'conflict_animal_removal_list_name->hr',
+		'biometry_loss_reason_list_name->sl',
+		'biometry_loss_reason_list_name->en',
+		'biometry_loss_reason_list_name->de',
+		'biometry_loss_reason_list_name->it',
+		'biometry_loss_reason_list_name->hu',
+		'biometry_loss_reason_list_name->hr',
 		'hunting_management_area',
 		'number_of_removal_in_the_hunting_administrative_area',
 		'hunting_ground',
@@ -151,6 +179,16 @@ class AnimalListView extends Model
 	public function way_of_withdrawal_list()
 	{
 		return $this->belongsTo(WayOfWithdrawalList::class);
+	}
+
+	public function conflict_animal_removal_list()
+	{
+		return $this->belongsTo(ConflictAnimalRemovalList::class);
+	}
+
+	public function biometry_loss_reason_list()
+	{
+		return $this->belongsTo(BiometryLossReasonList::class);
 	}
 
 	public function bears_biometry_animal_handlings()

@@ -93,6 +93,10 @@ class AnimalHandlingListView extends Model
 		'animal_id' => 'int',
 		'way_of_withdrawal_list_id' => 'int',
 		'way_of_withdrawal_list_name' => LocalizedJsonData::class,
+		'conflict_animal_removal_list_id' => 'int',
+		'conflict_animal_removal_list_name' => LocalizedJsonData::class,
+		'biometry_loss_reason_list_id' => 'int',
+		'biometry_loss_reason_list_name' => LocalizedJsonData::class,
 		'species_list_name' => LocalizedJsonData::class,
 		'sex_list_name' => LocalizedJsonData::class,
 		'animal_died_at' => 'datetime',
@@ -118,6 +122,18 @@ class AnimalHandlingListView extends Model
 		'way_of_withdrawal_list_name->it',
 		'way_of_withdrawal_list_name->hu',
 		'way_of_withdrawal_list_name->hr',
+		'conflict_animal_removal_list_name->sl',
+		'conflict_animal_removal_list_name->en',
+		'conflict_animal_removal_list_name->de',
+		'conflict_animal_removal_list_name->it',
+		'conflict_animal_removal_list_name->hu',
+		'conflict_animal_removal_list_name->hr',
+		'biometry_loss_reason_list_name->sl',
+		'biometry_loss_reason_list_name->en',
+		'biometry_loss_reason_list_name->de',
+		'biometry_loss_reason_list_name->it',
+		'biometry_loss_reason_list_name->hu',
+		'biometry_loss_reason_list_name->hr',
 		'species_list_name->sl',
 		'species_list_name->en',
 		'species_list_name->de',
@@ -159,6 +175,18 @@ class AnimalHandlingListView extends Model
 		'way_of_withdrawal_list_name->it',
 		'way_of_withdrawal_list_name->hu',
 		'way_of_withdrawal_list_name->hr',
+		'conflict_animal_removal_list_name->sl',
+		'conflict_animal_removal_list_name->en',
+		'conflict_animal_removal_list_name->de',
+		'conflict_animal_removal_list_name->it',
+		'conflict_animal_removal_list_name->hu',
+		'conflict_animal_removal_list_name->hr',
+		'biometry_loss_reason_list_name->sl',
+		'biometry_loss_reason_list_name->en',
+		'biometry_loss_reason_list_name->de',
+		'biometry_loss_reason_list_name->it',
+		'biometry_loss_reason_list_name->hu',
+		'biometry_loss_reason_list_name->hr',
 		'species_list_name->sl',
 		'species_list_name->en',
 		'species_list_name->de',
@@ -199,6 +227,11 @@ class AnimalHandlingListView extends Model
 	public function way_of_withdrawal_list()
 	{
 		return $this->belongsTo(WayOfWithdrawalList::class);
+	}
+
+	public function conflict_animal_removal_list()
+	{
+		return $this->belongsTo(ConflictAnimalRemovalList::class);
 	}
 
 	public function biometry_loss_reason_list()
@@ -249,11 +282,6 @@ class AnimalHandlingListView extends Model
 	public function getIsAliveAttribute()
 	{
 		return $this->animal->is_alive;
-	}
-
-	public function conflict_animal_removal_list()
-	{
-		return $this->belongsTo(ConflictAnimalRemovalList::class);
 	}
 
 	public function SpatialUnit()

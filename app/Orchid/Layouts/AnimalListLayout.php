@@ -5,6 +5,8 @@ namespace App\Orchid\Layouts;
 use App\Models\Animal;
 use App\Models\AnimalListView;
 use App\Models\Base\BaseList;
+use App\Models\BiometryLossReasonList;
+use App\Models\ConflictAnimalRemovalList;
 use App\Models\SexList;
 use App\Models\SpatialUnitFilterElement;
 use App\Models\SpatialUnitFilterType;
@@ -176,6 +178,44 @@ class AnimalListLayout extends Table
 				)
 				->filterValue(function ($way_of_withdrawal_list_name) {
 					return $way_of_withdrawal_list_name;
+				}),
+
+				TD::make('conflict_animal_removal_list_name->' . App::getLocale(), __("Legal cull"))
+				->render(function (AnimalListView $animal) {
+					return Link::make($animal->conflict_animal_removal_list_name)
+						->route('platform.animalHandling.view', [ $animal ]);
+				})
+				->sort()
+				->filter(
+					Select::make()->fromQuery(
+						ConflictAnimalRemovalList::where('status', '=', BaseList::STR_ACTIVE)
+							->orderBy('name->' . App::getLocale(), 'asc'),
+						'name',
+						'name'
+					)
+					->empty(__('<Select>'))
+				)
+				->filterValue(function ($conflict_animal_removal_list_name) {
+					return $conflict_animal_removal_list_name;
+				}),
+
+			TD::make('biometry_loss_reason_list_name->' . App::getLocale(), __("Loss reason"))
+				->render(function (AnimalListView $animal) {
+					return Link::make($animal->biometry_loss_reason_list_name)
+						->route('platform.animalHandling.view', [ $animal ]);
+				})
+				->sort()
+				->filter(
+					Select::make()->fromQuery(
+						BiometryLossReasonList::where('status', '=', BaseList::STR_ACTIVE)
+							->orderBy('name->' . App::getLocale(), 'asc'),
+						'name',
+						'name'
+					)
+					->empty(__('<Select>'))
+				)
+				->filterValue(function ($biometry_loss_reason_list_name) {
+					return $biometry_loss_reason_list_name;
 				}),
 
 			TD::make('hunting_management_area', __('Hunting-management area (LUO)'))
