@@ -282,15 +282,13 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 
 	public function asyncUpdateAnimalHandlingGeoLocationListenerData($triggers)
 	{
-		Log::debug($triggers);
-
 		if ($triggers['animal_handling_date_date']) {
 			$parsedDate = date_parse_from_format(
 				"j.n.Y",
 				$triggers['animal_handling_date_date']
 			);
 
-			if (!$parsedDate['year']) {
+			if ($parsedDate['year']) {
 				$USFormattedDate = $parsedDate['year'] . '-' . $parsedDate['month'] . '-' . $parsedDate['day'];
 			} else {
 				$USFormattedDate = date_create('now')->format('Y-m-d');
