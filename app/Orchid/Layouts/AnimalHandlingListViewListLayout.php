@@ -48,8 +48,9 @@ class AnimalHandlingListViewListLayout extends Table
 			->where('spatial_unit_filter_types.slug', 'like', '%-' . SpatialUnitFilterType::TYPE_HUNTING_GROUND)
 			->select('spatial_unit_filter_elements.id', 'spatial_unit_filter_elements.name', 'spatial_unit_filter_type_versions.title')
             ->get();
+
 		foreach ($spatialFilterElements as $spatialFilterElement) {
-			$huntingGroundFilterOptions[$spatialFilterElement->name] = $spatialFilterElement->name;
+			$huntingGroundFilterOptions[$spatialFilterElement->name['name']] = $spatialFilterElement->name['name'];
 		}
 
 		$huntingManagementAreaFilterOptions = [];
@@ -59,7 +60,7 @@ class AnimalHandlingListViewListLayout extends Table
 			->select('spatial_unit_filter_elements.id', 'spatial_unit_filter_elements.name', 'spatial_unit_filter_type_versions.title')
             ->get();
 		foreach ($spatialFilterElements as $spatialFilterElement) {
-			$huntingManagementAreaFilterOptions[$spatialFilterElement->name] = $spatialFilterElement->name;
+			$huntingManagementAreaFilterOptions[$spatialFilterElement->name['name']] = $spatialFilterElement->name['name'];
 		}
 
 		$userNames = [];
@@ -252,7 +253,7 @@ class AnimalHandlingListViewListLayout extends Table
 					return $animalHandlingListView->bears_biometry_data_status == AnimalHandlingListView::STR_EXISTS
 						? Link::make($animalHandlingListView->bears_biometry_data_masa_bruto)
 							->route('platform.biometryData.view', [ $animalHandlingListView->bears_biometry_data_id ])
-						: Link::make(__('NA'))
+						: Link::make(__('Does not exist'))
 							->route('platform.biometryData.add', [ $animalHandlingListView ]);
 				})
 				->sort()
@@ -288,7 +289,7 @@ class AnimalHandlingListViewListLayout extends Table
 					return $animalHandlingListView->bears_biometry_data_status == AnimalHandlingListView::STR_EXISTS
 						? Link::make(__('Exists'))
 							->route('platform.biometryData.view', [ $animalHandlingListView->bears_biometry_data_id ])
-						: Link::make(__('NA'))
+						: Link::make(__('Does not exist'))
 							->route('platform.biometryData.add', [ $animalHandlingListView ]);
 				})
 				->sort()
@@ -308,7 +309,7 @@ class AnimalHandlingListViewListLayout extends Table
 					return $animalHandlingListView->attachment_coun == AnimalHandlingListView::STR_EXISTS
 						? Link::make($animalHandlingListView->attachment_count)
 							->route('platform.biometryData.view', [ $animalHandlingListView->bears_biometry_data_id ])
-						: Link::make(__('NA'))
+						: Link::make(__('Does not exist'))
 							->route('platform.biometryData.add', [ $animalHandlingListView ]);
 				})
 				->sort()

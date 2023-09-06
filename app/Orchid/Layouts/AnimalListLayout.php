@@ -46,8 +46,9 @@ class AnimalListLayout extends Table
 			->where('spatial_unit_filter_types.slug', 'like', '%-' . SpatialUnitFilterType::TYPE_HUNTING_GROUND)
 			->select('spatial_unit_filter_elements.id', 'spatial_unit_filter_elements.name', 'spatial_unit_filter_type_versions.title')
             ->get();
+
 		foreach ($spatialFilterElements as $spatialFilterElement) {
-			$huntingGroundFilterOptions[$spatialFilterElement->name] = $spatialFilterElement->name;
+			$huntingGroundFilterOptions[$spatialFilterElement->name['name']] = $spatialFilterElement->name['name'];
 		}
 
 		$huntingManagementAreaFilterOptions = [];
@@ -57,17 +58,7 @@ class AnimalListLayout extends Table
 			->select('spatial_unit_filter_elements.id', 'spatial_unit_filter_elements.name', 'spatial_unit_filter_type_versions.title')
             ->get();
 		foreach ($spatialFilterElements as $spatialFilterElement) {
-			$huntingManagementAreaFilterOptions[$spatialFilterElement->name] = $spatialFilterElement->name;
-		}
-
-		$huntingManagementAreaFilterOptions = [];
-		$spatialFilterElements = SpatialUnitFilterElement::join('spatial_unit_filter_type_versions', 'spatial_unit_filter_type_versions.id', 'spatial_unit_filter_elements.spatial_unit_filter_type_version_id')
-			->join('spatial_unit_filter_types', 'spatial_unit_filter_types.id', 'spatial_unit_filter_type_versions.spatial_unit_filter_type_id')
-			->where('spatial_unit_filter_types.slug', 'like', '%-' . SpatialUnitFilterType::TYPE_HUNTING_MANAGEMENT_AREA)
-			->select('spatial_unit_filter_elements.id', 'spatial_unit_filter_elements.name', 'spatial_unit_filter_type_versions.title')
-            ->get();
-		foreach ($spatialFilterElements as $spatialFilterElement) {
-			$huntingManagementAreaFilterOptions[$spatialFilterElement->name] = $spatialFilterElement->name;
+			$huntingManagementAreaFilterOptions[$spatialFilterElement->name['name']] = $spatialFilterElement->name['name'];
 		}
 
 		$userNames = [];
@@ -231,6 +222,14 @@ class AnimalListLayout extends Table
 				->filter(
 					Select::make()->options($huntingManagementAreaFilterOptions)->empty(__('<Select>'))
 				),
+
+			TD::make('number_of_removal_in_the_hunting_administrative_area', __("Number and the year of removal in hunting administrative area"))
+				->render(function (AnimalListView $animal) {
+					return Link::make($animal->number_of_removal_in_the_hunting_administrative_area)
+						->route('platform.animalHandling.view', [ $animal ]);
+				})
+				->sort()
+				->filter(Input::make()),
 
 			TD::make('hunting_ground', __('Hunting ground'))
 				->render(function (AnimalListView $animal) {

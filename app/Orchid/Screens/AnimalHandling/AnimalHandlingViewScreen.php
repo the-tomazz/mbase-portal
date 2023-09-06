@@ -8,6 +8,7 @@ use App\Models\BiometryLossReasonList;
 use App\Models\ConflictAnimalRemovalList;
 use App\Models\User;
 use App\Models\WayOfWithdrawalList;
+use Illuminate\Support\Facades\Auth;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Actions\ModalToggle;
 use Orchid\Screen\Fields\Label;
@@ -62,10 +63,20 @@ class AnimalHandlingViewScreen extends Screen
 				->icon('pencil')
 				->route('platform.animalHandling.edit', [ 'animal' => $this->bearsBiometryAnimalHandling->animal, 'bearsBiometryAnimalHandling' => $this->bearsBiometryAnimalHandling ]),
 
+
 			ModalToggle::make('Remove')
 				->modal('modalRemove')
 				->method('remove')
 				->icon('trash'),
+
+			Auth::user()->isInGroup('mbase2', 'mortbiom')
+				? [
+					ModalToggle::make('Remove')
+						->modal('modalRemove')
+						->method('remove')
+						->icon('trash')
+				]
+				: []
 		];
 	}
 

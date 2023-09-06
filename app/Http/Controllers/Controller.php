@@ -62,7 +62,7 @@ class Controller extends BaseController
 			$row[] = $isAnimalHandling ? $animalHandling->animal_handling_date->format('Y-m-d') : '';
 			$row[] = $animal->species_list ? $animal->species_list->name : '';
 			$row[] = $isAnimalHandling ? $animalHandling->hunting_management_area : '';
-			$row[] = $isAnimalHandling ? $animalHandling->number_of_removal_in_the_hunting_administration_area : '';
+			$row[] = $isAnimalHandling ? $animalHandling->number_of_removal_in_the_hunting_administrative_area : '';
 			$row[] = $isAnimalHandling ? $animalHandling->hunting_ground : '';
 			$row[] = $isAnimalHandling ? ( $animalHandling->way_of_withdrawal_list ? $animalHandling->way_of_withdrawal_list->name : '' ) : '';
 			$row[] = $isAnimalHandling ? ( $animalHandling->conflict_animal_removal_list ? $animalHandling->conflict_animal_removal_list->name : '' ) : '';
@@ -345,7 +345,7 @@ class Controller extends BaseController
 			$row[] = $isAnimalHandling ? $animalHandling->animal_handling_date->format('Y-m-d') : '';
 			$row[] = $animal->species_list ? $animal->species_list->name : '';
 			$row[] = $isAnimalHandling ? $animalHandling->hunting_management_area : '';
-			$row[] = $isAnimalHandling ? $animalHandling->number_of_removal_in_the_hunting_administration_area : '';
+			$row[] = $isAnimalHandling ? $animalHandling->number_of_removal_in_the_hunting_administrative_area : '';
 			$row[] = $isAnimalHandling ? $animalHandling->hunting_ground : '';
 			$row[] = $isAnimalHandling ? ( $animalHandling->way_of_withdrawal_list ? $animalHandling->way_of_withdrawal_list->name : '' ) : '';
 			$row[] = $isAnimalHandling ? ( $animalHandling->conflict_animal_removal_list ? $animalHandling->conflict_animal_removal_list->name : '' ) : '';

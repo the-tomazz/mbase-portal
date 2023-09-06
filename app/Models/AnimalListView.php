@@ -52,7 +52,8 @@ class AnimalListView extends Model
 		'bears_biometry_data_id' => 'int',
 		'animal_handling_count' => 'int',
 		'animal_handling_date' => 'datetime',
-		'bruto_masa' => 'float'
+		'bruto_masa' => 'float',
+		'number_of_removal_in_the_hunting_administrative_area' => 'string'
 	];
 
 	protected $fillable = [

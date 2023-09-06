@@ -102,7 +102,8 @@ class AnimalHandlingListView extends Model
 		'animal_died_at' => 'datetime',
 		'species_list_id' => 'int',
 		'sex_list_id' => 'int',
-		'attachment_count' => 'int'
+		'attachment_count' => 'int',
+		'number_of_removal_in_the_hunting_administrative_area' => 'string'
 	];
 
 	protected $fillable = [

@@ -6,6 +6,7 @@ use App\Models\Animal;
 use App\Models\SexList;
 use App\Models\SpeciesList;
 use DateTime;
+use Illuminate\Support\Facades\Auth;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Actions\ModalToggle;
@@ -59,7 +60,7 @@ class AnimalDataViewScreen extends Screen
 					->icon('pencil')
 					->route('platform.animalData.edit', ['animal' => $this->animal]),
 			],
-			$this->animal->bears_biometry_animal_handlings->count() == 0
+			$this->animal->bears_biometry_animal_handlings->count() == 0 && Auth::user()->isInGroup('mbase2', 'mortbiom')
 				? [
 					ModalToggle::make('Remove')
 						->modal('modalRemove')

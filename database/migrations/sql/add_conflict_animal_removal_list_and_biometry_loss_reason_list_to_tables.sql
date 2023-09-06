@@ -1,23 +1,37 @@
-DROP VIEW animal_handling_list_view;
+DROP VIEW IF EXISTS animal_handling_list_view;
+DROP VIEW IF EXISTS animal_list_view;
 
+alter table bears_biometry_animal_handling drop column number_of_removal_in_the_hunting_administration_area;
 
 CREATE OR REPLACE VIEW animal_handling_list_view AS
   SELECT
     laravel.bears_biometry_animal_handling.*,
-	laravel.way_of_withdrawal_list.name as way_of_withdrawal_list_name,
-	laravel.conflict_animal_removal_list.name as conflict_animal_removal_list_name,
+    laravel.way_of_withdrawal_list.name as way_of_withdrawal_list_name,
+    laravel.conflict_animal_removal_list.name as conflict_animal_removal_list_name,
 	laravel.biometry_loss_reason_list.name as biometry_loss_reason_list_name,
 	laravel.species_list.name as species_list_name,
-	laravel.sex_list.name as sex_list_name,
+    laravel.sex_list.name as sex_list_name,
     laravel.animal.name as animal_name,
-	laravel.animal.species_list_id as species_list_id,
-	laravel.animal.sex_list_id as sex_list_id,
+    laravel.animal.species_list_id as species_list_id,
+    laravel.animal.sex_list_id as sex_list_id,
     laravel.animal.status as animal_status,
-	laravel.animal.died_at as animal_died_at,
-	laravel.bears_biometry_data.id as bears_biometry_data_id,
+    laravel.animal.died_at as animal_died_at,
+    laravel.bears_biometry_data.id as bears_biometry_data_id,
+    laravel.bears_biometry_data.age as bears_biometry_data_age,
+    laravel.bears_biometry_data.masa_bruto as bears_biometry_data_masa_bruto,
+    (
+      SELECT
+	    COUNT(*)
+      FROM
+        attachmentable
+      WHERE
+        laravel.attachmentable.attachmentable_type = 'App\Models\BearsBiometryAnimalHandling'
+      AND
+        laravel.attachmentable.attachmentable_id = laravel.bears_biometry_animal_handling.id
+    ) AS attachment_count,
+    CASE WHEN laravel.bears_biometry_data.id IS NULL THEN 'missing' ELSE 'exists' END AS bears_biometry_data_status,
 	laravel.users.id as users_id,
-	laravel.users.name as users_name,
-	CASE WHEN laravel.bears_biometry_data.id is null THEN 'missing' ELSE 'exists' END as bears_biometry_data_status
+	laravel.users.name as users_name
   FROM
     laravel.bears_biometry_animal_handling
   JOIN
@@ -40,7 +54,7 @@ CREATE OR REPLACE VIEW animal_handling_list_view AS
     laravel.biometry_loss_reason_list
   ON
     laravel.biometry_loss_reason_list.id = laravel.bears_biometry_animal_handling.biometry_loss_reason_list_id
-  LEFT JOIN
+   LEFT JOIN
     laravel.species_list
   ON
     laravel.species_list.id = laravel.animal.species_list_id
@@ -51,9 +65,32 @@ CREATE OR REPLACE VIEW animal_handling_list_view AS
   LEFT JOIN
     users
   ON
-    users.id = bears_biometry_animal_handling.data_entered_by_user_id;
-
-DROP VIEW animal_list_view;
+    users.id = bears_biometry_animal_handling.data_entered_by_user_id
+  LEFT JOIN
+    laravel.attachmentable
+  ON
+    laravel.attachmentable.attachmentable_type = 'App\Models\BearsBiometryAnimalHandling'
+  AND
+    laravel.attachmentable.attachmentable_id = laravel.bears_biometry_animal_handling.id
+  GROUP BY
+    laravel.bears_biometry_animal_handling.id,
+    laravel.way_of_withdrawal_list.name,
+    laravel.conflict_animal_removal_list.name,
+	laravel.biometry_loss_reason_list.name,
+	laravel.species_list.name,
+    laravel.animal.name,
+    laravel.sex_list.name,
+    laravel.animal.name,
+    laravel.animal.species_list_id,
+    laravel.animal.sex_list_id,
+    laravel.animal.status,
+    laravel.animal.died_at,
+    laravel.bears_biometry_data.id,
+    laravel.bears_biometry_data.age,
+    laravel.bears_biometry_data.masa_bruto,
+    CASE WHEN laravel.bears_biometry_data.id is null THEN 'missing' ELSE 'exists' END,
+	users.id,
+	users.name;
 
 CREATE OR REPLACE VIEW animal_list_view AS
   SELECT
@@ -129,3 +166,4 @@ CREATE OR REPLACE VIEW animal_list_view AS
   ON
     bears_biometry_data.bears_biometry_animal_handling_id = bears_biometry_animal_handling.id;
 
+update spatial_unit_filter_elements set "name" = jsonb_set("name"::jsonb, '{name}', (upper(((name::jsonb)->'name')::VARCHAR))::jsonb) where spatial_unit_filter_type_version_id in (1, 4) ;
