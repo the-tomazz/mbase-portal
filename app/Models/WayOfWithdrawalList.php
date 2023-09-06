@@ -32,13 +32,13 @@ class WayOfWithdrawalList extends BaseList
 	use AsSource, Filterable;
 
 	public const REGULAR_CULL = 133;
-	public const CONFLICT_ANIMAL_REMOVAL = 134;
+	# public const CONFLICT_ANIMAL_REMOVAL = 134; // removed on customer request
 	public const LOSS = 135;
 	public const LIVE_CAPTURE = 136;
 	public const TRANSLOCATION_OUT_OF_POPULATION = 3661;
 
 	public const SHOWN_ON_ANIMAL_STATUS_ALIVE = [ self::LIVE_CAPTURE, self::TRANSLOCATION_OUT_OF_POPULATION ];
-	public const SHOWN_ON_ANIMAL_STATUS_DEAD = [ self::REGULAR_CULL, self::CONFLICT_ANIMAL_REMOVAL, self::LOSS ];
+	public const SHOWN_ON_ANIMAL_STATUS_DEAD = [ self::REGULAR_CULL, self::LOSS ];
 
 	protected $table = 'way_of_withdrawal_list';
 

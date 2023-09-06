@@ -116,7 +116,7 @@ class AnimalHandlingViewScreen extends Screen
 		];
 
 		$regularCullSelected = $this->bearsBiometryAnimalHandling->way_of_withdrawal_list_id == WayOfWithdrawalList::REGULAR_CULL;
-		$conflictAnimalRemovalSelected = $this->bearsBiometryAnimalHandling->way_of_withdrawal_list_id == WayOfWithdrawalList::CONFLICT_ANIMAL_REMOVAL;
+		# $conflictAnimalRemovalSelected = $this->bearsBiometryAnimalHandling->way_of_withdrawal_list_id == WayOfWithdrawalList::CONFLICT_ANIMAL_REMOVAL;
 		$lossSelected = $this->bearsBiometryAnimalHandling->way_of_withdrawal_list_id == WayOfWithdrawalList::LOSS;
 		$lossReasonOtherSelected = $this->bearsBiometryAnimalHandling->biometry_loss_reason_list_id == BiometryLossReasonList::OTHER;
 		$liveCaptureSelected = $this->bearsBiometryAnimalHandling->way_of_withdrawal_list_id == WayOfWithdrawalList::LIVE_CAPTURE;
@@ -127,14 +127,12 @@ class AnimalHandlingViewScreen extends Screen
 					return WayOfWithdrawalList::find($bearsBiometryAnimalHandling->way_of_withdrawal_list_id)->name;
 				});
 
-		if ($regularCullSelected || $conflictAnimalRemovalSelected) {
+		if ($regularCullSelected) {
 			$animalHandlingSights[] = Sight::make('licence_number', __('Permit number'))
 				->render(function ($bearsBiometryAnimalHandling) {
 					return $bearsBiometryAnimalHandling->licence_number;
 				});
-		}
 
-		if ($conflictAnimalRemovalSelected) {
 			$animalHandlingSights[] = Sight::make('conflict_animal_removal_list_id', __('Type of legal cull'))
 				->render(function ($bearsBiometryAnimalHandling) {
 					return $bearsBiometryAnimalHandling->conflict_animal_removal_list_id ? ConflictAnimalRemovalList::find($bearsBiometryAnimalHandling->conflict_animal_removal_list_id)->name : '';
