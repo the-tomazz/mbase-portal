@@ -199,8 +199,9 @@
     "Last edit": "Urejeno",
     "Latitude": "Zemljepisna širina (GPS)",
     "Leave empty to keep current password": "Pustite prazno če ne želiti spremeniti gesla",
-    "Left testicle length": "Dožina levega testisa",
-    "Left testicle length (0-10 cm)": "Dožina levega testisa (0-10 cm)",
+	"Genetic samples taken YES/NO": "Genetski vzorci vzeti DA/NE",
+    "Left testicle length": "Dolžina levega testisa",
+    "Left testicle length (0-10 cm)": "Dolžina levega testisa (0-10 cm)",
     "Left testicle width": "Širina levega testisa",
     "Left testicle width (0-10 cm)": "Širina levega testisa (0-10 cm)",
     "Length": "Dolžina",
@@ -492,5 +493,8 @@
 
 	"Howling": "Oglašanje",
 
-	"An alive or known animal": "Klikni v primeru žive ali poznane živali"
+	"An alive or known animal": "Klikni v primeru žive ali poznane živali",
+
+	"Yes": "Da",
+	"No": "Ne"
 }

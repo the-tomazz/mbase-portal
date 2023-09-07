@@ -72,8 +72,8 @@ class BiometryDataViewScreen extends Screen
 	 */
 	public function layout(): iterable
 	{
-		$isFemale = $this->bearsBiometryData->sex_list_id == SexList::FEMALE_SEX_ID;
-		$isNeutral = $this->bearsBiometryData->sex_list_id == SexList::NEUTRAL_SEX_ID;
+		$isFemale = $this->bearsBiometryData->bears_biometry_animal_handling->animal->sex_list_id == SexList::FEMALE_SEX_ID;
+		$isNeutral = $this->bearsBiometryData->bears_biometry_animal_handling->animal->sex_list_id == SexList::NEUTRAL_SEX_ID;
 
 		$animalSight = [
 			Sight::make('bears_biometry_animal_handling_animal_name', __('Animal name'))

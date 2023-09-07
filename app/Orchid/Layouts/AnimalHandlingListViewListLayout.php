@@ -306,7 +306,7 @@ class AnimalHandlingListViewListLayout extends Table
 
 			TD::make('attachment_count', __('Attachments'))
 				->render(function (AnimalHandlingListView $animalHandlingListView) {
-					return $animalHandlingListView->attachment_coun == AnimalHandlingListView::STR_EXISTS
+					return $animalHandlingListView->attachment_count > 0
 						? Link::make($animalHandlingListView->attachment_count)
 							->route('platform.biometryData.view', [ $animalHandlingListView->bears_biometry_data_id ])
 						: Link::make(__('Does not exist'))

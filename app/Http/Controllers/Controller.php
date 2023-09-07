@@ -127,6 +127,9 @@ class Controller extends BaseController
 			$row[] = $isBiometryData ? $bearsBiometryData->distance_between_upper_canines : '';
 			$row[] = $isBiometryData ? $bearsBiometryData->distance_between_lower_canines : '';
 			$row[] = $isAnimalHandling ? ( $animalHandling->tooth_type_list ? $animalHandling->tooth_type_list->name : '' ) : '';
+
+			$row[] = $isAnimalHandling ? ( count($animalHandling->bearsBiometrySamples)>0 ? __('Yes') : __('No') ) : '';
+
 			$row[] = $isBiometryData ? $bearsBiometryData->testicals_left_length : '';
 			$row[] = $isBiometryData ? $bearsBiometryData->testicals_left_width : '';
 			$row[] = $isBiometryData ? $bearsBiometryData->testicals_right_length : '';
@@ -182,9 +185,9 @@ class Controller extends BaseController
 			__('Witness/Accompanying person name and surname'),
 			__('Taxidermist name and surname'),
 			__('Status on handling'),
-			__('Status'),
+			__('Animal status'),
 
-			__('Biometry data ID'),
+			__('Biometry Data ID'),
 			__('Body length'),
 			# __('Abdominal length'),
 			__('Shoulder height'),
@@ -198,7 +201,7 @@ class Controller extends BaseController
 			__('Tail length without hair'),
 			__('Ear length without hair'),
 			__('Physical condition, parasites, injuries, markings, other observations (ear tags, signs of crossbreeding with a dog, etc.) and notes'),
-			__('Length of hair tuft (for lynx only) (0-15 cm)'),
+			__('Length of hair tuft (for lynx only)'),
 			__('Hind left paw length'),
 			__('Hind right paw length'),
 			__('Front left paw length'),
@@ -220,6 +223,7 @@ class Controller extends BaseController
 
 			__('Tooth Type'),
 
+			__('Genetic samples taken YES/NO'),
 			__('Left testicle length'),
 			__('Left testicle width'),
 			__('Right testicle length'),
@@ -410,6 +414,9 @@ class Controller extends BaseController
 			$row[] = $isBiometryData ? $bearsBiometryData->distance_between_upper_canines : '';
 			$row[] = $isBiometryData ? $bearsBiometryData->distance_between_lower_canines : '';
 			$row[] = $isAnimalHandling ? ( $animalHandling->tooth_type_list ? $animalHandling->tooth_type_list->name : '' ) : '';
+
+			$row[] = $isAnimalHandling ? ( count($animalHandling->bearsBiometrySamples)>0 ? __('Yes') : __('No') ) : '';
+
 			$row[] = $isBiometryData ? $bearsBiometryData->testicals_left_length : '';
 			$row[] = $isBiometryData ? $bearsBiometryData->testicals_left_width : '';
 			$row[] = $isBiometryData ? $bearsBiometryData->testicals_right_length : '';
@@ -465,9 +472,9 @@ class Controller extends BaseController
 			__('Witness/Accompanying person name and surname'),
 			__('Taxidermist name and surname'),
 			__('Status on handling'),
-			__('Status'),
+			__('Animal status'),
 
-			__('Biometry data ID'),
+			__('Biometry Data ID'),
 			__('Body length'),
 			# __('Abdominal length'),
 			__('Shoulder height'),
@@ -481,7 +488,7 @@ class Controller extends BaseController
 			__('Tail length without hair'),
 			__('Ear length without hair'),
 			__('Physical condition, parasites, injuries, markings, other observations (ear tags, signs of crossbreeding with a dog, etc.) and notes'),
-			__('Length of hair tuft (for lynx only) (0-15 cm)'),
+			__('Length of hair tuft (for lynx only)'),
 			__('Hind left paw length'),
 			__('Hind right paw length'),
 			__('Front left paw length'),
@@ -503,6 +510,7 @@ class Controller extends BaseController
 
 			__('Tooth Type'),
 
+			__('Genetic samples taken YES/NO'),
 			__('Left testicle length'),
 			__('Left testicle width'),
 			__('Right testicle length'),

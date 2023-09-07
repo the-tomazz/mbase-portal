@@ -53,21 +53,17 @@ class AnimalHandlingViewScreen extends Screen
 	 */
 	public function commandBar(): iterable
 	{
-		return [
-			Link::make(__('Biometry data'))
-				->icon('number-list')
-				->route('platform.biometryData.view', [ 'bearsBiometryData' => $this->bearsBiometryAnimalHandling->bearsBiometryData ?? -1 ])
-				->canSee(isset($this->bearsBiometryAnimalHandling->bearsBiometryData)),
+		return array_merge(
+			[
+				Link::make(__('Biometry data'))
+					->icon('number-list')
+					->route('platform.biometryData.view', [ 'bearsBiometryData' => $this->bearsBiometryAnimalHandling->bearsBiometryData ?? -1 ])
+					->canSee(isset($this->bearsBiometryAnimalHandling->bearsBiometryData)),
 
-			Link::make(__('Update'))
-				->icon('pencil')
-				->route('platform.animalHandling.edit', [ 'animal' => $this->bearsBiometryAnimalHandling->animal, 'bearsBiometryAnimalHandling' => $this->bearsBiometryAnimalHandling ]),
-
-
-			ModalToggle::make('Remove')
-				->modal('modalRemove')
-				->method('remove')
-				->icon('trash'),
+				Link::make(__('Update'))
+					->icon('pencil')
+					->route('platform.animalHandling.edit', [ 'animal' => $this->bearsBiometryAnimalHandling->animal, 'bearsBiometryAnimalHandling' => $this->bearsBiometryAnimalHandling ]),
+			],
 
 			Auth::user()->isInGroup('mbase2', 'mortbiom')
 				? [
@@ -77,7 +73,7 @@ class AnimalHandlingViewScreen extends Screen
 						->icon('trash')
 				]
 				: []
-		];
+		);
 	}
 
 	/**
