@@ -37,10 +37,10 @@ class AnimalListScreen extends Screen
 				->where(function ($query) use ($died_at_from, $died_at_to, $animal_handling_from, $animal_handling_to) {
 					$query->whereDate('died_at', '>=', $died_at_from);
 					$query->whereDate('died_at', '<=', $died_at_to);
-					$query->whereDate('animal_handling', '>=', $animal_handling_from);
-					$query->whereDate('animal_handling', '<=', $animal_handling_to);
+					$query->whereDate('animal_handling_date', '>=', $animal_handling_from);
+					$query->whereDate('animal_handling_date', '<=', $animal_handling_to);
 					$query->orWhereNull('died_at');
-					$query->orWhereNull('animal_handling');
+					$query->orWhereNull('animal_handling_date');
 				})
 				->defaultSort('name')
 				->paginate($perPage)
