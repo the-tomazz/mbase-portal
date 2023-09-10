@@ -66,7 +66,10 @@ class Controller extends BaseController
 			$row[] = $isAnimalHandling ? $animalHandling->hunting_ground : '';
 			$row[] = $isAnimalHandling ? ( $animalHandling->way_of_withdrawal_list ? $animalHandling->way_of_withdrawal_list->name : '' ) : '';
 			$row[] = $isAnimalHandling ? ( $animalHandling->conflict_animal_removal_list ? $animalHandling->conflict_animal_removal_list->name : '' ) : '';
-			$row[] = $isAnimalHandling ? $animalHandling->animal_conflictedness : '';
+			$row[] = $isAnimalHandling ?
+				$animalHandling->animal_conflictedness == BearsBiometryAnimalHandling::CONFLICTEDNESS_UNKNOWN
+				? __('Unknown')
+				: __('Conflicting') : __('Unknown');
 			$row[] = $isAnimalHandling ? $animalHandling->animal_conflictedness_details : '';
 			$row[] = $isAnimalHandling ? ( $animalHandling->biometry_loss_reason_list ? $animalHandling->biometry_loss_reason_list->name : '' ) : '';
 			$row[] = $isAnimalHandling ? $animalHandling->biometry_loss_reason_description : '';

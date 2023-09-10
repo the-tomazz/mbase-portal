@@ -193,8 +193,8 @@ class BiometryDataViewScreen extends Screen
 			Sight::make('hind_left_paw_length', __('Hind left paw length')),
 
 			Sight::make('', __('Hind right paw')),
-			Sight::make('hind_right_paw_width', __('Hind left paw width')),
-			Sight::make('hind_right_paw_length', __('Hind left paw length')),
+			Sight::make('hind_right_paw_width', __('Hind right paw width')),
+			Sight::make('hind_right_paw_length', __('Hind right paw length')),
 
 			Sight::make('', __('Length of left canines')),
 			Sight::make('upper_left_canines_length', __('Length of Upper left canines')),

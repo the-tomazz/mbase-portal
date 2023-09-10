@@ -289,7 +289,7 @@ class AnimalHandlingListViewListLayout extends Table
 					return $animalHandlingListView->bears_biometry_data_status == AnimalHandlingListView::STR_EXISTS
 						? Link::make(__('Exists'))
 							->route('platform.biometryData.view', [ $animalHandlingListView->bears_biometry_data_id ])
-						: Link::make(__('Does not exist'))
+						: Link::make(__('Missing'))
 							->route('platform.biometryData.add', [ $animalHandlingListView ]);
 				})
 				->sort()
@@ -309,7 +309,7 @@ class AnimalHandlingListViewListLayout extends Table
 					return $animalHandlingListView->attachment_count > 0
 						? Link::make($animalHandlingListView->attachment_count)
 							->route('platform.biometryData.view', [ $animalHandlingListView->bears_biometry_data_id ])
-						: Link::make(__('Does not exist'))
+						: Link::make($animalHandlingListView->attachment_count)
 							->route('platform.biometryData.add', [ $animalHandlingListView ]);
 				})
 				->sort()
