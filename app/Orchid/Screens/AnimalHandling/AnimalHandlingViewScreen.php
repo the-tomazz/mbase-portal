@@ -177,7 +177,7 @@ class AnimalHandlingViewScreen extends Screen
 		$animalHandlingSights[] = Sight::make('data_entered_by_user_id', __('User'))
 			->render(function ($bearsBiometryAnimalHandling) {
 				$user = User::find($bearsBiometryAnimalHandling->data_entered_by_user_id);
-				return $user->name;
+				return $user ? $user->name : '-';
 			});
 
 		$animalSights = [
