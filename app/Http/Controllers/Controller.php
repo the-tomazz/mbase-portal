@@ -144,8 +144,8 @@ class Controller extends BaseController
 			$row[] = $isAnimalHandling ? ( $animalHandling->licence_list ? $animalHandling->licence_list->name : '' ) : '';
 			$row[] = $animal->name;
 			$row[] = $isAnimalHandling ? $animalHandling->project_name : '';
-			$row[] = $isAnimalHandling ? $animalHandling->telemetry_uid : '';
 			$row[] = $isAnimalHandling ? $animalHandling->receiving_country : '';
+			$row[] = $isAnimalHandling ? $animalHandling->telemetry_uid : '';
 
 			$row[] = $isAnimalHandling ? $animalHandling->created_at->format('Y-m-d') : '';
 			$row[] = $isAnimalHandling ? $animalHandling->updated_at->format('Y-m-d') : '';
@@ -270,7 +270,7 @@ class Controller extends BaseController
 
 		$worksheet = $spreadsheet->getSheet(0);
 
-		$columnsToBeFormattedAsDate = ['C', 'Z', 'BZ', 'BY'];
+		$columnsToBeFormattedAsDate = ['C', 'Z', 'BZ', 'CA'];
 		foreach ($columnsToBeFormattedAsDate as $column) {
 			$worksheet->getStyle($column . '1:' . $column . count($payload)+2)
 				->getNumberFormat()
@@ -339,10 +339,13 @@ class Controller extends BaseController
 				->first();
 
 			$isAnimalHandling = $animalHandling != null;
-			$isBiometryData = $isAnimalHandling && $animalHandling->bears_biometry_data_id != null;
+			$isBiometryData = false;
 
-			if ($isBiometryData) {
-				$bearsBiometryData = BearsBiometryData::find($animalHandling->bears_biometry_data_id);
+			if ($isAnimalHandling) {
+				$bearsBiometryData = BearsBiometryData::where('bears_biometry_animal_handling_id', '=', $animalHandling->id)->first();
+				if ($bearsBiometryData) {
+					$isBiometryData = true;
+				}
 			}
 
 			$row = [];
@@ -356,7 +359,10 @@ class Controller extends BaseController
 			$row[] = $isAnimalHandling ? $animalHandling->hunting_ground : '';
 			$row[] = $isAnimalHandling ? ( $animalHandling->way_of_withdrawal_list ? $animalHandling->way_of_withdrawal_list->name : '' ) : '';
 			$row[] = $isAnimalHandling ? ( $animalHandling->conflict_animal_removal_list ? $animalHandling->conflict_animal_removal_list->name : '' ) : '';
-			$row[] = $isAnimalHandling ? $animalHandling->animal_conflictedness : '';
+			$row[] = $isAnimalHandling ?
+				$animalHandling->animal_conflictedness == BearsBiometryAnimalHandling::CONFLICTEDNESS_UNKNOWN
+				? __('Unknown')
+				: __('Conflicting') : __('Unknown');
 			$row[] = $isAnimalHandling ? $animalHandling->animal_conflictedness_details : '';
 			$row[] = $isAnimalHandling ? ( $animalHandling->biometry_loss_reason_list ? $animalHandling->biometry_loss_reason_list->name : '' ) : '';
 			$row[] = $isAnimalHandling ? $animalHandling->biometry_loss_reason_description : '';
@@ -431,8 +437,8 @@ class Controller extends BaseController
 			$row[] = $isAnimalHandling ? ( $animalHandling->licence_list ? $animalHandling->licence_list->name : '' ) : '';
 			$row[] = $animal->name;
 			$row[] = $isAnimalHandling ? $animalHandling->project_name : '';
-			$row[] = $isAnimalHandling ? $animalHandling->telemetry_uid : '';
 			$row[] = $isAnimalHandling ? $animalHandling->receiving_country : '';
+			$row[] = $isAnimalHandling ? $animalHandling->telemetry_uid : '';
 
 			$row[] = $isAnimalHandling ? $animalHandling->created_at->format('Y-m-d') : '';
 			$row[] = $isAnimalHandling ? $animalHandling->updated_at->format('Y-m-d') : '';
@@ -558,7 +564,7 @@ class Controller extends BaseController
 
 		$worksheet = $spreadsheet->getSheet(0);
 
-		$columnsToBeFormattedAsDate = ['C', 'Z', 'BZ', 'BY'];
+		$columnsToBeFormattedAsDate = ['C', 'Z', 'BZ', 'CA'];
 		foreach ($columnsToBeFormattedAsDate as $column) {
 			$worksheet->getStyle($column . '1:' . $column . count($payload)+2)
 				->getNumberFormat()
