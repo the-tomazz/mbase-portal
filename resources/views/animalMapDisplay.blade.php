@@ -36,10 +36,20 @@ That should be it.
 			lat: {{$animalHandling->lat}}, lng: {{$animalHandling->lng}}
 		{{'}'}},
 		title:
-			'<b>{{__("ID")}}: </b>{{$animalHandling->animal_id}}</br>' +
-			'<b>{{__("Animal name")}}:</b> {{$animal->name}}<br>' +
+			'<b>{{__("Animal ID")}}: </b>{{$animalHandling->animal_id}}</br>' +
+			'<b>{{__("Animal name")}}:</b> {{$animalHandling->animal->name}}<br>' +
+			'<b>{{__("Animal handling ID")}}:</b> {{$animalHandling->animal_id}}</br>' +
 			'<b>{{__("Handling date")}}:</b> {{(new DateTime($animalHandling->animal_handling_date))->format("d.m.Y H:i")}}<br>' +
-			'<b>{{__("Type of legal cull")}}: </b> {{$animalHandling->conflict_animal_removal_list == null ? "" : $animalHandling->conflict_animal_removal_list->name}}'
+			@if($animalHandling->way_of_withdrawal_list)
+				'<br><b>{{__("Way of withdrawal")}}: </b>{{$animalHandling->way_of_withdrawal_list->name}}' +
+			@endif
+			@if($animalHandling->conflict_animal_removal_list)
+				'<br><b>{{__("Type of legal cull")}}: </b>{{$animalHandling->conflict_animal_removal_list->name}}' +
+			@endif
+			@if($animalHandling->biometry_loss_reason_list)
+				'<br><b>{{__("Loss reason")}}: </b>{{$animalHandling->biometry_loss_reason_list->name}}' +
+			@endif
+			''
 	{{'}'}},
 @endforeach
 @endforeach

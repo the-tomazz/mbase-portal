@@ -6,6 +6,7 @@ use App\Models\BearsBiometryData;
 use App\Models\IncisorsWearList;
 use App\Models\SexList;
 use App\Models\TeatsWearList;
+use Illuminate\Support\Facades\Auth;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Actions\ModalToggle;
 use Orchid\Screen\Fields\Label;
@@ -53,16 +54,21 @@ class BiometryDataViewScreen extends Screen
 	 */
 	public function commandBar(): iterable
 	{
-		return [
-			Link::make(__('Update'))
-				->icon('pencil')
-				->route('platform.biometryData.edit', [ 'bearsBiometryAnimalHandling' => $this->bearsBiometryData->bears_biometry_animal_handling, 'bearsBiometryData' => $this->id ]),
-
-			ModalToggle::make('Remove')
-				->modal('modalRemove')
-				->method('remove')
-				->icon('trash'),
-		];
+		return array_merge(
+			[
+				Link::make(__('Update'))
+					->icon('pencil')
+					->route('platform.biometryData.edit', [ 'bearsBiometryAnimalHandling' => $this->bearsBiometryData->bears_biometry_animal_handling, 'bearsBiometryData' => $this->id ]),
+			],
+			Auth::user()->isInGroup('mbase2', 'mortbiom', 'admins')
+				? [
+					ModalToggle::make('Remove')
+						->modal('modalRemove')
+						->method('remove')
+						->icon('trash'),
+				]
+				: []
+		);
 	}
 
 	/**
@@ -153,7 +159,7 @@ class BiometryDataViewScreen extends Screen
 				Sight::make('nipple_length', __('Teats length')),
 				Sight::make('teats_wear_list_id', __('Teats use'))
 					->render(function ($bearsBiometryData) {
-						return TeatsWearList::find($bearsBiometryData->teats_wear_list_id)->name;
+						return $bearsBiometryData->teats_wear_list_id ? TeatsWearList::find($bearsBiometryData->teats_wear_list_id)->name : '';
 					}),
 			]);
 		}

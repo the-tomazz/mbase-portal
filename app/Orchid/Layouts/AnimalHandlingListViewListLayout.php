@@ -306,11 +306,8 @@ class AnimalHandlingListViewListLayout extends Table
 
 			TD::make('attachment_count', __('Attachments'))
 				->render(function (AnimalHandlingListView $animalHandlingListView) {
-					return $animalHandlingListView->attachment_count > 0
-						? Link::make($animalHandlingListView->attachment_count)
-							->route('platform.biometryData.view', [ $animalHandlingListView->bears_biometry_data_id ])
-						: Link::make($animalHandlingListView->attachment_count)
-							->route('platform.biometryData.add', [ $animalHandlingListView ]);
+					return Link::make($animalHandlingListView->attachment_count)
+							->route('platform.animalHandling.view', [ $animalHandlingListView ]);
 				})
 				->sort()
 				->filter(Input::make()),

@@ -65,7 +65,7 @@ class AnimalHandlingViewScreen extends Screen
 					->route('platform.animalHandling.edit', [ 'animal' => $this->bearsBiometryAnimalHandling->animal, 'bearsBiometryAnimalHandling' => $this->bearsBiometryAnimalHandling ]),
 			],
 
-			Auth::user()->isInGroup('mbase2', 'mortbiom')
+			Auth::user()->isInGroup('mbase2', 'mortbiom', 'admins') && !$this->bearsBiometryAnimalHandling->bearsBiometryData
 				? [
 					ModalToggle::make('Remove')
 						->modal('modalRemove')

@@ -60,7 +60,7 @@ class AnimalDataViewScreen extends Screen
 					->icon('pencil')
 					->route('platform.animalData.edit', ['animal' => $this->animal]),
 			],
-			$this->animal->bears_biometry_animal_handlings->count() == 0 && Auth::user()->isInGroup('mbase2', 'mortbiom')
+			$this->animal->bears_biometry_animal_handlings->count() == 0 && Auth::user()->isInGroup('mbase2', 'mortbiom', 'admins')
 				? [
 					ModalToggle::make('Remove')
 						->modal('modalRemove')

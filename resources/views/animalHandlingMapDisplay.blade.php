@@ -63,8 +63,8 @@ That should be it.
 			@if($animalHandling->conflict_animal_removal_list_name)
 				'<br><b>{{__("Type of legal cull")}}: </b>{{$animalHandling->conflict_animal_removal_list_name}}' +
 			@endif
-			@if($animalHandling->biometry_loss_reason_list)
-				'<br><b>{{__("Loss reason")}}: </b>{{$animalHandling->biometry_loss_reason_list}}' +
+			@if($animalHandling->biometry_loss_reason_list_name)
+				'<br><b>{{__("Loss reason")}}: </b>{{$animalHandling->biometry_loss_reason_list_name}}' +
 			@endif
 			''
 		{{'}'}},

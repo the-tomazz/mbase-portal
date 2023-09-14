@@ -24,23 +24,25 @@ class AnimalListScreen extends Screen
 	 */
 	public function query(): iterable
 	{
-		$died_at_from = request()->input('died_at_from') ?? '1970-01-01';
-		$died_at_to = request()->input('died_at_to') ?? '2970-01-01';
-		$animal_handling_from = request()->input('animal_handling_from') ?? '1970-01-01';
-		$animal_handling_to = request()->input('animal_handling_to') ?? '2970-01-01';
-
+		$died_at_from = request()->input('died_at_from') ?? ( request()->input('died_at_to') ? '1970-01-01' : '' );
+		$died_at_to = request()->input('died_at_to') ?? ( request()->input('died_at_from') ? '2970-01-01' : '' );
+		$animal_handling_date_from = request()->input('animal_handling_date_from') ?? ( request()->input('animal_handling_date_to') ? '1970-01-01' : '' );
+		$animal_handling_date_to = request()->input('animal_handling_date_to') ?? ( request()->input('animal_handling_date_from') ? '2970-01-01' : '' );
 
 		$perPage = request()->input('per_page') ?? 15;
 
 		return [
 			'animals' => AnimalListView::filters()
-				->where(function ($query) use ($died_at_from, $died_at_to, $animal_handling_from, $animal_handling_to) {
-					$query->whereDate('died_at', '>=', $died_at_from);
-					$query->whereDate('died_at', '<=', $died_at_to);
-					$query->whereDate('animal_handling_date', '>=', $animal_handling_from);
-					$query->whereDate('animal_handling_date', '<=', $animal_handling_to);
-					$query->orWhereNull('died_at');
-					$query->orWhereNull('animal_handling_date');
+				->where(function ($query) use ($died_at_from, $died_at_to, $animal_handling_date_from, $animal_handling_date_to) {
+					if ($died_at_from != '') {
+						$query->whereDate('died_at', '>=', $died_at_from);
+						$query->whereDate('died_at', '<=', $died_at_to);
+					}
+
+					if ($animal_handling_date_from != '') {
+						$query->whereDate('animal_handling_date', '>=', $animal_handling_date_from);
+						$query->whereDate('animal_handling_date', '<=', $animal_handling_date_to);
+					}
 				})
 				->defaultSort('name')
 				->paginate($perPage)

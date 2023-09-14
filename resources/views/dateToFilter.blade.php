@@ -42,7 +42,7 @@
 					finalUrl = finalUrl + '&' + dateFieldPrefix + '_from=' + from;
 				}
 			} else if (urlParameterFromPosition > -1) {
-				finalUrl = finalUrl.substr(0, urlParameterFromPosition - 1) + finalUrl.substr(urlParameterFromPosition + dateFieldPrefix.length + 16, 99999);
+				finalUrl = finalUrl.substr(0, urlParameterFromPosition) + finalUrl.substr(urlParameterFromPosition + dateFieldPrefix.length + 16, 99999);
 			}
 
 			urlParameterToPosition = finalUrl.indexOf(dateFieldPrefix + '_to');
@@ -56,7 +56,7 @@
 					finalUrl = finalUrl + '&' + dateFieldPrefix + '_to=' + to;
 				}
 			} else if (urlParameterToPosition > -1) {
-				finalUrl = finalUrl.substr(0, urlParameterToPosition - 1) + finalUrl.substr(urlParameterToPosition + dateFieldPrefix.length + 14, 99999);
+				finalUrl = finalUrl.substr(0, urlParameterToPosition) + finalUrl.substr(urlParameterToPosition + dateFieldPrefix.length + 14, 99999);
 			}
 
 			if (twoFieldPrefixes) {
@@ -65,14 +65,13 @@
 				if (fromFieldValue2 != "") {
 					let from2 = fromFieldValue2.substring(6,10) + "-" + fromFieldValue2.substring(3,5) + "-" + fromFieldValue2.substring(0,2);
 
-
 					if (urlParameterFromPosition2 > -1) {
 						finalUrl = finalUrl.substr(0, urlParameterFromPosition2 + dateFieldPrefix2.length + 6) + from2 + finalUrl.substr(urlParameterFromPosition2 + dateFieldPrefix2.length + 16, 99999);
 					} else {
 						finalUrl = finalUrl + '&' + dateFieldPrefix2 + '_from=' + from2;
 					}
 				} else if (urlParameterFromPosition2 > -1) {
-					finalUrl = finalUrl.substr(0, urlParameterFromPosition2 - 1) + finalUrl.substr(urlParameterFromPosition2 + dateFieldPrefix2.length + 16, 99999);
+					finalUrl = finalUrl.substr(0, urlParameterFromPosition2) + finalUrl.substr(urlParameterFromPosition2 + dateFieldPrefix2.length + 16, 99999);
 				}
 
 				urlParameterToPosition2 = finalUrl.indexOf(dateFieldPrefix2 + '_to');
@@ -88,10 +87,11 @@
 						finalUrl = finalUrl + '&' + dateFieldPrefix2 + '_to=' + to2;
 					}
 				} else if (urlParameterToPosition2 > -1) {
-					finalUrl = finalUrl.substr(0, urlParameterToPosition2 - 1) + finalUrl.substr(urlParameterToPosition2 + dateFieldPrefix2.length + 14, 99999);
+					finalUrl = finalUrl.substr(0, urlParameterToPosition2) + finalUrl.substr(urlParameterToPosition2 + dateFieldPrefix2.length + 14, 99999);
 				}
 			}
 
+			finalUrl = finalUrl.replace(new RegExp('\&\&', 'g'), '&');
 			window.location.href = finalUrl;
 
 			event.preventDefault();

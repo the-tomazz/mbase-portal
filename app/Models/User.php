@@ -94,7 +94,8 @@ class User extends Authenticatable
 			if (!isset($group[1]) || $group[1] != $lvl1) {
 				continue;
 			}
-			if (!isset($group[1]) || $group[1] != $lvl1) {
+
+			if ($lvl2 != null && isset($group[2]) && $group[2] != $lvl2) {
 				continue;
 			}
 
