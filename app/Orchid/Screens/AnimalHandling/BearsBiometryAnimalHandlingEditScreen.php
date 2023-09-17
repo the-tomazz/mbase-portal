@@ -194,22 +194,27 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 	 */
 	public function commandBar(): iterable
 	{
-		return [
-			Button::make(__('Save animal handling'))
-				->icon('check')
-				->method($this->action . 'AnimalHandlingAndDoNotAddBiometryData'),
+		return array_merge(
+			[
+				Button::make(__('Save animal handling'))
+					->icon('check')
+					->method($this->action . 'AnimalHandlingAndDoNotAddBiometryData'),
 
-			Button::make(__('Save animal handling and add biometry data'))
-				->icon('check')
-				->method($this->action . 'AnimalHandlingAndAddBiometryData')
-				->canSee(!$this->bearsBiometryAnimalHandling->exists),
-
-			ModalToggle::make('Remove')
-				->modal('modalRemove')
-				->method('remove')
-				->icon('trash')
-				->canSee($this->bearsBiometryAnimalHandling->exists),
-		];
+				Button::make(__('Save animal handling and add biometry data'))
+					->icon('check')
+					->method($this->action . 'AnimalHandlingAndAddBiometryData')
+					->canSee(!$this->bearsBiometryAnimalHandling->exists),
+			],
+			Auth::user()->isInGroup('mbase2', 'mortbiom', 'admins')
+				? [
+					ModalToggle::make('Remove')
+						->modal('modalRemove')
+						->method('remove')
+						->icon('trash')
+						->canSee($this->bearsBiometryAnimalHandling->exists),
+				]
+				: []
+		);
 	}
 
 	public function asyncUpdateAnimalHandlingAnimalConflictednessListenerData($triggers)
