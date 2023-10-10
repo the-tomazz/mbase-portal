@@ -227,7 +227,7 @@ class BiometryDataViewScreen extends Screen
 			Sight::make('', __('Other observations')),
 			Sight::make('incisors_wear_list_id', __('Incisors (front teeth) wear'))
 				->render(function ($bearsBiometryData) {
-					return IncisorsWearList::find($bearsBiometryData->incisors_wear_list_id)->name;
+					return isset($bearsBiometryData->incisors_wear_list_id) ? IncisorsWearList::find($bearsBiometryData->incisors_wear_list_id)->name : '-';
 				}),
 			Sight::make('color_list_id', __('Color'))
 				->render(function ($bearsBiometryData) {

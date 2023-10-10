@@ -145,7 +145,7 @@ class PlatformProvider extends OrchidServiceProvider
 					->href('/admin/crud/list/species-lists');
 			}
 
-			if (Auth::user()->isInGroup('mbase2', 'mortbiom', 'admin')) {
+			if (Auth::user()->isInGroup('mbase2', 'mortbiom', 'admins')) {
 				// MORTBIOM MODULE RELATED LISTS
 				$menu[] = Menu::make('Type of removal')
 					->title('Mortality and biometry lists')
