@@ -151,14 +151,15 @@ class BearsBiometryAnimalHandling extends Model
 		'photos_collected',
 		'jaw_photos_collected',
 		'measurer_name_and_surname',
-		'hunting_ground_representative'
+		'hunting_ground_representative',
+		'location_coordinate_type_list_id'
 	];
 
 	protected $allowedSorts = [
 		'animal_id',
-        'created_at',
-        'updated_at',
-    ];
+		'created_at',
+		'updated_at',
+	];
 
 	protected $allowedFilters = [
 		'animal_id',
@@ -207,6 +208,11 @@ class BearsBiometryAnimalHandling extends Model
 		return $this->belongsTo(ToothTypeList::class);
 	}
 
+	public function location_coordinate_type_list()
+	{
+		return $this->belongsTo(LocationCoordinateTypeList::class);
+	}
+
 	public function user()
 	{
 		return $this->belongsTo(User::class, 'data_entered_by_user_id');
@@ -228,14 +234,19 @@ class BearsBiometryAnimalHandling extends Model
 	}
 
 	public function bearsBiometrySamples()
-    {
-        return $this->hasMany('App\Models\BearsBiometrySample');
-    }
+	{
+		return $this->hasMany('App\Models\BearsBiometrySample');
+	}
 
 	public function bearsBiometryData()
-    {
-        return $this->hasOne('App\Models\BearsBiometryData');
-    }
+	{
+		return $this->hasOne('App\Models\BearsBiometryData');
+	}
+
+	public function LocationCoordinateTypeList()
+	{
+		return $this->belongsTo(LocationCoordinateTypeList::class);
+	}
 
 	public function renderAnimalStatusOnHandling()
 	{

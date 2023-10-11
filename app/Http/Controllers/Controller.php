@@ -78,6 +78,7 @@ class Controller extends BaseController
 			$row[] = $isAnimalHandling ? $animalHandling->place_type_list_details : '';
 			$row[] = $isAnimalHandling ? $animalHandling->lat : '';
 			$row[] = $isAnimalHandling ? $animalHandling->lng : '';
+			$row[] = $isAnimalHandling ? ( $animalHandling->location_coordinate_type_list ? $animalHandling->location_coordinate_type_list->name : '' ) : '';
 			$row[] = $animal->sex_list ? $animal->sex_list->name : '';
 			$row[] = $isBiometryData ? $bearsBiometryData->age : '';
 			$row[] = $isBiometryData ? $bearsBiometryData->masa_bruto : '';
@@ -371,6 +372,7 @@ class Controller extends BaseController
 			$row[] = $isAnimalHandling ? $animalHandling->place_type_list_details : '';
 			$row[] = $isAnimalHandling ? $animalHandling->lat : '';
 			$row[] = $isAnimalHandling ? $animalHandling->lng : '';
+			$row[] = $isAnimalHandling ? ( $animalHandling->location_coordinate_type_list ? $animalHandling->location_coordinate_type_list->name : '' ) : '';
 			$row[] = $animal->sex_list ? $animal->sex_list->name : '';
 			$row[] = $isBiometryData ? $bearsBiometryData->age : '';
 			$row[] = $isBiometryData ? $bearsBiometryData->masa_bruto : '';

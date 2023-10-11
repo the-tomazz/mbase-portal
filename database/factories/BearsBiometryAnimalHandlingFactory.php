@@ -11,6 +11,7 @@ use App\Models\ToothTypeList;
 use App\Models\User;
 use App\Models\ConflictAnimalRemovalList;
 use App\Models\LicenceList;
+use App\Models\LocationCoordinateTypeList;
 use App\Models\WayOfWithdrawalList;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
@@ -67,6 +68,7 @@ class BearsBiometryAnimalHandlingFactory extends Factory
 			'jaw_photos_collected' => mt_rand(0, 1),
 			'measurer_name_and_surname' => fake()->name(),
 			'hunting_ground_representative' => fake()->name(),
+			'location_coordinate_type_list_id' => LocationCoordinateTypeList::all()->random()->id,
 		];
 	}
 }

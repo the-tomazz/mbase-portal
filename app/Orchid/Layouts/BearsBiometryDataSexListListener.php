@@ -30,6 +30,17 @@ class BearsBiometryDataSexListListener extends Listener
 		'bearsBiometryData.baculum_length',
 		'bearsBiometryData.nipple_length',
 		'bearsBiometryData.teats_wear_list_id',
+
+		'bearsBiometryData.testicals_left_length',
+		'bearsBiometryData.testicals_left_width',
+		'bearsBiometryData.testicals_right_length',
+		'bearsBiometryData.testicals_right_width',
+
+		'bearsBiometryData.collar_list_id',
+		'bearsBiometryData.color_list_id',
+
+		'bearsBiometryData.hair_tuft_length',
+		'bearsBiometryData.fur_pattern_in_lynx_list_id'
 	];
 
 	/**

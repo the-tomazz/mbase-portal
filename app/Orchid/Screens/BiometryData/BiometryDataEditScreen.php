@@ -131,6 +131,17 @@ class BiometryDataEditScreen extends Screen
 				'baculum_length'		=> $triggers['baculum_length'] ?? null,
 				'nipple_length'			=> $triggers['nipple_length'] ?? null,
 				'teats_wear_list_id'	=> $triggers['teats_wear_list_id'] ?? null,
+
+				'testicals_left_length' => $triggers['testicals_left_length'] ?? null,
+				'testicals_left_width' => $triggers['testicals_left_width'] ?? null,
+				'testicals_right_length' => $triggers['testicals_right_length'] ?? null,
+				'testicals_right_width' => $triggers['testicals_right_width'] ?? null,
+
+				'collar_list_id' => $triggers['collar_list_id'] ?? null,
+				'color_list_id' => $triggers['color_list_id'] ?? null,
+
+				'hair_tuft_length' => $triggers['hair_tuft_length'] ?? null,
+				'fur_pattern_in_lynx_list_id' => $triggers['fur_pattern_in_lynx_list_id'] ?? null,
 			]),
 		];
 	}
