@@ -32,9 +32,8 @@ class BaseList extends Resource
 
 	protected function groupPermissions(User $user)
 	{
-		foreach (static::$moduleList as $module)
-		{
-			if ($user->isInGroup('mbase2', $module, 'admin')) {
+		foreach (static::$moduleList as $module) {
+			if ($user->isInGroup('mbase2', $module, 'admins')) {
 				return true;
 			}
 		}
@@ -219,5 +218,4 @@ class BaseList extends Resource
 	{
 		return __('Edit');
 	}
-
 }
