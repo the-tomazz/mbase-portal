@@ -187,6 +187,10 @@ class PlatformProvider extends OrchidServiceProvider
 				$menu[] = Menu::make('Tooth Type')
 					->icon('list')
 					->href('/admin/crud/list/tooth-type-lists');
+
+				$menu[] = Menu::make('Location Coordinate Type')
+					->icon('list')
+					->href('/admin/crud/list/location-coordinate-type-lists');
 			}
 		}
 
