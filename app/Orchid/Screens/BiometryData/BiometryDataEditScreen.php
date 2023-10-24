@@ -22,6 +22,7 @@ use Orchid\Screen\Fields\TextArea;
 use Orchid\Screen\Layouts\Modal;
 use Orchid\Screen\Repository;
 use Orchid\Support\Facades\Alert;
+use Illuminate\Support\Facades\Auth;
 
 class BiometryDataEditScreen extends Screen
 {
@@ -457,7 +458,8 @@ class BiometryDataEditScreen extends Screen
 		$animal->sex_list_id = $sex_list_id;
 		$animal->save();
 
-		$bearsBiometryAnimalHandling->touch();
+		$bearsBiometryAnimalHandling->data_entered_by_user_id = Auth::user()->id;
+		$bearsBiometryAnimalHandling->save();
 
 		$bearsBiometryData->fill($requestBearsBiometryData);
 		$bearsBiometryData->bears_biometry_animal_handling_id = $bearsBiometryAnimalHandling->id;
