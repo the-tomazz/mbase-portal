@@ -176,7 +176,7 @@ class Controller extends BaseController
 			__('Other place of removal type'),
 			__('Latitude'),
 			__('Longitude'),
-			__('Location coordinate type'),
+			__('Location Coordinate Type'),
 			__('Sex'),
 			__('Visual age estimate'),
 			__('Body mass') . ' ' . __('Gross'),
@@ -272,7 +272,7 @@ class Controller extends BaseController
 
 		$worksheet = $spreadsheet->getSheet(0);
 
-		$columnsToBeFormattedAsDate = ['C', 'Z', 'BZ', 'CA'];
+		$columnsToBeFormattedAsDate = ['C', 'AA', 'CA', 'CB'];
 		foreach ($columnsToBeFormattedAsDate as $column) {
 			$worksheet->getStyle($column . '1:' . $column . count($payload)+2)
 				->getNumberFormat()
@@ -471,7 +471,7 @@ class Controller extends BaseController
 			__('Other place of removal type'),
 			__('Latitude'),
 			__('Longitude'),
-			__('Location coordinate type'),
+			__('Location Coordinate Type'),
 			__('Sex'),
 			__('Visual age estimate'),
 			__('Body mass') . ' ' . __('Gross'),
@@ -568,7 +568,7 @@ class Controller extends BaseController
 
 		$worksheet = $spreadsheet->getSheet(0);
 
-		$columnsToBeFormattedAsDate = ['C', 'Z', 'BZ', 'CA'];
+		$columnsToBeFormattedAsDate = ['C', 'AA', 'CA', 'CB'];
 		foreach ($columnsToBeFormattedAsDate as $column) {
 			$worksheet->getStyle($column . '1:' . $column . count($payload)+2)
 				->getNumberFormat()
