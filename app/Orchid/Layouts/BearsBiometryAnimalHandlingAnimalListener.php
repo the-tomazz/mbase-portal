@@ -39,6 +39,7 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 		'bearsBiometryAnimalHandling.original_animal_id',
 		'bearsBiometryAnimalHandling.animal_id',
 		'bearsBiometryAnimalHandling.animal_status',
+		'bearsBiometryAnimalHandling.animal_status_on_handling',
 		'bearsBiometryAnimalHandling.animal_died_at_date',
 		'bearsBiometryAnimalHandling.animal_died_at_time',
 		'bearsBiometryAnimalHandling.animal_name',
@@ -80,6 +81,24 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 			$animalIsSelected = $this->query->get('bearsBiometryAnimalHandling.animal_id') != null;
 
 			$animalIsAlive = $this->query->get('bearsBiometryAnimalHandling.animal_status') == Animal::STR_ALIVE;
+			$animalStatusSelected = $this->query->get('bearsBiometryAnimalHandling.animal_status') != null;
+			$animalWasAliveOnHandling = $this->query->get('bearsBiometryAnimalHandling.animal_status_on_handling') == Animal::STR_ALIVE;
+
+			$animalStatusOnHandlingOptions = [Animal::STR_ALIVE => __('Alive')];
+			if ($animalStatusSelected && !$animalIsAlive) {
+				$animalStatusOnHandlingOptions[Animal::STR_DEAD] = __('Dead');
+			}
+
+			$animalStatusOnHandlingValue = $animalStatusSelected ? ( $animalIsAlive ? Animal::STR_ALIVE : Animal::STR_DEAD ) : null;
+			$animalStatusOnHandlingDisabled = !$animalStatusSelected || $animalIsAlive;
+
+			Log::debug([
+				'bearsBiometryAnimalHandling.animal_status' => $this->query->get('bearsBiometryAnimalHandling.animal_status'),
+				'bearsBiometryAnimalHandling.animal_status_on_handling' => $this->query->get('bearsBiometryAnimalHandling.animal_status_on_handling'),
+				'animalStatusOnHandlingOptions' => $animalStatusOnHandlingOptions,
+				'animalStatusOnHandlingDisabled' =>  $animalStatusOnHandlingDisabled,
+				'animalStatusOnHandlingValue' => $animalStatusOnHandlingValue
+			]);
 
 			$regularCullSelected = $this->query->get('bearsBiometryAnimalHandling.way_of_withdrawal_list_id') == WayOfWithdrawalList::REGULAR_CULL;
 			# $conflictAnimalRemovalSelected = $this->query->get('bearsBiometryAnimalHandling.way_of_withdrawal_list_id') == WayOfWithdrawalList::CONFLICT_ANIMAL_REMOVAL;
@@ -87,13 +106,20 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 			$lossReasonOtherSelected = $this->query->get('bearsBiometryAnimalHandling.biometry_loss_reason_list_id') == BiometryLossReasonList::OTHER;
 			$liveCaptureSelected = $this->query->get('bearsBiometryAnimalHandling.way_of_withdrawal_list_id') == WayOfWithdrawalList::LIVE_CAPTURE;
 			$translocationOutOfPopulationSelected = $this->query->get('bearsBiometryAnimalHandling.way_of_withdrawal_list_id') == WayOfWithdrawalList::TRANSLOCATION_OUT_OF_POPULATION;
-
 			# $animalIsKnownOrAlive = $animalIsKnown || $animalIsAlive;
 		} else {
 			$animalIsKnown = false;
 			$animalIsSelected = false;
 
 			$animalIsAlive = false;
+			$animalWasAliveOnHandling = false;
+			$animalStatusOnHandlingOptions = [
+				Animal::STR_ALIVE => __('Alive'),
+				Animal::STR_DEAD => __('Dead')
+			];
+
+			$animalStatusOnHandlingValue = null;
+			$animalStatusOnHandlingDisabled = true;
 
 			$regularCullSelected = false;
 			# $conflictAnimalRemovalSelected = false;
@@ -105,7 +131,7 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 			# $animalIsKnownOrAlive = Auth::user()->defaultVisualisationAnimalStatus() == Animal::STR_ALIVE;
 		}
 
-		$animalStatusSubset = $animalIsAlive ? WayOfWithdrawalList::SHOWN_ON_ANIMAL_STATUS_ALIVE : WayOfWithdrawalList::SHOWN_ON_ANIMAL_STATUS_DEAD;
+		$animalStatusSubset = $animalWasAliveOnHandling ? WayOfWithdrawalList::SHOWN_ON_ANIMAL_STATUS_ALIVE : WayOfWithdrawalList::SHOWN_ON_ANIMAL_STATUS_DEAD;
 
 		$animalSelectQuery = $animalIsKnown
 			? Animal::whereRaw('true')
@@ -134,14 +160,24 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 					->empty(__('<Unknown animal>'))
 					->canSee(!$animalIsKnown /* && !$animalIsKnownOrAlive */),
 
-				Select::make('bearsBiometryAnimalHandling.animal_status')
-					->title('Status')
-					->empty(__('<Select>'))
-					->required()
-					->options([
-						Animal::STR_ALIVE => __('Alive'),
-						Animal::STR_DEAD => __('Dead'),
-					]),
+				Group::make([
+					Select::make('bearsBiometryAnimalHandling.animal_status')
+						->title('Status')
+						->empty(__('<Select>'))
+						->required()
+						->options([
+							Animal::STR_ALIVE => __('Alive'),
+							Animal::STR_DEAD => __('Dead'),
+						]),
+
+					Select::make('bearsBiometryAnimalHandling.animal_status_on_handling')
+						->title('Status on handling')
+						->empty(__('<Select>'))
+						->required()
+						->options($animalStatusOnHandlingOptions)
+						->disabled($animalStatusOnHandlingDisabled)
+						->value($animalStatusOnHandlingValue)
+				]),
 
 				Input::make('bearsBiometryAnimalHandling.animal_name')
 					->title('Animal name')
@@ -267,24 +303,24 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 
 				Label::make('')
 				  ->title(__('Number and the year of removal in hunting administrative area'))
-				  ->canSee(!$animalIsAlive),
+				  ->canSee(!$animalWasAliveOnHandling),
 
 				Group::make([
 					Input::make('bearsBiometryAnimalHandling.n_number_of_removal_in_the_hunting_administrative_area')
 						->mask('9[99]')
 						->help(__('Number of removal (1-999)'))
-						->canSee(!$animalIsAlive),
+						->canSee(!$animalWasAliveOnHandling),
 
 					Input::make('bearsBiometryAnimalHandling.y_number_of_removal_in_the_hunting_administrative_area')
 						->mask('9999')
 						->help(__('Year of removal (2015-2099)'))
-						->canSee(!$animalIsAlive),
+						->canSee(!$animalWasAliveOnHandling),
 				]),
 
 				Input::make('bearsBiometryAnimalHandling.telemetry_uid')
 					->title(__('Ear-tag number or radio-collar (telemetry) identification'))
 					->help(__('Please describe animal-borne markings (ear-tags, collar, microchips, etc.)'))
-					->canSee($animalIsAlive)
+					->canSee($animalWasAliveOnHandling)
 			]),
 		];
 	}

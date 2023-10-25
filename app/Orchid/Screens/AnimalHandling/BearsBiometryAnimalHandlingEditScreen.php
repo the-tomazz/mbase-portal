@@ -267,6 +267,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 				'animal_sex_list_id'				=> $triggers['animal_sex_list_id'] ?? null,
 				'animal_description'				=> $triggers['animal_description'] ?? null,
 
+				'animal_status_on_handling'      	=> $triggers['animal_status_on_handling'] ?? null,
 				'animal_handling_date_date'			=> $triggers['animal_handling_date_date'] ?? null,
 				'animal_handling_date_time'			=> $triggers['animal_handling_date_time'] ?? null,
 				'way_of_withdrawal_list_id' 		=> $triggers['way_of_withdrawal_list_id'] ?? null,
@@ -686,8 +687,6 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 		} else {
 			$animalStatus = $request->get('bearsBiometryAnimalHandling')['animal_status'];
 		}
-
-		$bearsBiometryAnimalHandling['animal_status_on_handling'] = $animalStatus;
 
 		if (!$animal->exists && !isset($bearsBiometryAnimalHandling['animal_id'])) {
 			// create new animal
