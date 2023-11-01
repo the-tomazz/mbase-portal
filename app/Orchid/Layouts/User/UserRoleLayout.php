@@ -18,9 +18,15 @@ class UserRoleLayout extends Rows
      */
     public function fields(): array
     {
+		$roles = Role::query();
+		if (!auth()->user()->hasRole('MBASE2LSuperAdmin')) {
+			$roles->where('slug', '=', 'MBASE2LRegisteredUser');
+		}
+
         return [
             Select::make('user.roles.')
-                ->fromModel(Role::class, 'name')
+                // ->fromModel(Role::class, 'name')
+				->fromQuery($roles, 'name')
                 ->multiple()
                 ->title(__('Name role'))
                 ->help('Specify which groups this account should belong to'),

@@ -91,15 +91,16 @@ class PlatformProvider extends OrchidServiceProvider
 		}
 
 		if (Auth::user()->hasRole('MBASE2LAdmin')) {
-			// USERS AND ROLES
-			$menu[] = Menu::make('Roles')
-				->title('Users and roles')
-				->icon('friends')
-				->href('/admin/roles');
-
 			$menu[] = Menu::make('Users')
+				->title('Users and roles')
 				->icon('user')
 				->href('/admin/users');
+		}
+
+		if (Auth::user()->hasRole('MBASE2LSuperAdmin')) {
+			$menu[] = Menu::make('Roles')
+				->icon('friends')
+				->href('/admin/roles');
 
 			// USER GROUPS AND GROUP TYPES
 			$menu[] = Menu::make('User group types')
@@ -126,24 +127,22 @@ class PlatformProvider extends OrchidServiceProvider
 				->href('/admin/crud/list/spatial-unit-filter-element-resources');
 
 			// GENERAL LISTS
-			if (Auth::user()->hasRole('MBASE2LAdmin')) {
-				$menu[] = Menu::make('Licence')
-					->title('General lists')
-					->icon('list')
-					->href('/admin/crud/list/licence-lists');
+			$menu[] = Menu::make('Licence')
+				->title('General lists')
+				->icon('list')
+				->href('/admin/crud/list/licence-lists');
 
-				$menu[] = Menu::make('Sample type')
-					->icon('list')
-					->href('/admin/crud/list/sample-type-lists');
+			$menu[] = Menu::make('Sample type')
+				->icon('list')
+				->href('/admin/crud/list/sample-type-lists');
 
-				$menu[] = Menu::make('Sex')
-					->icon('list')
-					->href('/admin/crud/list/sex-lists');
+			$menu[] = Menu::make('Sex')
+				->icon('list')
+				->href('/admin/crud/list/sex-lists');
 
-				$menu[] = Menu::make('Species')
-					->icon('list')
-					->href('/admin/crud/list/species-lists');
-			}
+			$menu[] = Menu::make('Species')
+				->icon('list')
+				->href('/admin/crud/list/species-lists');
 
 			if (Auth::user()->isInGroup('mbase2', 'mortbiom', 'admins')) {
 				// MORTBIOM MODULE RELATED LISTS

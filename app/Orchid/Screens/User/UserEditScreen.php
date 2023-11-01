@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Orchid\Screens\User;
 
 use App\Models\BearsBiometryAnimalHandling;
+use App\Models\Group;
 use App\Models\GroupType;
 use App\Orchid\Layouts\Role\RolePermissionLayout;
 use App\Orchid\Layouts\User\UserEditLayout;
@@ -20,6 +21,7 @@ use Orchid\Access\UserSwitch;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Orchid\Platform\Models\Role;
 use Orchid\Screen\Action;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Screen;
@@ -186,18 +188,54 @@ class UserEditScreen extends Screen
 	 */
 	public function save(User $user, Request $request)
 	{
-		$request->validate(
-			[
-				'user.email' => [
-					'required',
-					Rule::unique(User::class, 'email')->ignore($user),
-				],
-				'user.username' => [
-					'required',
-					Rule::unique(User::class, 'username')->ignore($user),
-				],
-			]
-		);
+		$data = $request->collect('user')->except(['password', 'permissions', 'roles'])->toArray();
+
+		if ($user->exists) {
+			$thisUserGroupSlugs = auth()->user()->groups->pluck('slug');
+			$modulesAdministeredByThisUser = [];
+
+			foreach ($thisUserGroupSlugs as $groupSlug) {
+				$explodedGroupSlug = explode('-', $groupSlug);
+				if ($explodedGroupSlug[2] == 'admins') {
+					$modulesAdministeredByThisUser[] = $explodedGroupSlug[1];
+				}
+			}
+
+			$userIsMemberAGroupValidForDataEdit = false;
+			foreach ($modulesAdministeredByThisUser as $moduleName) {
+				if ($user->isInGroup('mbase2', $moduleName)) {
+					$userIsMemberAGroupValidForDataEdit = true;
+					break;
+				}
+			}
+
+			$userEditLayoutDataAllowed = $userIsMemberAGroupValidForDataEdit;
+		} else {
+			$userEditLayoutDataAllowed = true;
+			$data['password'] = Hash::make($request->input('user.password') ? $request->input('user.password') : '1234567890');
+		}
+
+		if ($userEditLayoutDataAllowed) {
+			$request->validate(
+				[
+					'user.email' => [
+						'required',
+						Rule::unique(User::class, 'email')->ignore($user),
+					],
+					'user.username' => [
+						'required',
+						Rule::unique(User::class, 'username')->ignore($user),
+					],
+				]
+			);
+
+			$user->when(
+				$request->filled('user.password'),
+				function (Builder $builder) use ($request) {
+					$builder->getModel()->password = Hash::make($request->input('user.password'));
+				}
+			);
+		}
 
 		$permissions = collect($request->get('permissions'))
 			->map(
@@ -208,38 +246,143 @@ class UserEditScreen extends Screen
 			->collapse()
 			->toArray();
 
-		$user->when(
-			$request->filled('user.password'),
-			function (Builder $builder) use ($request) {
-				$builder->getModel()->password = Hash::make($request->input('user.password'));
-			}
-		);
-
-
-		$data = $request->collect('user')->except(['password', 'permissions', 'roles'])->toArray();
 		if (array_key_exists('country_id', $data)) $data['country_id'] = $data['country_id'][0];
-
-		if (!$user->exists) {
-			$data['password'] = Hash::make('1234567890');
-		}
 
 		$user
 			->fill($data)
-			->fill(['permissions' => $permissions])
-			->save();
+			->fill(['permissions' => $permissions]);
 
-		$user->replaceRoles($request->input('user.roles'));
+		$user->save();
+
+		$roles = $request->input('user.roles');
+
+		if (!$roles || auth()->user()->hasRole('MBASE2LSuperAdmin')) {
+			$user->replaceRoles($roles);
+		} else {
+			$user->removeRoleBySlug('MBASE2LRegisteredUser');
+
+			foreach ($roles as $role) {
+				$user->addRole(Role::find($role));
+			}
+		}
 
 		$user = \App\Models\User::find($user->id);
 
-		// TODO: probably better way to update
-		$user->groups()->detach();
+		if (auth()->user()->country != null) {
+			$query = Group::query()
+				->join(
+					'groups_group_types_countries',
+					function ($join) {
+						$join->on('groups_group_types_countries.group_id', '=', 'groups.id');
+					}
+				)
+				->join(
+					'group_types_countries',
+					function ($join) {
+						$join->on('group_types_countries.id', '=', 'groups_group_types_countries.group_type_country_id')
+							->where('group_types_countries.country_id', '=', auth()->user()->country->id);
+					}
+				)
+				->join(
+					'users_groups',
+					function ($join) use ($user) {
+						$join->on('users_groups.group_id', '=', 'groups.id')
+							->where('users_groups.user_id', '=', $user->id);
+					}
+				)
+				->select(['groups.id', 'groups.slug', 'groups.name', 'groups.group_type_id'])
+				->where('groups.group_type_id', '<>', 1) // no countries
+				->orderBy('groups.id')
+				->distinct();
+		} else { // admin
+			$query = Group::query()
+				->join(
+					'groups_group_types_countries',
+					function ($join) {
+						$join->on('groups_group_types_countries.group_id', '=', 'groups.id');
+					}
+				)
+				->join(
+					'group_types_countries',
+					function ($join) {
+						$join->on('group_types_countries.id', '=', 'groups_group_types_countries.group_type_country_id');
+					}
+				)
+				->join(
+					'users_groups',
+					function ($join) use ($user) {
+						$join->on('users_groups.group_id', '=', 'groups.id')
+							->where('users_groups.user_id', '=', $user->id);
+					}
+				)
+				->select(['groups.id', 'groups.slug', 'groups.name', 'groups.group_type_id'])
+				->where('groups.group_type_id', '<>', 1) // no countries
+				->orderBy('groups.id')
+				->distinct();
+		}
+
+		$existingCountrySpecificGroupsQuery = $query->clone()
+			->where('groups.group_type_id', '<>', 2) // not MBASE2 module roles
+			->where('groups.group_type_id', '<>', 4); // not MBASE2 module parameters
+
+		$existingCountrySpecificGroups = $existingCountrySpecificGroupsQuery->get();
+
+		foreach ($existingCountrySpecificGroups as $existingCountrySpecificGroup) {
+			$user->groups()->detach($existingCountrySpecificGroup->id);
+		}
+
 		if ($request->collect('country_specific_groups')) {
 			$user->groups()->attach($request->collect('country_specific_groups'));
 		}
 
+		$thisUserGroupSlugs = auth()->user()->groups->pluck('slug');
+		$modulesAdministeredByThisUser = [];
+
+		foreach ($thisUserGroupSlugs as $groupSlug) {
+			$explodedGroupSlug = explode('-', $groupSlug);
+			if ($explodedGroupSlug[2] == 'admins') {
+				$modulesAdministeredByThisUser[] = $explodedGroupSlug[1];
+			}
+		}
+
+		$moduleRolesQuery = $query->clone()
+			->where('groups.group_type_id', '=', 2) // MBASE2 module roles
+			->where(function ($query) use ($modulesAdministeredByThisUser) {
+				foreach ($modulesAdministeredByThisUser as $key => $moduleName) {
+					if ($key == 0) {
+						$query->where('groups.slug', 'like', 'mbase2-' . $moduleName . '%');
+					} else {
+						$query->orWhere('groups.slug', 'like', 'mbase2-' . $moduleName . '%');
+					}
+				}
+			});
+
+		$moduleRoles = $moduleRolesQuery->get();
+
+		foreach ($moduleRoles as $moduleRole) {
+			$user->groups()->detach($moduleRole->id);
+		}
+
 		if ($request->collect('mbase2_module_roles')) {
 			$user->groups()->attach($request->collect('mbase2_module_roles'));
+		}
+
+		$moduleParametersQuery = $query->clone()
+			->where('groups.group_type_id', '=', 4) // MBASE2 module parameters
+			->where(function ($query) use ($modulesAdministeredByThisUser) {
+				foreach ($modulesAdministeredByThisUser as $key => $moduleName) {
+					if ($key == 0) {
+						$query->where('groups.slug', 'like', $moduleName . '%');
+					} else {
+						$query->orWhere('groups.slug', 'like', $moduleName . '%');
+					}
+				}
+			});
+
+		$moduleParameters = $moduleParametersQuery->get();
+
+		foreach ($moduleParameters as $moduleParameters) {
+			$user->groups()->detach($moduleParameters->id);
 		}
 
 		if ($request->collect('mbase2_module_parameters')) {
