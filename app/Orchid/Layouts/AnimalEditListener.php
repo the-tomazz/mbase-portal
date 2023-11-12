@@ -65,7 +65,7 @@ class AnimalEditListener extends Listener
 					->disabled(),
 
 				Select::make('animal.status')
-					->title(__('Status'))
+					->title(__('Animal status'))
 					->empty(__('<Select>'))
 					->required()
 					->options([

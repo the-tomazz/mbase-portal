@@ -89,37 +89,10 @@ class AnimalHandlingViewScreen extends Screen
 					return $bearsBiometryAnimalHandling->animal_handling_date->format('d.m.Y H:i');
 				}),
 
-			Sight::make('biometric_data', __('Biometric data'))
-				->render(function ($bearsBiometryAnimalHandling) {
-					return $this->bearsBiometryAnimalHandling->bearsBiometryData ?
-						Link::make(__('View biometry data'))
-							->icon('number-list')
-							->route('platform.biometryData.view', [ 'bearsBiometryData' => $this->bearsBiometryAnimalHandling->bearsBiometryData ]) :
-						Link::make(__('Add biometry data'))
-							->icon('plus')
-							->route('platform.biometryData.add', [ 'bearsBiometryAnimalHandling' => $this->bearsBiometryAnimalHandling ]);
-				}),
-
 			Sight::make('hunting_ground', __('Hunting ground'))
 				->render(function ($bearsBiometryAnimalHandling) {
 					return $bearsBiometryAnimalHandling->hunting_ground;
 				}),
-
-
-			Sight::make('attachment', __('Attachments'))->render(function ($bearsBiometryAnimalHandling) {
-				$render = '';
-				$attachments = $bearsBiometryAnimalHandling->attachment->all();
-
-				if (count($attachments) > 0) {
-					$counter = 1;
-					foreach ($attachments as $attachment) {
-						$render .= '<a href="' . $attachment->url . '">' . $counter++ . '. ' . $attachment->original_name . "</a><br>";
-					}
-					return $render;
-				} else {
-					return __('No attachments found');
-				}
-			}),
 		];
 
 		$regularCullSelected = $this->bearsBiometryAnimalHandling->way_of_withdrawal_list_id == WayOfWithdrawalList::REGULAR_CULL;
@@ -173,6 +146,34 @@ class AnimalHandlingViewScreen extends Screen
 					return $bearsBiometryAnimalHandling->receiving_country;
 				});
 		}
+
+		$animalHandlingSights[] = Sight::make('biometric_data', __('Biometric data'))
+			->render(function ($bearsBiometryAnimalHandling) {
+				return $this->bearsBiometryAnimalHandling->bearsBiometryData ?
+					Link::make(__('View biometry data'))
+						->icon('number-list')
+						->route('platform.biometryData.view', [ 'bearsBiometryData' => $this->bearsBiometryAnimalHandling->bearsBiometryData ]) :
+					Link::make(__('Add biometry data'))
+						->icon('plus')
+						->route('platform.biometryData.add', [ 'bearsBiometryAnimalHandling' => $this->bearsBiometryAnimalHandling ]);
+			});
+
+
+
+		$animalHandlingSights[] = Sight::make('attachment', __('Attachments'))->render(function ($bearsBiometryAnimalHandling) {
+				$render = '';
+				$attachments = $bearsBiometryAnimalHandling->attachment->all();
+
+				if (count($attachments) > 0) {
+					$counter = 1;
+					foreach ($attachments as $attachment) {
+						$render .= '<a href="' . $attachment->url . '">' . $counter++ . '. ' . $attachment->original_name . "</a><br>";
+					}
+					return $render;
+				} else {
+					return __('No attachments found');
+				}
+			});
 
 		$animalHandlingSights[] = Sight::make('data_entered_by_user_id', __('User'))
 			->render(function ($bearsBiometryAnimalHandling) {

@@ -238,8 +238,6 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 			$triggers['animal_species_list_id'] = $animal->species_list_id;
 			$triggers['animal_sex_list_id'] = $animal->animal_sex_list_id;
 			$triggers['animal_description'] = $animal->animal_description;
-		} else {
-			$triggers['alive_or_known_animal'] = $triggers['alive_or_known_animal'] ?? Auth::user()->defaultVisualisationAnimalStatus() == Animal::STR_ALIVE;
 		}
 
 		if (!isset($triggers['y_number_of_removal_in_the_hunting_administrative_area']) ||
@@ -256,10 +254,11 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 
 		$payload = [
 			'bearsBiometryAnimalHandling' => new Repository([
-				'alive_or_known_animal' 			=> $triggers['alive_or_known_animal'] ?? null,
+				'alive_or_known_animal_checked' 	=> $triggers['alive_or_known_animal_checked'] ?? null,
 				'original_animal_id' 				=> $triggers['original_animal_id'] ?? null,
 				'animal_id'      					=> $triggers['animal_id'] ?? null,
 				'animal_status'      				=> $triggers['animal_status'] ?? null,
+				'animal_status_on_handling'      	=> ( $triggers['animal_status'] ?? null ) == 'alive' ? 'alive' : ( $triggers['animal_status_on_handling'] ?? null ),
 				'animal_died_at_date' 				=> $triggers['animal_died_at_date'] ?? null,
 				'animal_died_at_time' 				=> $triggers['animal_died_at_time'] ?? null,
 				'animal_name'      					=> $triggers['animal_name'] ?? null,
@@ -267,7 +266,6 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 				'animal_sex_list_id'				=> $triggers['animal_sex_list_id'] ?? null,
 				'animal_description'				=> $triggers['animal_description'] ?? null,
 
-				'animal_status_on_handling'      	=> $triggers['animal_status_on_handling'] ?? null,
 				'animal_handling_date_date'			=> $triggers['animal_handling_date_date'] ?? null,
 				'animal_handling_date_time'			=> $triggers['animal_handling_date_time'] ?? null,
 				'way_of_withdrawal_list_id' 		=> $triggers['way_of_withdrawal_list_id'] ?? null,
@@ -682,10 +680,10 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 			if ($animal->status == Animal::STR_DEAD) {
 				$animalStatus = Animal::STR_DEAD;
 			} else {
-				$animalStatus = $request->get('bearsBiometryAnimalHandling')['animal_status'];
+				$animalStatus = $request->get('bearsBiometryAnimalHandling')['animal_status'] ?? 'dead';
 			}
 		} else {
-			$animalStatus = $request->get('bearsBiometryAnimalHandling')['animal_status'];
+			$animalStatus = $request->get('bearsBiometryAnimalHandling')['animal_status'] ?? 'dead';
 		}
 
 		if (!$animal->exists && !isset($bearsBiometryAnimalHandling['animal_id'])) {
