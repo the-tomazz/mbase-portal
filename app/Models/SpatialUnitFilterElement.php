@@ -7,6 +7,7 @@
 namespace App\Models;
 
 use App\Casts\LocalizedJsonData;
+use App\Casts\NamedJsonData;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Orchid\Attachment\Attachable;
@@ -36,7 +37,7 @@ class SpatialUnitFilterElement extends Model
 	protected $casts = [
 		'id' => 'int',
 		'spatial_unit_filter_type_id' => 'int',
-		'name' => 'json'
+		'name' => LocalizedJsonData::class
 	];
 
 	protected $fillable = [
