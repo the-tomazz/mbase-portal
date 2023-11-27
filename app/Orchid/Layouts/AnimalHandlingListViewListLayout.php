@@ -50,7 +50,6 @@ class AnimalHandlingListViewListLayout extends Table
 			->get();
 
 		foreach ($spatialFilterElements as $spatialFilterElement) {
-			Log::debug($spatialFilterElement);
 			$huntingGroundFilterOptions[$spatialFilterElement->name['name']] = $spatialFilterElement->name['name'];
 		}
 
