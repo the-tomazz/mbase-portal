@@ -37,7 +37,7 @@ class SpatialUnitFilterElement extends Model
 	protected $casts = [
 		'id' => 'int',
 		'spatial_unit_filter_type_id' => 'int',
-		'name' => 'json' # LocalizedJsonData::class
+		'name' => 'string'
 	];
 
 	protected $fillable = [

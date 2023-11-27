@@ -428,12 +428,12 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 			', [$gid, '__-' . SpatialUnitFilterType::TYPE_HUNTING_GROUND, $USFormattedDate, $USFormattedDate]);
 
 			if (count($LUOResults) > 0) {
-				$LUO = json_decode($LUOResults[0]->name)->name;
+				$LUO = $LUOResults[0]->name;
 				$LUO_id = $LUOResults[0]->spatial_unit_filter_element_id;
 			}
 
 			if (count($LOVResults) > 0) {
-				$LOV = json_decode($LOVResults[0]->name)->name;
+				$LOV = $LOVResults[0]->name;
 			}
 
 			if (count($LOVResults) > 0 && count($LUOResults) > 0) {

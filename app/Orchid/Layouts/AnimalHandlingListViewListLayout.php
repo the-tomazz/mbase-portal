@@ -50,7 +50,7 @@ class AnimalHandlingListViewListLayout extends Table
 			->get();
 
 		foreach ($spatialFilterElements as $spatialFilterElement) {
-			$huntingGroundFilterOptions[$spatialFilterElement->name['name']] = $spatialFilterElement->name['name'];
+			$huntingGroundFilterOptions[$spatialFilterElement->name] = $spatialFilterElement->name;
 		}
 
 		$huntingManagementAreaFilterOptions = [];
@@ -59,8 +59,9 @@ class AnimalHandlingListViewListLayout extends Table
 			->where('spatial_unit_filter_types.slug', 'like', '%-' . SpatialUnitFilterType::TYPE_HUNTING_MANAGEMENT_AREA)
 			->select('spatial_unit_filter_elements.id', 'spatial_unit_filter_elements.name', 'spatial_unit_filter_type_versions.title')
 			->get();
+
 		foreach ($spatialFilterElements as $spatialFilterElement) {
-			$huntingManagementAreaFilterOptions[$spatialFilterElement->name['name']] = $spatialFilterElement->name['name'];
+			$huntingManagementAreaFilterOptions[$spatialFilterElement->name] = $spatialFilterElement->name;
 		}
 
 		$userNames = [];
