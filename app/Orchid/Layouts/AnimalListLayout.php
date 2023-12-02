@@ -45,7 +45,7 @@ class AnimalListLayout extends Table
 			->join('spatial_unit_filter_types', 'spatial_unit_filter_types.id', 'spatial_unit_filter_type_versions.spatial_unit_filter_type_id')
 			->where('spatial_unit_filter_types.slug', 'like', '%-' . SpatialUnitFilterType::TYPE_HUNTING_GROUND)
 			->select('spatial_unit_filter_elements.id', 'spatial_unit_filter_elements.name', 'spatial_unit_filter_type_versions.title')
-            ->get();
+			->get();
 
 		foreach ($spatialFilterElements as $spatialFilterElement) {
 			$huntingGroundFilterOptions[$spatialFilterElement->name] = $spatialFilterElement->name;
@@ -56,7 +56,7 @@ class AnimalListLayout extends Table
 			->join('spatial_unit_filter_types', 'spatial_unit_filter_types.id', 'spatial_unit_filter_type_versions.spatial_unit_filter_type_id')
 			->where('spatial_unit_filter_types.slug', 'like', '%-' . SpatialUnitFilterType::TYPE_HUNTING_MANAGEMENT_AREA)
 			->select('spatial_unit_filter_elements.id', 'spatial_unit_filter_elements.name', 'spatial_unit_filter_type_versions.title')
-            ->get();
+			->get();
 		foreach ($spatialFilterElements as $spatialFilterElement) {
 			$huntingManagementAreaFilterOptions[$spatialFilterElement->name] = $spatialFilterElement->name;
 		}
@@ -171,7 +171,7 @@ class AnimalListLayout extends Table
 					return $way_of_withdrawal_list_name;
 				}),
 
-				TD::make('conflict_animal_removal_list_name->' . App::getLocale(), __("Legal cull"))
+			TD::make('conflict_animal_removal_list_name->' . App::getLocale(), __("Legal cull"))
 				->render(function (AnimalListView $animal) {
 					return Link::make($animal->conflict_animal_removal_list_name)
 						->route('platform.animalHandling.view', [ $animal ]);
