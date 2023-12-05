@@ -152,7 +152,8 @@ class BearsBiometryAnimalHandling extends Model
 		'jaw_photos_collected',
 		'measurer_name_and_surname',
 		'hunting_ground_representative',
-		'location_coordinate_type_list_id'
+		'location_coordinate_type_list_id',
+		'animal_status_on_handling'
 	];
 
 	protected $allowedSorts = [

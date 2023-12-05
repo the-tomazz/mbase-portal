@@ -627,6 +627,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 	private function createOrUpdate(Animal $animal, BearsBiometryAnimalHandling $bearsBiometryAnimalHandling, Request $request)
 	{
 		$animalHandlingStructure = $request->get('bearsBiometryAnimalHandling');
+
 		$parsedDate = date_parse_from_format("j.n.Y", $animalHandlingStructure['animal_handling_date_date']);
 		$parsedTime = date_parse_from_format("H:i", $animalHandlingStructure['animal_handling_date_time']);
 
