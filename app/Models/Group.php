@@ -48,6 +48,17 @@ class Group extends Model
 		'group_type_id'
 	];
 
+	protected $sortable = [
+		'slug',
+		'name->sl',
+		'name->en',
+		'name->de',
+		'name->it',
+		'name->hu',
+		'name->hr',
+		'group_type_id'
+	];
+
 	public function group_type()
 	{
 		return $this->belongsTo(GroupType::class);

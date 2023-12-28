@@ -6,6 +6,7 @@ use App\Models\Group as ModelsGroup;
 use App\Models\GroupType;
 use App\Models\PlaceTypeList;
 use App\Models\User;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
 use Orchid\Screen\Fields\Group;
 use Orchid\Screen\Fields\Input;
@@ -61,7 +62,7 @@ class BearsBiometryAnimalHandlingHunterFinderSwitchListener extends Listener
 						->canSee($canSee),
 
 					Select::make('bearsBiometryAnimalHandling.hunter_finder_country_id')
-						->fromQuery(ModelsGroup::where('group_type_id', '=', GroupType::COUNTRIES), 'name')
+						->fromQuery(ModelsGroup::where('group_type_id', '=', GroupType::COUNTRIES)->orderBy('name->' .  App::getLocale()), 'name')
 						->title(__('Country'))
 						->empty(__('<Select>'))
 						->help(__('Please select the country'))
