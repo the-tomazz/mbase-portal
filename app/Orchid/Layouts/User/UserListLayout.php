@@ -7,13 +7,16 @@ namespace App\Orchid\Layouts\User;
 use App\Models\Animal;
 use App\Models\BearsBiometryAnimalHandling;
 use App\Models\Group;
+use App\Models\GroupType;
 use App\Models\User;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Actions\DropDown;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Actions\ModalToggle;
 use Orchid\Screen\Fields\Input;
+use Orchid\Screen\Fields\Select;
 use Orchid\Screen\Layouts\Persona;
 use Orchid\Screen\Layouts\Table;
 use Orchid\Screen\TD;
@@ -53,18 +56,28 @@ class UserListLayout extends Table
 						]);
 				}),
 
-			TD::make('updated_at', __('Last edit'))
+			TD::make('country_id', __('Country'))
 				->sort()
+				->filter(
+					Select::make()->fromQuery(
+						Group::where('group_type_id', '=', GroupType::COUNTRIES)
+							->orderBy('name->' . App::getLocale(), 'asc'),
+						'name',
+						'id'
+					)
+					->empty(__('<Select>'))
+				)
 				->render(function (User $user) {
-					return $user->updated_at->toDateTimeString();
+					return $user->country_id != null ? Group::where('id', $user->country_id)->first()->name : null;
 				}),
 
-			TD::make('user_groups', __('User groups'))
+
+			TD::make('user_module_roles', __('MBASE2 module roles'))
 				->sort()
 				->render(function (User $user) {
 					$groups = '';
 					$length = 0;
-					foreach ($user->groups()->orderBy('group_type_id', 'desc')->get() as $group) {
+					foreach ($user->groups()->where('group_type_id', '=', GroupType::MBASE2_MODULE_ROLES)->orderBy('group_type_id', 'desc')->get() as $group) {
 						if ($groups == '') {
 							$groups .= $group->name;
 						} else {
@@ -80,10 +93,31 @@ class UserListLayout extends Table
 					return $groups;
 				}),
 
-			TD::make('country', __('Country'))
+			TD::make('user_groups', __('MBASE2 module parameters'))
 				->sort()
 				->render(function (User $user) {
-					return $user->country_id != null ? Group::where('id', $user->country_id)->first()->name : null;
+					$groups = '';
+					$length = 0;
+					foreach ($user->groups()->where('group_type_id', '=', GroupType::MBASE2_MODULE_PARAMETERS)->orderBy('group_type_id', 'desc')->get() as $group) {
+						if ($groups == '') {
+							$groups .= $group->name;
+						} else {
+							$groups .= ', ' . ($length>20 ? '<br>' : '') . $group->name;
+							if ($length>20) {
+								$length = 0;
+							}
+						}
+
+						$length += strlen($group->name);
+					}
+
+					return $groups;
+				}),
+
+			TD::make('updated_at', __('Last edit'))
+				->sort()
+				->render(function (User $user) {
+					return $user->updated_at->toDateTimeString();
 				}),
 
 			TD::make(__('Actions'))

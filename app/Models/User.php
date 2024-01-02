@@ -55,6 +55,7 @@ class User extends Authenticatable
 		'email',
 		'username',
 		'permissions',
+		'country_id'
 	];
 
 	/**
@@ -70,6 +71,7 @@ class User extends Authenticatable
 		'username',
 		'updated_at',
 		'created_at',
+		'country_id'
 	];
 
 	public function country()
