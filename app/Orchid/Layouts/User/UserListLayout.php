@@ -57,6 +57,9 @@ class UserListLayout extends Table
 				}),
 
 			TD::make('country_id', __('Country'))
+				->render(function (User $user) {
+					return $user->country_id != null ? Group::where('id', $user->country_id)->first()->name : null;
+				})
 				->sort()
 				->filter(
 					Select::make()->fromQuery(
@@ -67,10 +70,9 @@ class UserListLayout extends Table
 					)
 					->empty(__('<Select>'))
 				)
-				->render(function (User $user) {
-					return $user->country_id != null ? Group::where('id', $user->country_id)->first()->name : null;
+				->filterValue(function ($country_id) {
+					return Group::where('id', $country_id)->first()->name;
 				}),
-
 
 			TD::make('user_module_roles', __('MBASE2 module roles'))
 				->sort()

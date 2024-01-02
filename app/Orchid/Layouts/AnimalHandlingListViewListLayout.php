@@ -301,9 +301,9 @@ class AnimalHandlingListViewListLayout extends Table
 					])
 					->empty(__('<Select>'))
 				)
-					->filterValue(function ($status) {
-						return $status == AnimalHandlingListView::STR_EXISTS ? __('Exists') : __('Missing');
-					}),
+				->filterValue(function ($status) {
+					return $status == AnimalHandlingListView::STR_EXISTS ? __('Exists') : __('Missing');
+				}),
 
 			TD::make('attachment_count', __('Attachments'))
 				->render(function (AnimalHandlingListView $animalHandlingListView) {
