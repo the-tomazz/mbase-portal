@@ -21,45 +21,45 @@ class AnimalDataViewScreen extends Screen
 {
 	public $animal;
 
-    /**
-     * Query data.
-     *
-     * @return array
-     */
-    public function query(Animal $animal): iterable
-    {
+	/**
+	 * Query data.
+	 *
+	 * @return array
+	 */
+	public function query(Animal $animal): iterable
+	{
 		return [
 			'animal' => $animal
 		];
-    }
+	}
 
-    /**
-     * Display header name.
-     *
-     * @return string|null
-     */
-    public function name(): ?string
-    {
-        return __('Animal')  . ' ID: ' . $this->animal->id;
-    }
+	/**
+	 * Display header name.
+	 *
+	 * @return string|null
+	 */
+	public function name(): ?string
+	{
+		return __('Animal')  . ' ID: ' . $this->animal->id;
+	}
 
-    /**
-     * Button commands.
-     *
-     * @return \Orchid\Screen\Action[]
-     */
-    public function commandBar(): iterable
-    {
+	/**
+	 * Button commands.
+	 *
+	 * @return \Orchid\Screen\Action[]
+	 */
+	public function commandBar(): iterable
+	{
 		return array_merge(
+			!Auth::user()->isInGroup('mbase2', 'mortbiom', 'consumers') ?
 			[
 				Link::make(__('New animal handling'))
 						->icon('pencil')
 						->route('platform.animalHandling.add', [$this->animal]),
-
 				Link::make(__('Update'))
 					->icon('pencil')
 					->route('platform.animalData.edit', ['animal' => $this->animal]),
-			],
+			] : [],
 			$this->animal->bears_biometry_animal_handlings->count() == 0 && Auth::user()->isInGroup('mbase2', 'mortbiom', 'admins')
 				? [
 					ModalToggle::make('Remove')
@@ -69,15 +69,15 @@ class AnimalDataViewScreen extends Screen
 				]
 				: []
 		);
-    }
+	}
 
-    /**
-     * Views.
-     *
-     * @return \Orchid\Screen\Layout[]|string[]
-     */
-    public function layout(): iterable
-    {
+	/**
+	 * Views.
+	 *
+	 * @return \Orchid\Screen\Layout[]|string[]
+	 */
+	public function layout(): iterable
+	{
 		$animalSight = [
 			Sight::make('name', __('Animal name')),
 
@@ -129,17 +129,18 @@ class AnimalDataViewScreen extends Screen
 			}
 		}
 
-        return [
+		return [
 			Layout::legend('animal', $animalSight),
 			Layout::legend('animal', $animalHandlingsSights)->title(__('Animal handlings')),
 
 			Layout::block([])
 				->commands(
+					!Auth::user()->isInGroup('mbase2', 'mortbiom', 'consumers') ?
 					[
 						Link::make(__('New animal handling'))
 							->icon('pencil')
 							->route('platform.animalHandling.add', [$this->animal])
-					]
+					] : []
 				),
 
 			Layout::modal('modalRemove', [
@@ -154,16 +155,16 @@ class AnimalDataViewScreen extends Screen
 				->applyButton(__('Remove'))
 				->closeButton(__('Close')),
 		];
-    }
+	}
 
 	/**
-     * @param Post $bearsBiometrySample
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Exception
-     */
-    public function remove(Animal $animal)
-    {
+	 * @param Post $bearsBiometrySample
+	 *
+	 * @return \Illuminate\Http\RedirectResponse
+	 * @throws \Exception
+	 */
+	public function remove(Animal $animal)
+	{
 		if ($animal->bears_biometry_animal_handlings->count() > 0) {
 			Alert::error(__('Cannot delete the animal because it contains one or more handlings. You have to delete the animal handling first!'));
 		} else {
@@ -172,5 +173,5 @@ class AnimalDataViewScreen extends Screen
 		}
 
 		return redirect()->route('platform.animals.list');
-    }
+	}
 }

@@ -54,6 +54,7 @@ class AnimalHandlingViewScreen extends Screen
 	public function commandBar(): iterable
 	{
 		return array_merge(
+			!Auth::user()->isInGroup('mbase2', 'mortbiom', 'consumers') ?
 			[
 				Link::make(__('Biometry data'))
 					->icon('number-list')
@@ -63,8 +64,7 @@ class AnimalHandlingViewScreen extends Screen
 				Link::make(__('Update'))
 					->icon('pencil')
 					->route('platform.animalHandling.edit', [ 'animal' => $this->bearsBiometryAnimalHandling->animal, 'bearsBiometryAnimalHandling' => $this->bearsBiometryAnimalHandling ]),
-			],
-
+			] : [],
 			Auth::user()->isInGroup('mbase2', 'mortbiom', 'admins') && !$this->bearsBiometryAnimalHandling->bearsBiometryData
 				? [
 					ModalToggle::make('Remove')
@@ -161,19 +161,19 @@ class AnimalHandlingViewScreen extends Screen
 
 
 		$animalHandlingSights[] = Sight::make('attachment', __('Attachments'))->render(function ($bearsBiometryAnimalHandling) {
-				$render = '';
-				$attachments = $bearsBiometryAnimalHandling->attachment->all();
+			$render = '';
+			$attachments = $bearsBiometryAnimalHandling->attachment->all();
 
-				if (count($attachments) > 0) {
-					$counter = 1;
-					foreach ($attachments as $attachment) {
-						$render .= '<a href="' . $attachment->url . '">' . $counter++ . '. ' . $attachment->original_name . "</a><br>";
-					}
-					return $render;
-				} else {
-					return __('No attachments found');
+			if (count($attachments) > 0) {
+				$counter = 1;
+				foreach ($attachments as $attachment) {
+					$render .= '<a href="' . $attachment->url . '">' . $counter++ . '. ' . $attachment->original_name . "</a><br>";
 				}
-			});
+				return $render;
+			} else {
+				return __('No attachments found');
+			}
+		});
 
 		$animalHandlingSights[] = Sight::make('data_entered_by_user_id', __('User'))
 			->render(function ($bearsBiometryAnimalHandling) {

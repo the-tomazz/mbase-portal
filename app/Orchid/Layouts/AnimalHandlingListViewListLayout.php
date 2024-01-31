@@ -15,6 +15,7 @@ use App\Models\SpeciesList;
 use App\Models\User;
 use App\Models\WayOfWithdrawalList;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Orchid\Screen\Actions\Link;
@@ -290,8 +291,10 @@ class AnimalHandlingListViewListLayout extends Table
 					return $animalHandlingListView->bears_biometry_data_status == AnimalHandlingListView::STR_EXISTS
 						? Link::make(__('Exists'))
 							->route('platform.biometryData.view', [ $animalHandlingListView->bears_biometry_data_id ])
-						: Link::make(__('Missing'))
-							->route('platform.biometryData.add', [ $animalHandlingListView ]);
+						: ( !Auth::user()->isInGroup('mbase2', 'mortbiom', 'consumers') ?
+							Link::make(__('Missing'))
+								->route('platform.biometryData.add', [ $animalHandlingListView ])
+							: Link::make(__('Missing')) );
 				})
 				->sort()
 				->filter(

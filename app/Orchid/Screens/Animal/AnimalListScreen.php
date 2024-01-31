@@ -78,15 +78,18 @@ class AnimalListScreen extends Screen
 	public function commandBar(): iterable
 	{
 		$query = request()->input();
-		return [
-			Link::make(__('Animal handlings'))
-				->icon('list')
-				->route('platform.animalHandling.list', ['filter[animal_status]' => Auth::user()->defaultVisualisationAnimalStatus()]),
-
-			Link::make(__('New animal handling'))
-				->icon('pencil')
-				->route('platform.animalHandling.create'),
-
+		return array_merge(
+			[
+				Link::make(__('Animal handlings'))
+					->icon('list')
+					->route('platform.animalHandling.list', ['filter[animal_status]' => Auth::user()->defaultVisualisationAnimalStatus()]),
+			],
+			!Auth::user()->isInGroup('mbase2', 'mortbiom', 'consumers') ? [
+				Link::make(__('New animal handling'))
+					->icon('pencil')
+					->route('platform.animalHandling.create'),
+			] : [],
+			[
 			Link::make(__('Export to XLS'))
 				->icon('save')
 				->route('app.export.csv.animals', request()->input()),
@@ -109,7 +112,7 @@ class AnimalListScreen extends Screen
 					Link::make(__('All'))
 						->route(Route::currentRouteName(), array_merge($query, ['per_page' => 1000000, 'page' => 1])),
 				])
-			];
+			] );
 	}
 
 	/**

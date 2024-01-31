@@ -68,38 +68,41 @@ class AnimalHandlingListViewListScreen extends Screen
 	public function commandBar(): iterable
 	{
 		$query = request()->input();
-		return [
-			Link::make(__('New animal handling'))
-				->icon('pencil')
-				->route('platform.animalHandling.create'),
+		return array_merge(
+			!Auth::user()->isInGroup('mbase2', 'mortbiom', 'consumers') ?
+				[
+					Link::make(__('New animal handling'))
+						->icon('pencil')
+						->route('platform.animalHandling.create')
+				] : [],
+			[
+				Link::make(__('Animals'))
+					->icon('list')
+					->route('platform.animals.list', ['filter[status]' => Auth::user()->defaultVisualisationAnimalStatus()]),
 
-			Link::make(__('Animals'))
-				->icon('list')
-				->route('platform.animals.list', ['filter[status]' => Auth::user()->defaultVisualisationAnimalStatus()]),
+				Link::make(__('Export to XLS'))
+					->icon('save')
+					->route('app.export.csv.animalhandlings', request()->input()),
 
-			Link::make(__('Export to XLS'))
-				->icon('save')
-				->route('app.export.csv.animalhandlings', request()->input()),
+				Link::make(__('Import from XLS'))
+					->icon('cloud-upload')
+					->href('/mbase2/batches/mortbiom'),
 
-			Link::make(__('Import from XLS'))
-				->icon('cloud-upload')
-				->href('/mbase2/batches/mortbiom'),
-
-			DropDown::make(__('Page size'))
-				->icon('options-vertical')
-				->list([
-					Link::make(15)
-						->route(Route::currentRouteName(), array_merge($query, ['per_page' => 15, 'page' => 1])),
-					Link::make(30)
-						->route(Route::currentRouteName(), array_merge($query, ['per_page' => 30, 'page' => 1])),
-					Link::make(50)
-						->route(Route::currentRouteName(), array_merge($query, ['per_page' => 50, 'page' => 1])),
-					Link::make(100)
-						->route(Route::currentRouteName(), array_merge($query, ['per_page' => 100, 'page' => 1])),
-					Link::make(__('All'))
-						->route(Route::currentRouteName(), array_merge($query, ['per_page' => 1000000, 'page' => 1])),
-				])
-		];
+				DropDown::make(__('Page size'))
+					->icon('options-vertical')
+					->list([
+						Link::make(15)
+							->route(Route::currentRouteName(), array_merge($query, ['per_page' => 15, 'page' => 1])),
+						Link::make(30)
+							->route(Route::currentRouteName(), array_merge($query, ['per_page' => 30, 'page' => 1])),
+						Link::make(50)
+							->route(Route::currentRouteName(), array_merge($query, ['per_page' => 50, 'page' => 1])),
+						Link::make(100)
+							->route(Route::currentRouteName(), array_merge($query, ['per_page' => 100, 'page' => 1])),
+						Link::make(__('All'))
+							->route(Route::currentRouteName(), array_merge($query, ['per_page' => 1000000, 'page' => 1])),
+					])
+			]);
 	}
 
 	/**

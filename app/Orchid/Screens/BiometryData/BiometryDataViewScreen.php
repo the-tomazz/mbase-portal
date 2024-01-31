@@ -55,11 +55,12 @@ class BiometryDataViewScreen extends Screen
 	public function commandBar(): iterable
 	{
 		return array_merge(
+			!Auth::user()->isInGroup('mbase2', 'mortbiom', 'consumers') ?
 			[
 				Link::make(__('Update'))
 					->icon('pencil')
 					->route('platform.biometryData.edit', [ 'bearsBiometryAnimalHandling' => $this->bearsBiometryData->bears_biometry_animal_handling, 'bearsBiometryData' => $this->id ]),
-			],
+			] : [],
 			Auth::user()->isInGroup('mbase2', 'mortbiom', 'admins')
 				? [
 					ModalToggle::make('Remove')
