@@ -628,6 +628,10 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 	{
 		$animalHandlingStructure = $request->get('bearsBiometryAnimalHandling');
 
+		if (!isset($animalHandlingStructure['animal_status_on_handling'])) {
+			$animalHandlingStructure['animal_status_on_handling'] = $animalHandlingStructure['animal_status'];
+		}
+
 		$parsedDate = date_parse_from_format("j.n.Y", $animalHandlingStructure['animal_handling_date_date']);
 		$parsedTime = date_parse_from_format("H:i", $animalHandlingStructure['animal_handling_date_time']);
 
