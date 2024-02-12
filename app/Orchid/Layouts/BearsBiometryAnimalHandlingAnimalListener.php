@@ -83,7 +83,7 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 	{
 		if ($this->query) {
 			Log::debug('query exists');
-			Log::debug(['bearsBiometryAnimalHandling.animal_handling_type' => $request->old('bearsBiometryAnimalHandling.animal_handling_type')]);
+
 			$animalHandlingIsNew = ( $this->query->get('bearsBiometryAnimalHandling.id') ?? null ) == null;
 
 			$animalHandlingType = $this->query->get('bearsBiometryAnimalHandling.animal_handling_type') ?? self::STR_ANIMAL_TYPE_UNKNOWN_HANDLED_DEAD;
