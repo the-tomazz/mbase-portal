@@ -74,8 +74,6 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 				new DateTime($bearsBiometryAnimalHandling->animal_handling_date)
 			)->format('H:i');
 
-			$bearsBiometryAnimalHandling['original_animal_id'] = $bearsBiometryAnimalHandling['animal_id'];
-
 			$bearsBiometryAnimalHandling['geo_location'] = [ // HACK, Stanko, this is for you :)
 				'lat' => $bearsBiometryAnimalHandling['lat'],
 				'lng' => $bearsBiometryAnimalHandling['lng'],
@@ -91,11 +89,6 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 				$bearsBiometryAnimalHandling['y_number_of_removal_in_the_hunting_administrative_area'] = $splittedNumberOfRemovalInTheHuntingAdministrativeArea[1];
 			}
 		} else {
-			if ($animal->exists) { // we are creating a handling of a certain animal
-				// $bearsBiometryAnimalHandling->animal_id = $animal->id;
-				$bearsBiometryAnimalHandling['original_animal_id'] = $animal->id;
-			}
-
 			$bearsBiometryAnimalHandling['geo_location'] = [ // HACK, Stanko, this is for you :)
 				'lat' => 46.044705,
 				'lng' => 15.2424903,
@@ -229,16 +222,21 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 
 	public function asyncUpdateAnimalHandlingAnimalListenerData($triggers)
 	{
-		$animalId = $triggers['animal_id'] ?? null;
+		$oldJsonDataField = $triggers['json_data_field'] ?? null ? json_decode($triggers['json_data_field']) : null;
+		$oldAnimalHandlingType = ( $oldJsonDataField->animal_handling_type ?? null );
+		$animalHandlingType = $triggers['animal_handling_type'] ?? null;
 
-		if ($animalId) {
-			$triggers['animal_status'] = $triggers['animal_status'] ?? Auth::user()->defaultVisualisationAnimalStatus();
+		$animalHandlingTypeChanged = $oldAnimalHandlingType != $animalHandlingType;
+		$animalIdChanged = ( $oldJsonDataField->animal_id ?? null ) != ( $triggers['animal_id'] ?? null );
+		$animalStatusChanged = ( $oldJsonDataField->animal_status ?? null ) != ( $triggers['animal_status'] ?? null );
 
-			$animal = Animal::find($animalId);
-			$triggers['animal_species_list_id'] = $animal->species_list_id;
-			$triggers['animal_sex_list_id'] = $animal->animal_sex_list_id;
-			$triggers['animal_description'] = $animal->animal_description;
-		}
+		Log::debug([
+			'triggers' => $triggers,
+			'oldJsonDataField' => $oldJsonDataField,
+			'animalHandlingTypeChanged' => $animalHandlingTypeChanged,
+			'animalIdChanged' => $animalIdChanged,
+			'animalStatusChanged' => $animalStatusChanged,
+		]);
 
 		if (!isset($triggers['y_number_of_removal_in_the_hunting_administrative_area']) ||
 			$triggers['y_number_of_removal_in_the_hunting_administrative_area'] == '___') {
@@ -252,33 +250,74 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 			$y_numberOfRemovalInTheHuntingAdministrativeArea = $triggers['y_number_of_removal_in_the_hunting_administrative_area'];
 		}
 
-		$payload = [
-			'bearsBiometryAnimalHandling' => new Repository([
-				'alive_or_known_animal_checked' 	=> $triggers['alive_or_known_animal_checked'] ?? null,
-				'original_animal_id' 				=> $triggers['original_animal_id'] ?? null,
-				'animal_id'      					=> $triggers['animal_id'] ?? null,
-				'animal_status'      				=> $triggers['animal_status'] ?? null,
-				'animal_status_on_handling'      	=> ( $triggers['animal_status'] ?? null ) == 'alive' ? 'alive' : ( $triggers['animal_status_on_handling'] ?? null ),
-				'animal_died_at_date' 				=> $triggers['animal_died_at_date'] ?? null,
-				'animal_died_at_time' 				=> $triggers['animal_died_at_time'] ?? null,
-				'animal_name'      					=> $triggers['animal_name'] ?? null,
-				'animal_species_list_id'			=> $triggers['animal_species_list_id'] ?? null,
-				'animal_sex_list_id'				=> $triggers['animal_sex_list_id'] ?? null,
-				'animal_description'				=> $triggers['animal_description'] ?? null,
+		switch ($animalHandlingType) {
+			case BearsBiometryAnimalHandlingAnimalListener::STR_ANIMAL_TYPE_UNKNOWN_HANDLED_DEAD:
+				$animalStatusOnHandling = $animalStatus = Animal::STR_DEAD;
+				break;
+			case BearsBiometryAnimalHandlingAnimalListener::STR_ANIMAL_TYPE_UNKNOWN_HANDLED_ALIVE:
+				$animalStatus = $triggers['animal_status'] ?? null;
+				$animalStatusOnHandling = Animal::STR_ALIVE;
+				break;
+			case BearsBiometryAnimalHandlingAnimalListener::STR_ANIMAL_TYPE_KNOWN_HANDLED_DEAD:
+				$animalStatusOnHandling = $animalStatus = Animal::STR_DEAD;
+				if ($animalIdChanged) {
+					$animal = Animal::find($triggers['animal_id']);
 
-				'animal_handling_date_date'			=> $triggers['animal_handling_date_date'] ?? null,
-				'animal_handling_date_time'			=> $triggers['animal_handling_date_time'] ?? null,
-				'way_of_withdrawal_list_id' 		=> $triggers['way_of_withdrawal_list_id'] ?? null,
-				'licence_number'					=> $triggers['licence_number'] ?? null,
-				'conflict_animal_removal_list_id' 	=> $triggers['conflict_animal_removal_list_id'] ?? null,
-				'biometry_loss_reason_list_id' 		=> $triggers['biometry_loss_reason_list_id'] ?? null,
-				'biometry_loss_reason_description' 	=> $triggers['biometry_loss_reason_description'] ?? null,
-				'project_name'						=> $triggers['project_name'] ?? null,
-				'receiving_country'					=> $triggers['receiving_country'] ?? null,
-				'n_number_of_removal_in_the_hunting_administrative_area' => $triggers['n_number_of_removal_in_the_hunting_administrative_area'] ?? null,
-				'y_number_of_removal_in_the_hunting_administrative_area' => $y_numberOfRemovalInTheHuntingAdministrativeArea,
-				'telemetry_uid'						=> $triggers['telemetry_uid'] ?? null
-			]),
+					$triggers['animal_name'] = $animal->name;
+					$triggers['animal_species_list_id'] = $animal->species_list_id;
+					$triggers['animal_sex_list_id'] = $animal->sex_list_id;
+					$triggers['animal_description'] = $animal->description;
+				}
+
+				break;
+			case BearsBiometryAnimalHandlingAnimalListener::STR_ANIMAL_TYPE_KNOWN_HANDLED_ALIVE:
+				$animalStatusOnHandling = $animalStatus = Animal::STR_ALIVE;
+				if ($animalIdChanged) {
+					$animal = Animal::find($triggers['animal_id']);
+
+					$animalStatus = $animal->status;
+					$triggers['animal_name'] = $animal->name;
+					$triggers['animal_species_list_id'] = $animal->species_list_id;
+					$triggers['animal_sex_list_id'] = $animal->sex_list_id;
+					$triggers['animal_description'] = $animal->description;
+				} else {
+					$animalStatus = $triggers['animal_status'] ?? null;
+				}
+
+				break;
+		}
+
+		$repositoryData = [
+			'animal_handling_type' 				=> $animalHandlingType,
+			'animal_id'      					=> $triggers['animal_id'] ?? null,
+			'animal_status'      				=> $animalStatus,
+			'animal_status_on_handling'      	=> $animalStatusOnHandling,
+			'animal_name'      					=> $triggers['animal_name'] ?? null,
+			'animal_species_list_id'			=> $triggers['animal_species_list_id'] ?? null,
+			'animal_sex_list_id'				=> $triggers['animal_sex_list_id'] ?? null,
+			'animal_description'				=> $triggers['animal_description'] ?? null,
+
+			'animal_died_at_date' 				=> $triggers['animal_died_at_date'] ?? null,
+			'animal_died_at_time' 				=> $triggers['animal_died_at_time'] ?? null,
+			'animal_handling_date_date'			=> $triggers['animal_handling_date_date'] ?? null,
+			'animal_handling_date_time'			=> $triggers['animal_handling_date_time'] ?? null,
+
+			'way_of_withdrawal_list_id' 		=> $triggers['way_of_withdrawal_list_id'] ?? null,
+			'licence_number'					=> $triggers['licence_number'] ?? null,
+			'conflict_animal_removal_list_id' 	=> $triggers['conflict_animal_removal_list_id'] ?? null,
+			'biometry_loss_reason_list_id' 		=> $triggers['biometry_loss_reason_list_id'] ?? null,
+			'biometry_loss_reason_description' 	=> $triggers['biometry_loss_reason_description'] ?? null,
+			'project_name'						=> $triggers['project_name'] ?? null,
+			'receiving_country'					=> $triggers['receiving_country'] ?? null,
+			'n_number_of_removal_in_the_hunting_administrative_area' => $triggers['n_number_of_removal_in_the_hunting_administrative_area'] ?? null,
+			'y_number_of_removal_in_the_hunting_administrative_area' => $y_numberOfRemovalInTheHuntingAdministrativeArea,
+			'telemetry_uid'						=> $triggers['telemetry_uid'] ?? null
+		];
+
+		$repositoryData['json_data_field'] = json_encode($repositoryData);
+
+		$payload = [
+			'bearsBiometryAnimalHandling' => new Repository($repositoryData),
 		];
 
 		return $payload;
@@ -628,8 +667,35 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 	{
 		$animalHandlingStructure = $request->get('bearsBiometryAnimalHandling');
 
+		Log::debug(['animalHandlingStructure' => $animalHandlingStructure]);
+
+		if (!$animal->exists) {
+			if (isset($animalHandlingStructure['animal_id'])) {
+				$selectedAnimal = Animal::find($animalHandlingStructure['animal_id']);
+
+				if (!isset($animalHandlingStructure['animal_status'])) {
+					$animalHandlingStructure['animal_status'] = Animal::STR_DEAD;
+				}
+
+				$animalHandlingStructure['animal_name'] = $selectedAnimal->name;
+				$animalHandlingStructure['animal_species_list_id'] = $selectedAnimal->species_list_id;
+				$animalHandlingStructure['animal_sex_list_id'] = $selectedAnimal->sex_list_id;
+				$animalHandlingStructure['animal_description'] = $selectedAnimal->description;
+			}
+		}
+
+		if (!isset($animalHandlingStructure['animal_status'])) {
+			$animalHandlingStructure['animal_status'] = Animal::STR_DEAD;
+			$animalHandlingStructure['animal_status_on_handling'] = Animal::STR_DEAD;
+		}
+
 		if (!isset($animalHandlingStructure['animal_status_on_handling'])) {
+			// the select is disabled
 			$animalHandlingStructure['animal_status_on_handling'] = $animalHandlingStructure['animal_status'];
+		}
+
+		if (!isset($animalHandlingStructure['animal_name'])) {
+			$animalHandlingStructure['animal_name'] = $animal->name;
 		}
 
 		$parsedDate = date_parse_from_format("j.n.Y", $animalHandlingStructure['animal_handling_date_date']);
@@ -646,13 +712,17 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 			$animalHandlingStructure['number_of_removal_in_the_hunting_administrative_area'] = '';
 		}
 
+		Log::debug(['animalHandlingStructure' => $animalHandlingStructure]);
+
 		$request->merge(['bearsBiometryAnimalHandling' => $animalHandlingStructure]);
 
+		/*
 		$request->validate([
 			'bearsBiometryAnimalHandling.animal_handling_date' => 'required|date|before:now',
 			'bearsBiometryAnimalHandling.n_number_of_removal_in_the_hunting_administrative_area' => 'numeric|min:1|max:999',
 			'bearsBiometryAnimalHandling.y_number_of_removal_in_the_hunting_administrative_area' => 'numeric|min:2015|max:2040',
 		]);
+		*/
 
 		if (isset($animalHandlingStructure['animal_died_at_date'])) {
 			$parsedDate = date_parse_from_format("j.n.Y", $animalHandlingStructure['animal_died_at_date']);
@@ -668,10 +738,27 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 
 			$request->merge(['bearsBiometryAnimalHandling' => $animalHandlingStructure]);
 
+			/*
 			$request->validate([
 				'bearsBiometryAnimalHandling.animal_died_at' => 'date|before:now',
-				'bearsBiometryAnimalHandling.animal_died_at' => 'date|before:' . $phpAnimalHandlingDate->format('Y-m-d H:i')
 			]);
+
+			if (
+				$animalHandlingStructure['animal_status'] == Animal::STR_DEAD &&
+				(
+					$animalHandlingStructure['animal_handling_type'] == BearsBiometryAnimalHandlingAnimalListener::STR_ANIMAL_TYPE_UNKNOWN_HANDLED_ALIVE ||
+					$animalHandlingStructure['animal_handling_type'] == BearsBiometryAnimalHandlingAnimalListener::STR_ANIMAL_TYPE_KNOWN_HANDLED_ALIVE
+				)
+			) {
+				$request->validate([
+					'bearsBiometryAnimalHandling.animal_died_at' => 'date|after:' . $phpAnimalHandlingDate->format('Y-m-d H:i')
+				]);
+			} else {
+				$request->validate([
+					'bearsBiometryAnimalHandling.animal_died_at' => 'date|before:' . $phpAnimalHandlingDate->format('Y-m-d H:i')
+				]);
+			}
+			*/
 		}
 
 		if ($bearsBiometryAnimalHandling == null || !$bearsBiometryAnimalHandling->exists) {
@@ -681,22 +768,15 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 
 		$bearsBiometryAnimalHandling->fill($request->get('bearsBiometryAnimalHandling'));
 
-		if ($animal->exists) {
-			if ($animal->status == Animal::STR_DEAD) {
-				$animalStatus = Animal::STR_DEAD;
-			} else {
-				$animalStatus = $request->get('bearsBiometryAnimalHandling')['animal_status'] ?? 'dead';
-			}
-		} else {
-			$animalStatus = $request->get('bearsBiometryAnimalHandling')['animal_status'] ?? 'dead';
-		}
-
-		if (!$animal->exists && !isset($bearsBiometryAnimalHandling['animal_id'])) {
-			// create new animal
+		if ($animal->exists) { // this was an edit
+			$animal->status = $request->get('bearsBiometryAnimalHandling')['animal_status'];
+			Log::debug('animal exists');
+		} else if (!isset($bearsBiometryAnimalHandling['animal_id'])) {
+			Log::debug('animal was not selected, so create a new animal');
 			$animal = new Animal();
 
 			$animal->fill([
-				'status' => $animalStatus,
+				'status' => $request->get('bearsBiometryAnimalHandling')['animal_status'] ?? Animal::STR_DEAD,
 				'name' => $request->get('bearsBiometryAnimalHandling')['animal_name'] ?? '',
 				'species_list_id' => $request->get('bearsBiometryAnimalHandling')['animal_species_list_id'],
 				'sex_list_id' => $request->get('bearsBiometryAnimalHandling')['animal_sex_list_id'],
@@ -706,6 +786,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 
 			$animal->save();
 
+			// assign a name if not assigned by the user
 			if (!isset($request->get('bearsBiometryAnimalHandling')['animal_name']) || $request->get('bearsBiometryAnimalHandling')['animal_name'] == '') {
 				$animal->fill(['name' => $animal->id]);
 				$animal->save();
@@ -713,17 +794,10 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 
 			$bearsBiometryAnimalHandling['animal_id'] = $animal->id;
 		} else {
-			if (!$animal->exists) { // animal was selected later
-				$animal = Animal::find($bearsBiometryAnimalHandling['animal_id']);
-			} else { // animal was selected originaly, now only the reference needs to be set
-				$bearsBiometryAnimalHandling['animal_id'] = $animal->id;
-			}
+			Log::debug('update selected animal');
+			$animal = Animal::find($request->get('bearsBiometryAnimalHandling')['animal_id']);
 
-			if (isset($request->get('bearsBiometryAnimalHandling')['animal_name']) && $request->get('bearsBiometryAnimalHandling')['animal_name'] == '') {
-				$animal['name'] = $request->get('bearsBiometryAnimalHandling')['animal_name'];
-			}
-
-			$animal['status'] = $animalStatus;
+			$animal['status'] = $request->get('bearsBiometryAnimalHandling')['animal_status'];
 			$animal['died_at'] = $request->get('bearsBiometryAnimalHandling')['animal_died_at'] ?? null;
 
 			$animal->save();

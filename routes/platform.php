@@ -134,5 +134,5 @@ Route::screen('animalData/edit/{animal?}', AnimalDataEditScreen::class)
 Route::screen('animalData/view/{animal}', AnimalDataViewScreen::class)
 	->name('platform.animalData.view');
 
-	Route::screen('animals', AnimalListScreen::class)
+Route::screen('animals', AnimalListScreen::class)
 	->name('platform.animals.list');

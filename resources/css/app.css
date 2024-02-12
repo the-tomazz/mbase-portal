@@ -13,3 +13,7 @@ a[hidden="hidden"] {
 .table-responsive table thead tr th {
 	vertical-align: top;
 }
+
+input[name="bearsBiometryAnimalHandling[json_data_field]"] {
+	display: none;
+}

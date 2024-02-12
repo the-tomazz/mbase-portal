@@ -498,5 +498,13 @@
 	"Yes": "Da",
 	"No": "Ne",
 
-	"Location Coordinate Type": "Tip koordinat"
+	"Location Coordinate Type": "Tip koordinat",
+
+	"Unknown animal, handled dead": "Neznana žival, mrtva ob rokovanju",
+	"Known animal, handled dead": "Znana žival, mrtva ob rokovanju",
+	"Unknown animal, handled alive": "Neznana žival, živa ob rokovanju",
+	"Known animal, handled alive": "Znana žival, živa ob rokovanju",
+
+	"Animal handling type": "Tip rokovanja"
+
 }
