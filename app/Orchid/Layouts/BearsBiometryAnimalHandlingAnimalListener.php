@@ -220,7 +220,7 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 		Log::debug('hereIsOk');
 
 
-		return [/*
+		return [
 			Layout::rows([
 				CheckBox::make('animal_is_known_or_alive')
 					->value($animalIsKnownOrAlive)
@@ -293,7 +293,7 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 
 				Input::make('bearsBiometryAnimalHandling.json_data_field'),
 			])->title(__('Animal')),
-/*
+
 			Layout::rows([
 				Group::make([
 					DateTimer::make('bearsBiometryAnimalHandling.animal_died_at_date')
@@ -404,7 +404,7 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 					->title(__('Ear-tag number or radio-collar (telemetry) identification'))
 					->help(__('Please describe animal-borne markings (ear-tags, collar, microchips, etc.)'))
 					->canSee($animalWasAliveOnHandling)
-			]), */
+			]),
 		];
 	}
 }
