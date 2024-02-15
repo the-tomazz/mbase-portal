@@ -222,7 +222,7 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 
 		return [
 			Layout::rows([
-				CheckBox::make('animal_is_known_or_alive')
+				CheckBox::make('bearsBiometryAnimalHandling.animal_is_known_or_alive')
 					->value($animalIsKnownOrAlive)
 					->sendTrueOrFalse()
 					->placeholder(__('Check in case of alive or known animal'))
