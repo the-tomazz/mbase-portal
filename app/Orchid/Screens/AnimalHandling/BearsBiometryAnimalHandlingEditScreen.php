@@ -222,6 +222,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 
 	public function asyncUpdateAnimalHandlingAnimalListenerData($triggers)
 	{
+		Log::debug('we are here');
 		$oldJsonDataField = $triggers['json_data_field'] ?? null ? json_decode($triggers['json_data_field']) : null;
 		// $oldAnimalHandlingType = ( $oldJsonDataField->animal_handling_type ?? null );
 		$oldAnimalIsKnownOrAlive = ( $oldJsonDataField->animal_is_known_or_alive ?? null );
@@ -255,64 +256,37 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 		}
 
 		switch ($animalIsKnownOrAlive) {
-			case true:
+			case false:
 				$animalStatusOnHandling = $animalStatus = Animal::STR_DEAD;
 				break;
-			case false:
-				$animalStatusOnHandling = $triggers['animal_status_on_handling'] ?? Animal::STR_ALIVE;
+			case true:
+				switch ($animalIdChanged) {
+					case false:
+						$animalStatus = $triggers['animal_status'] ?? Animal::STR_ALIVE;
 
-				if ($animalIdChanged) {
-					$animal = Animal::find($triggers['animal_id']);
+						$animalStatusOnHandling = $animalIsKnownOrAliveChanged
+								? Animal::STR_ALIVE
+								: $triggers['animal_status_on_handling'];
 
-					$animalStatus = $animal->status;
-					$triggers['animal_name'] = $animal->name;
-					$triggers['animal_species_list_id'] = $animal->species_list_id;
-					$triggers['animal_sex_list_id'] = $animal->sex_list_id;
-					$triggers['animal_description'] = $animal->description;
-				} else {
-					$animalStatus = $triggers['animal_status'] ?? null;
+						break;
+
+					case true:
+						$animal = Animal::find($triggers['animal_id']);
+
+						$animalStatusOnHandling = $animalStatus = $animal->status;
+						$triggers['animal_name'] = $animal->name;
+						$triggers['animal_species_list_id'] = $animal->species_list_id;
+						$triggers['animal_sex_list_id'] = $animal->sex_list_id;
+						$triggers['animal_description'] = $animal->description;
+						break;
 				}
-
 				break;
 		}
 
-		switch ($animalIsKnownOrAlive) {
-			case false:
-				$animalStatusOnHandling = $animalStatus = Animal::STR_DEAD;
-				break;
-			case true:
-				// BearsBiometryAnimalHandlingAnimalListener::STR_ANIMAL_TYPE_UNKNOWN_HANDLED_ALIVE:
-				$animalStatus = $triggers['animal_status'] ?? null;
-				$animalStatusOnHandling = Animal::STR_ALIVE;
-				break;
-				// case BearsBiometryAnimalHandlingAnimalListener::STR_ANIMAL_TYPE_KNOWN_HANDLED_DEAD:
-				$animalStatusOnHandling = $animalStatus = Animal::STR_DEAD;
-			if ($animalIdChanged) {
-				$animal = Animal::find($triggers['animal_id']);
-
-				$triggers['animal_name'] = $animal->name;
-				$triggers['animal_species_list_id'] = $animal->species_list_id;
-				$triggers['animal_sex_list_id'] = $animal->sex_list_id;
-				$triggers['animal_description'] = $animal->description;
-			}
-
-				break;
-				// case BearsBiometryAnimalHandlingAnimalListener::STR_ANIMAL_TYPE_KNOWN_HANDLED_ALIVE:
-				$animalStatusOnHandling = $animalStatus = Animal::STR_ALIVE;
-			if ($animalIdChanged) {
-				$animal = Animal::find($triggers['animal_id']);
-
-				$animalStatus = $animal->status;
-				$triggers['animal_name'] = $animal->name;
-				$triggers['animal_species_list_id'] = $animal->species_list_id;
-				$triggers['animal_sex_list_id'] = $animal->sex_list_id;
-				$triggers['animal_description'] = $animal->description;
-			} else {
-				$animalStatus = $triggers['animal_status'] ?? null;
-			}
-
-				break;
-		}
+		Log::debug([
+			'animalStatus' => $animalStatus,
+			'animalStatusOnHandling' => $animalStatusOnHandling
+		]);
 
 		$repositoryData = [
 			// 'animal_handling_type' 				=> $animalHandlingType,
