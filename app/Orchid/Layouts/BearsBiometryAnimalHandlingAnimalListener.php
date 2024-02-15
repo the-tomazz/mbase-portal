@@ -114,7 +114,7 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 						$animalSelectDisabled = true;
 						$animalSelectRequired = false;
 
-						$animalNameCanSee = false;
+						$animalNameCanSee = true;
 						$animalNameValue = '';
 						$animalNameRequired = false;
 						$animalNameDisabled = false;
@@ -137,11 +137,11 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 								$animalStatusOnHandlingDisabled = true;
 
 								$animalSelectCanSee = true;
-								$animalSelectQuery = Animal::whereRaw('true');
+								$animalSelectQuery = Animal::whereRaw("not(name  ~ '^\d+\.?\d+$')");
 								$animalSelectDisabled = false;
 								$animalSelectRequired = false;
 
-								$animalNameCanSee = false;
+								$animalNameCanSee = true;
 								$animalNameValue = $this->query->get('bearsBiometryAnimalHandling.animal_name') ?? null;
 								$animalNameRequired = true;
 								$animalNameDisabled = false;
@@ -157,7 +157,7 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 										$animalIsKnownOrAliveDisabled = true;
 
 										$animalSelectCanSee = true;
-										$animalSelectQuery = Animal::whereRaw('true');
+										$animalSelectQuery = Animal::whereRaw("not(name  ~ '^\d+\.?\d+$')");
 										$animalSelectDisabled = true;
 										$animalSelectRequired = false;
 
@@ -280,13 +280,13 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 				CheckBox::make('bearsBiometryAnimalHandling.animal_is_known_or_alive')
 					->value($animalIsKnownOrAlive)
 					->sendTrueOrFalse()
-					->placeholder(__('Check in case of alive or known animal'))
+					->placeholder(__('Check in case of known animal'))
 					->disabled($animalIsKnownOrAliveDisabled),
 
 				Select::make('bearsBiometryAnimalHandling.animal_id')
 					->fromQuery($animalSelectQuery, 'name')
 					->required($animalSelectRequired)
-					->title(__('Animal'))
+					->title(__('Animal name'))
 					->disabled($animalSelectDisabled)
 					->help($animalStatusIsAlive
 						? __('Please select the ID of the individual, if the animal is known.')
