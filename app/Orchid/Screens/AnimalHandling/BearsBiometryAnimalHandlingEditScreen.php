@@ -223,17 +223,21 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 	public function asyncUpdateAnimalHandlingAnimalListenerData($triggers)
 	{
 		$oldJsonDataField = $triggers['json_data_field'] ?? null ? json_decode($triggers['json_data_field']) : null;
-		$oldAnimalHandlingType = ( $oldJsonDataField->animal_handling_type ?? null );
-		$animalHandlingType = $triggers['animal_handling_type'] ?? null;
+		// $oldAnimalHandlingType = ( $oldJsonDataField->animal_handling_type ?? null );
+		$oldAnimalIsKnownOrAlive = ( $oldJsonDataField->animal_is_known_or_alive ?? null );
+		// $animalHandlingType = $triggers['animal_handling_type'] ?? null;
+		$animalIsKnownOrAlive = $triggers['animal_is_known_or_alive'] ?? null;
 
-		$animalHandlingTypeChanged = $oldAnimalHandlingType != $animalHandlingType;
+		// $animalHandlingTypeChanged = $oldAnimalHandlingType != $animalHandlingType;
+		$animalIsKnownOrAliveChanged = $oldAnimalIsKnownOrAlive != $animalIsKnownOrAlive;
 		$animalIdChanged = ( $oldJsonDataField->animal_id ?? null ) != ( $triggers['animal_id'] ?? null );
 		$animalStatusChanged = ( $oldJsonDataField->animal_status ?? null ) != ( $triggers['animal_status'] ?? null );
 
 		Log::debug([
 			'triggers' => $triggers,
 			'oldJsonDataField' => $oldJsonDataField,
-			'animalHandlingTypeChanged' => $animalHandlingTypeChanged,
+			// 'animalHandlingTypeChanged' => $animalHandlingTypeChanged,
+			'animalIsKnownOrAliveChanged' => $animalIsKnownOrAliveChanged,
 			'animalIdChanged' => $animalIdChanged,
 			'animalStatusChanged' => $animalStatusChanged,
 		]);
@@ -250,28 +254,13 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 			$y_numberOfRemovalInTheHuntingAdministrativeArea = $triggers['y_number_of_removal_in_the_hunting_administrative_area'];
 		}
 
-		switch ($animalHandlingType) {
-			case BearsBiometryAnimalHandlingAnimalListener::STR_ANIMAL_TYPE_UNKNOWN_HANDLED_DEAD:
+		switch ($animalIsKnownOrAlive) {
+			case true:
 				$animalStatusOnHandling = $animalStatus = Animal::STR_DEAD;
 				break;
-			case BearsBiometryAnimalHandlingAnimalListener::STR_ANIMAL_TYPE_UNKNOWN_HANDLED_ALIVE:
-				$animalStatus = $triggers['animal_status'] ?? null;
-				$animalStatusOnHandling = Animal::STR_ALIVE;
-				break;
-			case BearsBiometryAnimalHandlingAnimalListener::STR_ANIMAL_TYPE_KNOWN_HANDLED_DEAD:
-				$animalStatusOnHandling = $animalStatus = Animal::STR_DEAD;
-				if ($animalIdChanged) {
-					$animal = Animal::find($triggers['animal_id']);
+			case false:
+				$animalStatusOnHandling = $triggers['animal_status_on_handling'] ?? Animal::STR_ALIVE;
 
-					$triggers['animal_name'] = $animal->name;
-					$triggers['animal_species_list_id'] = $animal->species_list_id;
-					$triggers['animal_sex_list_id'] = $animal->sex_list_id;
-					$triggers['animal_description'] = $animal->description;
-				}
-
-				break;
-			case BearsBiometryAnimalHandlingAnimalListener::STR_ANIMAL_TYPE_KNOWN_HANDLED_ALIVE:
-				$animalStatusOnHandling = $animalStatus = Animal::STR_ALIVE;
 				if ($animalIdChanged) {
 					$animal = Animal::find($triggers['animal_id']);
 
@@ -287,8 +276,47 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 				break;
 		}
 
+		switch ($animalIsKnownOrAlive) {
+			case false:
+				$animalStatusOnHandling = $animalStatus = Animal::STR_DEAD;
+				break;
+			case true:
+				// BearsBiometryAnimalHandlingAnimalListener::STR_ANIMAL_TYPE_UNKNOWN_HANDLED_ALIVE:
+				$animalStatus = $triggers['animal_status'] ?? null;
+				$animalStatusOnHandling = Animal::STR_ALIVE;
+				break;
+				// case BearsBiometryAnimalHandlingAnimalListener::STR_ANIMAL_TYPE_KNOWN_HANDLED_DEAD:
+				$animalStatusOnHandling = $animalStatus = Animal::STR_DEAD;
+			if ($animalIdChanged) {
+				$animal = Animal::find($triggers['animal_id']);
+
+				$triggers['animal_name'] = $animal->name;
+				$triggers['animal_species_list_id'] = $animal->species_list_id;
+				$triggers['animal_sex_list_id'] = $animal->sex_list_id;
+				$triggers['animal_description'] = $animal->description;
+			}
+
+				break;
+				// case BearsBiometryAnimalHandlingAnimalListener::STR_ANIMAL_TYPE_KNOWN_HANDLED_ALIVE:
+				$animalStatusOnHandling = $animalStatus = Animal::STR_ALIVE;
+			if ($animalIdChanged) {
+				$animal = Animal::find($triggers['animal_id']);
+
+				$animalStatus = $animal->status;
+				$triggers['animal_name'] = $animal->name;
+				$triggers['animal_species_list_id'] = $animal->species_list_id;
+				$triggers['animal_sex_list_id'] = $animal->sex_list_id;
+				$triggers['animal_description'] = $animal->description;
+			} else {
+				$animalStatus = $triggers['animal_status'] ?? null;
+			}
+
+				break;
+		}
+
 		$repositoryData = [
-			'animal_handling_type' 				=> $animalHandlingType,
+			// 'animal_handling_type' 				=> $animalHandlingType,
+			'animal_is_known_or_alive' 			=> $animalIsKnownOrAlive,
 			'animal_id'      					=> $triggers['animal_id'] ?? null,
 			'animal_status'      				=> $animalStatus,
 			'animal_status_on_handling'      	=> $animalStatusOnHandling,
@@ -716,13 +744,11 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 
 		$request->merge(['bearsBiometryAnimalHandling' => $animalHandlingStructure]);
 
-		/*
 		$request->validate([
 			'bearsBiometryAnimalHandling.animal_handling_date' => 'required|date|before:now',
 			'bearsBiometryAnimalHandling.n_number_of_removal_in_the_hunting_administrative_area' => 'numeric|min:1|max:999',
 			'bearsBiometryAnimalHandling.y_number_of_removal_in_the_hunting_administrative_area' => 'numeric|min:2015|max:2040',
 		]);
-		*/
 
 		if (isset($animalHandlingStructure['animal_died_at_date'])) {
 			$parsedDate = date_parse_from_format("j.n.Y", $animalHandlingStructure['animal_died_at_date']);
@@ -771,7 +797,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 		if ($animal->exists) { // this was an edit
 			$animal->status = $request->get('bearsBiometryAnimalHandling')['animal_status'];
 			Log::debug('animal exists');
-		} else if (!isset($bearsBiometryAnimalHandling['animal_id'])) {
+		} elseif (!isset($bearsBiometryAnimalHandling['animal_id'])) {
 			Log::debug('animal was not selected, so create a new animal');
 			$animal = new Animal();
 

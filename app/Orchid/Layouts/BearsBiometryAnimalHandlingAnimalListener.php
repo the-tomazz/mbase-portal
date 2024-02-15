@@ -41,7 +41,8 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 	 */
 	protected $targets = [
 		'bearsBiometryAnimalHandling.json_data_field',
-		'bearsBiometryAnimalHandling.animal_handling_type',
+		// 'bearsBiometryAnimalHandling.animal_handling_type',
+		'bearsBiometryAnimalHandling.animal_is_known_or_alive',
 		'bearsBiometryAnimalHandling.animal_id',
 		'bearsBiometryAnimalHandling.animal_status',
 		'bearsBiometryAnimalHandling.animal_status_on_handling',
@@ -86,7 +87,8 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 
 			$animalHandlingIsNew = ( $this->query->get('bearsBiometryAnimalHandling.id') ?? null ) == null;
 
-			$animalHandlingType = $this->query->get('bearsBiometryAnimalHandling.animal_handling_type') ?? self::STR_ANIMAL_TYPE_UNKNOWN_HANDLED_DEAD;
+			// $animalHandlingType = $this->query->get('bearsBiometryAnimalHandling.animal_handling_type') ?? self::STR_ANIMAL_TYPE_UNKNOWN_HANDLED_DEAD;
+			$animalIsKnownOrAlive = $this->query->get('bearsBiometryAnimalHandling.animal_is_known_or_alive') ?? false;
 
 			$animalStatusIsSelected = ( $this->query->get('bearsBiometryAnimalHandling.animal_status') ?? null ) <> null;
 			$animalStatusIsAlive = ( $this->query->get('bearsBiometryAnimalHandling.animal_status') ?? null ) == Animal::STR_ALIVE;
@@ -97,9 +99,9 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 				: [ Animal::STR_ALIVE => __('Alive'), Animal::STR_DEAD => __('Dead') ];
 
 			if ($animalHandlingIsNew) {
-				switch ($animalHandlingType) {
-					case BearsBiometryAnimalHandlingAnimalListener::STR_ANIMAL_TYPE_UNKNOWN_HANDLED_DEAD:
-						$animalHandlingTypeCanSee = true;
+				switch ($animalIsKnownOrAlive) {
+					case false:
+						$animalIsKnownOrAliveDisabled = false;
 
 						$animalStatusCanSee = false;
 						$animalStatusOnHandlingOptions = $animalStatusOptions = [ Animal::STR_DEAD => __('Dead') ];
@@ -111,64 +113,16 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 						$animalSelectDisabled = true;
 						$animalSelectRequired = false;
 
-						$animalNameCanSee = true;
-						$animalNameValue = '';
-						$animalNameRequired = false;
-						$animalNameDisabled = false;
-
-						$animalDescriptionDisabled = $animalSexListDisabled = $animalSpeciesListDisabled = false;
-
-						break;
-					case BearsBiometryAnimalHandlingAnimalListener::STR_ANIMAL_TYPE_UNKNOWN_HANDLED_ALIVE:
-						$animalHandlingTypeCanSee = true;
-
-						$animalStatusCanSee = true;
-						$animalStatusOptions = [ Animal::STR_ALIVE => __('Alive'), Animal::STR_DEAD => __('Dead') ];
-						$animalStatusValue = Animal::STR_ALIVE;
-						$animalStatusDisabled = false;
-
-						$animalStatusOnHandlingOptions = [ Animal::STR_ALIVE => __('Alive') ];
-						$animalStatusOnHandlingValue = Animal::STR_ALIVE;
-						$animalStatusOnHandlingDisabled = true;
-
-						$animalSelectCanSee = false;
-						$animalSelectQuery = Animal::whereRaw('true');
-						$animalSelectDisabled = true;
-						$animalSelectRequired = false;
-
-						$animalNameCanSee = true;
-						$animalNameValue = '';
-						$animalNameRequired = false;
-						$animalNameDisabled = false;
-
-						$animalDescriptionDisabled = $animalSexListDisabled = $animalSpeciesListDisabled = false;
-						break;
-					case BearsBiometryAnimalHandlingAnimalListener::STR_ANIMAL_TYPE_KNOWN_HANDLED_DEAD:
-						$animalHandlingTypeCanSee = true;
-
-						$animalStatusCanSee = false;
-						$animalStatusOptions = [ Animal::STR_DEAD => __('Dead') ];
-						$animalStatusValue = Animal::STR_DEAD;
-						$animalStatusDisabled = true;
-
-						$animalStatusOnHandlingOptions = [ Animal::STR_DEAD => __('Dead') ];
-						$animalStatusOnHandlingValue = Animal::STR_DEAD;
-						$animalStatusOnHandlingDisabled = true;
-
-						$animalSelectCanSee = true;
-						$animalSelectQuery = Animal::whereRaw('true');
-						$animalSelectDisabled = false;
-						$animalSelectRequired = true;
-
 						$animalNameCanSee = false;
-						$animalNameValue = $this->query->get('bearsBiometryAnimalHandling.animal_name') ?? null;
-						$animalNameRequired = true;
-						$animalNameDisabled = true;
+						$animalNameValue = '';
+						$animalNameRequired = false;
+						$animalNameDisabled = false;
 
-						$animalDescriptionDisabled = $animalSexListDisabled = $animalSpeciesListDisabled = true;
+						$animalDescriptionDisabled = $animalSexListDisabled = $animalSpeciesListDisabled = false;
+
 						break;
-					case BearsBiometryAnimalHandlingAnimalListener::STR_ANIMAL_TYPE_KNOWN_HANDLED_ALIVE:
-						$animalHandlingTypeCanSee = true;
+					case true:
+						$animalIsKnownOrAliveDisabled = true;
 
 						$animalStatusCanSee = true;
 						$animalStatusOptions = [ Animal::STR_ALIVE => __('Alive'), Animal::STR_DEAD => __('Dead') ];
@@ -188,7 +142,7 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 						$animalStatusOnHandlingDisabled = true;
 
 						$animalSelectCanSee = true;
-						$animalSelectQuery = Animal::whereRaw('true');
+						$animalStatusOptions = [ Animal::STR_ALIVE => __('Alive'), Animal::STR_DEAD => __('Dead') ];
 						$animalSelectDisabled = false;
 						$animalSelectRequired = true;
 
@@ -198,10 +152,13 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 						$animalNameDisabled = true;
 
 						$animalDescriptionDisabled = $animalSexListDisabled = $animalSpeciesListDisabled = true;
-						break;
 				}
+
+				$animalSpeciesListIdValue = $this->query->get('bearsBiometryAnimalHandling.animal_species_list_id') ?? null;
+				$animalSexListIdValue = $this->query->get('bearsBiometryAnimalHandling.animal_sex_list_id') ?? null;
+				$animalDescriptionValue = $this->query->get('bearsBiometryAnimalHandling.animal_description') ?? null;
 			} else {
-				$animalHandlingTypeCanSee = false;
+				$animalIsKnownOrAliveDisabled = true;
 
 				$animalStatusCanSee = true;
 				$animalStatusOptions = [ Animal::STR_ALIVE => __('Alive'), Animal::STR_DEAD => __('Dead') ];
@@ -222,22 +179,33 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 				$animalNameRequired = false;
 				$animalNameDisabled = true;
 
+				$animalSpeciesListIdValue = $this->query->get('bearsBiometryAnimalHandling.animal_species_list_id') ?? null;
+				$animalSexListIdValue = $this->query->get('bearsBiometryAnimalHandling.animal_sex_list_id') ?? null;
+				$animalDescriptionValue = $this->query->get('bearsBiometryAnimalHandling.animal_description') ?? null;
+
 				$animalDescriptionDisabled = $animalSexListDisabled = $animalSpeciesListDisabled = true;
 			}
 
 			Log::debug([
-				'bearsBiometryAnimalHandling.animal_handling_type' => $this->query->get('bearsBiometryAnimalHandling.animal_handling_type'),
+				'bearsBiometryAnimalHandling.animal_is_known_or_alive' => $this->query->get('bearsBiometryAnimalHandling.animal_is_known_or_alive'),
 				'bearsBiometryAnimalHandling.id' => $this->query->get('bearsBiometryAnimalHandling.id'),
 				'bearsBiometryAnimalHandling.animal_id' => $this->query->get('bearsBiometryAnimalHandling.animal_id'),
 				'bearsBiometryAnimalHandling.animal_status' => $this->query->get('bearsBiometryAnimalHandling.animal_status'),
 				'bearsBiometryAnimalHandling.animal_status_on_handling' => $this->query->get('bearsBiometryAnimalHandling.animal_status_on_handling'),
+				'bearsBiometryAnimalHandling.animal_species_list_id' => $this->query->get('bearsBiometryAnimalHandling.animal_species_list_id') ?? null,
+				'bearsBiometryAnimalHandling.animal_sex_list_id' => $this->query->get('bearsBiometryAnimalHandling.animal_sex_list_id') ?? null,
+				'bearsBiometryAnimalHandling.animal_description' => $this->query->get('bearsBiometryAnimalHandling.animal_description') ?? null,
 
-				'animalHandlingType' => $animalHandlingType,
+				'animalIsKnownOrAlive' => $animalIsKnownOrAlive,
 				'animalHandlingIsNew' => $animalHandlingIsNew,
 				'animalNameValue' => $animalNameValue,
 				'animalStatusIsSelected' => $animalStatusIsSelected,
 				'animalStatusIsAlive' => $animalStatusIsAlive,
-				'animalWasAliveOnHandling' => $animalWasAliveOnHandling
+				'animalWasAliveOnHandling' => $animalWasAliveOnHandling,
+
+				'animalSpeciesListId' => $animalSpeciesListIdValue,
+				'animalSexListId' => $animalSexListIdValue,
+				'animalDescription' => $animalDescriptionValue,
 			]);
 
 			$regularCullSelected = !$animalWasAliveOnHandling && $this->query->get('bearsBiometryAnimalHandling.way_of_withdrawal_list_id') == WayOfWithdrawalList::REGULAR_CULL;
@@ -249,21 +217,16 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 			$animalStatusSubset = $animalWasAliveOnHandling ? WayOfWithdrawalList::SHOWN_ON_ANIMAL_STATUS_ALIVE : WayOfWithdrawalList::SHOWN_ON_ANIMAL_STATUS_DEAD;
 		}
 
+		Log::debug('hereIsOk');
 
-		return [
+
+		return [/*
 			Layout::rows([
-				Select::make('bearsBiometryAnimalHandling.animal_handling_type')
-					->options([
-						self::STR_ANIMAL_TYPE_UNKNOWN_HANDLED_DEAD => __(self::STR_ANIMAL_TYPE_UNKNOWN_HANDLED_DEAD),
-						self::STR_ANIMAL_TYPE_UNKNOWN_HANDLED_ALIVE => __(self::STR_ANIMAL_TYPE_UNKNOWN_HANDLED_ALIVE),
-						self::STR_ANIMAL_TYPE_KNOWN_HANDLED_DEAD => __(self::STR_ANIMAL_TYPE_KNOWN_HANDLED_DEAD),
-						self::STR_ANIMAL_TYPE_KNOWN_HANDLED_ALIVE => __(self::STR_ANIMAL_TYPE_KNOWN_HANDLED_ALIVE)
-					])
-					->title(__('Animal handling type'))
-					->disabled(!$animalHandlingIsNew)
-					->help(__('If the individual hasn’t been caught before, leave the value “Unknown animal” and an automatic identification number will be assigned to this animal. If the individual has been previously handled and marked already, then choose its name from the drop-down list.'))
-					->value($animalHandlingType)
-					->canSee($animalHandlingTypeCanSee),
+				CheckBox::make('animal_is_known_or_alive')
+					->value($animalIsKnownOrAlive)
+					->sendTrueOrFalse()
+					->placeholder(__('Check in case of alive or known animal'))
+					->disabled($animalIsKnownOrAliveDisabled),
 
 				Select::make('bearsBiometryAnimalHandling.animal_id')
 					->fromQuery($animalSelectQuery, 'name')
@@ -311,7 +274,8 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 					->empty(__('<Select>'))
 					->title(__('Species'))
 					->help(__('Please select the species'))
-					->disabled($animalSpeciesListDisabled),
+					->disabled($animalSpeciesListDisabled)
+					->value($animalSpeciesListIdValue),
 
 				Select::make('bearsBiometryAnimalHandling.animal_sex_list_id')
 					->fromQuery(SexList::where('status', '=', BaseList::STR_ACTIVE), 'name')
@@ -319,15 +283,17 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 					->empty(__('<Select>'))
 					->title(__('Sex'))
 					->help(__('Please select the sex'))
-					->disabled($animalSexListDisabled),
+					->disabled($animalSexListDisabled)
+					->value($animalSexListIdValue),
 
 				Input::make('bearsBiometryAnimalHandling.animal_description')
 					->title('Note')
-					->disabled($animalDescriptionDisabled),
+					->disabled($animalDescriptionDisabled)
+					->value($animalDescriptionValue),
 
 				Input::make('bearsBiometryAnimalHandling.json_data_field'),
 			])->title(__('Animal')),
-
+/*
 			Layout::rows([
 				Group::make([
 					DateTimer::make('bearsBiometryAnimalHandling.animal_died_at_date')
@@ -438,7 +404,7 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 					->title(__('Ear-tag number or radio-collar (telemetry) identification'))
 					->help(__('Please describe animal-borne markings (ear-tags, collar, microchips, etc.)'))
 					->canSee($animalWasAliveOnHandling)
-			]),
+			]), */
 		];
 	}
 }
