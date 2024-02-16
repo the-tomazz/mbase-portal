@@ -233,6 +233,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 		$animalIsKnownOrAliveChanged = $oldAnimalIsKnownOrAlive != $animalIsKnownOrAlive;
 		$animalIdChanged = ( $oldJsonDataField->animal_id ?? null ) != ( $triggers['animal_id'] ?? null );
 		$animalStatusChanged = ( $oldJsonDataField->animal_status ?? null ) != ( $triggers['animal_status'] ?? null );
+		$animalStatusOnHandlingChanged = ( $oldJsonDataField->animal_status_on_handling ?? null ) != ( $triggers['animal_status_on_handling'] ?? null );
 
 		Log::debug([
 			'triggers' => $triggers,
@@ -263,15 +264,23 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 				switch ($animalIdChanged) {
 					case false:
 						$animalStatus = $triggers['animal_status'] ?? Animal::STR_ALIVE;
+						$animalDiedAtDate = $triggers['animal_died_at_date'] ?? null;
+						$animalDiedAtTime = $triggers['animal_died_at_time'] ?? null;
 
 						$animalStatusOnHandling = $animalIsKnownOrAliveChanged
 								? Animal::STR_ALIVE
 								: $triggers['animal_status_on_handling'];
 
-						break;
+						if ($animalStatusOnHandlingChanged && $animalStatusOnHandling == Animal::STR_DEAD) {
+							$animalStatus = Animal::STR_DEAD;
+						}
 
+						break;
 					case true:
 						$animal = Animal::find($triggers['animal_id']);
+
+						$animalDiedAtDate = $animal->died_at != null ? (new DateTime($animal->died_at))->format('j.n.Y') : null;
+						$animalDiedAtTime = $animal->died_at != null ? (new DateTime($animal->died_at))->format('H:i') : null;
 
 						$animalStatusOnHandling = $animalStatus = $animal->status;
 						$triggers['animal_name'] = $animal->name;
@@ -280,6 +289,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 						$triggers['animal_description'] = $animal->description;
 						break;
 				}
+
 				break;
 		}
 
@@ -299,8 +309,8 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 			'animal_sex_list_id'				=> $triggers['animal_sex_list_id'] ?? null,
 			'animal_description'				=> $triggers['animal_description'] ?? null,
 
-			'animal_died_at_date' 				=> $triggers['animal_died_at_date'] ?? null,
-			'animal_died_at_time' 				=> $triggers['animal_died_at_time'] ?? null,
+			'animal_died_at_date' 				=> $animalDiedAtDate,
+			'animal_died_at_time' 				=> $animalDiedAtTime,
 			'animal_handling_date_date'			=> $triggers['animal_handling_date_date'] ?? null,
 			'animal_handling_date_time'			=> $triggers['animal_handling_date_time'] ?? null,
 

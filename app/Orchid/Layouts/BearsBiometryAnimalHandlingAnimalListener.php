@@ -121,6 +121,8 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 
 						$animalDescriptionDisabled = $animalSexListDisabled = $animalSpeciesListDisabled = false;
 
+						$animalStatusDateTimeDisabled = false;
+
 						break;
 					case true:
 						switch ($animalIsSelected) {
@@ -147,6 +149,8 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 								$animalNameDisabled = false;
 
 								$animalDescriptionDisabled = $animalSexListDisabled = $animalSpeciesListDisabled = false;
+
+								$animalStatusDateTimeDisabled = $animalStatusValue == Animal::STR_DEAD;
 								break;
 							case true:
 								$originalAnimal = Animal::find($this->query->get('bearsBiometryAnimalHandling.animal_id'));
@@ -177,6 +181,7 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 
 										$animalDescriptionDisabled = $animalSexListDisabled = $animalSpeciesListDisabled = true;
 
+										$animalStatusDateTimeDisabled = $animalStatusValue == Animal::STR_DEAD;
 										break;
 									case Animal::STR_ALIVE:
 										$animalIsKnownOrAliveDisabled = true;
@@ -202,6 +207,7 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 
 										$animalDescriptionDisabled = $animalSexListDisabled = $animalSpeciesListDisabled = true;
 
+										$animalStatusDateTimeDisabled = false;
 										break;
 								}
 
@@ -354,7 +360,8 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 						->canSee(!$animalStatusIsAlive)
 						->allowInput()
 						->available([['from' => '01.01.1970', 'to' => date('d.m.Y')]])
-						->format('d.m.Y'),
+						->format('d.m.Y')
+						->disabled($animalStatusDateTimeDisabled),
 
 					DateTimer::make('bearsBiometryAnimalHandling.animal_died_at_time')
 						->title('Time of death')
@@ -363,6 +370,7 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 						->format('H:i')
 						->noCalendar()
 						->enableTime()
+						->disabled($animalStatusDateTimeDisabled)
 				]),
 
 				Group::make([
