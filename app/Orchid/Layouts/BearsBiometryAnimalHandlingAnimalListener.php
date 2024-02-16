@@ -128,13 +128,13 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 								$animalIsKnownOrAliveDisabled = true;
 
 								$animalStatusCanSee = true;
-								$animalStatusOptions = [ Animal::STR_ALIVE => __('Alive') ];
+								$animalStatusOnHandlingOptions = [ Animal::STR_ALIVE => __('Alive'), Animal::STR_DEAD => __('Dead') ];
 								$animalStatusValue = Animal::STR_ALIVE;
-								$animalStatusDisabled = true;
+								$animalStatusDisabled = false;
 
-								$animalStatusOnHandlingOptions = [ Animal::STR_ALIVE => __('Alive') ];
+								$animalStatusOnHandlingOptions = [ Animal::STR_ALIVE => __('Alive'), Animal::STR_DEAD => __('Dead') ];
 								$animalStatusOnHandlingValue = Animal::STR_ALIVE;
-								$animalStatusOnHandlingDisabled = true;
+								$animalStatusOnHandlingDisabled = false;
 
 								$animalSelectCanSee = true;
 								$animalSelectQuery = Animal::whereRaw("not(name  ~ '^\d+\.?\d+$')");
