@@ -114,7 +114,7 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 						$animalSelectDisabled = true;
 						$animalSelectRequired = false;
 
-						$animalNameCanSee = true;
+						$animalNameCanSee = false;
 						$animalNameValue = '';
 						$animalNameRequired = false;
 						$animalNameDisabled = false;
@@ -166,9 +166,9 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 										$animalStatusValue = Animal::STR_DEAD;
 										$animalStatusDisabled = true;
 
-										$animalStatusOnHandlingOptions = [ Animal::STR_DEAD => __('Dead') ];
-										$animalStatusOnHandlingValue = Animal::STR_DEAD;
-										$animalStatusOnHandlingDisabled = true;
+										$animalStatusOnHandlingOptions = [ Animal::STR_ALIVE => __('Alive'), Animal::STR_DEAD => __('Dead') ];
+										$animalStatusOnHandlingValue = Animal::STR_ALIVE;
+										$animalStatusOnHandlingDisabled = false;
 
 										$animalNameCanSee = false;
 										$animalNameValue = $this->query->get('bearsBiometryAnimalHandling.animal_name') ?? null;
@@ -294,6 +294,14 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 					->empty(__('<Select>'))
 					->canSee($animalSelectCanSee),
 
+				Input::make('bearsBiometryAnimalHandling.animal_name')
+					->title('Animal name')
+					->required($animalNameRequired)
+					->canSee($animalNameCanSee)
+					->disabled($animalNameDisabled)
+					->help(__('In case this animal is known for other reasons, like monitoring, you can assign it a name.'))
+					->value($animalNameValue),
+
 				Group::make([
 					Select::make('bearsBiometryAnimalHandling.animal_status')
 						->title('Animal status')
@@ -312,16 +320,6 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 						->disabled($animalStatusOnHandlingDisabled)
 						->value($animalStatusOnHandlingValue)
 				]),
-
-				Input::make('bearsBiometryAnimalHandling.animal_name')
-					->title('Animal name')
-					->required($animalNameRequired)
-					->canSee($animalNameCanSee)
-					->disabled($animalNameDisabled)
-					->help($animalStatusIsAlive
-						? __('Assign a new name to the animal.')
-						: __('In case this animal is known for other reasons, like monitoring, you can assign it a name.'))
-					->value($animalNameValue),
 
 				Select::make('bearsBiometryAnimalHandling.animal_species_list_id')
 					->fromQuery(SpeciesList::where('status', '=', BaseList::STR_ACTIVE), 'name')

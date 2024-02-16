@@ -505,6 +505,9 @@
 	"Unknown animal, handled alive": "Neznana žival, živa ob rokovanju",
 	"Known animal, handled alive": "Znana žival, živa ob rokovanju",
 
-	"Animal handling type": "Tip rokovanja"
+	"Animal handling type": "Tip rokovanja",
+
+	"Check in case of known animal": "Klikni v primeru poznane živali",
+	"Please select the ID of the individual, if the animal is known.": "Če je bila žival predhodno že odlovljena in označena, izberite njeno ime s spustnega seznama."
 
 }
