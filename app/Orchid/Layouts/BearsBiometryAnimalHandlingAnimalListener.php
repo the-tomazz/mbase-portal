@@ -128,7 +128,7 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 								$animalIsKnownOrAliveDisabled = true;
 
 								$animalStatusCanSee = true;
-								$animalStatusOnHandlingOptions = [ Animal::STR_ALIVE => __('Alive'), Animal::STR_DEAD => __('Dead') ];
+								$animalStatusOptions = [ Animal::STR_ALIVE => __('Alive'), Animal::STR_DEAD => __('Dead') ];
 								$animalStatusValue = Animal::STR_ALIVE;
 								$animalStatusDisabled = false;
 
