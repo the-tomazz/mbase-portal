@@ -259,6 +259,8 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 		switch ($animalIsKnownOrAlive) {
 			case false:
 				$animalStatusOnHandling = $animalStatus = Animal::STR_DEAD;
+				$animalDiedAtDate = $triggers['animal_died_at_date'] ?? null;
+				$animalDiedAtTime = $triggers['animal_died_at_time'] ?? null;
 				break;
 			case true:
 				switch ($animalIdChanged) {
