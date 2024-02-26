@@ -245,6 +245,8 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 				$animalDescriptionValue = $this->query->get('bearsBiometryAnimalHandling.animal_description') ?? null;
 
 				$animalDescriptionDisabled = $animalSexListDisabled = $animalSpeciesListDisabled = true;
+
+				$animalStatusDateTimeDisabled = false;
 			}
 
 			Log::debug([
