@@ -222,7 +222,6 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 
 	public function asyncUpdateAnimalHandlingAnimalListenerData($triggers)
 	{
-		Log::debug('we are here');
 		$oldJsonDataField = $triggers['json_data_field'] ?? null ? json_decode($triggers['json_data_field']) : null;
 		// $oldAnimalHandlingType = ( $oldJsonDataField->animal_handling_type ?? null );
 		$oldAnimalIsKnownOrAlive = ( $oldJsonDataField->animal_is_known_or_alive ?? null );
@@ -684,6 +683,11 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 		Log::debug(['animalHandlingStructure' => $animalHandlingStructure]);
 
 		if (!$animal->exists) {
+			$json_data_field = json_decode($animalHandlingStructure['json_data_field']);
+			if ($json_data_field->animal_id) {
+				$animalHandlingStructure['animal_id'] = $json_data_field->animal_id;
+			}
+
 			if (isset($animalHandlingStructure['animal_id'])) {
 				$selectedAnimal = Animal::find($animalHandlingStructure['animal_id']);
 
