@@ -89,7 +89,7 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 
 			// $animalHandlingType = $this->query->get('bearsBiometryAnimalHandling.animal_handling_type') ?? self::STR_ANIMAL_TYPE_UNKNOWN_HANDLED_DEAD;
 			$animalIsKnownOrAlive = $this->query->get('bearsBiometryAnimalHandling.animal_is_known_or_alive') ?? false;
-
+			$animalSelectValue = $this->query->get('bearsBiometryAnimalHandling.animal_id') ?? null;
 			$animalStatusIsSelected = ( $this->query->get('bearsBiometryAnimalHandling.animal_status') ?? null ) <> null;
 			$animalStatusIsAlive = ( $this->query->get('bearsBiometryAnimalHandling.animal_status') ?? null ) == Animal::STR_ALIVE;
 			$animalWasAliveOnHandling = ( $this->query->get('bearsBiometryAnimalHandling.animal_status_on_handling') ?? null ) == Animal::STR_ALIVE;
@@ -300,7 +300,8 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 						? __('Please select the ID of the individual, if the animal is known.')
 						: __('If the individual hasn’t been caught before, leave the value “Unknown animal” and an automatic identification number will be assigned to this animal. If the individual has been previously handled and marked already, then choose its name from the drop-down list.'))
 					->empty(__('<Select>'))
-					->canSee($animalSelectCanSee),
+					->canSee($animalSelectCanSee)
+					->value($animalSelectValue),
 
 				Input::make('bearsBiometryAnimalHandling.animal_name')
 					->title('Animal name')

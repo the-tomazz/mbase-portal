@@ -129,6 +129,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 		if ($animal->exists || isset($bearsBiometryAnimalHandling['animal_id'])) {
 			$animal['died_at_date'] = $animal->died_at != null ? (new DateTime($animal->died_at))->format('d.m.Y') : null;
 			$animal['died_at_time'] = $animal->died_at != null ? (new DateTime($animal->died_at))->format('H:i') : null;
+			$bearsBiometryAnimalHandling['animal_is_known_or_alive'] = true;
 		} else {
 			$animal['status'] = Auth::user()->defaultVisualisationAnimalStatus();
 			$animal['sex_list_id'] = null;
@@ -699,6 +700,11 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 				$animalHandlingStructure['animal_species_list_id'] = $selectedAnimal->species_list_id;
 				$animalHandlingStructure['animal_sex_list_id'] = $selectedAnimal->sex_list_id;
 				$animalHandlingStructure['animal_description'] = $selectedAnimal->description;
+			}
+		} else {
+			$json_data_field = json_decode($animalHandlingStructure['json_data_field']);
+			if ($json_data_field->animal_id) {
+				$animalHandlingStructure['animal_id'] = $json_data_field->animal_id;
 			}
 		}
 
