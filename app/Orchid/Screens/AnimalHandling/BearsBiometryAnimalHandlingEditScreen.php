@@ -157,6 +157,8 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 
 		$bearsBiometryAnimalHandling->load('attachment');
 
+		$bearsBiometryAnimalHandling['json_data_field'] = json_encode($bearsBiometryAnimalHandling);
+
 		return [
 			'animal' => $animal,
 			'bearsBiometryAnimalHandling' => $bearsBiometryAnimalHandling

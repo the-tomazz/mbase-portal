@@ -318,8 +318,13 @@ class AnimalHandlingListViewListLayout extends Table
 
 			TD::make('users_name', __('User'))
 				->render(function (AnimalHandlingListView $animalHandlingListView) {
-					return Link::make($animalHandlingListView->users_name)
-						->route('platform.biometryData.view', $animalHandlingListView);
+					return $animalHandlingListView->bears_biometry_data_status == AnimalHandlingListView::STR_EXISTS
+						? Link::make($animalHandlingListView->users_name)
+							->route('platform.biometryData.view', [ $animalHandlingListView->bears_biometry_data_id ])
+						: ( !Auth::user()->isInGroup('mbase2', 'mortbiom', 'consumers') ?
+							Link::make(__('Missing'))
+								->route('platform.biometryData.add', [ $animalHandlingListView ])
+							: Link::make(__('Missing')) );
 				})
 				->sort()
 				->filter(
