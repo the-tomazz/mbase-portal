@@ -712,7 +712,10 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 
 		if (!isset($animalHandlingStructure['animal_status'])) {
 			$animalHandlingStructure['animal_status'] = Animal::STR_DEAD;
-			$animalHandlingStructure['animal_status_on_handling'] = Animal::STR_DEAD;
+			
+			if (!isset($animalHandlingStructure['animal_status_on_handling'])) {
+				$animalHandlingStructure['animal_status_on_handling'] = Animal::STR_DEAD;
+			}
 		}
 
 		if (!isset($animalHandlingStructure['animal_status_on_handling'])) {

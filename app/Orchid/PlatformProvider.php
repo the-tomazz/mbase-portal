@@ -30,7 +30,7 @@ class PlatformProvider extends OrchidServiceProvider
 	public function registerMainMenu(): array
 	{
 		$menu = [
-			Menu::make(__('Home'))
+			Menu::make(__('Map'))
 				->icon('home')
 				->title(__('Mbase2L'))
 				->href('/mbase2/map')
