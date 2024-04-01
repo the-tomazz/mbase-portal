@@ -25,8 +25,13 @@ That should be it.
 
 --}}
 
-
 @push('head')
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css"
+    integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
+    crossorigin=""/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
+
 <style>
 	#map {
 		height: 400px;
@@ -36,25 +41,16 @@ That should be it.
 		margin-bottom: 15px;
 	}
 </style>
-
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
-	integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
-<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet-src.js"></script>
-
-<link rel="stylesheet"
-	href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css"
-	integrity="sha256-YU3qCpj/P06tdPBJGPax0bm6Q1wltfwjsho5TR4+TYc="
-	crossorigin=""/>
-<link rel="stylesheet"
-	href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css"
-	integrity="sha256-YSWCMtmNZNwqex4CEw1nQhvFub2lmU7vcCKP+XVwwXA="
-	crossorigin=""/>
-<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster-src.js"></script>
-
-
 @endpush
 
+<!-- Make sure you put this AFTER Leaflet's CSS -->
+<script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"
+    integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw=="
+    crossorigin=""></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+
 <script>
+
 	var markers = [
 		@foreach ($animalHandlings as $animalHandling)
 		{{'{'}}
@@ -85,13 +81,11 @@ That should be it.
 	function initMap() {
 		console.log("Initializing map");
 		const center = { lat: 46.1203, lng: 14.8156 };
-
 		var map = L.map('map').setView([center.lat, center.lng], 8);
 
 		L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 		}).addTo(map);
-
 		baseMaps = {
 			"OpenStreetMap": L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 				attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -112,22 +106,16 @@ That should be it.
 		};
 
 		L.control.layers(baseMaps, overlays).addTo(map);
-
-		/* markers.forEach(element => {
-			L.marker([element.position.lat, element.position.lng]).addTo(map)
-			.bindPopup(element.title);
-		}); */
-
-		var markersGroup = L.MarkerClusterGroup();
+    	var markerCG = L.markerClusterGroup();
 
 		markers.forEach(element => {
 			const marker = L.marker([element.position.lat, element.position.lng])  // odstraniš addTo(map), ker dodajaš najprej v markersGroup
 				.bindPopup(element.title);
 
-			markersGroup.addLayer(marker); // dodaš marker v markersGroup
+			markerCG.addLayer(marker); // dodaš marker v markersGroup
 		});
 
-		map.addLayer(markersGroup); // dodaš markersGroup na karto
+		map.addLayer(markerCG);
 	}
 
 	document.addEventListener("turbo:load", () => {
