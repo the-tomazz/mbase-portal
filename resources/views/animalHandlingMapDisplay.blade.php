@@ -39,9 +39,17 @@ That should be it.
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
 	integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
-<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
-	integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet-src.js"></script>
 
+<link rel="stylesheet"
+	href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css"
+	integrity="sha256-YU3qCpj/P06tdPBJGPax0bm6Q1wltfwjsho5TR4+TYc="
+	crossorigin=""/>
+<link rel="stylesheet"
+	href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css"
+	integrity="sha256-YSWCMtmNZNwqex4CEw1nQhvFub2lmU7vcCKP+XVwwXA="
+	crossorigin=""/>
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster-src.js"></script>
 
 
 @endpush
@@ -105,10 +113,21 @@ That should be it.
 
 		L.control.layers(baseMaps, overlays).addTo(map);
 
-		markers.forEach(element => {
+		/* markers.forEach(element => {
 			L.marker([element.position.lat, element.position.lng]).addTo(map)
 			.bindPopup(element.title);
+		}); */
+
+		var markersGroup = L.MarkerClusterGroup();
+
+		markers.forEach(element => {
+			const marker = L.marker([element.position.lat, element.position.lng])  // odstraniš addTo(map), ker dodajaš najprej v markersGroup
+				.bindPopup(element.title);
+
+			markersGroup.addLayer(marker); // dodaš marker v markersGroup
 		});
+
+		map.addLayer(markersGroup); // dodaš markersGroup na karto
 	}
 
 	document.addEventListener("turbo:load", () => {
