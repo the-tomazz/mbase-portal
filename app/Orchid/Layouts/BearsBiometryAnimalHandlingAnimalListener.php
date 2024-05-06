@@ -41,7 +41,6 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 	 */
 	protected $targets = [
 		'bearsBiometryAnimalHandling.json_data_field',
-		// 'bearsBiometryAnimalHandling.animal_handling_type',
 		'bearsBiometryAnimalHandling.animal_is_known_or_alive',
 		'bearsBiometryAnimalHandling.animal_id',
 		'bearsBiometryAnimalHandling.animal_status',
@@ -270,7 +269,8 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 				'bearsBiometryAnimalHandling.animal_species_list_id' => $this->query->get('bearsBiometryAnimalHandling.animal_species_list_id') ?? null,
 				'bearsBiometryAnimalHandling.animal_sex_list_id' => $this->query->get('bearsBiometryAnimalHandling.animal_sex_list_id') ?? null,
 				'bearsBiometryAnimalHandling.animal_description' => $this->query->get('bearsBiometryAnimalHandling.animal_description') ?? null,
-
+				'bearsBiometryAnimalHandling.way_of_withdrawal_list_id' => $this->query->get('bearsBiometryAnimalHandling.way_of_withdrawal_list_id') ?? null,
+				'here - bearsBiometryAnimalHandling.conflict_animal_removal_list_id' => $this->query->get('bearsBiometryAnimalHandling.conflict_animal_removal_list_id') ?? null,
 				'animalIsKnownOrAlive' => $animalIsKnownOrAlive,
 				'animalHandlingIsNew' => $animalHandlingIsNew,
 				'animalNameValue' => $animalNameValue,
@@ -291,10 +291,7 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 
 			$animalStatusSubset = $animalWasAliveOnHandling ? WayOfWithdrawalList::SHOWN_ON_ANIMAL_STATUS_ALIVE : WayOfWithdrawalList::SHOWN_ON_ANIMAL_STATUS_DEAD;
 		}
-
-		Log::debug('hereIsOk');
-
-
+		
 		return [
 			Layout::rows([
 				CheckBox::make('bearsBiometryAnimalHandling.animal_is_known_or_alive')
@@ -426,7 +423,10 @@ class BearsBiometryAnimalHandlingAnimalListener extends Listener
 						->canSee($regularCullSelected),
 
 					Select::make('bearsBiometryAnimalHandling.conflict_animal_removal_list_id')
-						->fromQuery(ConflictAnimalRemovalList::where('status', '=', BaseList::STR_ACTIVE), 'name')
+						->fromQuery(
+							ConflictAnimalRemovalList::where('status', '=', BaseList::STR_ACTIVE),
+							'name'
+						)
 						->title(__('Type of legal cull'))
 						->empty(__('<Select>'))
 						->required()

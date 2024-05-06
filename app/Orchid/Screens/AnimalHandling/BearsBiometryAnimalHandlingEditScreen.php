@@ -226,12 +226,9 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 	public function asyncUpdateAnimalHandlingAnimalListenerData($triggers)
 	{
 		$oldJsonDataField = $triggers['json_data_field'] ?? null ? json_decode($triggers['json_data_field']) : null;
-		// $oldAnimalHandlingType = ( $oldJsonDataField->animal_handling_type ?? null );
 		$oldAnimalIsKnownOrAlive = ( $oldJsonDataField->animal_is_known_or_alive ?? null );
-		// $animalHandlingType = $triggers['animal_handling_type'] ?? null;
 		$animalIsKnownOrAlive = $triggers['animal_is_known_or_alive'] ?? null;
 
-		// $animalHandlingTypeChanged = $oldAnimalHandlingType != $animalHandlingType;
 		$animalIsKnownOrAliveChanged = $oldAnimalIsKnownOrAlive != $animalIsKnownOrAlive;
 		$animalIdChanged = ( $oldJsonDataField->animal_id ?? null ) != ( $triggers['animal_id'] ?? null );
 		$animalStatusChanged = ( $oldJsonDataField->animal_status ?? null ) != ( $triggers['animal_status'] ?? null );
@@ -240,7 +237,6 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 		Log::debug([
 			'triggers' => $triggers,
 			'oldJsonDataField' => $oldJsonDataField,
-			// 'animalHandlingTypeChanged' => $animalHandlingTypeChanged,
 			'animalIsKnownOrAliveChanged' => $animalIsKnownOrAliveChanged,
 			'animalIdChanged' => $animalIdChanged,
 			'animalStatusChanged' => $animalStatusChanged,
@@ -303,7 +299,6 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 		]);
 
 		$repositoryData = [
-			// 'animal_handling_type' 				=> $animalHandlingType,
 			'animal_is_known_or_alive' 			=> $animalIsKnownOrAlive,
 			'animal_id'      					=> $triggers['animal_id'] ?? null,
 			'animal_status'      				=> $animalStatus,
@@ -712,7 +707,7 @@ class BearsBiometryAnimalHandlingEditScreen extends Screen
 
 		if (!isset($animalHandlingStructure['animal_status'])) {
 			$animalHandlingStructure['animal_status'] = Animal::STR_DEAD;
-			
+
 			if (!isset($animalHandlingStructure['animal_status_on_handling'])) {
 				$animalHandlingStructure['animal_status_on_handling'] = Animal::STR_DEAD;
 			}
