@@ -125,6 +125,7 @@ class AnimalListView extends Model
 		'name',
 		'description',
 		'died_at',
+		'animal_handling_date',
 		'species_list_name->sl',
 		'species_list_name->en',
 		'species_list_name->de',
