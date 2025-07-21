@@ -1,4 +1,19 @@
-# Zavod za gozdove
+# What is mbase-portal?
+mbase-portal is the central administrative access point for the mbase system (https://portal.mbase.org). It is a Laravel application built with Laravel-Orchid. It works together with Laravel package [mbase-modules](https://gitlab.com/mbase2/mbase-modules/)
+
+## Responsibilities:
+- Handles user authentication and authorization
+- Provides role and permission management
+- Serves as a starting point for UI navigation (menus, dashboard)
+- Exposes placeholder views for JavaScript-based modules
+- Manages simple Orchid-native UI (e.g., system settings, internal pages)
+
+## Not responsible for:
+- Executing domain-specific (module specific) business logic
+- Rendering UI for modules (handled fully in JS inside modules)
+- Managing routes, controllers, or state of modules (these live in the Laravel package)
+
+---
 
 ## Stack
 
