@@ -11,7 +11,7 @@ mbase-portal is the central administrative access point for the mbase system (ht
 ## Not responsible for:
 - Executing domain-specific (module specific) business logic
 - Rendering UI for modules (handled fully in JS inside modules)
-- Managing routes, controllers, or state of modules (these live in the Laravel package)
+- Managing routes, controllers, or state of modules (these live in the Laravel package [mbase-modules](https://gitlab.com/mbase2/mbase-modules/))
 
 ---
 
