@@ -17,4 +17,5 @@ yarn-error.log
 /public/mbase2dtl*
 /public/vendor/mbase2dtl*
 public/vendor/mbase2dtl/*
+public/vendor
 

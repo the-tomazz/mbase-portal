@@ -76,7 +76,7 @@
 	"repositories": {
 		"mbase2dtl": {
 			"type": "vcs",
-			"url": "git@gitlab.com:mbase2/source-code.git"
+			"url": "git@gitlab.com:mbase2/mbase-modules.git"
 		}
 	}
 }
