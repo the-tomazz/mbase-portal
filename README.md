@@ -24,7 +24,7 @@ mbase-portal is the central administrative access point for the mbase system (ht
 - Tailwind
 - Postgresql
 
-A seperate project mbase2dtl is included via composer VCS.
+Laravel package mbase2dtl is included via composer VCS.
 
 ## Deployment
 
@@ -66,7 +66,6 @@ sail up -d
 ```
 
 Note: [You can configure a bash alias for this.](https://laravel.com/docs/9.x/sail#configuring-a-bash-alias)
-
 
 
 ### Generate application key
