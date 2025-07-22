@@ -84,6 +84,12 @@ class PlatformProvider extends OrchidServiceProvider
 				->href('/mbase2/modules/tlm');
 		}
 
+		if (Auth::user()->isInGroup('mbase2', 'mortbiom2')) {
+			$menu[] = Menu::make(__('Mortbiom2'))
+				->icon('list')
+				->href('/mbase2/modules/mortbiom2');
+		}
+
 		if (Auth::user()->isInGroup('mbase2', 'howling')) {
 			$menu[] = Menu::make(__('Howling'))
 				->icon('list')
