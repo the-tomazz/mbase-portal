@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "70c0411b79d690f7b76aa196d81e4908",
+    "content-hash": "c29a913c4dadb652a63fc10849015f9a",
     "packages": [
         {
             "name": "bosnadev/database",
@@ -2775,18 +2775,11 @@
         {
             "name": "mbase2/dtl",
             "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://gitlab.com/mbase2/mbase-modules.git",
-                "reference": "4a56d2cd588bcac43cbc67c20c8ae5c022911980"
-            },
             "dist": {
-                "type": "zip",
-                "url": "https://gitlab.com/api/v4/projects/mbase2%2Fmbase-modules/repository/archive.zip?sha=4a56d2cd588bcac43cbc67c20c8ae5c022911980",
-                "reference": "4a56d2cd588bcac43cbc67c20c8ae5c022911980",
-                "shasum": ""
+                "type": "path",
+                "url": "/mbase2dtl",
+                "reference": "e49997ffd85c3535b742c8f83234bc43be4b6836"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
@@ -2804,10 +2797,9 @@
                 "MIT"
             ],
             "description": "mbase2 modules",
-            "support": {
-                "source": "https://gitlab.com/mbase2/mbase-modules/-/tree/master"
-            },
-            "time": "2025-07-21T15:29:35+00:00"
+            "transport-options": {
+                "relative": false
+            }
         },
         {
             "name": "monolog/monolog",
@@ -10799,6 +10791,6 @@
     "platform": {
         "php": "^8.0.2"
     },
-    "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "platform-dev": {},
+    "plugin-api-version": "2.6.0"
 }
