@@ -26,7 +26,7 @@
 								{{ __('Map') }}
 							</x-dropdown-link>
 
-							@if(Auth::user() && Auth::user()->isInGroup('mbase2', 'mortbiom'))
+							@if(Auth::user() && Auth::user()->name === 'admin')
 							<x-dropdown-link
 								:href="route('platform.animalHandling.list', ['filter[animal_status]' => Auth::user()->defaultVisualisationAnimalStatus()])">
 								{{ __('Mortality and biometry') }}

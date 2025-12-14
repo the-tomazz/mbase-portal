@@ -36,7 +36,7 @@ class PlatformProvider extends OrchidServiceProvider
 				->href('/mbase2/map')
 		];
 
-		if (Auth::user()->isInGroup('mbase2', 'mortbiom')) {
+		if (Auth::user()->name === 'admin') {
 			$menu[] = Menu::make(__('Mortality and biometry'))
 				->icon('organization')
 				->route('platform.animalHandling.list', ['filter[animal_status]' => Auth::user()->defaultVisualisationAnimalStatus()]);
@@ -150,7 +150,7 @@ class PlatformProvider extends OrchidServiceProvider
 				->icon('list')
 				->href('/admin/crud/list/species-lists');
 
-			if (Auth::user()->isInGroup('mbase2', 'mortbiom', 'admins')) {
+			if (Auth::user()->name === 'admin') {
 				// MORTBIOM MODULE RELATED LISTS
 				$menu[] = Menu::make('Type of removal')
 					->title('Mortality and biometry lists')
