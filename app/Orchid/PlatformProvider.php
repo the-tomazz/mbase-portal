@@ -85,7 +85,7 @@ class PlatformProvider extends OrchidServiceProvider
 		}
 
 		if (Auth::user()->isInGroup('mbase2', 'mortbiom2')) {
-			$menu[] = Menu::make(__('Mortbiom2'))
+			$menu[] = Menu::make(__('Mortality and biometry'))
 				->icon('list')
 				->href('/mbase2/modules/mortbiom2');
 		}

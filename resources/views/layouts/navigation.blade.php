@@ -84,7 +84,7 @@
 
 							@if(Auth::user() && Auth::user()->isInGroup('mbase2', 'mortbiom2'))
 							<x-dropdown-link href="/mbase2/modules/mortbiom2">
-								{{ __('Mortbiom2') }}
+								{{ __('Mortality and biometry') }}
 							</x-dropdown-link>
 							@endif
 						</x-slot>
