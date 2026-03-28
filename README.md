@@ -226,3 +226,27 @@ you will need to
   SET search_path TO public;
   drop table tablename;
   \q
+
+## Server rollout after Sail Docker changes
+
+When docker-compose points to published Sail files in `docker/`, and `docker/8.1/Dockerfile` is changed (for example to add `php8.1-xlswriter`), rebuild the Sail app image on the server.
+
+Run from the `mbase-portal` repository root:
+
+```bash
+./vendor/bin/sail down
+./vendor/bin/sail build --no-cache laravel.test
+./vendor/bin/sail up -d
+```
+
+Verify extension availability:
+
+```bash
+./vendor/bin/sail php -m | grep -x xlswriter
+./vendor/bin/sail php --ri xlswriter
+```
+
+If the extension is missing after rebuild, confirm these files are committed and deployed:
+- `docker/8.1/Dockerfile`
+- `docker-compose.yml`
+- `docker-compose-dev.yml` (if used on that server)

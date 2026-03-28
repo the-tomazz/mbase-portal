@@ -23,5 +23,8 @@ Historical note: this project had production deployments before formal release v
 - PostgreSQL init SQL mount switched from vendor/laravel/sail/database/pgsql/create-testing-database.sql to docker/pgsql/create-testing-database.sql in both compose files.
 - Installed php8.1-xlswriter in the published Sail 8.1 Dockerfile.
 
+### Documentation
+- Added server rollout instructions to README.md for rebuilding Sail images after Docker runtime changes and verifying xlswriter.
+
 ### Notes
 - This makes the xlswriter extension installation persistent across Sail rebuilds.
