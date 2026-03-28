@@ -3,7 +3,7 @@ version: '3'
 services:
     laravel.test:
         build:
-            context: ./vendor/laravel/sail/runtimes/8.1
+            context: ./docker/8.1
             dockerfile: Dockerfile
             args:
                 WWWGROUP: '${WWWGROUP}'
@@ -38,7 +38,7 @@ services:
         volumes:
             - 'sail-pgsql:/var/lib/postgresql/data'
             - '.:/home'
-            - './vendor/laravel/sail/database/pgsql/create-testing-database.sql:/docker-entrypoint-initdb.d/10-create-testing-database.sql'
+            - './docker/pgsql/create-testing-database.sql:/docker-entrypoint-initdb.d/10-create-testing-database.sql'
         networks:
             - sail
         healthcheck:
