@@ -42,7 +42,7 @@
 
 							@if(Auth::user() && Auth::user()->isInGroup('mbase2', 'ct'))
 							<x-dropdown-link href="/mbase2/modules/ct">
-								{{ __('Camera Trapping') }}
+								{{ __('Systematic camera-trapping') }}
 							</x-dropdown-link>
 							@endif
 

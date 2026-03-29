@@ -49,7 +49,7 @@ class PlatformProvider extends OrchidServiceProvider
 		}
 
 		if (Auth::user()->isInGroup('mbase2', 'ct')) {
-			$menu[] = Menu::make(__('Camera Trapping'))
+			$menu[] = Menu::make(__('Systematic camera-trapping'))
 				->icon('list')
 				->href('/mbase2/modules/ct');
 		}
