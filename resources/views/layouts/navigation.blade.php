@@ -39,6 +39,12 @@
 							</x-dropdown-link>
 							@endif
 
+							@if(Auth::user() && Auth::user()->isInGroup('mbase2', 'genlink'))
+							<x-dropdown-link href="/mbase2/modules/genlink">
+								{{ __('GenLink') }}
+							</x-dropdown-link>
+							@endif
+
 
 							@if(Auth::user() && Auth::user()->isInGroup('mbase2', 'ct'))
 							<x-dropdown-link href="/mbase2/modules/ct">

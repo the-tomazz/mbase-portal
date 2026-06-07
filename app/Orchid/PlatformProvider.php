@@ -48,6 +48,12 @@ class PlatformProvider extends OrchidServiceProvider
 				->href('/mbase2/modules/gensam');
 		}
 
+		if (Auth::user()->isInGroup('mbase2', 'genlink')) {
+			$menu[] = Menu::make('GenLink')
+				->icon('list')
+				->href('/mbase2/modules/genlink');
+		}
+
 		if (Auth::user()->isInGroup('mbase2', 'ct')) {
 			$menu[] = Menu::make(__('Systematic camera-trapping'))
 				->icon('list')
