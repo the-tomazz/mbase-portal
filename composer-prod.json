@@ -69,7 +69,18 @@
 	"config": {
 		"optimize-autoloader": true,
 		"preferred-install": "dist",
-		"sort-packages": true
+		"sort-packages": true,
+		"policy": {
+			"malware": {
+				"ignore": {
+					"laravel-lang/lang": {
+						"constraint": "12.24.2",
+						"on-audit": false,
+						"reason": "Retain locked commit 5a6a3e7751a91dec3ee7d69c12db4690643d59a0. Installed files verified against its upstream archive after the May 2026 tag compromise; keep reporting in audits."
+					}
+				}
+			}
+		}
 	},
 	"minimum-stability": "dev",
 	"prefer-stable": true,
