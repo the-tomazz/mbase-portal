@@ -5,6 +5,8 @@ LABEL maintainer="Taylor Otwell"
 ARG WWWGROUP
 ARG NODE_VERSION=22
 ARG POSTGRES_VERSION=17
+# Minimum Noble package revision containing both PHP2Shell fixes.
+ARG PHP_MIN_VERSION=8.1.34-9+ubuntu24.04.1+deb.sury.org+1
 
 WORKDIR /var/www/html
 
@@ -34,6 +36,12 @@ RUN apt-get update && apt-get upgrade -y \
        php8.1-ldap \
        php8.1-msgpack php8.1-igbinary php8.1-redis php8.1-swoole \
        php8.1-memcached php8.1-pcov php8.1-xdebug \
+    && for package in php8.1-cli php8.1-common php8.1-opcache; do \
+        installed_version="$(dpkg-query -W -f='${Version}' "$package")" \
+        && dpkg --compare-versions "$installed_version" ge "$PHP_MIN_VERSION" \
+        || { echo "ERROR: PHP2Shell fixes required: $package must be >= $PHP_MIN_VERSION; found ${installed_version:-missing}." >&2; exit 1; }; \
+        printf '%s %s (minimum %s)\n' "$package" "$installed_version" "$PHP_MIN_VERSION"; \
+    done \
     && curl -sLS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer \
     && curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg \
     && echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_VERSION.x nodistro main" > /etc/apt/sources.list.d/nodesource.list \
