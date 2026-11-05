@@ -34,6 +34,8 @@ class Controller extends BaseController
 
 	public function exportAnimalHandlings()
 	{
+		abort_unless(auth()->user() && auth()->user()->hasAccess('mbase2l.super_admin'), 403);
+
 		$from = request()->input('animal_handling_date_from') ?? '1970-01-01';
 		$to = request()->input('animal_handling_date_to') ?? '2970-01-01';
 
@@ -304,6 +306,8 @@ class Controller extends BaseController
 
 	public function exportAnimals()
 	{
+		abort_unless(auth()->user() && auth()->user()->hasAccess('mbase2l.super_admin'), 403);
+
 		$animalHandlingDateFrom = request()->input('animal_handling_date_from') ?? '1970-01-01';
 		$animalHandlingDateTo = request()->input('animal_handling_date_to') ?? '2970-01-01';
 

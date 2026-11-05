@@ -20,6 +20,19 @@ use Orchid\Support\Facades\Layout;
 
 class AnimalHandlingViewScreen extends Screen
 {
+	/**
+	 * Legacy bear/lynx handling module (replaced by mbase2 mortbiom2).
+	 * Hiding the menu entry alone did not block direct URL access, so restrict it to super admins.
+	 *
+	 * @return iterable|null
+	 */
+	public function permission(): ?iterable
+	{
+		return [
+			'mbase2l.super_admin',
+		];
+	}
+
 	public $bearsBiometryAnimalHandling;
 
 	/**
